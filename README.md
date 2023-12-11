@@ -4,13 +4,13 @@ bOS-workspace is a comprehensive framework equipped with a build script that str
 
 ## Key Features
 
-1. Reads the `bos.config.json` file located in each `app/{appname}` folder. Note: `bos.config.json` is crucial for certain commands to function properly.
+1. Reads the `bos.config.json` file located in each `apps/{appname}` folder. Note: `bos.config.json` is crucial for certain commands to function properly.
 2. Utilizes special comments to inject the desired content at the right place.
 3. Utilizes the aliases map from `bos.config.json` to replace comments with the correct value, it's specially useful for widget sources. For instance:
 
    ```json
    "aliases": {
-       "nui": "nui.sking.near",
+       "accountName": "test.near",
        "something": "abc"
    }
    ```
