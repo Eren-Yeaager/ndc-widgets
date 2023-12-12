@@ -106,6 +106,7 @@ const form = {
 
 const [formEls, setFormEls] = useState({
   accountId: context.accountId,
+  type: "proposal",
 });
 const [errors, setErrors] = useState({});
 
@@ -139,9 +140,6 @@ const ProposalButton = () => (
   </CommitButton>
 );
 
-console.log(formEls);
-console.log(errors);
-
 return (
   <Container>
     <div className="d-flex justify-content-center">
@@ -159,6 +157,19 @@ return (
               🙂
             </p>
           </p>
+        </div>
+
+        <div
+          onClick={() => {
+            const newFormEl = formEls;
+            newFormEl.type =
+              formEls.type === "proposal" ? "report" : "proposal";
+            setFormEls(newFormEl);
+          }}
+        >
+          <label>Form type</label>
+          <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
+          <small>{formEls.type}</small>
         </div>
 
         {form.elements.map((el) => (

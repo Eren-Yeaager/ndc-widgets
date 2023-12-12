@@ -31,7 +31,6 @@ return (
       {reports &&
         reports.map((report) => (
           <Card>
-            {console.log(report)}
             <h3>{report.value.project_name}</h3>
             <h5>Report #{report?.blockHeight}</h5>
             <hr />

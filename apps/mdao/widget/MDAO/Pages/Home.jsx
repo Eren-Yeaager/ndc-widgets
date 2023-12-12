@@ -65,7 +65,15 @@ const HeroSection = styled.div`
     }
   }
 
-  a.btn-primary {
+  .hero-buttons {
+    flex-direction: row;
+
+    @media screen and (max-width: 786px) {
+      flex-direction: column;
+    }
+  }
+
+  a.btn {
     border-radius: 10px;
     background: #000;
     box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
@@ -73,23 +81,22 @@ const HeroSection = styled.div`
     font-size: 24px;
     font-weight: 400;
     padding: 15px 25px;
-    width: 400px;
-    background-image: -webkit-linear-gradient(30deg, #2a2a2a 50%, #000 50%);
-    background-image: linear-gradient(30deg, #2a2a2a 50%, #000 50%);
-    background-size: 1000px;
-    background-repeat: no-repeat;
-    background-position: 0%;
-    -webkit-transition: background 300ms ease-in-out;
-    transition: background 300ms ease-in-out;
+    min-width: 300px;
 
     &:hover {
-      background-position: 100%;
       color: #fff;
       text-decoration: none;
     }
 
     @media screen and (max-width: 786px) {
       width: 100%;
+    }
+
+    &.btn-secondary {
+      background: transparent;
+      color: #000;
+      background-image: none;
+      border: 2px solid #000;
     }
   }
 `;
@@ -358,7 +365,7 @@ const Support = ({ title, items }) => (
     <div className="item d-flex justify-content-center align-items-center">
       <div className="inner d-flex flex-column justify-content-center align-items-center">
         {items.map((i) => (
-          <Link to={i.hfer}>{i.title}</Link>
+          <Link to={i.href}>{i.title}</Link>
         ))}
       </div>
     </div>
@@ -371,15 +378,23 @@ return (
       <div className="d-flex flex-column gap-5">
         <h1>{content.heroTitle}</h1>
         <h3>{content.heroDesc}</h3>
-        <a
-          href="//*__@replace:widgetPath__*/.App?page=info"
-          className="text-center btn-primary d-flex justify-content-end"
-        >
-          <div className="d-flex justify-content-between w-75">
+        <div className="hero-buttons d-flex gap-3">
+          <Link
+            to={"//*__@replace:widgetPath__*/.App?page=info"}
+            className="text-center btn btn-secondary d-flex justify-content-between"
+          >
             <span>Read More</span>
             <i className="bi bi-chevron-right" />
-          </div>
-        </a>
+          </Link>
+
+          <Link
+            className="text-center btn d-flex justify-content-between"
+            to={`//*__@replace:widgetPath__*/.App?page=createProposal`}
+          >
+            <span>Create Proposal / Report</span>
+            <i className="bi bi-plus" />
+          </Link>
+        </div>
       </div>
       <img src={assets.hero} />
     </HeroSection>
@@ -439,7 +454,10 @@ return (
         <Support
           title="Get Funding"
           items={[
-            { title: "Apply for a grant", href: "" },
+            {
+              title: "Apply for a grant",
+              href: "//*__@replace:widgetPath__*/.App?page=createProposal",
+            },
             { title: "MDAO Bounty program", href: "" },
             { title: "Editorial calendar", href: "" },
           ]}
