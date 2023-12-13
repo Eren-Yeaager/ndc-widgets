@@ -306,23 +306,29 @@ const SupportSection = styled.div`
   }
 `;
 
-const communities = [
-  {
-    title: "Community Name",
-    desc: "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
-    href: "",
-  },
-  {
-    title: "Community Name",
-    desc: "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
-    href: "",
-  },
-  {
-    title: "Community Name",
-    desc: "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
-    href: "",
-  },
-];
+const STATUS = {
+  GOOD: ["Yes", "Approved", "Yes, include in special request"],
+  BAD: ["No"],
+};
+
+const Badge = styled.div`
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 14px;
+  width: max-content;
+  background: ${(props) =>
+    STATUS.GOOD.includes(props.status)
+      ? "rgb(89, 230, 146)"
+      : STATUS.BAD.includes(props.status)
+      ? "rgb(255, 121, 121)"
+      : "rgb(53 53 53)"};
+  color: ${(props) =>
+    STATUS.GOOD.includes(props.status)
+      ? "rgb(9, 52, 46)"
+      : STATUS.BAD.includes(props.status)
+      ? "rgb(52, 9, 9)"
+      : "rgb(145 145 145)"};
+`;
 
 const Info = ({ title, desc, icon }) => (
   <div className="item d-flex flex-column gap-2 justify-content-between">
@@ -344,14 +350,15 @@ const Info = ({ title, desc, icon }) => (
   </div>
 );
 
-const Connect = ({ title, desc, href }) => (
-  <div className="item d-flex flex-column gap-2 justify-content-between">
-    <h4 className="bold color-text px-4 pt-4 text-center">{title}</h4>
-    <div className="px-4">
-      <p>{desc}</p>
-    </div>
-    <div className="p-4 pb-4">
-      <a href={href} className="color-text">
+const Connect = ({ item }) => (
+  <div className="item d-flex flex-column gap-2 justify-content-between align-items-center">
+    <h4 className="bold color-text px-4 pt-4 text-center">{item[1].v}</h4>
+    <Badge status={item[4].v}>{item[4].v || "No status yet"}</Badge>
+    <div className="pt-2 pb-4 text-center">
+      <div>
+        <b>Created at</b>: {item[3].f}
+      </div>
+      <a href={item[2].v} className="color-text">
         <span className="mr-4">Learn More</span>
         <i className="bi bi-chevron-right" />
       </a>
@@ -371,6 +378,8 @@ const Support = ({ title, items }) => (
     </div>
   </div>
 );
+
+if (!content || !assets) return <Widget src="flashui.near/widget/Loading" />;
 
 return (
   <Container>
@@ -403,7 +412,7 @@ return (
       <h4>{content.info.name}</h4>
       <h2>{content.info.title}</h2>
       <div className="d-flex flex-wrap gap-4 justify-content-center">
-        {content.info.sections.map(({ title, desc, icon }) => (
+        {content.info.sections?.map(({ title, desc, icon }) => (
           <Info title={title} desc={desc} icon={icon} />
         ))}
       </div>
@@ -426,9 +435,18 @@ return (
         </div>
       </div>
       <div className="d-flex flex-wrap gap-5 justify-content-center">
-        {communities.map(({ title, desc, href }) => (
-          <Connect title={title} desc={desc} href={href} />
-        ))}
+        <Widget
+          src="/*__@replace:widgetPath__*/.Components.Communities"
+          props={{ limit: 3, theme: "dark" }}
+        />
+      </div>
+      <div>
+        <h4 className="bold">
+          <a href={"//*__@replace:widgetPath__*/.App?page=communities"}>
+            <span className="mr-4">Browse More</span>
+            <i className="bi bi-chevron-right" />
+          </a>
+        </h4>
       </div>
     </ConnectSection>
 

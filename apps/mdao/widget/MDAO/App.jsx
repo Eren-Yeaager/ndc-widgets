@@ -25,8 +25,24 @@ function Page() {
     case "reports": {
       return (
         <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Reports`}
-          props={passProps}
+          src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
+          props={{ type: "report" }}
+        />
+      );
+    }
+    case "communities": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Communities`}
+          props={{ type: "report" }}
+        />
+      );
+    }
+    case "proposals": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
+          props={{ type: "proposal" }}
         />
       );
     }

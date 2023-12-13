@@ -125,7 +125,7 @@ const ProposalButton = () => (
     disabled={form.elements.some(
       (el) =>
         el.required &&
-        (errors[el.name] === true || errors[el.name] === undefined)
+        (errors[el.name] === true || errors[el.name] === undefined),
     )}
     data={{
       index: {

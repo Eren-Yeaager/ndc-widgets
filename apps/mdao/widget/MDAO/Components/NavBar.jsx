@@ -7,6 +7,20 @@ const links = [
     title: "ACTIVITY FEED",
     href: "//*__@replace:widgetPath__*/.App?page=reports",
     color: "#FDEFB1",
+    items: [
+      {
+        title: "List of Proposals",
+        href: "//*__@replace:widgetPath__*/.App?page=proposals",
+      },
+      {
+        title: "List of Reports",
+        href: "//*__@replace:widgetPath__*/.App?page=reports",
+      },
+      {
+        title: "Guidance for Proposals and Reports",
+        href: "//*__@replace:widgetPath__*/.App?page=guidance",
+      },
+    ],
   },
   {
     title: "COMMUNITIES",
