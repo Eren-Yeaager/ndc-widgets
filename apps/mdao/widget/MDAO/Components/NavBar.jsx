@@ -34,7 +34,8 @@ const links = [
     items: [
       {
         title: "MDAO Charter",
-        href: "//*__@replace:widgetPath__*/.App?page=charter",
+        target: "_blank",
+        href: "https://docs.google.com/document/d/11m2-dmDRABz74WZfkcgGyFz7Wn6k4y9oPVXPCCyhXp8/edit",
       },
       {
         title: "MDAO social media strategy",
@@ -54,7 +55,8 @@ const links = [
       },
       {
         title: "MDAO Bounty program",
-        href: "//*__@replace:widgetPath__*/.App?page=bouties",
+        target: "_blank",
+        href: "https://docs.google.com/document/d/1pOUin4zeTSYxkir2Wo8zYziOapo-2vIU2WxJNCsmfLs/edit",
       },
     ],
   },
@@ -82,14 +84,15 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
 
   a {
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
+    text-decoration: none;
+    letter-spacing: 0.1rem;
   }
 
   .dropdown {
@@ -106,7 +109,7 @@ const LinksContainer = styled.div`
     display: none;
     position: absolute;
     width: 250px;
-    top: 40px;
+    top: 45px;
     right: 0;
     background-color: #f1f1f1;
     border-radius: 10px;
@@ -114,19 +117,22 @@ const LinksContainer = styled.div`
     z-index: 1;
 
     .link {
-      padding: 12px 16px;
+      padding: 20px 25px;
       text-decoration: none;
       display: block;
 
       a {
+        font-size: 16px;
         color: black;
+        letter-spacing: normal;
+
         &:hover {
           text-decoration: none;
         }
       }
 
       &:hover {
-        background-color: #ddd;
+        background-color: rgba(227, 195, 255, 0.2);
       }
 
       &:first-child {
@@ -165,43 +171,24 @@ const MobileNav = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  width: 270px;
+  width: 100%;
   padding: 24px 36px 36px 16px;
   flex-direction: column;
   align-items: flex-end;
-  gap: 2.5rem;
   flex-shrink: 0;
 
-  border-radius: 0px 0px 0px 16px;
-  background: rgba(21, 23, 24, 0.7);
+  border-radius: 0px 0px 10px 10px;
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(5px);
 
   z-index: 50;
 
   a {
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
-  }
-`;
-
-const MobileLink = styled.a`
-  color: #f4f4f4 !important;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 100% */
-  margin-bottom: 1rem;
-
-  &.active {
-    color: #00ec97 !important;
-  }
-
-  &:hover {
     text-decoration: none;
-    color: #00ec97 !important;
   }
 `;
 
@@ -219,19 +206,20 @@ return (
     <a href={`//*__@replace:widgetPath__*/.App?page=home`}>
       <img src={assets.logoWhite} />
     </a>
-    <div className="d-flex gap-3 align-items-center">
+    <div className="d-flex gap-4 align-items-center">
       <LinksContainer>
         {links.map((link) => (
-          <Link className="d-flex gap-2 align-items-center" to={link.href}>
+          <a className="d-flex gap-2 align-items-center" href={link.href}>
             <Circle bg={link.color} />
             {link.items?.length > 0 ? (
-              <div className="d-flex align-items-center  dropdown">
+              <div className="d-flex align-items-center dropdown">
                 <div>{link.title}</div>
                 <div className="dropdown-content">
-                  {link.items.map(({ title, href }) => (
+                  {link.items.map(({ title, href, target }) => (
                     <div className="d-flex gap-2 link align-items-center">
-                      <i className="bi bi-chevron-right text-black" />
-                      <Link to={href}>{title}</Link>
+                      <a href={href} target={target}>
+                        {title}
+                      </a>
                     </div>
                   ))}
                 </div>
@@ -239,7 +227,7 @@ return (
             ) : (
               <div>{link.title}</div>
             )}
-          </Link>
+          </a>
         ))}
       </LinksContainer>
       <MobileMenu className="fs-1" onClick={() => setShowMenu(!showMenu)}>
@@ -260,28 +248,26 @@ return (
           {links.map((link) => (
             <>
               {link.items?.length > 0 ? (
-                <>
-                  <Link className="d-flex gap-2 align-items-center">
+                <div>
+                  <div className="d-flex text-white gap-2 align-items-center">
                     <Circle bg={link.color} />
-                    <div>{link.title}</div>
-                  </Link>
-                  <div className="d-flex gap-3 flex-column">
-                    {link.items.map(({ title, href }) => (
-                      <div className="d-flex gap-2 align-items-center">
-                        <i className="bi bi-chevron-right text-white" />
-                        <Link to={href}>{title}</Link>
+                    <a>{link.title}</a>
+                  </div>
+                  <div className="d-flex gap-3 flex-column py-3">
+                    {link.items.map(({ title, href, target }) => (
+                      <div className="d-flex gap-2 px-3  align-items-center">
+                        <a href={href} target={target}>
+                          {title}
+                        </a>
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               ) : (
-                <Link
-                  className="d-flex gap-2 align-items-center"
-                  to={link.href}
-                >
+                <a className="d-flex gap-2 align-items-center" href={link.href}>
                   <Circle bg={link.color} />
                   <div>{link.title}</div>
-                </Link>
+                </a>
               )}
             </>
           ))}

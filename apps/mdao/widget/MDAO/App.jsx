@@ -22,6 +22,22 @@ function Page() {
         />
       );
     }
+    case "councils": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Councils`}
+          props={passProps}
+        />
+      );
+    }
+    case "achievements": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Achievements`}
+          props={passProps}
+        />
+      );
+    }
     case "reports": {
       return (
         <Widget
