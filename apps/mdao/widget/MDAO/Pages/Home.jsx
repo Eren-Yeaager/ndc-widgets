@@ -22,17 +22,43 @@ const Container = styled.div`
 `;
 
 const InfoSection = styled.div`
-  padding: 5rem 3rem;
+  padding: 5rem 8rem;
+
+  .wide {
+    display: flex;
+    justify-content: space-between !important;
+    @media screen and (max-width: 1399px) {
+      display: none;
+    }
+  }
+
+  .mid {
+    display: none;
+    @media screen and (max-width: 1399px) {
+      display: flex;
+      justify-content: space-between !important;
+    }
+    @media screen and (max-width: 786px) {
+      display: none;
+    }
+  }
+  .small {
+    display: none;
+    @media screen and (max-width: 786px) {
+      display: flex;
+      justify-content: space-between !important;
+    }
+  }
 
   @media screen and (max-width: 786px) {
-    padding: 2rem;
+    padding: 3rem 2rem;
     text-align: center;
   }
 
   h2 {
     font-size: 3rem;
     font-weight: 600;
-    width: 70%;
+    width: 80%;
 
     @media screen and (max-width: 786px) {
       width: 100%;
@@ -40,8 +66,7 @@ const InfoSection = styled.div`
   }
 
   .participate_item {
-    max-width: 350px;
-
+    width: 300px;
     .circle {
       width: 30px !important;
       height: 30px !important;
@@ -78,6 +103,10 @@ const InfoSection = styled.div`
       margin: 0;
     }
 
+    a {
+      color: #151718 !important;
+    }
+
     @media screen and (max-width: 786px) {
       width: 100%;
     }
@@ -86,6 +115,7 @@ const InfoSection = styled.div`
       border-radius: 10px;
       border: 2px solid #e6cde6;
       background: rgba(252, 248, 246, 0);
+      box-shadow: unset;
       font-size: 18px;
       font-weight: 400;
       color: #151718;
@@ -109,10 +139,10 @@ const InfoSection = styled.div`
 const ConnectSection = styled.div`
   color: white;
   background: #151718;
-  padding: 5rem 3rem;
+  padding: 5rem 8rem;
 
   @media screen and (max-width: 786px) {
-    padding: 2rem;
+    padding: 3rem 2rem;
     text-align: center;
   }
 
@@ -125,7 +155,7 @@ const ConnectSection = styled.div`
   h2 {
     font-size: 3rem;
     font-weight: 600;
-    width: 70%;
+    width: 80%;
 
     @media screen and (max-width: 786px) {
       font-size: 2.7rem;
@@ -134,8 +164,6 @@ const ConnectSection = styled.div`
   }
 
   .title {
-    width: 75%;
-
     @media screen and (max-width: 786px) {
       width: 100%;
     }
@@ -197,15 +225,11 @@ const ConnectSection = styled.div`
         -webkit-text-fill-color: transparent;
       }
     }
-
-    @media screen and (max-width: 786px) {
-      width: 18px;
-    }
   }
 `;
 
 const SupportSection = styled.div`
-  padding: 5rem 3rem 7rem 3rem;
+  padding: 5rem 8rem;
   background: linear-gradient(
     258deg,
     rgba(162, 195, 254, 0.75) 0%,
@@ -214,7 +238,7 @@ const SupportSection = styled.div`
   );
 
   @media screen and (max-width: 786px) {
-    padding: 2rem 1rem 4rem 1rem;
+    padding: 3rem 2rem;
     text-align: center;
   }
 
@@ -224,7 +248,7 @@ const SupportSection = styled.div`
   }
 
   .items {
-    gap: 1.5rem;
+    gap: 1rem;
 
     @media screen and (max-width: 786px) {
       gap: 3rem;
@@ -299,7 +323,7 @@ const Badge = styled.div`
       : "rgb(145 145 145)"};
 `;
 
-const Info = ({ title, desc, icon }) => (
+const Info = ({ title, desc, icon, href }) => (
   <div className="item d-flex flex-column gap-2 justify-content-between">
     <div className="header gap-3 p-4 text-center">
       {icon}
@@ -311,7 +335,7 @@ const Info = ({ title, desc, icon }) => (
     <div className="px-5 pb-4">
       <a href="" className="text-center btn-primary d-flex justify-content-end">
         <div className="d-flex justify-content-between">
-          <span>Read More</span>
+          <a href={href}>Read More</a>
           <i className="bi bi-chevron-right" />
         </div>
       </a>
@@ -325,7 +349,7 @@ const Support = ({ title, items }) => (
     <div className="d-flex w-100 flex-column p-4 align-items-center gap-4">
       {items.map((i) => (
         <div className="w-100">
-          <a className="btn w-100" href={i.href}>
+          <a className={`btn w-100 ${i.href ? "" : "disabled"}`} href={i.href}>
             <div className="d-flex justify-content-between align-items-center">
               <span>{i.title}</span>
               <i className="bi bi-chevron-right" />
@@ -338,7 +362,37 @@ const Support = ({ title, items }) => (
 );
 
 if (!content || !assets) return <Widget src="flashui.near/widget/Loading" />;
-let infoCounter = 0;
+
+function partition(array, n) {
+  let i = 0;
+  let j = n;
+  const result = [];
+
+  [...Array(n)].map(() => {
+    const res = array.slice(i, j);
+    result.push(res);
+
+    i += n;
+    j += n;
+  });
+
+  return result;
+}
+
+const Participate = ({ section, i, n }) => (
+  <div className="participate_item d-flex flex-column gap-3">
+    {section.map((title, j) => (
+      <h5 className="d-flex gap-3 align-items-center">
+        <div>
+          <div className="d-flex circle justify-content-center align-items-center">
+            {i * n + j + 1}
+          </div>
+        </div>
+        <span className="text-start">{title}</span>
+      </h5>
+    ))}
+  </div>
+);
 
 return (
   <Container>
@@ -348,8 +402,8 @@ return (
       <h4>{content.info.name}</h4>
       <h2>{content.info.title}</h2>
       <div className="d-flex flex-wrap gap-5 justify-content-center">
-        {content.info.sections?.map(({ title, desc, icon }) => (
-          <Info title={title} desc={desc} icon={icon} />
+        {content.info.sections?.map(({ title, desc, icon, href }) => (
+          <Info title={title} desc={desc} icon={icon} href={href} />
         ))}
       </div>
     </InfoSection>
@@ -385,22 +439,21 @@ return (
       <h4>{content.participate.name}</h4>
       <div>
         <h2>{content.participate.title}</h2>
-        <p>{content.participate.desc}</p>
+        <p className="my-4">{content.participate.desc}</p>
       </div>
-      <div className="d-flex flex-wrap justify-content-between">
-        {content.participate.items?.map((section) => (
-          <div className="participate_item d-flex flex-column gap-3">
-            {section.map((title) => (
-              <h5 className="d-flex gap-3 align-items-center">
-                <div>
-                  <div className="d-flex circle justify-content-center align-items-center">
-                    {(infoCounter += 1)}
-                  </div>
-                </div>
-                <span className="text-start">{title}</span>
-              </h5>
-            ))}
-          </div>
+      <div className="wide flex-wrap justify-content-center">
+        {partition(content.participate.items, 3)?.map((section, i) => (
+          <Participate section={section} i={i} n={3} />
+        ))}
+      </div>
+      <div className="mid flex-wrap justify-content-center">
+        {partition(content.participate.items, 5)?.map((section, i) => (
+          <Participate section={section} i={i} n={6} />
+        ))}
+      </div>
+      <div className="small flex-wrap justify-content-center">
+        {partition(content.participate.items, 9)?.map((section, i) => (
+          <Participate section={section} i={i} n={9} />
         ))}
       </div>
     </InfoSection>

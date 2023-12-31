@@ -42,15 +42,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
-          props={{ type: "report" }}
-        />
-      );
-    }
-    case "communities": {
-      return (
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Communities`}
-          props={{ type: "report" }}
+          props={{ type: "report", ...passProps }}
         />
       );
     }
@@ -58,9 +50,12 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
-          props={{ type: "proposal" }}
+          props={{ type: "proposal", ...passProps }}
         />
       );
+    }
+    case "communities": {
+      return <Widget src={`/*__@replace:widgetPath__*/.Pages.Communities`} />;
     }
     case "createProposal": {
       return (

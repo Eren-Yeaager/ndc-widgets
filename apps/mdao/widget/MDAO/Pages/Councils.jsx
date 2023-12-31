@@ -106,12 +106,19 @@ return (
         <p>
           Old school marketeer with over 30 years experience across all sectors
           7 years of Blockchain Experience Brewery and Farm Owner IRL Founder of
-          Decentralized Brewing Co built on NEAR Johanga tba
+          Decentralized Brewing Co built on NEAR
         </p>
       </div>
       <div>
-        <h3>Johanga</h3>
-        <p>TBA</p>
+        <h3>Johanga (@johanga) </h3>
+        <p>
+          Over 15 years of experience in producing cultural projects, project
+          management, community building, team leading, events organization, PR
+          and media marketing NEAR Community member since October 2021, being a
+          Founder Lead and Council of multiply DAOs in Ecosystem Product manager
+          in various initiatives, establishing and maintaining connections with
+          hundreds of web3 dApps and projects
+        </p>
       </div>
     </InfoSection>
   </Container>

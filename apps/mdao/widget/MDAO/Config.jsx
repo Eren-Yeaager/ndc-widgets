@@ -14,7 +14,8 @@ return {
   },
   content: {
     home: {
-      dao: "marketing.sputnik-dao.near",
+      dao: "MDAO",
+      daoAccountId: "marketing.sputnik-dao.near",
       ndc_link:
         "https://near.org/astraplusplus.ndctools.near/widget/home?page=dao&daoId=marketing.sputnik-dao.near",
       heroTitle: "Marketing DAO",
@@ -29,6 +30,7 @@ return {
           {
             title: "Achievements",
             desc: "NEAR Protocol is your fast, low-cost and reliable gateway to the Open Web NEAR to ensure security, liveness, and fault tolerance of the network",
+            href: "//*__@replace:widgetPath__*/.App?page=achievements",
             icon: (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +49,7 @@ return {
           {
             title: "MDAO Charter",
             desc: "NEAR Protocol is your fast, low-cost and reliable gateway to the Open Web NEAR to ensure security, liveness, and fault tolerance of the network",
+            href: "https://docs.google.com/document/d/11m2-dmDRABz74WZfkcgGyFz7Wn6k4y9oPVXPCCyhXp8/edit",
             icon: (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +68,7 @@ return {
           {
             title: "Info about Councils",
             desc: "NEAR Protocol is your fast, low-cost and reliable gateway to the Open Web NEAR to ensure security, liveness, and fault tolerance of the network",
+            href: "//*__@replace:widgetPath__*/.App?page=councils",
             icon: (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -92,40 +96,43 @@ return {
         title: "Activities which the Marketing DAO accept",
         desc: "Marketing DAO Vertical was created for the purpose of unifying and improving the allocation of NEAR community funds for marketing-focused projects benefiting community projects, DAOs, teams and organizations in the NEAR ecosystem.",
         items: [
-          [
-            "Social Media (Twitter, Instagram, Telegram, etc.)",
-            "Blogs, articles, guides",
-            "PR and Paid Media",
-          ],
-          [
-            "Influencers (YouTube bloggers, etc.)",
-            "Events, workshops, AMAs",
-            "Merch, swag for events",
-          ],
-          [
-            "Communication",
-            "Other paid marketing efforts such as giveaways",
-            "Growth Hacking",
-          ],
+          "Social Media (Twitter, Instagram, Telegram, etc.)",
+          "Blogs, articles, guides",
+          "PR and Paid Media",
+          "Influencers (YouTube bloggers, etc.)",
+          "Events, workshops, AMAs",
+          "Merch, swag for events",
+          "Communication",
+          "Other paid marketing efforts such as giveaways",
+          "Growth Hacking",
         ],
       },
       support: {
         name: "GET SUPPORT",
         items: [
           {
-            title: "Marketing Resources",
+            title: "Resources",
             values: [
-              { title: "Influencers", href: "" },
-              { title: "Ecosystem", href: "" },
-              { title: "Marketing Support", href: "" },
+              { title: "Influencers" },
+              { title: "Ecosystem" },
+              {
+                title: "Bounties",
+                href: "https://www.heroes.build/",
+              },
             ],
           },
           {
             title: "Office Hours",
             values: [
-              { title: "Workshop", href: "" },
-              { title: "Editorial Calendar", href: "" },
-              { title: "Book a Meeting", href: "" },
+              { title: "Workshop" },
+              {
+                title: "Editorial Calendar",
+                href: "https://docs.google.com/document/d/1iSDd5rc77_sabhmoN1gJeL36_bNEMe1gUZtCta5m08M/edit?usp=sharing",
+              },
+              {
+                title: "Book a Meeting",
+                href: "https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FNew_York&mode=AGENDA&src=MDNiOTMyMjJmNGQ4YTIxNmQ3MmZmNmE1MDg5ZjY4NGQ4MWI3Mjg0OGUzMGQ1ZjllOGE4MzdiZTBlYjNjNjdjZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33",
+              },
             ],
           },
           {
@@ -135,7 +142,7 @@ return {
                 title: "Apply for a grant",
                 href: "//*__@replace:widgetPath__*/.App?page=createProposal",
               },
-              { title: "Procedure / Regulations", href: "" },
+              { title: "Procedure / Regulations" },
               {
                 title: "List of Reports",
                 href: "//*__@replace:widgetPath__*/.App?page=reports",
@@ -151,7 +158,7 @@ return {
     },
   },
   socials: {
-    "twitter-x": "",
+    "twitter-x": "https://twitter.com/MarketingDAOers",
     telegram: "https://t.me/ndc_marketing",
     envelope: "mailto:marketingdao@proton.me",
   },

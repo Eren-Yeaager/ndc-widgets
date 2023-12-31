@@ -7,7 +7,7 @@ const page = props.page;
 const Footer = styled.div`
   width: 100%;
   background: #151718;
-  padding: 4rem;
+  padding: 4rem 0 9rem 0;
 `;
 
 const Description = styled.p`

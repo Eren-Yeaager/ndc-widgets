@@ -110,6 +110,7 @@ return (
           </ul>
         </p>
       </div>
+      <img src="https://ipfs.near.social/ipfs/bafkreighnzhgb5vnqr2shu4m3j7v7nh3aq63urewyibitrrwdbsqvkxdba" />
     </InfoSection>
   </Container>
 );

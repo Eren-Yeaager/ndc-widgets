@@ -51,12 +51,12 @@ const links = [
       },
       {
         title: "Meetings and Workshops Calendar",
-        href: "//*__@replace:widgetPath__*/.App?page=meetings",
+        href: "https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FNew_York&mode=AGENDA&src=MDNiOTMyMjJmNGQ4YTIxNmQ3MmZmNmE1MDg5ZjY4NGQ4MWI3Mjg0OGUzMGQ1ZjllOGE4MzdiZTBlYjNjNjdjZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33",
       },
       {
         title: "MDAO Bounty program",
         target: "_blank",
-        href: "https://docs.google.com/document/d/1pOUin4zeTSYxkir2Wo8zYziOapo-2vIU2WxJNCsmfLs/edit",
+        href: "https://www.heroes.build/",
       },
     ],
   },
@@ -88,11 +88,10 @@ const LinksContainer = styled.div`
 
   a {
     color: #fff;
-    font-size: 13px;
+    font-size: 14px;
     font-style: normal;
     line-height: normal;
     text-decoration: none;
-    letter-spacing: 0.1rem;
   }
 
   .dropdown {

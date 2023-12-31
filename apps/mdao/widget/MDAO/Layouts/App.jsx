@@ -1,4 +1,28 @@
+let fontCss = fetch(
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+);
+
+if (!fontCss) {
+  function AppLayout({ page, children }) {
+    return <></>;
+  }
+  return { AppLayout };
+}
+fontCss = fontCss.body;
+
 const Theme = styled.div`
+  position: fixed;
+  inset: 73px 0px 0px;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  ${fontCss};
+
   font-style: normal;
   background: linear-gradient(
     258deg,
@@ -36,7 +60,10 @@ const Theme = styled.div`
   .profile {
     a {
       color: inherit;
-      font-weight: 400;
+      font-size: 14px;
+      margin-left: 5px;
+      font-weight: 500;
+      line-height: 1.2rem;
     }
   }
 
@@ -49,25 +76,72 @@ const Theme = styled.div`
     color: #151718;
   }
 
+  h1 {
+    font-weight: 600;
+  }
+
   img {
     width: 100%;
   }
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
   min-height: 100vh;
+
+  .btn {
+    &:disabled {
+      box-shadow: none;
+      border: 1px solid darkgray;
+      background: #eee;
+      color: #353333 !important;
+    }
+  }
+
+  .btn-primary {
+    border-radius: 10px;
+    background: #151718;
+    color: white !important;
+    text-decoration: none;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+    padding: 10px 40px 10px 25px;
+
+    &:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  .btn-outline-primary {
+    border-radius: 10px;
+    border: 1px solid #151718;
+    color: #000 !important;
+    text-decoration: none;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+    padding: 10px 40px 10px 25px;
+
+    &:hover {
+      text-decoration: none;
+      background: #151718;
+      color: white !important;
+    }
+  }
+
+  .btn-sm {
+    padding: 5px 10px 5px 20px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  }
 `;
 
-const ContentContainer = styled.div`
-  flex: 1;
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 `;
 
 function AppLayout({ page, children }) {
@@ -75,7 +149,7 @@ function AppLayout({ page, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        <ContentContainer>{children}</ContentContainer>
+        <Wrapper>{children}</Wrapper>
         <Widget src={`/*__@replace:widgetPath__*/.Components.Footer`} />
       </Container>
     </Theme>

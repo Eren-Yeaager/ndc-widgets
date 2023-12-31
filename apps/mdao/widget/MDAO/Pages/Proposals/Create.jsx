@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const FormWrapper = styled.div`
-  width: 50%;
+  width: 100%;
   padding: 3rem;
 
   @media screen and (max-width: 786px) {
@@ -37,10 +37,33 @@ const FormWrapper = styled.div`
   .form-control.error {
     border: 1px solid red;
   }
+
+  .title {
+    b {
+      font-weight: 600;
+    }
+    font-weight: 300;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const TypeSection = styled.div`
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+  h4 {
+    font-weight: 400;
+    margin: 0;
+  }
 `;
 
 const form = {
-  elements: [
+  report: [
     {
       name: "project_name",
       label: "Project Name",
@@ -102,18 +125,49 @@ const form = {
       type: "file",
     },
   ],
+  proposal: [
+    {
+      name: "project_name",
+      label: "Project Name",
+      value: "",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "description",
+      label: "Description",
+      value: "# Title\n## Description",
+      type: "textarea",
+      required: true,
+    },
+    {
+      name: "requested_amount",
+      label: "Requested Amount (USD)",
+      value: "",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "tag",
+      label: "Tags",
+      value: "",
+      type: "tag",
+    },
+  ],
 };
 
 const [formEls, setFormEls] = useState({
   accountId: context.accountId,
   type: "proposal",
 });
+
 const [errors, setErrors] = useState({});
 
 const handleChange = (el, value) => {
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;
+  newFormEl.id = new Date().getTime();
   newFormElErrors[el.name] = value.length < 1;
 
   setErrors(newFormElErrors);
@@ -122,21 +176,24 @@ const handleChange = (el, value) => {
 
 const ProposalButton = () => (
   <CommitButton
-    disabled={form.elements.some(
+    style={{ width: "max-content" }}
+    className="btn btn-primary"
+    disabled={form[formEls.type].some(
       (el) =>
         el.required &&
-        (errors[el.name] === true || errors[el.name] === undefined),
+        (errors[el.name] === true || errors[el.name] === undefined)
     )}
     data={{
       index: {
         graph: JSON.stringify({
-          key: "ndc.mdao",
+          key: "v3.ndc.mdao",
           value: formEls,
         }),
       },
     }}
   >
     Create proposal
+    <i className="bi bi-plus-lg" />
   </CommitButton>
 );
 
@@ -144,19 +201,19 @@ return (
   <Container>
     <div className="d-flex justify-content-center">
       <FormWrapper className="my-5 d-flex flex-column gap-3">
-        <div>
-          <h3>Marketing DAO Report Form</h3>
-          <p>
+        <div className="title d-flex flex-column align-items-center text-center mb-4">
+          <h1>Marketing DAO Reports & Proposals Form</h1>
+          <div className="mt-3 text-center">
             <p>
               <b>Please use this form to report key performance metrics.</b>
             </p>
-            <p>
-              Questions? Reach out via{" "}
-              <a href="https://t.me/ndc_marketing">Telegram</a> or email:{" "}
+            <div className="text-center">
+              <i className="fs-6 bi bi-info-circle-fill" /> Questions? Reach out
+              via <a href="https://t.me/ndc_marketing">Telegram</a> or email:
               <a href="mailto:marketingdao@proton.me">marketingdao@proton.me</a>
               🙂
-            </p>
-          </p>
+            </div>
+          </div>
         </div>
 
         <div
@@ -167,12 +224,16 @@ return (
             setFormEls(newFormEl);
           }}
         >
-          <label>Form type</label>
-          <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
-          <small>{formEls.type}</small>
+          <p className="mb-2">Form type</p>
+          <div className="d-flex gap-3 align-items-center">
+            <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
+            <TypeSection>
+              <h4>{formEls.type}</h4>
+            </TypeSection>
+          </div>
         </div>
 
-        {form.elements.map((el) => (
+        {form[formEls.type].map((el) => (
           <div className="form-element">
             <label for={el.name}>
               {el.label}
@@ -186,11 +247,19 @@ return (
                 }}
               />
             ) : el.type === "textarea" ? (
-              <textarea
-                class={`form-control ${error[el.name] && "error"}`}
-                rows="5"
-                onChange={(e) => handleChange(el, e.target.value)}
-              ></textarea>
+              <Widget
+                src={`/*__@replace:widgetPath__*/.Components.MarkdownEditor`}
+                props={{ element: el, handleChange }}
+              />
+            ) : el.type === "tag" ? (
+              <Widget
+                src={"sayalot.near/widget/TagsEditor"}
+                props={{
+                  label: "Tags",
+                  placeholder: "Enter tags",
+                  setTagsObject: (tags) => handleChange(el, Object.keys(tags)),
+                }}
+              />
             ) : (
               <input
                 class={`form-control ${error[el.name] && "error"}`}
@@ -203,6 +272,13 @@ return (
           </div>
         ))}
         <ProposalButton />
+        <a
+          target="_blank"
+          href="https://docs.google.com/document/d/110CqEddPa-99JwM8iCl_kKJxdXLH6IlVePwubO5A55o/edit#heading=h.qya6e5j9ka46"
+        >
+          Near Digital Collective application form GUIDE
+          <i className="bi bi-box-arrow-up-right" />
+        </a>
       </FormWrapper>
     </div>
   </Container>

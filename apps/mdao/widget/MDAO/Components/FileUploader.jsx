@@ -12,7 +12,7 @@ State.init({
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
 return (
-  <div>
+  <div style={{ width: "max-content" }}>
     {state.cid && (
       <a href={ipfsUrl(state.cid)} download>
         {state.filename}
