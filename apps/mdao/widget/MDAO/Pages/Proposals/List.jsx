@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const items = Social.index("graph", "v3.ndc.mdao", { order: "desc" });
-console.log(props.id);
+
 return (
   <Container>
     {props.id ? (

@@ -6,6 +6,14 @@ if (!page) page = "home";
 
 function Page() {
   switch (page) {
+    case "comments": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Comment`}
+          props={passProps}
+        />
+      );
+    }
     case "home": {
       return (
         <Widget
@@ -34,6 +42,14 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Achievements`}
+          props={passProps}
+        />
+      );
+    }
+    case "guidance": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Guidance`}
           props={passProps}
         />
       );

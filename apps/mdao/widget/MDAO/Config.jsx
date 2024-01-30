@@ -131,7 +131,7 @@ return {
               },
               {
                 title: "Book a Meeting",
-                href: "https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FNew_York&mode=AGENDA&src=MDNiOTMyMjJmNGQ4YTIxNmQ3MmZmNmE1MDg5ZjY4NGQ4MWI3Mjg0OGUzMGQ1ZjllOGE4MzdiZTBlYjNjNjdjZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33",
+                href: "https://calendly.com/marketingdao/15min",
               },
             ],
           },

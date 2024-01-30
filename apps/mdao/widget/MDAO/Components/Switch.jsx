@@ -3,7 +3,8 @@ const { text } = props;
 const SwitchRoot = styled("Switch.Root")`
   all: unset;
   display: block;
-  width: 85px;
+  min-width: 70px;
+  width: 70px;
   height: 30px;
   background: linear-gradient(
     96deg,
@@ -35,10 +36,7 @@ const SwitchThumb = styled("Switch.Thumb")`
   color: white;
 
   &[data-state="checked"] {
-    transform: translateX(50px);
-    @media screen and (max-width: 786px) {
-      transform: translateX(40px);
-    }
+    transform: translateX(43px);
   }
 `;
 

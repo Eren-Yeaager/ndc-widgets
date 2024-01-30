@@ -64,8 +64,10 @@ const Card = styled.div`
   .tag {
     border-radius: 50px;
     background: #a4c2fd;
-    width: 140px;
-    padding: 2px 0;
+    min-width: 140px;
+    width: max-content;
+    padding: 4px 15px;
+    font-size: 14px;
     text-align: center;
     color: white;
   }
@@ -84,13 +86,16 @@ const [showMore, setShowMore] = useState(showMoreDefault);
 const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 
-const [replies, setReplies] = useState([]);
 const [liked, setLiked] = useState(false);
-
 const likes = Social.index("graph", "v3.ndc.mdao.like", { order: "desc" });
 likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
 const myLike = likes ? likes.some((like) => like.value[accountId]) : false;
 setLiked(myLike);
+
+const [replies, setReplies] = useState([]);
+const repl = Social.index("graph", "v3.ndc.mdao.reply", { order: "desc" });
+replies = repl ? repl.filter((repl) => repl.value.parentId === item.id) : [];
+setReplies(replies);
 
 const handleLike = () => {
   Social.set({
@@ -125,13 +130,7 @@ const CardItem = ({ item, index }) => (
         </div>
       </div>
       <div className="d-flex flex-column gap-1">
-        <h3>
-          <Link
-            to={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
-          >
-            {item.project_name}
-          </Link>
-        </h3>
+        <h3>{item.project_name}</h3>
         <div className="d-flex flex-column gap-1">
           {item.type === "proposal" && (
             <div className="info">
@@ -256,7 +255,7 @@ const CardItem = ({ item, index }) => (
           ))}
         </div>
       )}
-      <div className="actions d-flex">
+      <div className="actions d-flex align-items-center">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
           {likes.length}
           <i className={`bi bi-heart${liked ? "-fill" : ""}`} /> Like
@@ -267,22 +266,17 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2"
           onClick={() => setShowReply(!showReply)}
         >
+          {replies.length}
           <i className="bi bi-chat" />
           Reply
         </div>
-        <div
-          role="button"
-          className="d-flex gap-2"
-          onClick={() => {
-            clipboard
-              .writeText(
-                `https://near.org//*__@replace:widgetPath__*/.App?page=${item.type}s&id=${item.id}`,
-              )
-              .then(() => setCopiedShareUrl(true));
-          }}
-        >
-          <i className="bi bi-share" />
-          {copiedShareUrl ? "Copied Url" : "Share"}
+        <div>
+          <Link
+            to={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
+          >
+            <i class="bi bi-link-45deg fs-5" />
+            Link
+          </Link>
         </div>
       </div>
 

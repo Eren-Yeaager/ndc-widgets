@@ -48,8 +48,9 @@ const Text = styled.p`
 
 const Actions = styled.div`
   display: flex;
+  color: rgb(150 150 150);
   align-items: center;
-  gap: 12px;
+  gap: 15px;
   margin: -3px 0 10px 0;
 `;
 
@@ -60,7 +61,6 @@ const Comments = styled.div`
 `;
 
 const [showMore, setShowMore] = useState(null);
-const [replies, setReplies] = useState([]);
 const [liked, setLiked] = useState(false);
 const [showReply, setShowReply] = useState({ [item.id]: showCreate });
 
@@ -69,6 +69,12 @@ let likes = Social.index("graph", "v3.ndc.mdao.like", { order: "desc" });
 likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
 const myLike = likes ? likes.some((like) => like.value[accountId]) : false;
 setLiked(myLike);
+
+const [replies, setReplies] = useState([]);
+replies = comments
+  ? comments.filter((repl) => repl.value.parentId === item.id)
+  : [];
+setReplies(replies);
 
 const handleLike = () => {
   Social.set({
@@ -123,7 +129,7 @@ return (
         <Actions>
           <div
             role="button"
-            className="d-flex gap-1 align-items-center"
+            className="d-flex gap-2 align-items-center"
             onClick={handleLike}
           >
             <small>{likes.length}</small>
@@ -133,7 +139,15 @@ return (
             role="button"
             onClick={() => setShowReply({ [item.id]: !showReply[item.id] })}
           >
+            <small>{replies.length}</small>
             <i className="bi bi-chat" />
+          </div>
+          <div>
+            <Link
+              to={`//*__@replace:widgetPath__*/.App?page=comments&id=${item.id}`}
+            >
+              <i class="bi bi-link-45deg fs-5" />
+            </Link>
           </div>
         </Actions>
       )}
