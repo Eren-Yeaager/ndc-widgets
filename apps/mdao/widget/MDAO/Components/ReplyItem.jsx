@@ -1,5 +1,5 @@
 // Copy of old version of src/Posts/Post.jsx
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Env`);
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { item, showCreate } = props;
 const accountId = context.accountId;
 

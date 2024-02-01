@@ -1,6 +1,5 @@
 const { item, index, showMoreDefault, showRepliesDefault } = props;
-let { assets, content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Env`);
+let { assets, content, socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 assets = assets.home;
 content = content.home;
 const accountId = context.accountId;

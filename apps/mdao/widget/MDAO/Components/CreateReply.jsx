@@ -1,4 +1,4 @@
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Env`);
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { id } = props;
 const accountId = context.accountId;
 
