@@ -8,7 +8,9 @@ const Container = styled.div`
   }
 `;
 
-const items = Social.index("graph", "v3.ndc.mdao.reply", { order: "desc" });
+const items = Social.index("graph", "testing.ndc.mdao.reply", {
+  order: "desc",
+});
 
 return (
   <Container>

@@ -87,13 +87,13 @@ const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 
 const [liked, setLiked] = useState(false);
-const likes = Social.index("graph", "v3.ndc.mdao.like", { order: "desc" });
+const likes = Social.index("graph", "testing.ndc.mdao.like", { order: "desc" });
 likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
 const myLike = likes ? likes.some((like) => like.value[accountId]) : false;
 setLiked(myLike);
 
 const [replies, setReplies] = useState([]);
-const repl = Social.index("graph", "v3.ndc.mdao.reply", { order: "desc" });
+const repl = Social.index("graph", "testing.ndc.mdao.reply", { order: "desc" });
 replies = repl ? repl.filter((repl) => repl.value.parentId === item.id) : [];
 setReplies(replies);
 
@@ -101,7 +101,7 @@ const handleLike = () => {
   Social.set({
     index: {
       graph: JSON.stringify({
-        key: "v3.ndc.mdao.like",
+        key: "testing.ndc.mdao.like",
         value: {
           parentId: item.id,
           [accountId]: !myLike,

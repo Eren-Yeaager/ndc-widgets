@@ -7,14 +7,17 @@ const STATUS = {
   BAD: ["No"],
 };
 const Container = styled.div`
-  position: relative;
   width: 100%;
   height: max-content;
-  overflow: hidden;
+  padding: 3rem;
+
+  @media screen and (max-width: 786px) {
+    padding: 1rem;
+  }
 `;
 
 const ConnectSection = styled.div`
-  padding: 5rem 3rem;
+  padding: 3rem 0;
 
   @media screen and (max-width: 786px) {
     padding: 2rem;
@@ -24,6 +27,7 @@ const ConnectSection = styled.div`
 
 return (
   <Container>
+    <h1>Communities</h1>
     <ConnectSection className="d-flex flex-column">
       <Widget src="/*__@replace:widgetPath__*/.Components.Communities" />
     </ConnectSection>

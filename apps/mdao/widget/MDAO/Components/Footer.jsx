@@ -1,13 +1,25 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const page = props.page;
+const showFooterPages = [
+  null,
+  undefined,
+  "home",
+  "councils",
+  "guidance",
+  "achievements",
+  "communities",
+];
 
 const Footer = styled.div`
+  display: ${showFooterPages.includes(page) ? "flex" : "none"};
   width: 100%;
+  position; absolute;
+  bottom: 0;
   background: #151718;
-  padding: 4rem 0 9rem 0;
+  padding: 4rem 0 7rem 0;
 `;
 
 const Description = styled.p`
@@ -21,11 +33,6 @@ const Description = styled.p`
   @media screen and (max-width: 786px) {
     width: 100%;
   }
-`;
-
-const MidContainer = styled.div`
-  ${(page === "community" || page === "communities" || page === "feed") &&
-  "display: none;"}
 `;
 
 const ImageContainer = styled.img`
@@ -51,18 +58,16 @@ const Socials = () => (
 
 const MidContent = () => {
   return (
-    <MidContainer className="d-flex flex-column align-items-center gap-4">
+    <div className="d-flex flex-column align-items-center gap-4">
       <FooterLogo src={assets.logoColor} />
       <Description>{content.home.footerDesc}</Description>
       <Socials />
-    </MidContainer>
+    </div>
   );
 };
 
 const SmallContainer = styled.div`
-  display: none;
-  ${(page === "communities" || page === "community" || page === "feed") &&
-  "display: flex !important;"}
+  display: flex;
   justify-content: space-between;
   align-items: center;
 
@@ -74,20 +79,11 @@ const SmallContainer = styled.div`
   }
 `;
 
-const SmallContent = () => {
-  return (
-    <SmallContainer>
-      <Socials />
-    </SmallContainer>
-  );
-};
-
 return (
   <>
     <ImageContainer src={assets.home.support_bg} />
-    <Footer className="d-flex justify-content-center">
+    <Footer className="justify-content-center">
       <MidContent />
-      <SmallContent />
     </Footer>
   </>
 );
