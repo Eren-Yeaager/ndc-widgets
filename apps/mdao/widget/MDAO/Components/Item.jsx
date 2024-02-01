@@ -219,7 +219,7 @@ const CardItem = ({ item, index }) => (
                   </b>
                 </small>
                 <Widget
-                  src="mob.near/widget/SocialMarkdown"
+                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                   props={{ text: item["performance_statement:answer_1"] }}
                 />
               </div>
@@ -232,7 +232,7 @@ const CardItem = ({ item, index }) => (
                   </b>
                 </small>
                 <Widget
-                  src="mob.near/widget/SocialMarkdown"
+                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                   props={{ text: item["performance_statement:answer_2"] }}
                 />
               </div>
@@ -240,7 +240,7 @@ const CardItem = ({ item, index }) => (
           ) : (
             <p>
               <Widget
-                src="mob.near/widget/SocialMarkdown"
+                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                 props={{ text: item.description }}
               />
             </p>

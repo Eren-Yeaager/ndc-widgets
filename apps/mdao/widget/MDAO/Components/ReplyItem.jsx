@@ -121,9 +121,9 @@ return (
       {item.text && (
         <Content>
           <Widget
-            src="near/widget/SocialMarkdown"
+            src={"/*__@replace:widgetPath__*/.Components.MarkdownViewer"}
             props={{ text: item.text }}
-          />
+        />
         </Content>
       )}
       {item.text && item.id && (
