@@ -1,4 +1,6 @@
-let { assets, content } = VM.require(`//*__@replace:widgetPath__*/.Config`);
+let { assets, content, socialKey } = VM.require(
+  `//*__@replace:widgetPath__*/.Config`
+);
 
 assets = assets.home;
 content = content.home;

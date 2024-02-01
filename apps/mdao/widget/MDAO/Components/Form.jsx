@@ -1,3 +1,4 @@
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { form, formEls, setFormEls, handleChange } = props;
 
 const TypeSection = styled.div`
@@ -60,7 +61,7 @@ const ProposalButton = () => (
     data={{
       index: {
         graph: JSON.stringify({
-          key: "testing.ndc.mdao",
+          key: socialKey,
           value: formEls,
         }),
       },
