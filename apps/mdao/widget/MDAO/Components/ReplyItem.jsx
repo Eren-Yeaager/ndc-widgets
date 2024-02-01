@@ -1,4 +1,5 @@
 // Copy of old version of src/Posts/Post.jsx
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Env`);
 const { item, showCreate } = props;
 const accountId = context.accountId;
 
@@ -64,8 +65,8 @@ const [showMore, setShowMore] = useState(null);
 const [liked, setLiked] = useState(false);
 const [showReply, setShowReply] = useState({ [item.id]: showCreate });
 
-const comments = Social.index("graph", "v3.ndc.mdao.reply", { order: "desc" });
-let likes = Social.index("graph", "v3.ndc.mdao.like", { order: "desc" });
+const comments = Social.index("graph", `${socialKey}.reply`, { order: "desc" });
+let likes = Social.index("graph", `${socialKey}.like`, { order: "desc" });
 likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
 const myLike = likes ? likes.some((like) => like.value[accountId]) : false;
 setLiked(myLike);
@@ -80,7 +81,7 @@ const handleLike = () => {
   Social.set({
     index: {
       graph: JSON.stringify({
-        key: "v3.ndc.mdao.like",
+        key: `${socialKey}.like`,
         value: {
           parentId: item.id,
           [accountId]: !myLike,

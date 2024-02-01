@@ -1,3 +1,4 @@
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Env`);
 let { assets, content } = VM.require(`//*__@replace:widgetPath__*/.Config`);
 
 assets = assets.home;
@@ -193,7 +194,7 @@ const ProposalButton = () => (
     data={{
       index: {
         graph: JSON.stringify({
-          key: "v3.ndc.mdao",
+          key: socialKey,
           value: formEls,
         }),
       },
