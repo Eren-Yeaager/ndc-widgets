@@ -115,22 +115,16 @@ const LinksContainer = styled.div`
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 
-    .link {
+    a {
       padding: 20px 25px;
       text-decoration: none;
       display: block;
-
-      a {
-        font-size: 16px;
-        color: black;
-        letter-spacing: normal;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
+      font-size: 16px;
+      color: black;
+      letter-spacing: normal;
 
       &:hover {
+        text-decoration: none;
         background-color: rgba(227, 195, 255, 0.2);
       }
 
@@ -215,11 +209,11 @@ return (
                 <div>{link.title}</div>
                 <div className="dropdown-content">
                   {link.items.map(({ title, href, target }) => (
-                    <div className="d-flex gap-2 link align-items-center">
-                      <a href={href} target={target}>
+                    <a href={href} target={target}>
+                      <div className="d-flex gap-2 link align-items-center">
                         {title}
-                      </a>
-                    </div>
+                      </div>
+                    </a>
                   ))}
                 </div>
               </div>

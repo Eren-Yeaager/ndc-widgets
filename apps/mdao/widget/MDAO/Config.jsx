@@ -1,5 +1,5 @@
 return {
-  socialKey: 'v3.ndc.mdao',
+  socialKey: "v3.ndc.mdao",
   assets: {
     logoWhite:
       "https://ipfs.near.social/ipfs/bafkreigx7nkumnrr5wx22ykgwb26zyo76miu3d2ogsl7y5wbamx2sxi3lm",
