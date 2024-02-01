@@ -1,3 +1,4 @@
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { id } = props;
 const accountId = context.accountId;
 
@@ -24,7 +25,7 @@ function composeData() {
   const data = {
     index: {
       graph: JSON.stringify({
-        key: "v3.ndc.mdao.reply",
+        key: `${socialKey}.reply`,
         value: {
           parentId: id,
           ...content,

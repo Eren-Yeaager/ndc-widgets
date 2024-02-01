@@ -1,3 +1,4 @@
+let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -8,7 +9,7 @@ const Container = styled.div`
   }
 `;
 
-const items = Social.index("graph", "v3.ndc.mdao.reply", { order: "desc" });
+const items = Social.index("graph", `${socialKey}.reply`, { order: "desc" });
 
 return (
   <Container>
