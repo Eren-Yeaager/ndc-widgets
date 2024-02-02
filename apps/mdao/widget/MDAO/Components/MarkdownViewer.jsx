@@ -15,12 +15,14 @@ const Content = styled.div`
     p {
       margin-bottom: 1rem !important;
     }
-}`
+  }
+`;
 
 return (
   <Content>
     <Widget
       src={"devhub.near/widget/devhub.components.molecule.MarkdownViewer"}
-      props={{text}} />
+      props={{ text }}
+    />
   </Content>
 );

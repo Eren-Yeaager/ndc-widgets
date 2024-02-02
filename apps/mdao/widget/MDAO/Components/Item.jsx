@@ -1,6 +1,6 @@
 const { item, index, showMoreDefault, showRepliesDefault } = props;
 let { assets, content, socialKey } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 assets = assets.home;
 content = content.home;

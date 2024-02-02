@@ -33,12 +33,12 @@ const links = [
     color: "#AFC5FE",
     items: [
       {
-        title: "MDAO Charter",
+        title: "Charter",
         target: "_blank",
         href: "https://docs.google.com/document/d/11m2-dmDRABz74WZfkcgGyFz7Wn6k4y9oPVXPCCyhXp8/edit",
       },
       {
-        title: "MDAO social media strategy",
+        title: "SM Strategy",
         href: "//*__@replace:widgetPath__*/.App?page=info",
       },
       {
@@ -54,9 +54,14 @@ const links = [
         href: "https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FNew_York&mode=AGENDA&src=MDNiOTMyMjJmNGQ4YTIxNmQ3MmZmNmE1MDg5ZjY4NGQ4MWI3Mjg0OGUzMGQ1ZjllOGE4MzdiZTBlYjNjNjdjZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33",
       },
       {
-        title: "MDAO Bounty program",
+        title: "Bounty Program",
         target: "_blank",
         href: "https://www.heroes.build/",
+      },
+      {
+        title: "Brand Toolkit",
+        target: "_blank",
+        href: "https://nftstorage.link/ipfs/bafybeihe5lcn2jv2bhawpqjswem7yk3nlkauqxeqia3nqbbr6eaizkdsx4",
       },
     ],
   },

@@ -30,7 +30,7 @@ function handleTextChange(value) {
     .filter((word) => word.startsWith("@"))
     .map((mention) => mention.slice(1));
   const newMentiones = allMentiones.filter(
-    (item) => !mentionsArray.includes(item)
+    (item) => !mentionsArray.includes(item),
   );
 
   setText(value);
