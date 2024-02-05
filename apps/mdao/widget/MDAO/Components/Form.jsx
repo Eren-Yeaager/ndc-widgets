@@ -40,6 +40,18 @@ const Form = styled.div`
   }
 `;
 
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-beetween;
+  gap: 2rem;
+
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+`
+
 const [preview, setPreview] = useState(false);
 
 const PreviewButton = () => (
@@ -52,7 +64,7 @@ const PreviewButton = () => (
     <i className="bi bi-eye" />
   </div>
 );
-console.log(formEls);
+
 const ProposalButton = () => (
   <CommitButton
     style={{ width: "max-content" }}
@@ -84,10 +96,10 @@ return (
             showMoreDefault: 0,
           }}
         />
-        <div className="d-flex gap-2">
+        <ButtonContainer>
           <PreviewButton />
           <ProposalButton />
-        </div>
+        </ButtonContainer>
       </>
     ) : (
       <Form className="d-flex flex-column gap-3">
@@ -151,10 +163,10 @@ return (
             )}
           </div>
         ))}
-        <div className="d-flex gap-2">
+        <ButtonContainer>
           <PreviewButton />
           <ProposalButton />
-        </div>
+        </ButtonContainer>
         <a
           className="d-flex gap-2"
           target="_blank"
