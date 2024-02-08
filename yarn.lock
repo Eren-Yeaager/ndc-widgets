@@ -2101,10 +2101,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-near-cli-rs@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/near-cli-rs/-/near-cli-rs-0.4.3.tgz#b8f40303ad7f45c1323a94a281acf739b5802ab8"
-  integrity sha512-bnMvFdRoQH8rq6FZ2YTfN06eaETsBDWcjW1NQVwpzCEjhaqofMDggpKGtcL713d7j0kU9BOdLFhuGlytFbmH8g==
+near-cli-rs@^0.7.0:
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/near-cli-rs/-/near-cli-rs-0.7.8.tgz#67b63d12cd0455483d6f16b6ebb9785c1a1fd7e3"
+  integrity sha512-+cHUFoG/QAb9pTnDA4IvuL7hr7AxWFD86oRxCsNtuvemaYj0kZmaDBF97qK+1LXaNIeE7UeRL+fb+561uoG7Pg==
   dependencies:
     axios-proxy-builder "^0.1.1"
     binary-install "^1.0.6"
