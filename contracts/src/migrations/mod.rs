@@ -26,6 +26,7 @@ pub(crate) fn state_version_write(version: &StateVersion) {
     near_sdk::log!("Migrated to version: {:?}", version);
 }
 
+// Migration call functions
 #[near_bindgen]
 impl Contract {
     pub fn unsafe_self_upgrade() {
@@ -43,15 +44,6 @@ impl Contract {
             .as_return();
     }
 
-    fn migration_done() {
-        near_sdk::log!("Migration done.");
-        env::value_return(b"\"done\"");
-    }
-
-    fn needs_migration() {
-        env::value_return(b"\"needs-migration\"");
-    }
-
     pub fn unsafe_migrate() {
         near_sdk::assert_self();
 
@@ -59,15 +51,18 @@ impl Contract {
         near_sdk::log!("Migrating from version: {:?}", current_version);
 
         match current_version {
-            StateVersion::V1 => {
+            // StateVersion::V1 => {
                 // Contract::unsafe_test_migration_v2();
                 // state_version_write(&StateVersion::V2);
-            }
+            // }
             _ => {
                 return Contract::migration_done();
             }
         }
+    }
 
-        Contract::needs_migration();
+    fn migration_done() {
+        near_sdk::log!("Migration done.");
+        env::value_return(b"\"done\"");
     }
 }

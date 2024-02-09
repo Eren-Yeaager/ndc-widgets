@@ -5,8 +5,8 @@ pub mod comment;
 
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{AccountId, Timestamp};
-use crate::{CommentId, CommunityId, DaoId, PostId};
+use near_sdk::{AccountId, near_bindgen, Timestamp};
+use crate::{CategoryLabel, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
 use crate::post::proposal::VersionedProposal;
 use crate::post::report::VersionedReport;
@@ -109,10 +109,82 @@ impl PostBody {
         };
     }
 
+    pub fn get_post_category(&self) -> Option<CategoryLabel> {
+        return match self.clone() {
+            PostBody::Proposal(proposal) => proposal.latest_version().category,
+            PostBody::Report(report) => report.latest_version().category,
+        };
+    }
+
     pub fn validate(&self) {
         return match self.clone() {
             PostBody::Proposal(proposal) => proposal.validate(),
             PostBody::Report(report) => report.validate(),
         };
+    }
+}
+
+use crate::*;
+
+// Proposal/report call functions
+#[near_bindgen]
+impl Contract {
+
+    // Add new DAO request/report
+    // Access Level: Public
+    pub fn add_dao_post(&mut self, dao_id: DaoId, body: PostBody) {
+        // Validate params
+        body.validate();
+        self.get_dao_by_id(dao_id);
+        if let Some(community_id) = body.get_post_community_id() {
+            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
+            assert!(dao_communities.contains(&community_id), "Community not found in DAO");
+        }
+
+        self.total_posts += 1;
+        let author_id = env::predecessor_account_id();
+        let post_id = self.total_posts;
+
+        let post = Post {
+            id: post_id.clone(),
+            author_id: author_id.clone(),
+            likes: vec![],
+            comments: vec![],
+            dao_id,
+            snapshot: PostSnapshot {
+                status: PostStatus::InReview,
+                editor_id: author_id.clone(),
+                timestamp: env::block_timestamp(),
+                body: body.clone(),
+            },
+            snapshot_history: vec![],
+        };
+        self.posts.insert(&post_id, &post.into());
+
+        // Add to dao_posts
+        let mut dao_posts = self.dao_posts.get(&dao_id).unwrap_or(vec![]);
+        dao_posts.push(post_id.clone());
+        self.dao_posts.insert(&dao_id, &dao_posts);
+
+        // Add to post_authors
+        let mut post_authors = self.post_authors.get(&author_id).unwrap_or(vec![]);
+        post_authors.push(post_id.clone());
+        self.post_authors.insert(&author_id, &post_authors);
+
+        // Add to category_posts label
+        if let Some(category) = body.get_post_category() {
+            let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
+            category_posts.push(post_id.clone());
+            self.category_posts.insert(&category, &category_posts);
+        }
+
+        // Add to community_posts
+        if let Some(community_id) = body.get_post_community_id() {
+            let mut community_posts = self.community_posts.get(&community_id).unwrap_or(vec![]);
+            community_posts.push(post_id.clone());
+            self.community_posts.insert(&community_id, &community_posts);
+        }
+
+        near_sdk::log!("POST ADDED: {}", post_id);
     }
 }

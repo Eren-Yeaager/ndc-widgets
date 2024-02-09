@@ -24,7 +24,7 @@ Note: The server will serve all the widgets from all the apps, each app under th
 
 5. Navigate to dao page on BOS
 
-## Buid
+## Build front-end
 
 To build the widgets for deployment, run the following command:
 
@@ -53,4 +53,9 @@ To test the build/dev scripts, run the following command:
 
 ```bash
 yarn test:tools
+```
+
+## Build smart-contract
+```bash
+yarn 
 ```

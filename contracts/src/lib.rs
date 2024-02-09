@@ -7,19 +7,18 @@ pub mod migrations;
 pub mod str_serializers;
 mod user;
 
-use std::collections::HashMap;
 use storage_keys::*;
 use post::*;
 
 // use near_sdk::require;
 // use near_sdk::serde_json::{json, Value};
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
-use near_sdk::collections::{LookupMap, UnorderedMap, Vector};
+use near_sdk::collections::{LookupMap, UnorderedMap};
 use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env};
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
-use crate::dao::{DAO, DAOInput, VersionedDAO};
+use crate::dao::{VersionedDAO};
 use crate::post::comment::VersionedComment;
 use crate::user::UserFollow;
 
@@ -40,7 +39,7 @@ pub struct Contract {
     pub total_comments: u64,
     pub total_communities: u64,
 
-    pub dao: Vector<VersionedDAO>,
+    pub dao: UnorderedMap<DaoId, VersionedDAO>,
     pub dao_posts: LookupMap<DaoId, Vec<PostId>>,
     pub dao_communities: LookupMap<DaoId, Vec<CommunityId>>,
 
@@ -69,7 +68,7 @@ impl Contract {
             total_comments: 0,
             total_communities: 0,
 
-            dao: Vector::new(StorageKey::DAO),
+            dao: UnorderedMap::new(StorageKey::DAO),
             dao_posts: LookupMap::new(StorageKey::DaoPosts),
             dao_communities: LookupMap::new(StorageKey::DaoCommunities),
 
@@ -89,153 +88,46 @@ impl Contract {
 
         contract
     }
+}
 
-    // Add new DAO
-    // Access Level: Only self-call
-    pub fn add_dao(
-        &mut self,
-        body: DAOInput,
-        owners: Vec<AccountId>,
-        category_list: Vec<CategoryLabel>,
-        metrics: Vec<MetricLabel>,
-        metadata: HashMap<String, String>
-    ) {
-        near_sdk::assert_self();
-        near_sdk::log!("add_dao");
+// Getters - All smart-contract view functions
+#[near_bindgen]
+impl Contract {
 
-        // check DAO: handle and title are unique
-        self.dao.iter().enumerate().for_each(|(_, dao_ref)| {
-            let dao: DAO = dao_ref.into();
-            assert_ne!(dao.handle, body.handle, "DAO handle already exists");
-            assert_ne!(dao.title, body.title, "DAO title already exists");
-        });
-
-        let id = self.dao.len() as DaoId;
-        let dao = DAO {
-            id: id.clone(),
-            handle: body.handle,
-            title: body.title,
-            description: body.description,
-            logo_url: body.logo_url,
-            banner_url: body.banner_url,
-            is_congress: body.is_congress,
-            owners: owners.clone(),
-            category_list,
-            metrics,
-            metadata,
-        };
-        self.dao.push(&dao.into());
-
-        if owners.len() > 0 {
-            self.add_owners_access(&owners, AccessPermissionType::DAO, id);
-        }
+    // DAO: Get DAO by ID
+    pub fn get_dao_by_id(&self, id: DaoId) -> VersionedDAO {
+        self.dao.get(&id).unwrap_or_else(|| panic!("DAO #{} not found", id))
     }
 
-    // Edit DAO
-    // Access Level: Only self-call
-    pub fn edit_dao(
-        &mut self,
-        id: DaoId,
-        body: DAOInput,
-        owners: Vec<AccountId>,
-        category_list: Vec<CategoryLabel>,
-        metrics: Vec<MetricLabel>,
-        metadata: HashMap<String, String>
-    ) {
-        near_sdk::assert_self();
-        near_sdk::log!("edit_dao");
-
-        let mut dao: DAO = self.dao.get(id).unwrap_or_else(|| panic!("DAO #{} not found", id)).into();
-        dao.title = body.title;
-        dao.description = body.description;
-        dao.logo_url = body.logo_url;
-        dao.banner_url = body.banner_url;
-        dao.is_congress = body.is_congress;
-        dao.owners = owners;
-        dao.category_list = category_list;
-        dao.metrics = metrics;
-        dao.metadata = metadata;
-        self.dao.replace(id, &dao.into());
+    // DAO: Get all DAOs
+    pub fn get_dao_list(&self) -> Vec<VersionedDAO> {
+        self.dao.values().collect()
     }
 
-    // Add new DAO request/report
-    // Access Level: Public
-    pub fn add_dao_post(&mut self, dao_id: DaoId, body: PostBody) {
-        near_sdk::log!("add_dao_post");
-
-        // Validate body
-        body.validate();
-        if body.get_post_community_id().is_some() {
-            let community_id = body.get_post_community_id().unwrap();
-            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
-            assert!(dao_communities.contains(&community_id), "Community not found in DAO");
-        }
-
-        self.total_posts += 1;
-        let author_id = env::predecessor_account_id();
-        let post_id = self.total_posts;
-
-        let post = Post {
-            id: post_id.clone(),
-            author_id: author_id.clone(),
-            likes: vec![],
-            comments: vec![],
-            dao_id,
-            snapshot: PostSnapshot {
-                status: PostStatus::InReview,
-                editor_id: author_id.clone(),
-                timestamp: env::block_timestamp(),
-                body: body.clone(),
-            },
-            snapshot_history: vec![],
-        };
-        self.posts.insert(&post_id, &post.into());
-
-        // Add to dao_posts
-        let mut dao_posts = self.dao_posts.get(&dao_id).unwrap_or(vec![]);
-        dao_posts.push(post_id.clone());
-        self.dao_posts.insert(&dao_id, &dao_posts);
-
-        // Add to post_authors
-        let mut post_authors = self.post_authors.get(&author_id).unwrap_or(vec![]);
-        post_authors.push(post_id.clone());
-        self.post_authors.insert(&author_id, &post_authors);
-
-        // Add to category_posts
-        // if body.latest_version().category.is_some() {
-        //     let category = body.into().category.unwrap();
-        //     let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
-        //     category_posts.push(post_id.clone());
-        //     self.category_posts.insert(&category, &category_posts);
-        // }
-
-        // Add to community_posts
-        if body.get_post_community_id().is_some() {
-            let community_id = body.get_post_community_id().unwrap();
-            let mut community_posts = self.community_posts.get(&community_id).unwrap_or(vec![]);
-            community_posts.push(post_id.clone());
-            self.community_posts.insert(&community_id, &community_posts);
-        }
+    // Posts: Get Proposals/Reports by ID
+    pub fn get_post_by_id(&self, post_id: &PostId) -> VersionedPost {
+        self.posts.get(post_id).unwrap_or_else(|| panic!("Post id {} not found", post_id))
     }
 
-    pub fn get_posts_by_author(&self, author: AccountId) -> Vec<PostId> {
-        self.post_authors.get(&author).map(|posts| posts.into_iter().collect()).unwrap_or(Vec::new())
-    }
-
+    // Posts: Get all Proposals/Reports except "in_review" for DAO
     pub fn get_dao_posts(&self, dao_id: DaoId) -> Vec<VersionedPost> {
-        near_sdk::log!("get_dao_posts");
-        let post_id_list = self.dao_posts.get(&dao_id).unwrap_or(vec![]);
-        // map by post_id_list and get VersionedPost from self.posts
-        let mut posts = vec![];
-        for post_id in post_id_list {
-            posts.push(self.posts.get(&post_id).unwrap_or_else(|| panic!("Post id {} not found", post_id)));
-        }
-        posts
+        self.dao_posts.get(&dao_id).unwrap_or_default()
+            .iter()
+            .map(|post_id| self.get_post_by_id(post_id))
+            .collect()
     }
 
-    pub fn get_post_by_id(&self, post_id: PostId) -> VersionedPost {
-        near_sdk::log!("get_post_by_id");
-        self.posts.get(&post_id).unwrap_or_else(|| panic!("Post id {} not found", post_id))
+    // Posts: Get Proposals/Reports by Author
+    pub fn get_posts_by_author(&self, author: AccountId) -> Vec<VersionedPost> {
+        self.post_authors.get(&author).unwrap_or_default()
+            .iter()
+            .map(|post_id| self.get_post_by_id(post_id))
+            .collect()
+    }
+
+    // Access-control: Get the access rules list for a specific account
+    pub fn get_account_access(&self, account_id: AccountId) -> Vec<VersionedAccessMetadata> {
+        self.owner_access.get(&account_id).unwrap_or(vec![])
     }
 
 }
