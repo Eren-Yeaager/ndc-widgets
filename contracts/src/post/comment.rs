@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId, Timestamp};
@@ -13,10 +14,9 @@ pub struct Comment {
     pub id: PostId,
     pub author_id: AccountId,
     pub post_id: PostId,
-
-    pub likes: Vec<Like>,
+    pub likes: HashSet<Like>,
     pub parent_comment: Option<CommentId>,
-    pub child_comments: Vec<CommentId>,
+    pub child_comments: HashSet<CommentId>,
     pub snapshot: CommentSnapshot,
     pub snapshot_history: Vec<CommentSnapshot>
 }

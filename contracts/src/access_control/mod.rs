@@ -22,8 +22,13 @@ use crate::access_control::owners::AccessMetadata;
 #[near_bindgen]
 impl Contract {
 
+    // Check if the call is self-call
+    fn is_self_call(&self) -> bool {
+        env::predecessor_account_id() == env::current_account_id()
+    }
+
     // Check if the account has access to a specific rule or access exists
-    pub fn is_account_access(&self, account_id: &AccountId, permission_type: &AccessPermissionType, permission_id: u64, rule: Option<Rule>) -> bool {
+    pub(crate) fn is_account_access(&self, account_id: &AccountId, permission_type: &AccessPermissionType, permission_id: u64, rule: Option<Rule>) -> bool {
         let access_list = self.owner_access.get(&account_id).unwrap_or(vec![]);
         for access_item in access_list {
             let access_item:AccessMetadata = access_item.into();
@@ -38,43 +43,66 @@ impl Contract {
         return false;
     }
 
+    // Add new DAO/Community owners
+    // Access Level: Internal, only existing owners or self-call
     pub(crate) fn add_owners_access(&mut self, owners: &Vec<AccountId>, permission_type: AccessPermissionType, permission_id: u64) {
-        let mut assigned_owners: Vec<AccountId> = vec![];
+        assert!(
+            self.is_self_call() || self.is_account_access(&env::predecessor_account_id(), &permission_type, permission_id, None),
+            "No access"
+        );
 
+        let mut assigned_owners: Vec<AccountId> = vec![];
         for owner in owners {
             // skip if exists - use edit/remove access to change account permission
-            if !self.is_account_access(owner, &permission_type, permission_id, None) {
-                let mut account_access = self.owner_access.get(&owner).unwrap_or(vec![]);
-                let metadata = AccessMetadata {
-                    permission_type: permission_type.clone(),
-                    permission_id,
-                    rules_list: HashSet::new(),
-                    children: HashSet::new(),
-                    parent: env::predecessor_account_id(),
-                };
-
-                account_access.push(metadata.into());
-                assigned_owners.push(owner.clone());
-                self.owner_access.insert(owner.into(), &account_access);
+            if self.is_account_access(owner, &permission_type, permission_id, None) {
+                continue;
             }
+
+            let mut account_access = self.owner_access.get(&owner).unwrap_or_default();
+            let metadata = AccessMetadata {
+                permission_type: permission_type.clone(),
+                permission_id,
+                rules_list: HashSet::new(),
+                children: HashSet::new(),
+                parent: env::predecessor_account_id(),
+            };
+
+            account_access.push(metadata.into());
+            assigned_owners.push(owner.clone());
+            self.owner_access.insert(owner, &account_access);
         }
 
         // Assign children accounts
-        if env::predecessor_account_id() != env::current_account_id() && !assigned_owners.is_empty() {
+        if !self.is_self_call() && assigned_owners.len() > 0 {
             let mut my_account_access: Vec<VersionedAccessMetadata> = self.owner_access.get(&env::predecessor_account_id()).unwrap();
 
-            // Find metadata in Vec and add children
             for (i, metadata) in my_account_access.clone().into_iter().enumerate() {
-                let metadata:AccessMetadata = metadata.into();
+                let mut metadata:AccessMetadata = metadata.into();
                 if metadata.permission_type == permission_type && metadata.permission_id == permission_id {
-                    let mut metadata:AccessMetadata = metadata.into();
                     metadata.children.extend(assigned_owners.clone());
                     my_account_access[i] = metadata.into();
-                    self.owner_access.insert(&env::predecessor_account_id(), &my_account_access);
                     break;
                 }
             }
+
+            self.owner_access.insert(&env::predecessor_account_id(), &my_account_access);
         }
+    }
+
+    // Remove access from owners
+    // Access Level: Only owners with access
+    pub fn remove_owner_access(&mut self, owner: &AccountId, permission_type: AccessPermissionType, permission_id: u64) {
+        assert!(self.is_account_access(&env::predecessor_account_id(), &permission_type, permission_id, None), "No access");
+        assert!(self.is_account_access(owner, &permission_type, permission_id, None), "Owner don't have such access");
+        assert_ne!(&env::predecessor_account_id(), owner, "Cannot remove access from yourself");
+
+        let mut account_access = self.owner_access.get(owner).unwrap_or(vec![]);
+        account_access.retain(|metadata| {
+            let metadata: AccessMetadata = (*metadata).clone().into();
+            !(metadata.permission_type == permission_type && metadata.permission_id == permission_id)
+        });
+
+        self.owner_access.insert(owner, &account_access);
     }
 
 }

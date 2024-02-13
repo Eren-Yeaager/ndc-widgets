@@ -110,11 +110,23 @@ impl Contract {
     }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
-    pub fn get_dao_posts(&self, dao_id: DaoId) -> Vec<VersionedPost> {
+    pub fn get_dao_posts(&self, dao_id: DaoId, status: Option<PostStatus>) -> Vec<VersionedPost> {
         self.dao_posts.get(&dao_id).unwrap_or_default()
             .iter()
             .map(|post_id| self.get_post_by_id(post_id))
+            .filter(|versioned_post| {
+                let post:Post = (*versioned_post).clone().into();
+                if status.is_some() {
+                    // Filter by status if provided
+                    post.snapshot.status == status.clone().unwrap()
+                } else {
+                    // Default: Exclude "in_review" status
+                    post.snapshot.status != PostStatus::InReview
+                }
+            })
             .collect()
+
+        // TODO: add pagination
     }
 
     // Posts: Get Proposals/Reports by Author
@@ -123,6 +135,8 @@ impl Contract {
             .iter()
             .map(|post_id| self.get_post_by_id(post_id))
             .collect()
+
+        // TODO: add pagination
     }
 
     // Access-control: Get the access rules list for a specific account
