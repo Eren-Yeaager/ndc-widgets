@@ -1,87 +1,72 @@
 let { assets, content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
-assets = assets.home;
 content = content.home;
 
 const Container = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: max-content;
+  height: 85vh;
   overflow: hidden;
-`;
-
-const HeroSection = styled.div`
-  width: 100%;
   background: linear-gradient(
     96deg,
     #fdefb1 -19.42%,
     #e1c4fe 49.87%,
     #95c3fe 98.55%
   );
-  height: 600px;
-  padding: 3rem;
 
-  @media screen and (max-width: 786px) {
-    padding: 2rem;
+  h1 {
+    color: white;
+    text-transform: uppercase;
+    font-size: 80px;
     text-align: center;
+    font-weight: bold;
   }
 
-  h1 {
-    font-size: 5.2rem;
-    font-weight: 600;
-    margin-bottom: 0;
-    @media screen and (max-width: 786px) {
-      font-size: 3rem;
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: -5rem;
+    img {
+      width: 100px;
     }
   }
 
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 300;
-    max-width: 800px;
-    margin-bottom: 0;
-  }
+  a.btn {
+    border-radius: 0px;
+    background: #151718;
+    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+    color: #f0f0f0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center !important;
+    padding: 15px 50px;
 
-  h4 {
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 0;
-  }
-
-  img {
-    width: 500px;
-    height: 500px;
-    @media screen and (max-width: 786px) {
-      display: none;
+    &:hover {
+      color: #fff;
+      text-decoration: none;
     }
-  }
-}`;
-
-const InfoSection = styled.div`
-  width: 75%;
-  padding: 5rem 3rem;
-  font-weight: 300;
-  font-size: 1.2rem;
-
-  h1 {
-    font-size: 3rem;
-    font-weight: 600;
-  }
-
-  @media screen and (max-width: 786px) {
-    width: 100%;
-    padding: 2rem 1rem;
   }
 `;
 
 return (
   <Container>
-    <InfoSection
-      style={{ height: "100vh" }}
-      className="d-flex flex-column gap-4 mx-auto"
-    >
-      Watch our guidance:{" "}
-      <a href="https://youtu.be/XaYKceQz_e4">https://youtu.be/XaYKceQz_e4</a>
-    </InfoSection>
+    <div className="wrapper">
+      <a className="img" href={`//*__@replace:widgetPath__*/.App?page=home`}>
+        <img src={assets.logoWhite} />
+      </a>
+      <h1>
+        Proposal & Report <br />
+        Creation guide
+      </h1>
+      <a className="btn" href="https://youtu.be/XaYKceQz_e4" target="_blank">
+        Marketing DAO
+      </a>
+    </div>
   </Container>
 );
