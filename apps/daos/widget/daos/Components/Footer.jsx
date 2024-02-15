@@ -1,5 +1,5 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const page = props.page;
@@ -35,17 +35,6 @@ const Description = styled.p`
   }
 `;
 
-const ImageContainer = styled.img`
-  ${page !== "home" && "display: none;"}
-  height: 280px;
-  width: 100%;
-  object-fit: cover;
-`;
-const FooterLogo = styled.img`
-  width: 70px !important;
-  height: 70px !important;
-`;
-
 const Socials = () => (
   <div className="d-flex gap-5">
     {Object.entries(socials).map(([name, link]) => (
@@ -56,34 +45,14 @@ const Socials = () => (
   </div>
 );
 
-const MidContent = () => {
-  return (
+return (
+  <Footer className="justify-content-center">
     <div className="d-flex flex-column align-items-center gap-4">
-      <FooterLogo src={assets.logoColor} />
+      <a href={`//*__@replace:widgetPath__*/.App?page=home`}>
+        <img src={assets.logoWhite} />
+      </a>
       <Description>{content.home.footerDesc}</Description>
       <Socials />
     </div>
-  );
-};
-
-const SmallContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column-reverse;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-  }
-`;
-
-return (
-  <>
-    <ImageContainer src={assets.home.support_bg} />
-    <Footer className="justify-content-center">
-      <MidContent />
-    </Footer>
-  </>
+  </Footer>
 );

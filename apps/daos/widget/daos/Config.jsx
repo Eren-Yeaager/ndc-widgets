@@ -2,7 +2,7 @@ return {
   socialKey: "v3.ndc.mdao",
   assets: {
     logoWhite:
-      "https://ipfs.near.social/ipfs/bafkreigx7nkumnrr5wx22ykgwb26zyo76miu3d2ogsl7y5wbamx2sxi3lm",
+      "https://ipfs.near.social/ipfs/bafkreigycbheqwbwh73uqemyb4lt4r3dkmauubdkv5lio3nv3cdb6zguyq",
     logoColor:
       "https://ipfs.near.social/ipfs/bafkreieit24q3nlzzemyjblesy274gtlhjzbhmpfgpwfdfhjgntkhfc4fi",
     home: {

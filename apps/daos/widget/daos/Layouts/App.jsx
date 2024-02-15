@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -24,12 +24,7 @@ const Theme = styled.div`
   ${fontCss};
 
   font-style: normal;
-  background: linear-gradient(
-    258deg,
-    rgba(162, 195, 254, 0.25) 0%,
-    rgba(225, 197, 252, 0.25) 28.72%,
-    rgba(241, 220, 210, 0.25) 100%
-  );
+  background: #f8f6ff;
 
   a {
     color: inherit;
@@ -89,6 +84,9 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .btn {
     &:disabled {
@@ -142,6 +140,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 75%;
+  margin: 3rem 0;
 `;
 
 function AppLayout({ page, children }) {
@@ -149,7 +150,10 @@ function AppLayout({ page, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        <Wrapper>{children}</Wrapper>
+        <Wrapper>
+          <Widget src={`/*__@replace:widgetPath__*/.Components.TopNavBar`} />
+          {children}
+        </Wrapper>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Footer`}
           props={{ page }}
