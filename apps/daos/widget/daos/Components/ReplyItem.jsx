@@ -3,8 +3,12 @@ let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { item, showCreate } = props;
 const accountId = context.accountId;
 
+if (!socialKey)
+  return <Widget src="flashui.near/widget/Loading" />;
+
 const Post = styled.div`
   position: relative;
+  width: 100%;
 
   &::before {
     content: "";
@@ -21,6 +25,7 @@ const Post = styled.div`
 const Header = styled.div`
   margin-bottom: 0;
   display: inline-flex;
+  width: 100%;
 `;
 
 const Body = styled.div`
@@ -49,7 +54,6 @@ const Text = styled.p`
 
 const Actions = styled.div`
   display: flex;
-  color: rgb(150 150 150);
   align-items: center;
   gap: 15px;
   margin: -3px 0 10px 0;
@@ -61,6 +65,25 @@ const Comments = styled.div`
   }
 `;
 
+const CommentContent = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: auto;
+  height: 40px;
+  width: 180px;
+  padding: 10px;
+  background-color: #A4C2FD1A;
+  border-radius: 18px;
+  color: #686467;
+  span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+`
 const [showMore, setShowMore] = useState(null);
 const [liked, setLiked] = useState(false);
 const [showReply, setShowReply] = useState({ [item.id]: showCreate });
@@ -95,9 +118,9 @@ return (
   <Post>
     {item.text && (
       <Header>
-        <div className="row">
-          <div className="col-auto">
-            <div className="d-flex gap-3 align-items-center">
+        <div className="row" style={{ width: "100%"}}>
+          <div>
+            <div className="d-flex gap-3 align-items-center justify-content-between">
               <Widget
                 src="near/widget/AccountProfile"
                 props={{
@@ -105,11 +128,14 @@ return (
                   hideAccountId: true,
                 }}
               />
-              <div className="text-secondary">
-                <small>
-                  <i className="bi bi-clock" />
-                  {new Date(item.id).toLocaleDateString()}
-                </small>
+              <div className="d-flex gap-3 align-items-center justify-content-between">
+                    <small>
+                      {new Date(item.id).toLocaleDateString()}
+                    </small>
+                    <Widget
+                      src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                      props={{ text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&id=${item.id}` }}
+                    />
               </div>
             </div>
           </div>
@@ -134,22 +160,32 @@ return (
             onClick={handleLike}
           >
             <small>{likes.length}</small>
-            <i className="bi bi-heart" />
+            <i style={{color: 'black'}} className="bi bi-heart-fill" />
+            Like
           </div>
           <div
             role="button"
             onClick={() => setShowReply({ [item.id]: !showReply[item.id] })}
           >
-            <small>{replies.length}</small>
-            <i className="bi bi-chat" />
+            
+            <i style={{color: 'black'}} className="bi bi-chat-fill" />
+            Reply
           </div>
-          <div>
+          <div onClick={() => setShowReply({ [item.id]: !showReply[item.id] })}>
+            <i className="bi bi-chevron-down fs-5 mt-1" />
+              Expand Replies
+              <small>({replies.length})</small>
+          </div>
+          <CommentContent>
+            <span>
+              Go to Comment
+            </span>
             <Link
               to={`//*__@replace:widgetPath__*/.App?page=comments&id=${item.id}`}
             >
-              <i class="bi bi-link-45deg fs-5" />
+             <i style={{color: "#A4C2FD"}} class={'bi bi-box-arrow-up-right'}/>
             </Link>
-          </div>
+          </CommentContent>
         </Actions>
       )}
 
@@ -159,7 +195,7 @@ return (
           props={{ id: item.id }}
         />
       )}
-      {comments.length > 0 && (
+      {(comments.length > 0 && showReply[item.id]) && (
         <div>
           {comments
             .filter((repl) => repl.value.parentId === item.id)
