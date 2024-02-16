@@ -99,7 +99,7 @@ impl Contract {
         category_list: Vec<CategoryLabel>,
         metrics: Vec<MetricLabel>,
         metadata: HashMap<String, String>
-    ) {
+    ) -> DaoId {
         near_sdk::assert_self();
 
         // check DAO: handle and title are unique
@@ -130,6 +130,7 @@ impl Contract {
         }
 
         near_sdk::log!("DAO ADDED: {}", id);
+        id
     }
 
     // Edit DAO
@@ -146,7 +147,7 @@ impl Contract {
         near_sdk::assert_self();
         near_sdk::log!("EDIT DAO: {}", id);
 
-        let mut dao: DAO = self.get_dao_by_id(id).into();
+        let mut dao: DAO = self.get_dao_by_id(&id).into();
         dao.title = body.title;
         dao.description = body.description;
         dao.logo_url = body.logo_url;

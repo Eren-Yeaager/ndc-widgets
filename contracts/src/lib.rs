@@ -19,7 +19,7 @@ use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
 use crate::dao::{VersionedDAO};
-use crate::post::comment::VersionedComment;
+use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
 use crate::user::UserFollow;
 
 type DaoId = u64;
@@ -95,8 +95,8 @@ impl Contract {
 impl Contract {
 
     // DAO: Get DAO by ID
-    pub fn get_dao_by_id(&self, id: DaoId) -> VersionedDAO {
-        self.dao.get(&id).unwrap_or_else(|| panic!("DAO #{} not found", id))
+    pub fn get_dao_by_id(&self, id: &DaoId) -> VersionedDAO {
+        self.dao.get(id).unwrap_or_else(|| panic!("DAO #{} not found", id))
     }
 
     // DAO: Get all DAOs
@@ -139,9 +139,55 @@ impl Contract {
         // TODO: add pagination
     }
 
+    // Posts: Get all posts
+    pub fn get_post_history(&self, id: PostId) -> Vec<PostSnapshot> {
+        let post: Post = self.get_post_by_id(&id).into();
+        post.snapshot_history
+    }
+
+    // Communities: Get all communities by DAO
+    pub fn get_dao_communities(&self, dao_id: DaoId) -> Vec<VersionedCommunity> {
+        self.dao_communities.get(&dao_id).unwrap_or_default()
+            .iter()
+            .map(|community_id| self.get_community_by_id(community_id))
+            .collect()
+    }
+
+    // Communities: Get Community by ID
+    pub fn get_community_by_id(&self, id: &CommunityId) -> VersionedCommunity {
+        self.communities.get(&id).unwrap_or_else(|| panic!("Community #{} not found", id))
+    }
+
     // Access-control: Get the access rules list for a specific account
     pub fn get_account_access(&self, account_id: AccountId) -> Vec<VersionedAccessMetadata> {
         self.owner_access.get(&account_id).unwrap_or(vec![])
+    }
+
+    // Comments: Get Comment by ID
+    pub fn get_comment_by_id(&self, comment_id: &CommentId) -> VersionedComment {
+        self.comments.get(comment_id).unwrap_or_else(|| panic!("Comment id {} not found", comment_id))
+    }
+
+    // Comments: Get all comments by author
+    pub fn get_comments_by_author(&self, author: AccountId) -> Vec<VersionedComment> {
+        self.comment_authors.get(&author).unwrap_or_default()
+            .iter()
+            .map(|comment_id| self.get_comment_by_id(comment_id))
+            .collect()
+    }
+
+    // Comments: Get all comments for a post
+    pub fn get_post_comments(&self, post_id: PostId) -> Vec<VersionedComment> {
+        let post:Post = self.posts.get(&post_id).unwrap_or_else(|| panic!("Post id {} not found", post_id)).into();
+        post.comments.iter()
+            .map(|comment_id| self.get_comment_by_id(comment_id))
+            .collect()
+    }
+
+    // Comments: Get comment history
+    pub fn get_comment_history(&self, id: CommentId) -> Vec<CommentSnapshot> {
+        let comment: Comment = self.get_comment_by_id(&id).into();
+        comment.snapshot_history
     }
 
 }

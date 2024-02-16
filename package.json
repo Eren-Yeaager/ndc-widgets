@@ -5,6 +5,7 @@
     "test:tools": "jest tools/lib.test.js",
     "contract:build": "cd ./contracts && ./build.sh",
     "contract:dev:deploy": "npm run contract:build && cd ./contracts && ./deploy-dev.sh",
+    "contract:test": "cd ./contracts && cargo test",
     "test": "jest",
     "dev": "node tools/dev.js",
     "deploy": "node tools/deploy.js",

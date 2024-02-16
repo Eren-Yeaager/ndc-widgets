@@ -133,10 +133,9 @@ impl Contract {
 
     // Add new DAO request/report
     // Access Level: Public
-    pub fn add_dao_post(&mut self, dao_id: DaoId, body: PostBody) {
-        // Validate params
+    pub fn add_dao_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
         body.validate();
-        self.get_dao_by_id(dao_id);
+        self.get_dao_by_id(&dao_id);
         if let Some(community_id) = body.get_post_community_id() {
             let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
@@ -187,17 +186,17 @@ impl Contract {
         }
 
         near_sdk::log!("POST ADDED: {}", post_id);
+        post_id
     }
 
     // Edit request/report
-    // Access Level: Post owner
+    // Access Level: Post author
     pub fn edit_dao_post(&mut self, id: PostId, body: PostBody) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
         assert_eq!(env::predecessor_account_id(), post.author_id, "Only the author can edit the post");
         assert_eq!(post.snapshot.status, PostStatus::InReview, "Only posts in review can be edited");
 
-        // Validate params
         body.validate();
         if let Some(community_id) = body.get_post_community_id() {
             let dao_communities = self.dao_communities.get(&post.dao_id).unwrap_or(vec![]);
@@ -255,7 +254,7 @@ impl Contract {
     pub fn change_post_status(&mut self, id: PostId, status: PostStatus) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
-        let dao_owners = self.get_dao_by_id(post.dao_id).latest_version().owners;
+        let dao_owners = self.get_dao_by_id(&post.dao_id).latest_version().owners;
         assert!(dao_owners.contains(&env::predecessor_account_id()), "Only DAO owners can change the post status");
         assert_ne!(post.snapshot.status, status, "Post already has this status");
 
@@ -273,29 +272,4 @@ impl Contract {
         near_sdk::log!("POST STATUS CHANGED: {}", post.id);
     }
 
-    // Add like to request/report
-    // Access Level: Public
-    pub fn post_add_like(&mut self, id: PostId) {
-        let mut post: Post = self.get_post_by_id(&id).into();
-
-        let like = Like {
-            author_id: env::predecessor_account_id(),
-            timestamp: env::block_timestamp(),
-        };
-        post.likes.insert(like);
-        self.posts.insert(&id, &post.into());
-
-        // TODO: Add notification
-        // let post_author = post.author_id.clone();
-        // notify::notify_like(post_id, post_author);
-    }
-
-    // Remove like from request/report
-    // Access Level: Public
-    pub fn post_remove_like(&mut self, id: PostId) {
-        let mut post: Post = self.get_post_by_id(&id).into();
-
-        post.likes.retain(|like| like.author_id != env::predecessor_account_id());
-        self.posts.insert(&id, &post.into());
-    }
 }
