@@ -100,7 +100,7 @@ impl Contract {
     pub fn add_comment(
         &mut self,
         post_id: PostId,
-        reply_id: Option<CommentId>,
+        reply_to: Option<CommentId>,
         description: String
     ) -> CommentId {
         self.total_comments += 1;
@@ -112,7 +112,7 @@ impl Contract {
             author_id: author_id.clone(),
             post_id: post_id.clone(),
             likes: HashSet::new(),
-            parent_comment: reply_id.clone(),
+            parent_comment: reply_to.clone(),
             child_comments: HashSet::new(),
             snapshot: CommentSnapshot {
                 timestamp: env::block_timestamp(),
@@ -125,8 +125,8 @@ impl Contract {
         self.comments.insert(&comment_id, &comment.into());
 
         // Add comment ID to parent comment
-        if reply_id.is_some() {
-            let reply_id = reply_id.unwrap();
+        if reply_to.is_some() {
+            let reply_id = reply_to.unwrap();
             let mut parent_comment:Comment = self.comments.get(&reply_id).expect("Parent comment not found").into();
             parent_comment.child_comments.insert(comment_id.clone());
             self.comments.insert(&reply_id, &parent_comment.into());

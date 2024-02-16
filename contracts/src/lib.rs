@@ -99,14 +99,20 @@ impl Contract {
         self.dao.get(id).unwrap_or_else(|| panic!("DAO #{} not found", id))
     }
 
+    // DAO: Get DAO by handle
+    pub fn get_dao_by_handle(&self, handle: &String) -> VersionedDAO {
+        let dao = self.dao.values().find(|dao| dao.clone().latest_version().handle == *handle);
+        dao.unwrap_or_else(|| panic!("DAO with handle {} not found", handle))
+    }
+
     // DAO: Get all DAOs
     pub fn get_dao_list(&self) -> Vec<VersionedDAO> {
         self.dao.values().collect()
     }
 
     // Posts: Get Proposals/Reports by ID
-    pub fn get_post_by_id(&self, post_id: &PostId) -> VersionedPost {
-        self.posts.get(post_id).unwrap_or_else(|| panic!("Post id {} not found", post_id))
+    pub fn get_post_by_id(&self, id: &PostId) -> VersionedPost {
+        self.posts.get(id).unwrap_or_else(|| panic!("Post id {} not found", id))
     }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
@@ -139,7 +145,7 @@ impl Contract {
         // TODO: add pagination
     }
 
-    // Posts: Get all posts
+    // Posts: Get Proposals/Reports history
     pub fn get_post_history(&self, id: PostId) -> Vec<PostSnapshot> {
         let post: Post = self.get_post_by_id(&id).into();
         post.snapshot_history
@@ -158,14 +164,20 @@ impl Contract {
         self.communities.get(&id).unwrap_or_else(|| panic!("Community #{} not found", id))
     }
 
+    // Communities: Get Community by handle
+    pub fn get_community_by_handle(&self, handle: String) -> VersionedCommunity {
+        let community = self.communities.values().find(|community| community.clone().latest_version().handle == handle);
+        community.unwrap_or_else(|| panic!("Community with handle {} not found", handle))
+    }
+
     // Access-control: Get the access rules list for a specific account
     pub fn get_account_access(&self, account_id: AccountId) -> Vec<VersionedAccessMetadata> {
         self.owner_access.get(&account_id).unwrap_or(vec![])
     }
 
     // Comments: Get Comment by ID
-    pub fn get_comment_by_id(&self, comment_id: &CommentId) -> VersionedComment {
-        self.comments.get(comment_id).unwrap_or_else(|| panic!("Comment id {} not found", comment_id))
+    pub fn get_comment_by_id(&self, id: &CommentId) -> VersionedComment {
+        self.comments.get(id).unwrap_or_else(|| panic!("Comment id {} not found", id))
     }
 
     // Comments: Get all comments by author
