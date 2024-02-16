@@ -42,10 +42,12 @@ pub struct Contract {
     pub dao: UnorderedMap<DaoId, VersionedDAO>,
     pub dao_posts: LookupMap<DaoId, Vec<PostId>>,
     pub dao_communities: LookupMap<DaoId, Vec<CommunityId>>,
+    // pub dao_handles: UnorderedMap<String, DaoId>,
 
     pub posts: LookupMap<PostId, VersionedPost>,
     pub comments: LookupMap<CommentId, VersionedComment>,
-    pub communities: LookupMap<CommunityId, VersionedCommunity>,
+    pub communities: UnorderedMap<CommunityId, VersionedCommunity>,
+    // pub community_handles: UnorderedMap<String, CommunityId>,
 
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub category_posts: UnorderedMap<CategoryLabel, Vec<PostId>>,
@@ -74,7 +76,7 @@ impl Contract {
 
             posts: LookupMap::new(StorageKey::Posts),
             comments: LookupMap::new(StorageKey::Comments),
-            communities: LookupMap::new(StorageKey::Communities),
+            communities: UnorderedMap::new(StorageKey::Communities),
 
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             category_posts: UnorderedMap::new(StorageKey::CategoryPosts),
