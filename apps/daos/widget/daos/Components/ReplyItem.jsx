@@ -128,15 +128,17 @@ return (
                   hideAccountId: true,
                 }}
               />
-              <div className="d-flex gap-3 align-items-center justify-content-between">
-                    <small>
-                      {new Date(item.id).toLocaleDateString()}
-                    </small>
-                    <Widget
-                      src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-                      props={{ text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&id=${item.id}` }}
-                    />
-              </div>
+              {!item.isPreview && (
+                <div className="d-flex gap-3 align-items-center justify-content-between">
+                  <small>
+                    {new Date(item.id).toLocaleDateString()}
+                  </small>
+                  <Widget
+                    src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                    props={{ text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&id=${item.id}` }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -160,7 +162,7 @@ return (
             onClick={handleLike}
           >
             <small>{likes.length}</small>
-            <i style={{color: 'black'}} className="bi bi-heart-fill" />
+            <i style={{color: liked ? '#EE9CBF' : '#303030'}} className="bi bi-heart-fill" />
             Like
           </div>
           <div

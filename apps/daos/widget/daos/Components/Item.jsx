@@ -77,6 +77,10 @@ const Card = styled.div`
   @media screen and (max-width: 786px) {
     padding: 1.5rem;
   }
+
+  :hover {
+    background: #ffffff;
+  } 
 `;
 
 const Replies = styled.div`
@@ -84,9 +88,43 @@ const Replies = styled.div`
   padding-top: 1rem;
 `;
 
+const ProposalContent = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: auto;
+  height: 40px;
+  width: 180px;
+  padding: 10px;
+  background-color: #A4C2FD1A;
+  border-radius: 18px;
+  color: #686467;
+  span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  } 
+`
+
+const CardContainer = styled.div`
+  padding: 3px;
+  :hover {
+    position: relative;
+    border-radius: 10px;
+    background: linear-gradient(
+      270deg,
+      #efdcd1 -1.69%,
+      #e0c6f7 43.78%,
+      #adc3fb 99.83%
+    );
+  }
+`
+
 const [showMore, setShowMore] = useState(showMoreDefault);
 const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
+const pageName = props.type === 'report' ? 'reports' : 'proposals';
 
 const [liked, setLiked] = useState(false);
 const likes = Social.index("graph", `${socialKey}.like`, { order: "desc" });
@@ -114,7 +152,7 @@ const handleLike = () => {
 };
 
 const CardItem = ({ item, index }) => (
-  <div>
+  <CardContainer>
     <Card key={index} className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between">
         <Widget
@@ -124,11 +162,14 @@ const CardItem = ({ item, index }) => (
             tooltip: true,
           }}
         />
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-3 align-items-center justify-content-between">
           <small>
-            <i className="bi bi-clock" />
             {new Date(item.id).toLocaleDateString()}
           </small>
+          <Widget
+            src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+            props={{ text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}` }}
+          />
         </div>
       </div>
       <div className="d-flex flex-column gap-1">
@@ -180,7 +221,7 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2 align-items-center"
           onClick={() => setShowMore(showMore === index ? null : index)}
         >
-          <i
+          <i style={{ color: '#A4C2FD' }}
             className={`fs-5 bi ${
               showMore === index ? "bi-eye-slash" : "bi-eye"
             }`}
@@ -257,10 +298,11 @@ const CardItem = ({ item, index }) => (
           ))}
         </div>
       )}
-      <div className="actions d-flex align-items-center">
+      <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
           {likes.length}
-          <i className={`bi bi-heart${liked ? "-fill" : ""}`} /> Like
+          <i style={{color: liked ? '#EE9CBF' : '#303030'}} className="bi bi-heart-fill" />
+          Like
         </div>
 
         <div
@@ -268,18 +310,26 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2"
           onClick={() => setShowReply(!showReply)}
         >
-          {replies.length}
-          <i className="bi bi-chat" />
+          <i style={{color: '#303030'}} className="bi bi-chat-fill" />
           Reply
         </div>
+        <div onClick={() => setShowReply(!showReply)}>
+            <i className="bi bi-chevron-down fs-5 mt-1" />
+              Expand Replies
+              <small>({replies.length})</small>
+          </div>
         <div>
-          <Link
-            to={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
-          >
-            <i class="bi bi-link-45deg fs-5" />
-            Link
-          </Link>
         </div>
+        <ProposalContent>
+            <span>
+              {`Go to ${props.type === 'report' ? 'Report': 'Proposal'}`}
+            </span>
+            <Link
+              to={`//*__@replace:widgetPath__*/.App?page=${pageName}&id=${item.id}`}
+            >
+             <i style={{color: "#A4C2FD"}} class={'bi bi-box-arrow-up-right'}/>
+            </Link>
+          </ProposalContent>
       </div>
 
       <Replies>
@@ -291,7 +341,7 @@ const CardItem = ({ item, index }) => (
         )}
       </Replies>
     </Card>
-  </div>
+  </CardContainer>
 );
 
 return <CardItem item={item} index={index} />;
