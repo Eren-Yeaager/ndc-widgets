@@ -21,18 +21,20 @@ return (
           index: 0,
           showMoreDefault: 0,
           showRepliesDefault: true,
+          type: props.type
         }}
       />
     ) : (
       <>
-        <h1>{props.type === "proposal" ? "Proposals" : "Reports"} List</h1>
-        <div className="d-flex justify-content-end mb-4">
+        <div  className="mb-4">
           <a
+            style={{background: '#A4C2FD'}}
             className="btn-primary"
             href="//*__@replace:widgetPath__*/.App?page=createProposal"
-          >
-            <i className="bi bi-plus-circle" />
-            Post
+          > 
+            <span style={{fontSize: '24px', width: '20%', margin: 'auto'}}>
+              CREATE POST
+            </span>
           </a>
         </div>
         <div className="d-flex flex-column gap-4">
@@ -42,7 +44,7 @@ return (
               .map((item, index) => (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Item"
-                  props={{ item: item.value, index }}
+                  props={{ item: item.value, index, type: props.type }}
                 />
               ))}
         </div>
