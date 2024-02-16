@@ -2,7 +2,7 @@
 
 ## Overview
 
-The smart contract responsible for .
+The smart contract responsible for managing DAOs, communities, requests/reports, and permissions made available via the [MDAO frontend](https://mdao.near.social).
 
 ## Getting Started
 
@@ -30,10 +30,11 @@ near contract deploy mdao-owner.testnet use-file ./res/mdao.wasm with-init-call 
 
 ```cmd
 cd contracts
-CONTRACT=mdao-owner.testnet
-OWNER_ACCOUNT=mdao-owner.testnet
 
-near call "$CONTRACT" unsafe_self_upgrade "$(base64 < res/mdao.wasm)" --base64 --accountId $OWNER_ACCOUNT --gas 300000000000000
+ACCOUNT_ID=mdao-owner.testnet
+CONTRACT=v1.mdao-owner.testnet
+
+near call "$CONTRACT" unsafe_self_upgrade "$(base64 < res/mdao.wasm)" --base64 --accountId $ACCOUNT_ID --gas 300000000000000
 ```
 
 ## Running Tests
@@ -48,8 +49,8 @@ npm run contract:test
 
 To use the smart-contract methods, you need to set variables: 
 ```cmd
-CONTRACT=mdao-owner.testnet
-ACCOUNT_ID=somename.testnet
+ACCOUNT_ID=mdao-owner.testnet
+CONTRACT=v1.mdao-owner.testnet
 ```
 
 ### DAO
@@ -76,16 +77,26 @@ near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}'
 
 ### Requests/reports
 
-- Add proposals/reports
+- Add Proposal
 ```cmd
 near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
-Options for "post_type": Proposal, Report
+
+- Add Report
+```cmd
+near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+```
 
 
-- Edit proposals/reports
+- Edit proposal
 ```cmd
 near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "labels":["label1"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+```
+
+
+- Edit report
+```cmd
+near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 
