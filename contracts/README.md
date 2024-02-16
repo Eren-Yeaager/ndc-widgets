@@ -49,8 +49,8 @@ npm run contract:test
 
 To use the smart-contract methods, you need to set variables: 
 ```cmd
-ACCOUNT_ID=mdao-owner.testnet
-CONTRACT=v1.mdao-owner.testnet
+ACCOUNT_ID=test-mdao.near
+CONTRACT=v1.test-mdao.near
 ```
 
 ### DAO

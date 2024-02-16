@@ -8,8 +8,8 @@ near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 5
 
 near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
-# -------- Data Seed --------
-# Add DAO
+## -------- Data Seed --------
+## Add DAO
 # near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo", "banner_url":"banner","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "category_list":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 #
 ## Add DAO Proposal

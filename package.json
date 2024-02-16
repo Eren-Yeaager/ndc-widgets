@@ -4,7 +4,8 @@
   "scripts": {
     "test:tools": "jest tools/lib.test.js",
     "contract:build": "cd ./contracts && ./build.sh",
-    "contract:dev:deploy": "npm run contract:build && cd ./contracts && ./deploy-dev.sh",
+    "contract:dev:deploy": "npm run contract:build && cd ./contracts && ./deploy-testnet.sh",
+    "contract:prod:deploy": "npm run contract:build && cd ./contracts && ./deploy-mainnet.sh",
     "contract:test": "cd ./contracts && cargo test",
     "test": "jest",
     "dev": "node tools/dev.js",
