@@ -196,7 +196,6 @@ const Actions = styled.div`
 
     &:hover,
     &:focus {
-      background: rgb(112 242 164);
       outline: none;
     }
 
