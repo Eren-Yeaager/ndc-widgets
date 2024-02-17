@@ -14,7 +14,6 @@ const Theme = styled.div`
   position: fixed;
   inset: 73px 0px 0px;
   width: 100%;
-  height: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -82,8 +81,8 @@ const Theme = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   min-height: 100vh;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -140,7 +139,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   width: 75%;
   margin: 3rem 0;
 `;
