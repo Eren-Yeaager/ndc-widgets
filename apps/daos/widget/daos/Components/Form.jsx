@@ -1,5 +1,5 @@
 let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { form, formEls, setFormEls, handleChange } = props;
+const { form, formEls, setFormEls, handleChange, handleSave } = props;
 
 const TypeSection = styled.div`
   border-radius: 50px;
@@ -65,22 +65,15 @@ const PreviewButton = () => (
 );
 
 const ProposalButton = () => (
-  <CommitButton
+  <button
     style={{ width: "max-content" }}
     className="btn btn-primary"
     disabled={form[formEls.type].some((el) => el.required && !formEls[el.name])}
-    data={{
-      index: {
-        graph: JSON.stringify({
-          key: socialKey,
-          value: formEls,
-        }),
-      },
-    }}
+    onClick={handleSave}
   >
     Create proposal
     <i className="bi bi-plus-lg" />
-  </CommitButton>
+  </button>
 );
 
 return (
@@ -106,7 +99,7 @@ return (
           onClick={() => {
             const newFormEl = formEls;
             newFormEl.type =
-              formEls.type === "proposal" ? "report" : "proposal";
+              formEls.type === "Proposal" ? "Report" : "Proposal";
             setFormEls(newFormEl);
           }}
         >
@@ -118,7 +111,6 @@ return (
             </TypeSection>
           </div>
         </div>
-
         {form[formEls.type].map((el) => (
           <div className="form-element">
             <label for={el.name}>

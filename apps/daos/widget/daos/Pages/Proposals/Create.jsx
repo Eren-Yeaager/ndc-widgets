@@ -1,9 +1,8 @@
-let { assets, content, socialKey } = VM.require(
-  `//*__@replace:widgetPath__*/.Config`,
-);
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
-assets = assets.home;
-content = content.home;
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
+
+const { daoId } = props;
 
 const Container = styled.div`
   position: relative;
@@ -33,7 +32,7 @@ const FormWrapper = styled.div`
 `;
 
 const form = {
-  report: [
+  Report: [
     {
       name: "project_name",
       label: "Project Name",
@@ -42,11 +41,11 @@ const form = {
       required: true,
     },
     {
-      name: "contact",
-      label: "Main contact (near.social or Telegram)",
+      name: "proposal_id",
+      label: "Proposal ID",
       value: "",
       type: "text",
-      required: true,
+      required: false,
     },
     {
       name: "metric:audience",
@@ -73,7 +72,7 @@ const form = {
       required: true,
     },
     {
-      name: "performance_statement:answer_1",
+      name: "metric:performance_statement:answer_1",
       label:
         "Performance Statement: What is the biggest win (most improved part of project) during this funding period vs. the previous one (if applicable)?",
       value: "",
@@ -81,21 +80,15 @@ const form = {
       required: true,
     },
     {
-      name: "performance_statement:answer_2",
+      name: "metric:performance_statement:answer_2",
       label:
         "Performance statement: What is the biggest challenge your project is facing? What did not improve during this funding period?",
       value: "",
       type: "textarea",
       required: true,
     },
-    {
-      name: "attachments",
-      label: "Include any attachment(s)",
-      value: "",
-      type: "file",
-    },
   ],
-  proposal: [
+  Proposal: [
     {
       name: "project_name",
       label: "Project Name",
@@ -118,7 +111,7 @@ const form = {
       required: true,
     },
     {
-      name: "tag",
+      name: "tags",
       label: "Tags",
       value: "",
       type: "tag",
@@ -128,9 +121,9 @@ const form = {
 
 const [formEls, setFormEls] = useState({
   accountId: context.accountId,
-  type: "proposal",
+  type: "Proposal",
   id: new Date().getTime(),
-  description: form.proposal.find((el) => el.name === "description").value,
+  description: form.Proposal.find((el) => el.name === "description").value,
 });
 
 const [errors, setErrors] = useState({});
@@ -139,11 +132,33 @@ const handleChange = (el, value) => {
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;
-  newFormEl.id = new Date().getTime();
   newFormElErrors[el.name] = value.length < 1;
 
   setErrors(newFormElErrors);
   setFormEls(newFormEl);
+};
+
+const handleSave = () => {
+  let body = {
+    title: formEls.project_name,
+    description: formEls.description,
+    labels: formEls.tags,
+    post_type: formEls.type,
+    metrics: {},
+    reports: [],
+  };
+
+  if (formEls.type === "Report") {
+    body.proposal_id = formEls.proposal_id;
+    body.report_version = "V1";
+  } else {
+    body.proposal_version = "V1";
+  }
+
+  Near.call(contractName, "add_dao_post", {
+    dao_id: parseInt(daoId),
+    body,
+  });
 };
 
 return (
@@ -151,23 +166,17 @@ return (
     <div className="d-flex justify-content-center">
       <FormWrapper className="mt-3 mb-5 d-flex flex-column gap-3">
         <div className="title d-flex flex-column align-items-center text-center mb-4">
-          <h1>Marketing DAO Reports & Proposals Form</h1>
+          <h1>DAO Proposal / Report Form</h1>
           <div className="mt-3 text-center">
             <p>
               <b>Please use this form to report key performance metrics.</b>
             </p>
-            <div className="text-center">
-              <i className="fs-6 bi bi-info-circle-fill" /> Questions? Reach out
-              via <a href="https://t.me/ndc_marketing">Telegram</a> or email:
-              <a href="mailto:marketingdao@proton.me">marketingdao@proton.me</a>
-              🙂
-            </div>
           </div>
         </div>
 
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Form"
-          props={{ form, formEls, setFormEls, handleChange }}
+          props={{ form, formEls, setFormEls, handleChange, handleSave }}
         />
       </FormWrapper>
     </div>

@@ -1,10 +1,6 @@
 const { item, index, showMoreDefault, showRepliesDefault } = props;
-let { assets, content, socialKey } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
-);
+let { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 assets = assets.home;
-content = content.home;
-const accountId = context.accountId;
 
 const Container = styled.div`
   width: 100%;
@@ -80,7 +76,7 @@ const Card = styled.div`
 
   :hover {
     background: #ffffff;
-  } 
+  }
 `;
 
 const Replies = styled.div`
@@ -96,7 +92,7 @@ const ProposalContent = styled.div`
   height: 40px;
   width: 180px;
   padding: 10px;
-  background-color: #A4C2FD1A;
+  background-color: #a4c2fd1a;
   border-radius: 18px;
   color: #686467;
   span {
@@ -104,8 +100,8 @@ const ProposalContent = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-  } 
-`
+  }
+`;
 
 const CardContainer = styled.div`
   padding: 3px;
@@ -119,37 +115,15 @@ const CardContainer = styled.div`
       #adc3fb 99.83%
     );
   }
-`
+`;
 
 const [showMore, setShowMore] = useState(showMoreDefault);
 const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
-const pageName = props.type === 'report' ? 'reports' : 'proposals';
-
-const [liked, setLiked] = useState(false);
-const likes = Social.index("graph", `${socialKey}.like`, { order: "desc" });
-likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
-const myLike = likes ? likes.some((like) => like.value[accountId]) : false;
-setLiked(myLike);
-
+const pageName = props.type === "report" ? "reports" : "proposals";
 const [replies, setReplies] = useState([]);
-const repl = Social.index("graph", `${socialKey}.reply`, { order: "desc" });
-replies = repl ? repl.filter((repl) => repl.value.parentId === item.id) : [];
-setReplies(replies);
 
-const handleLike = () => {
-  Social.set({
-    index: {
-      graph: JSON.stringify({
-        key: `${socialKey}.like`,
-        value: {
-          parentId: item.id,
-          [accountId]: !myLike,
-        },
-      }),
-    },
-  });
-};
+const handleLike = () => {};
 
 const CardItem = ({ item, index }) => (
   <CardContainer>
@@ -158,24 +132,26 @@ const CardItem = ({ item, index }) => (
         <Widget
           src="mob.near/widget/Profile"
           props={{
-            accountId: item.accountId,
+            accountId: item.editor_id,
             tooltip: true,
           }}
         />
         <div className="d-flex gap-3 align-items-center justify-content-between">
           <small>
-            {new Date(item.id).toLocaleDateString()}
+            {new Date(item.timestamp / 1000000).toLocaleDateString()}
           </small>
           <Widget
             src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-            props={{ text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}` }}
+            props={{
+              text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}`,
+            }}
           />
         </div>
       </div>
       <div className="d-flex flex-column gap-1">
-        <h3>{item.project_name}</h3>
+        <h3>{item.title}</h3>
         <div className="d-flex flex-column gap-1">
-          {item.type === "proposal" && (
+          {item.post_type === "Proposal" && (
             <div className="info">
               <small style={{ width: "150px" }}>Requested amount:</small>
               <small>{item.requested_amount ?? 0} USD</small>
@@ -188,31 +164,14 @@ const CardItem = ({ item, index }) => (
                 <Widget
                   src="mob.near/widget/ProfileImage"
                   props={{
-                    accountId: content.daoAccountId,
+                    accountId: item.editor_id,
                     style: { height: "20px", width: "20px" },
                   }}
                 />
               </small>
-              <small>{content.dao}</small>
+              <small>{item.editor_id}</small>
             </div>
           </div>
-          {item.attachments && (
-            <div className="info">
-              <small style={{ width: "150px" }}>Attachments:</small>
-              <small>
-                <a href={item.attachments} download>
-                  <i className="bi bi-download" />
-                  Download File
-                </a>
-              </small>
-            </div>
-          )}
-          {item.contact && (
-            <div className="info">
-              <small style={{ width: "150px" }}>Contact telegram:</small>
-              <small>{item.contact}</small>
-            </div>
-          )}
         </div>
       </div>
       <small>
@@ -221,7 +180,8 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2 align-items-center"
           onClick={() => setShowMore(showMore === index ? null : index)}
         >
-          <i style={{ color: '#A4C2FD' }}
+          <i
+            style={{ color: "#A4C2FD" }}
             className={`fs-5 bi ${
               showMore === index ? "bi-eye-slash" : "bi-eye"
             }`}
@@ -231,77 +191,28 @@ const CardItem = ({ item, index }) => (
       </small>
 
       {showMore === index && (
-        <>
-          {item.type === "report" ? (
-            <>
-              <div>
-                <small>
-                  <b>Metrics</b>
-                </small>
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="metric d-flex flex-column justify-content-center align-items-center">
-                    <small>Audience</small>
-                    <b>{item["metric:audience"]}%</b>
-                  </div>
-                  <div className="metric d-flex flex-column justify-content-center align-items-center">
-                    <small>AER</small>
-                    <b>{item["metric:average_engagement_rate"]}%</b>
-                  </div>
-                  <div className="metric d-flex flex-column justify-content-center align-items-center">
-                    <small>Growth</small>
-                    <b>{item["metric:growth"]}%</b>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <small>
-                  <b>
-                    Performance Statement: What is the biggest win (most
-                    improved part of project) during this funding period vs. the
-                    previous one (if applicable)?
-                  </b>
-                </small>
-                <Widget
-                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                  props={{ text: item["performance_statement:answer_1"] }}
-                />
-              </div>
-              <div>
-                <small>
-                  <b>
-                    Performance statement: What is the biggest challenge your
-                    project is facing? What did not improve during this funding
-                    period?
-                  </b>
-                </small>
-                <Widget
-                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                  props={{ text: item["performance_statement:answer_2"] }}
-                />
-              </div>
-            </>
-          ) : (
-            <p>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{ text: item.description }}
-              />
-            </p>
-          )}
-        </>
+        <p>
+          <Widget
+            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+            props={{ text: item.description }}
+          />
+        </p>
       )}
 
-      {item.tag && (
+      {item.labels && (
         <div className="d-flex flex-wrap gap-2">
-          {item.tag?.map((tag) => (
+          {item.labels?.map((tag) => (
             <div className="tag">{tag}</div>
           ))}
         </div>
       )}
       <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
-          {likes.length}
-          <i style={{color: liked ? '#EE9CBF' : '#303030'}} className="bi bi-heart-fill" />
+          {item.likes.length}
+          <i
+            style={{ color: liked ? "#EE9CBF" : "#303030" }}
+            className="bi bi-heart-fill"
+          />
           Like
         </div>
 
@@ -310,26 +221,26 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2"
           onClick={() => setShowReply(!showReply)}
         >
-          <i style={{color: '#303030'}} className="bi bi-chat-fill" />
+          <i style={{ color: "#303030" }} className="bi bi-chat-fill" />
           Reply
         </div>
         <div onClick={() => setShowReply(!showReply)}>
-            <i className="bi bi-chevron-down fs-5 mt-1" />
-              Expand Replies
-              <small>({replies.length})</small>
-          </div>
-        <div>
+          <i className="bi bi-chevron-down fs-5 mt-1" />
+          Expand Replies
+          <small>({replies.length})</small>
         </div>
+        <div></div>
         <ProposalContent>
-            <span>
-              {`Go to ${props.type === 'report' ? 'Report': 'Proposal'}`}
-            </span>
-            <Link
-              to={`//*__@replace:widgetPath__*/.App?page=${pageName}&id=${item.id}`}
-            >
-             <i style={{color: "#A4C2FD"}} class={'bi bi-box-arrow-up-right'}/>
-            </Link>
-          </ProposalContent>
+          <span>{`Go to ${item.post_type}`}</span>
+          <Link
+            to={`//*__@replace:widgetPath__*/.App?page=${item.post_type}&id=${item.id}`}
+          >
+            <i
+              style={{ color: "#A4C2FD" }}
+              class={"bi bi-box-arrow-up-right"}
+            />
+          </Link>
+        </ProposalContent>
       </div>
 
       <Replies>

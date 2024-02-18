@@ -1,4 +1,9 @@
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
+
+const { id, daoId, type } = props;
+
 const Container = styled.div`
   width: 100%;
   height: max-content;
@@ -9,30 +14,22 @@ const Container = styled.div`
   }
 `;
 
-const items = Social.index("graph", socialKey, { order: "desc" });
+const items = Near.view(contractName, "get_dao_posts", {
+  dao_id: parseInt(daoId),
+  status: "InReview",
+});
 
 return (
   <Container>
-    {props.id ? (
-      <Widget
-        src="/*__@replace:widgetPath__*/.Components.Item"
-        props={{
-          item: items.find((i) => i.value.id === parseInt(props.id)).value,
-          index: 0,
-          showMoreDefault: 0,
-          showRepliesDefault: true,
-          type: props.type
-        }}
-      />
-    ) : (
+    {daoId && (
       <>
-        <div  className="mb-4">
+        <div className="mb-4">
           <a
-            style={{background: '#A4C2FD'}}
+            style={{ background: "#A4C2FD" }}
             className="btn-primary"
-            href="//*__@replace:widgetPath__*/.App?page=createProposal"
-          > 
-            <span style={{fontSize: '24px', width: '20%', margin: 'auto'}}>
+            href={`//*__@replace:widgetPath__*/.App?page=create_proposal&daoId=${daoId}`}
+          >
+            <span style={{ fontSize: "24px", width: "20%", margin: "auto" }}>
               CREATE POST
             </span>
           </a>
@@ -40,11 +37,11 @@ return (
         <div className="d-flex flex-column gap-4">
           {items &&
             items
-              .filter((i) => i.value.type === props.type)
+              .filter((i) => i.post_type === type)
               .map((item, index) => (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Item"
-                  props={{ item: item.value, index, type: props.type }}
+                  props={{ item, index, type }}
                 />
               ))}
         </div>
