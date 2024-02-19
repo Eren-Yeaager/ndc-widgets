@@ -57,94 +57,86 @@ CONTRACT=v1.test-mdao.near
 
 - Add DAO
 ```cmd
-near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$OWNER_ACCOUNT'", "owner2.testnet"], "category_list":["label1","label2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$ACCOUNT_ID'", "root.near"], "category_list":["label1","label2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 
 - Get list of all DAOs (view)
 ```cmd
-near view "$CONTRACT" get_dao_list ''
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_list ''
 ```
 
 - Get DAO by ID (view)
 ```cmd
-near view "$CONTRACT" get_dao_by_id '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_id '{"id":1}'
 ```
 
 - Get DAO by handle (view)
 ```cmd
-near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}'
 ```
+
 
 ### Requests/reports
 
 - Add Proposal
 ```cmd
-near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Add Report
 ```cmd
-near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
-
-- Edit proposal
+- Edit Proposal
 ```cmd
-near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "labels":["label1"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "labels":["label1"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
-
-- Edit report
+- Edit Report
 ```cmd
-near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
-
 
 - Like proposals/reports
 ```cmd
-near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
-
 
 - Remove like from proposals/reports
 ```cmd
-near call "$CONTRACT" post_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" post_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
 
-- Get all proposals/reports EXCEPT "in_review" (view)
+- Get all proposals/reports EXCEPT "in_review" for all DAO (view)
 ```cmd
-near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
 ```
-
 
 - Get all proposals/reports for specific DAO EXCEPT "in_review" (view)
 ```cmd
-near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
 ```
-
 
 - Get all DAO proposals/reports by status, for example "in_review" (view)
 ```cmd
-near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview"}'
 ```
 Status list: InReview, New, Approved, Rejected, Closed
 
-
 - Get proposals/reports by author (view)
 ```cmd
- near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'"}'
 ```
-
 
 - Get post by ID (view)
 ```cmd
-near view "$CONTRACT" get_post_by_id '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_post_by_id '{"id":1}'
 ```
-
 
 - Get post history (view)
 ```cmd
-near view "$CONTRACT" get_post_history '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_post_history '{"id":1}'
 ```
 
 
@@ -152,80 +144,79 @@ near view "$CONTRACT" get_post_history '{"id":1}'
 
 - Add Comment
 ```cmd
-near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text"}' --accountId "$ACCOUNT_ID"
 ```
-
 
 - Add reply to comment
 ```cmd
-near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text"}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit comment
 ```cmd
-near call "$CONTRACT" edit_comment '{"id":1, "description":"Some text upd"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"id":1, "description":"Some text upd"}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get all comments for post (view)
 ```cmd
-near view "$CONTRACT" get_post_comments '{"post_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_post_comments '{"post_id":1}'
 ```
-
 
 - Get comment by ID (view)
 ```cmd
-near view "$CONTRACT" get_comment_by_id '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_comment_by_id '{"id":1}'
 ```
-
 
 - Get comments by author (view)
 ```cmd
-near view "$CONTRACT" get_comments_by_author '{"author":"'$ACCOUNT_ID'"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_comments_by_author '{"author":"'$ACCOUNT_ID'"}'
 ```
-
 
 - Get comment history (view)
 ```cmd
-near view "$CONTRACT" get_comment_history '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_comment_history '{"id":1}'
 ```
-
 
 - Like comment
 ```cmd
-near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
 
 - Remove like from comment
 ```cmd
-near call "$CONTRACT" comment_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" comment_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
 
+
 ### Communities
+
 - Add community
 ```cmd
+NEAR_ENV=mainnet near
 ```
 
 - Edit community
 ```cmd
+NEAR_ENV=mainnet near 
 ```
 
-- Get list of DAO communities (view)
+- Get list of communities for DAO (view)
 ```cmd
-near view "$CONTRACT" get_dao_communities '{"dao_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"dao_id":1}'
 ```
 
 - Get community by ID (view)
 ```cmd
-near view "$CONTRACT" get_dao_communities '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"id":1}'
 ```
 
 - Get community by handle (view)
 ```cmd
-near view "$CONTRACT" get_community_by_handle '{"handle":"some-community"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-community"}'
 ```
 
 ### Access Control
 - Get user access roles (view)
 ```cmd
-near view "$CONTRACT" get_account_access '{"account_id":"account.near"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_account_access '{"account_id":"account.near"}'
 ```

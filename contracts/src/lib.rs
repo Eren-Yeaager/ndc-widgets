@@ -124,8 +124,9 @@ impl Contract {
             .cloned()
             .collect();
 
+        let total_available_posts = available_post_ids.len();
         let start = page.saturating_mul(limit);
-        let end = std::cmp::min(start.saturating_add(limit), self.total_posts);
+        let end = std::cmp::min(start + limit, total_available_posts as u64);
 
         available_post_ids[start as usize..end as usize]
             .iter()
