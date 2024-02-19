@@ -2,7 +2,8 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
-const { id, daoId, type } = props;
+let { id, daoId, type } = props;
+daoId = daoId ?? 1;
 
 const Container = styled.div`
   width: 100%;
@@ -13,6 +14,11 @@ const Container = styled.div`
     padding: 1rem;
   }
 `;
+
+// const items = Near.view(contractName, "get_all_posts", {
+//   page: 0,
+//   limit: 100,
+// });
 
 const items = Near.view(contractName, "get_dao_posts", {
   dao_id: parseInt(daoId),

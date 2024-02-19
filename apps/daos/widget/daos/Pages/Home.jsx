@@ -7,7 +7,7 @@ content = content.home;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: max-content;
+  height: 100vh;
   overflow: hidden;
 
   h3 {

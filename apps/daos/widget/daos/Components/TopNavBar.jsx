@@ -3,23 +3,26 @@ const { hasNotifications } = props;
 
 const links = [
   {
-    text: "Reports",
-    href: "//*__@replace:widgetPath__*/.App?page=reports",
-    icon: <i className="bi bi-clipboard-data-fill fs-5" />,
-  },
-  {
     text: "Proposals",
     href: "//*__@replace:widgetPath__*/.App?page=proposals",
     icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
   },
   {
+    text: "Reports",
+    href: "//*__@replace:widgetPath__*/.App?page=reports",
+    disabled: true,
+    icon: <i className="bi bi-clipboard-data-fill fs-5" />,
+  },
+  {
     text: "Comments",
     href: "//*__@replace:widgetPath__*/.App?page=comments",
+    disabled: true,
     icon: <i className="bi bi-chat-square-text-fill fs-5" />,
   },
   {
     text: "Favourites",
     href: "//*__@replace:widgetPath__*/.App?page=favourites",
+    disabled: true,
     icon: <i className="bi bi-star-fill fs-5" />,
   },
 ];
@@ -38,12 +41,13 @@ const Navbar = styled.div`
 
 const LinksContainer = styled.div`
   color: #151718;
-  font-size: 20px;
+  font-size: 18px;
 
   a {
     padding: 2rem 1.5rem;
-    &:hover {
-      text-decoration: none;
+    text-decoration: none;
+
+    &.active:hover {
       background: rgba(164, 194, 253, 0.2);
       font-weight: bold;
 
@@ -51,20 +55,30 @@ const LinksContainer = styled.div`
         color: #a4c2fd;
       }
     }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: #ccc;
+    }
   }
 `;
 
 return (
   <Navbar>
-    <div className="d-flex gap-3">
-      <i style={{ color: "#a4c2fd" }} className="bi bi-person-circle fs-3" />
-      <h3>
+    <div className="d-flex gap-3 items-center">
+      <i style={{ color: "#a4c2fd" }} className="bi bi-person-circle fs-5" />
+      <h4>
         <b>My Activity</b>
-      </h3>
+      </h4>
     </div>
     <LinksContainer className="d-flex justify-content-between">
-      {links.map(({ icon, text, href }) => (
-        <a className="d-flex gap-2 align-items-center" href={href}>
+      {links.map(({ icon, disabled, text, href }) => (
+        <a
+          className={`d-flex gap-2 align-items-center ${
+            disabled ? "disabled" : "active"
+          }`}
+          href={href}
+        >
           {icon}
           <div>{text}</div>
         </a>
