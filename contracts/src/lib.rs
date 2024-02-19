@@ -7,6 +7,7 @@ pub mod migrations;
 pub mod str_serializers;
 mod user;
 
+use std::collections::HashSet;
 use storage_keys::*;
 use post::*;
 
@@ -44,7 +45,7 @@ pub struct Contract {
     pub dao_communities: LookupMap<DaoId, Vec<CommunityId>>,
     // pub dao_handles: UnorderedMap<String, DaoId>,
 
-    pub posts: LookupMap<PostId, VersionedPost>,
+    pub posts: UnorderedMap<PostId, VersionedPost>,
     pub comments: LookupMap<CommentId, VersionedComment>,
     pub communities: UnorderedMap<CommunityId, VersionedCommunity>,
     // pub community_handles: UnorderedMap<String, CommunityId>,
@@ -53,6 +54,7 @@ pub struct Contract {
     pub category_posts: UnorderedMap<CategoryLabel, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
 
+    pub post_status: LookupMap<PostStatus, Vec<PostId>>,
     pub post_authors: UnorderedMap<AccountId, Vec<PostId>>,
     pub comment_authors: UnorderedMap<AccountId, Vec<CommentId>>,
     pub user_follow: LookupMap<AccountId, Vec<UserFollow>>,
@@ -74,7 +76,7 @@ impl Contract {
             dao_posts: LookupMap::new(StorageKey::DaoPosts),
             dao_communities: LookupMap::new(StorageKey::DaoCommunities),
 
-            posts: LookupMap::new(StorageKey::Posts),
+            posts: UnorderedMap::new(StorageKey::Posts),
             comments: LookupMap::new(StorageKey::Comments),
             communities: UnorderedMap::new(StorageKey::Communities),
 
@@ -82,6 +84,7 @@ impl Contract {
             category_posts: UnorderedMap::new(StorageKey::CategoryPosts),
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
 
+            post_status: LookupMap::new(StorageKey::PostStatus),
             post_authors: UnorderedMap::new(StorageKey::PostAuthors),
             comment_authors: UnorderedMap::new(StorageKey::CommentAuthors),
             user_follow: LookupMap::new(StorageKey::UserFollow),
@@ -112,14 +115,21 @@ impl Contract {
         self.dao.values().collect()
     }
 
-    // Post: Get all posts
+    // Post: Get all posts from all DAOs except InReview status
     pub fn get_all_posts(&self, page:u64, limit:u64) -> Vec<VersionedPost> {
-        let start = page.saturating_mul(limit);
-        let end = start.saturating_add(limit);
+        let all_post_ids: HashSet<PostId> = self.posts.keys().collect();
+        let in_review_post_ids: HashSet<PostId> = self.post_status.get(&PostStatus::InReview).unwrap_or_default().iter().cloned().collect();
 
-        // TODO: Add filter by status
-        (start..end)
-            .filter_map(|post_id| self.posts.get(&post_id))
+        let available_post_ids: Vec<PostId> = all_post_ids.difference(&in_review_post_ids)
+            .cloned()
+            .collect();
+
+        let start = page.saturating_mul(limit);
+        let end = std::cmp::min(start.saturating_add(limit), self.total_posts);
+
+        available_post_ids[start as usize..end as usize]
+            .iter()
+            .filter_map(|post_id| self.posts.get(post_id))
             .collect()
     }
 

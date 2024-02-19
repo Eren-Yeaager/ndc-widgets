@@ -171,6 +171,11 @@ impl Contract {
         post_authors.push(post_id.clone());
         self.post_authors.insert(&author_id, &post_authors);
 
+        // Add to post_status
+        let mut post_by_status = self.post_status.get(&PostStatus::InReview).unwrap_or(vec![]);
+        post_by_status.push(post_id.clone());
+        self.post_status.insert(&PostStatus::InReview, &post_by_status);
+
         // Add to category_posts label
         if let Some(category) = body.get_post_category() {
             let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
@@ -258,16 +263,27 @@ impl Contract {
         assert!(dao_owners.contains(&env::predecessor_account_id()), "Only DAO owners can change the post status");
         assert_ne!(post.snapshot.status, status, "Post already has this status");
 
+        // TODO: Add restrictions & rules for status changes
+
+        // Cleanup old post_status
+        let mut post_by_status = self.post_status.get(&post.snapshot.status).unwrap_or(vec![]);
+        post_by_status.retain(|&x| x != post.id);
+        self.post_status.insert(&post.snapshot.status, &post_by_status);
+
+        // Update post
         post.snapshot_history.push(post.snapshot.clone());
         post.snapshot = PostSnapshot {
-            status,
+            status: status.clone(),
             editor_id: env::predecessor_account_id(),
             timestamp: env::block_timestamp(),
             body: post.snapshot.body.clone(),
         };
         self.posts.insert(&post.id, &post.clone().into());
 
-        // TODO: Add restrictions & rules for status changes
+        // Add to new post_status
+        let mut post_by_status = self.post_status.get(&status).unwrap_or(vec![]);
+        post_by_status.push(post.id.clone());
+        self.post_status.insert(&status, &post_by_status);
 
         near_sdk::log!("POST STATUS CHANGED: {}", post.id);
     }

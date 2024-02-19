@@ -13,6 +13,7 @@ pub enum StorageKey {
     LabelToPosts,
     CategoryPosts,
     CommunityPosts,
+    PostStatus,
     PostAuthors,
     CommentAuthors,
     UserFollow,
