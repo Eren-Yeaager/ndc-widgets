@@ -112,6 +112,17 @@ impl Contract {
         self.dao.values().collect()
     }
 
+    // Post: Get all posts
+    pub fn get_all_posts(&self, page:u64, limit:u64) -> Vec<VersionedPost> {
+        let start = page.saturating_mul(limit);
+        let end = start.saturating_add(limit);
+
+        // TODO: Add filter by status
+        (start..end)
+            .filter_map(|post_id| self.posts.get(&post_id))
+            .collect()
+    }
+
     // Posts: Get Proposals/Reports by ID
     pub fn get_post_by_id(&self, id: &PostId) -> VersionedPost {
         self.posts.get(id).unwrap_or_else(|| panic!("Post id {} not found", id))

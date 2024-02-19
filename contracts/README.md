@@ -111,8 +111,13 @@ near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
 near call "$CONTRACT" post_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
 
+- Get all proposals/reports EXCEPT "in_review" (view)
+```cmd
+near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
+```
 
-- Get all DAO proposals/reports EXCEPT "in_review" (view)
+
+- Get all proposals/reports for specific DAO EXCEPT "in_review" (view)
 ```cmd
 near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
 ```
