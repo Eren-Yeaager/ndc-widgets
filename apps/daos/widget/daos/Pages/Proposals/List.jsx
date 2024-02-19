@@ -25,6 +25,8 @@ const items = Near.view(contractName, "get_dao_posts", {
   status: "InReview",
 });
 
+if (!items) return <Widget src="flashui.near/widget/Loading" />;
+
 return (
   <Container>
     {daoId && (

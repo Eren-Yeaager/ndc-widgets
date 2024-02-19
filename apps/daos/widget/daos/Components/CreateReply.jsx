@@ -181,7 +181,7 @@ const Actions = styled.div`
 
   .commit-post-button,
   .preview-post-button {
-    background: #A4C2FD;
+    background: #a4c2fd;
     color: #09342e;
     border-radius: 40px;
     height: 40px;
@@ -291,7 +291,7 @@ return (
           props={{
             item: {
               text: state.text,
-              isPreview: true
+              isPreview: true,
             },
           }}
         />

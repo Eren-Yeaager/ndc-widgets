@@ -1,5 +1,5 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 
 const page = props.page;

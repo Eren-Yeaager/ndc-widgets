@@ -5,7 +5,6 @@ return (
       <Tooltip>{state.copied ? "Copied!" : "Copy to clipboard"}</Tooltip>
     }
   >
-
     <span
       onClick={() => {
         clipboard.writeText(props.text).then(() => {
@@ -18,12 +17,17 @@ return (
     >
       {state.copied ? (
         <>
-          {props.copiedIcon ?? <i  style={{color: "#A4C2FD"}} className="bi bi-check-lg" />}
+          {props.copiedIcon ?? (
+            <i style={{ color: "#A4C2FD" }} className="bi bi-check-lg" />
+          )}
           {props.copiedLabel ?? props.label}
         </>
       ) : (
         <>
-          {props.clipboardIcon ?? <i  style={{color: "#A4C2FD"}} className="bi bi-share" />} {props.label}
+          {props.clipboardIcon ?? (
+            <i style={{ color: "#A4C2FD" }} className="bi bi-share" />
+          )}{" "}
+          {props.label}
         </>
       )}
     </span>
