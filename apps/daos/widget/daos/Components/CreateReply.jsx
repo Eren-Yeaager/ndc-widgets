@@ -1,5 +1,5 @@
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { id } = props;
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+const { id, description } = props;
 const accountId = context.accountId;
 
 if (!accountId) {
@@ -7,7 +7,6 @@ if (!accountId) {
 }
 
 State.init({
-  image: {},
   text: "",
   showPreview: false,
 });
@@ -16,30 +15,19 @@ const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
 
 const content = {
-  id: new Date().getTime(),
   accountId,
   text: state.text,
 };
 
 function composeData() {
-  const data = {
-    index: {
-      graph: JSON.stringify({
-        key: `${socialKey}.reply`,
-        value: {
-          parentId: id,
-          ...content,
-        },
-      }),
-    },
-  };
-
-  return data;
+  Near.call(contractName, "add_comment", {
+    post_id: id,
+    description: state.text,
+  });
 }
 
 function onCommit() {
   State.update({
-    image: {},
     text: "",
   });
 }
@@ -368,7 +356,6 @@ return (
         force
         data={composeData}
         onCancel={onCancel}
-        onClick={onPostClick}
         onCommit={onCommit}
         className="commit-post-button"
       >

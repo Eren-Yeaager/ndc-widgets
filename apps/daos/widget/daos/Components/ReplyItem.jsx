@@ -1,9 +1,9 @@
 // Copy of old version of src/Posts/Post.jsx
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { item, showCreate } = props;
 const accountId = context.accountId;
 
-if (!socialKey) return <Widget src="flashui.near/widget/Loading" />;
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const Post = styled.div`
   position: relative;
@@ -86,7 +86,9 @@ const [showMore, setShowMore] = useState(null);
 const [liked, setLiked] = useState(false);
 const [showReply, setShowReply] = useState({ [item.id]: showCreate });
 
-const comments = Social.index("graph", `${socialKey}.reply`, { order: "desc" });
+const comments = Near.view(contractName, "get_post_comments", {
+  post_id: item.id,
+});
 let likes = Social.index("graph", `${socialKey}.like`, { order: "desc" });
 likes = likes ? likes.filter((like) => like.value.parentId === item.id) : [];
 const myLike = likes ? likes.some((like) => like.value[accountId]) : false;

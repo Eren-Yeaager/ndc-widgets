@@ -50,7 +50,6 @@ const Card = styled.div`
   }
 
   .actions {
-    margin-top: 1rem;
     gap: 3rem;
 
     @media screen and (max-width: 786px) {
@@ -61,13 +60,14 @@ const Card = styled.div`
 
   .tag {
     border-radius: 50px;
-    background: #a4c2fd;
-    min-width: 140px;
+    background-color: #a4c2fd1a;
+    border: 1px solid rgb(225 235 255);
+    min-width: 100px;
     width: max-content;
     padding: 4px 15px;
     font-size: 14px;
     text-align: center;
-    color: white;
+    color: #686467;
   }
 
   @media screen and (max-width: 786px) {
@@ -77,6 +77,21 @@ const Card = styled.div`
   :hover {
     background: #ffffff;
   }
+
+  i,
+  .blue {
+    color: rgb(146 168 210);
+  }
+`;
+
+const Status = styled.div`
+  border-radius: 50px;
+  border: 1px solid ${(props) => props.color};
+  width: max-content;
+  padding: 4px 15px;
+  font-size: 14px;
+  text-align: center;
+  color: ${(props) => props.color};
 `;
 
 const Replies = styled.div`
@@ -84,23 +99,17 @@ const Replies = styled.div`
   padding-top: 1rem;
 `;
 
-const ProposalContent = styled.div`
+const Button = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
   margin-left: auto;
   height: 40px;
-  width: 180px;
-  padding: 10px;
+  padding: 10px 20px;
   background-color: #a4c2fd1a;
   border-radius: 18px;
   color: #686467;
-  span {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
 `;
 
 const CardContainer = styled.div`
@@ -125,6 +134,23 @@ const [replies, setReplies] = useState([]);
 
 const handleLike = () => {};
 
+const colorMap = (status) => {
+  switch (status) {
+    case "New":
+      return "rgb(146 168 210)";
+    case "Closed":
+      return "rgb(196 196 196)";
+    case "InReview":
+      return "rgb(223 193 73)";
+    case "Approved":
+      return "rgb(99 222 100)";
+    case "Rejected":
+      return "rgb(214 113 113)";
+    default:
+      break;
+  }
+};
+
 const CardItem = ({ item, index }) => (
   <CardContainer>
     <Card key={index} className="d-flex flex-column gap-3">
@@ -137,26 +163,18 @@ const CardItem = ({ item, index }) => (
           }}
         />
         <div className="d-flex gap-3 align-items-center justify-content-between">
-          <small>
-            {new Date(item.timestamp / 1000000).toLocaleDateString()}
-          </small>
-          <Widget
-            src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-            props={{
-              text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}`,
-            }}
-          />
+          <Status color={colorMap(item.status)}>{item.status}</Status>
         </div>
       </div>
-      <div className="d-flex flex-column gap-1">
+      <div className="d-flex flex-column gap-2">
         <h3>{item.title}</h3>
         <div className="d-flex flex-column gap-1">
-          {item.post_type === "Proposal" && (
-            <div className="info">
-              <small style={{ width: "150px" }}>Requested amount:</small>
-              <small>{item.requested_amount ?? 0} USD</small>
-            </div>
-          )}
+          <div className="info">
+            <small>
+              <span>Created at:</span>
+              {new Date(item.timestamp / 1000000).toLocaleDateString()}
+            </small>
+          </div>
           <div className="info">
             <small style={{ width: "150px" }}>Requested sponsor:</small>
             <div className="d-flex align-items-center gap-1">
@@ -174,46 +192,37 @@ const CardItem = ({ item, index }) => (
           </div>
         </div>
       </div>
-      <small>
-        <div
-          role="button"
-          className="d-flex gap-2 align-items-center"
-          onClick={() => setShowMore(showMore === index ? null : index)}
-        >
+      <a
+        role="button"
+        onClick={() => setShowMore(showMore === index ? null : index)}
+      >
+        <b>
+          See More
           <i
-            style={{ color: "#A4C2FD" }}
-            className={`fs-5 bi ${
-              showMore === index ? "bi-eye-slash" : "bi-eye"
-            }`}
+            className={`bi ${showMore === index ? "bi-eye" : "bi-eye-slash"}`}
           />
-          <b>See more</b>
-        </div>
-      </small>
+        </b>
+      </a>
 
       {showMore === index && (
-        <p>
-          <Widget
-            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-            props={{ text: item.description }}
-          />
-        </p>
+        <Widget
+          src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+          props={{ text: item.description }}
+        />
       )}
 
-      {item.labels && (
+      {item.labels?.length > 0 && (
         <div className="d-flex flex-wrap gap-2">
           {item.labels?.map((tag) => (
-            <div className="tag">{tag}</div>
+            <div className="tag"># {tag}</div>
           ))}
         </div>
       )}
+
       <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
-          {item.likes.length}
-          <i
-            style={{ color: liked ? "#EE9CBF" : "#303030" }}
-            className="bi bi-heart-fill"
-          />
-          Like
+          <span className="blue">{item.likes.length}</span>
+          <i className={`bi ${liked ? "bi-heart-fill" : "bi-heart"}`} />
         </div>
 
         <div
@@ -221,36 +230,37 @@ const CardItem = ({ item, index }) => (
           className="d-flex gap-2"
           onClick={() => setShowReply(!showReply)}
         >
-          <i style={{ color: "#303030" }} className="bi bi-chat-fill" />
-          Reply
+          <span className="blue">{replies.length}</span>
+          <i className="bi bi-chat" />
         </div>
-        <div onClick={() => setShowReply(!showReply)}>
-          <i className="bi bi-chevron-down fs-5 mt-1" />
-          Expand Replies
-          <small>({replies.length})</small>
+
+        <div role="button" className="d-flex gap-2">
+          <Widget
+            src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+            props={{
+              text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}`,
+            }}
+          />
         </div>
-        <div></div>
-        <ProposalContent>
-          <span>{`Go to ${item.post_type}`}</span>
+
+        <Button role="button">
+          <span>{`Open ${item.post_type}`}</span>
           <Link
             to={`//*__@replace:widgetPath__*/.App?page=${item.post_type}&id=${item.id}`}
           >
-            <i
-              style={{ color: "#A4C2FD" }}
-              class={"bi bi-box-arrow-up-right"}
-            />
+            <i className={"bi bi-box-arrow-up-right"} />
           </Link>
-        </ProposalContent>
+        </Button>
       </div>
 
-      <Replies>
-        {showReply && (
+      {showReply && (
+        <Replies>
           <Widget
             src="/*__@replace:widgetPath__*/.Components.ReplyItem"
             props={{ item, showCreate: true }}
           />
-        )}
-      </Replies>
+        </Replies>
+      )}
     </Card>
   </CardContainer>
 );

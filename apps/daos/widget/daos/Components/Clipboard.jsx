@@ -17,17 +17,12 @@ return (
     >
       {state.copied ? (
         <>
-          {props.copiedIcon ?? (
-            <i style={{ color: "#A4C2FD" }} className="bi bi-check-lg" />
-          )}
+          {props.copiedIcon ?? <i className="bi bi-check-lg" />}
           {props.copiedLabel ?? props.label}
         </>
       ) : (
         <>
-          {props.clipboardIcon ?? (
-            <i style={{ color: "#A4C2FD" }} className="bi bi-share" />
-          )}{" "}
-          {props.label}
+          {props.clipboardIcon ?? <i className="bi bi-share" />} {props.label}
         </>
       )}
     </span>
