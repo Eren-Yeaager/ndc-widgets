@@ -143,13 +143,15 @@ const Wrapper = styled.div`
   margin: 3rem 0;
 `;
 
-function AppLayout({ page, children }) {
+function AppLayout({ page, props, children }) {
   return (
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
         <Wrapper>
-          <Widget src={`/*__@replace:widgetPath__*/.Components.TopNavBar`} />
+          {page !== 'activity' &&
+            <Widget src={`/*__@replace:widgetPath__*/.Components.TopNavBar`} props={props}/>
+          }
           {children}
         </Wrapper>
         <Widget

@@ -2,7 +2,7 @@ const { AppLayout } = VM.require(`/*__@replace:widgetPath__*/.Layouts.App`);
 const { page, ...passProps } = props;
 
 if (!AppLayout) return <Widget src="flashui.near/widget/Loading" />;
-if (!page) page = "home";
+if (!page) page = "activity";
 
 function Page() {
   switch (page) {
@@ -10,6 +10,14 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Comment`}
+          props={passProps}
+        />
+      );
+    }
+    case "activity": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Activity`}
           props={passProps}
         />
       );
@@ -109,7 +117,7 @@ function Page() {
 }
 
 return (
-  <AppLayout page={page}>
+  <AppLayout page={page} props={props}>
     <Page />
   </AppLayout>
 );

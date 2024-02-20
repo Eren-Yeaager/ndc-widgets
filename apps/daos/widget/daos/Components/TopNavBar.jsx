@@ -1,10 +1,15 @@
 const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { hasNotifications } = props;
+const { hasNotifications, daoId } = props;
 
 const links = [
   {
+    text: "Reports",
+    href: `//*__@replace:widgetPath__*/.App?page=reports&daoId=${daoId}`,
+    icon: <i className="bi bi-clipboard-data-fill fs-5" />,
+  },
+  {
     text: "Proposals",
-    href: "//*__@replace:widgetPath__*/.App?page=proposals",
+    href: `//*__@replace:widgetPath__*/.App?page=proposals&daoId=${daoId}`,
     icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
   },
   {
@@ -15,14 +20,12 @@ const links = [
   },
   {
     text: "Comments",
-    href: "//*__@replace:widgetPath__*/.App?page=comments",
-    disabled: true,
+    href: `//*__@replace:widgetPath__*/.App?page=comments&daoId=${daoId}`,
     icon: <i className="bi bi-chat-square-text-fill fs-5" />,
   },
   {
     text: "Favourites",
-    href: "//*__@replace:widgetPath__*/.App?page=favourites",
-    disabled: true,
+    href: `//*__@replace:widgetPath__*/.App?page=favourites&daoId=${daoId}`,
     icon: <i className="bi bi-star-fill fs-5" />,
   },
 ];
