@@ -92,3 +92,76 @@ impl Contract {
         self.comments.insert(&id, &comment.into());
     }
 }
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use crate::post::{Post};
+    use crate::post::comment::Comment;
+    use crate::tests::{setup_contract, create_new_dao};
+    use crate::post::tests::create_proposal;
+
+    #[test]
+    pub fn test_like_post() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+
+        // Try to like post 2 times, only 1 like should be added
+        contract.post_like(proposal_id.clone());
+        contract.post_like(proposal_id.clone());
+        let post: Post= contract.get_post_by_id(&proposal_id).into();
+
+        assert_eq!(post.likes.len(), 1);
+    }
+
+    #[test]
+    pub fn test_unlike_post() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+
+        contract.post_like(proposal_id.clone());
+        contract.post_unlike(proposal_id.clone());
+
+        let post: Post= contract.get_post_by_id(&proposal_id).into();
+        assert_eq!(post.likes.len(), 0);
+    }
+
+    #[test]
+    pub fn test_like_comment() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = contract.add_comment(
+            proposal_id,
+            None,
+            "Comment text".to_string()
+        );
+
+        // Try to like comment 2 times, only 1 like should be added
+        contract.comment_like(comment_id.clone());
+        contract.comment_like(comment_id.clone());
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(comment.likes.len(), 1);
+    }
+
+    #[test]
+    pub fn test_unlike_comment() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = contract.add_comment(
+            proposal_id,
+            None,
+            "Comment text".to_string()
+        );
+
+        contract.comment_like(comment_id.clone());
+        contract.comment_unlike(comment_id.clone());
+
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(comment.likes.len(), 0);
+
+    }
+
+}

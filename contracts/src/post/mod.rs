@@ -287,5 +287,138 @@ impl Contract {
 
         near_sdk::log!("POST STATUS CHANGED: {}", post.id);
     }
+}
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use std::collections::HashMap;
+    use crate::tests::{setup_contract, create_new_dao};
+    use crate::post::{Post, PostBody, PostStatus, VersionedProposal};
+    use crate::post::proposal::Proposal;
+    use crate::{Contract, DaoId, PostId};
+    use crate::post::report::{Report, VersionedReport};
+
+    pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
+        contract.add_dao_post(
+            *dao_id,
+            PostBody::Proposal(
+                VersionedProposal::V1(
+                    Proposal {
+                        title: "Proposal title".to_string(),
+                        description: "Proposal description".to_string(),
+                        labels: vec!["label1".to_string(), "label2".to_string()],
+                        metrics: HashMap::new(),
+                        reports: vec![],
+                        community_id: None,
+                        category: None,
+                    }
+                )
+            )
+        )
+    }
+
+    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: PostId) -> PostId {
+        contract.add_dao_post(
+            dao_id,
+            PostBody::Report(
+                VersionedReport::V1(
+                    Report {
+                        title: "Report title".to_string(),
+                        description: "Report description".to_string(),
+                        labels: vec!["label1".to_string()],
+                        metrics: HashMap::new(),
+                        community_id: None,
+                        category: None,
+                        proposal_id,
+                    }
+                )
+            )
+        )
+    }
+
+    #[test]
+    pub fn test_add_proposal() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+
+        let post: Post = contract.get_post_by_id(&proposal_id).into();
+        assert_eq!(post.snapshot.status, PostStatus::InReview);
+        assert_eq!(post.snapshot.body.get_post_category(), None);
+        assert_eq!(post.snapshot.body.get_post_community_id(), None);
+        assert_eq!(post.snapshot_history.len(), 0);
+
+        if let PostBody::Proposal(vp) = &post.snapshot.body {
+            let VersionedProposal::V1(proposal) = vp;
+            assert_eq!(proposal.title, "Proposal title".to_string());
+            assert_eq!(proposal.description, "Proposal description".to_string());
+            assert_eq!(proposal.labels, vec!["label1".to_string(), "label2".to_string()]);
+            assert_eq!(proposal.metrics, HashMap::new());
+            assert_eq!(proposal.community_id, None);
+            assert_eq!(proposal.category, None);
+        }
+    }
+
+    #[test]
+    pub fn test_edit_proposal() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+
+        let new_title = "New Proposal title".to_string();
+        let new_description = "New Proposal description".to_string();
+
+        contract.edit_dao_post(proposal_id, PostBody::Proposal(
+            VersionedProposal::V1(
+                Proposal {
+                    title: new_title.clone(),
+                    description: new_description.clone(),
+                    labels: vec!["label1".to_string(), "label2".to_string()],
+                    metrics: HashMap::new(),
+                    reports: vec![],
+                    community_id: None,
+                    category: None,
+                }
+            )
+        ));
+
+        let post: Post = contract.get_post_by_id(&proposal_id).into();
+        assert_eq!(post.snapshot_history.len(), 1);
+
+        if let PostBody::Proposal(vp) = &post.snapshot.body {
+            let VersionedProposal::V1(proposal) = vp;
+            assert_eq!(proposal.title, new_title);
+            assert_eq!(proposal.description, new_description);
+            assert_eq!(proposal.labels, vec!["label1".to_string(), "label2".to_string()]);
+            assert_eq!(proposal.metrics, HashMap::new());
+            assert_eq!(proposal.reports.len(), 0);
+            assert_eq!(proposal.community_id, None);
+            assert_eq!(proposal.category, None);
+        }
+    }
+
+    #[test]
+    pub fn test_add_report() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let report_id = create_report(dao_id, &mut contract, proposal_id);
+
+        let post: Post = contract.get_post_by_id(&report_id).into();
+        assert_eq!(post.snapshot.status, PostStatus::InReview);
+        assert_eq!(post.snapshot.body.get_post_category(), None);
+        assert_eq!(post.snapshot.body.get_post_community_id(), None);
+        assert_eq!(post.snapshot_history.len(), 0);
+
+        if let PostBody::Report(vp) = &post.snapshot.body {
+            let VersionedReport::V1(report) = vp;
+            assert_eq!(report.proposal_id, proposal_id);
+            assert_eq!(report.title, "Report title".to_string());
+            assert_eq!(report.description, "Report description".to_string());
+            assert_eq!(report.labels, vec!["label1".to_string()]);
+            assert_eq!(report.metrics, HashMap::new());
+            assert_eq!(report.community_id, None);
+            assert_eq!(report.category, None);
+        }
+    }
 }

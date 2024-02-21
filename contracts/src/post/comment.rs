@@ -165,5 +165,77 @@ impl Contract {
 
         near_sdk::log!("COMMENT EDITED: {}", comment_id);
     }
+}
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use crate::{CommentId, Contract, PostId};
+    use crate::tests::{setup_contract, create_new_dao};
+    use crate::post::{Post};
+    use crate::post::comment::Comment;
+    use crate::post::tests::create_proposal;
+
+    pub fn create_comment(contract: &mut Contract, post_id: PostId, reply_id: Option<CommentId>) -> CommentId {
+        contract.add_comment(
+            post_id,
+            reply_id,
+            "Comment text".to_string()
+        )
+    }
+
+    #[test]
+    pub fn test_add_comment() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = create_comment(&mut contract, proposal_id, None);
+
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(comment.author_id, "bob.near".to_string());
+        assert_eq!(comment.post_id, proposal_id);
+        assert_eq!(comment.likes.len(), 0);
+        assert_eq!(comment.parent_comment, None);
+        assert_eq!(comment.child_comments.len(), 0);
+        assert_eq!(comment.snapshot.body.description, "Comment text".to_string());
+        assert_eq!(comment.snapshot_history.len(), 0);
+    }
+
+    #[test]
+    pub fn test_edit_comment() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = create_comment(&mut contract, proposal_id, None);
+
+        contract.edit_comment(
+            comment_id,
+            "First comment edited".to_string()
+        );
+
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(comment.snapshot.body.description, "First comment edited".to_string());
+        assert_eq!(comment.snapshot_history.len(), 1);
+    }
+
+    #[test]
+    pub fn test_add_comment_reply() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = create_comment(&mut contract, proposal_id, None);
+        let reply_id = create_comment(&mut contract, proposal_id, Some(comment_id));
+
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        let reply:Comment = contract.get_comment_by_id(&reply_id).into();
+        assert_eq!(comment.child_comments.len(), 1);
+        assert_eq!(reply.parent_comment, Some(comment_id));
+
+        // Check parent comment
+        let parent_comment: Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(parent_comment.child_comments.len(), 1);
+
+        // Check post
+        let post: Post = contract.get_post_by_id(&proposal_id).into();
+        assert_eq!(post.comments.len(), 2);
+    }
 }

@@ -160,5 +160,58 @@ impl Contract {
 
         self.dao.insert(&id, &dao.into());
     }
+}
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use std::collections::HashMap;
+    use super::{DAO, DAOInput};
+    use crate::tests::{setup_contract, create_new_dao};
+
+    #[test]
+    pub fn test_add_dao() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let dao:DAO = contract.get_dao_by_id(&dao_id).into();
+
+        assert_eq!(dao.title, "DAO Title".to_string());
+        assert_eq!(dao.handle, "dao-title".to_string());
+        assert_eq!(dao.owners.len(), 1);
+    }
+
+    #[test]
+    pub fn test_edit_dao() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let mut metadata = HashMap::new();
+        metadata.insert("website".to_string(), "https://website.com".to_string());
+
+        contract.edit_dao(
+            dao_id,
+            DAOInput {
+                title: "DAO Title Updated".to_string(),
+                handle: "dao-title".to_string(),
+                description: "DAO Description updated".to_string(),
+                logo_url: "https://logo2.com".to_string(),
+                banner_url: "https://banner2.com".to_string(),
+                is_congress: false,
+            },
+            vec!["Some category".to_string()],
+            vec!["tx-count".to_string(), "volume".to_string()],
+            metadata
+        );
+
+        let dao:DAO = contract.get_dao_by_id(&dao_id).into();
+
+        assert_eq!(dao.title, "DAO Title Updated".to_string());
+        assert_eq!(dao.description, "DAO Description updated".to_string());
+        assert_eq!(dao.logo_url, "https://logo2.com".to_string());
+        assert_eq!(dao.banner_url, "https://banner2.com".to_string());
+        assert_eq!(dao.is_congress, false);
+        assert_eq!(dao.category_list.len(), 1);
+        assert_eq!(dao.metrics.len(), 2);
+        assert_eq!(dao.metadata.len(), 1);
+    }
 }
