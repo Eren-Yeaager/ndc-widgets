@@ -225,5 +225,46 @@ impl Contract {
         let comment: Comment = self.get_comment_by_id(&id).into();
         comment.snapshot_history
     }
+}
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+pub mod tests {
+    use std::collections::HashMap;
+    use near_sdk::test_utils::{VMContextBuilder};
+    use near_sdk::{testing_env, VMContext};
+    use crate::{Contract, DaoId};
+    use crate::dao::DAOInput;
+
+    pub fn get_context_with_signer(is_view: bool, signer: String) -> VMContext {
+        VMContextBuilder::new()
+            .signer_account_id(signer.clone().try_into().unwrap())
+            .current_account_id(signer.try_into().unwrap())
+            .is_view(is_view)
+            .build()
+    }
+
+    pub fn setup_contract() -> (VMContext, Contract) {
+        let context = get_context_with_signer(false, String::from("bob.near"));
+        testing_env!(context.clone());
+        (context, Contract::new())
+    }
+
+    // Setup function to initialize the contract and add a DAO
+    pub fn create_new_dao(context: &VMContext, contract: &mut Contract) -> DaoId {
+        contract.add_dao(
+            DAOInput {
+                title: "DAO Title".to_string(),
+                handle: "dao-title".to_string(),
+                description: "DAO Description".to_string(),
+                logo_url: "https://logo.com".to_string(),
+                banner_url: "https://banner.com".to_string(),
+                is_congress: false,
+            },
+            vec![context.signer_account_id.clone()],
+            vec![],
+            vec![],
+            HashMap::new()
+        )
+    }
 
 }
