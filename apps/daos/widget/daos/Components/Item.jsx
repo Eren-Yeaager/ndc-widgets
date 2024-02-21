@@ -3,6 +3,8 @@ let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 assets = assets.home;
 const accountId = context.accountId;
 
+if (!item) return <Widget src="flashui.near/widget/Loading" />;
+
 const Container = styled.div`
   width: 100%;
   height: max-content;
@@ -61,14 +63,12 @@ const Card = styled.div`
 
   .tag {
     border-radius: 50px;
-    background-color: #a4c2fd1a;
-    border: 1px solid rgb(225 235 255);
-    min-width: 100px;
+    background: #a4c2fd;
     width: max-content;
     padding: 4px 15px;
     font-size: 14px;
     text-align: center;
-    color: #686467;
+    color: white;
   }
 
   @media screen and (max-width: 786px) {
@@ -100,7 +100,7 @@ const Replies = styled.div`
   padding-top: 1rem;
 `;
 
-const Button = styled.div`
+const Button = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,14 +108,21 @@ const Button = styled.div`
   margin-left: auto;
   height: 40px;
   padding: 10px 20px;
-  background-color: #a4c2fd1a;
+  background: #a4c2fd1a;
   border-radius: 18px;
   color: #686467;
+  border: 1px solid #a4c2fd1a;
+
+  &:hover {
+    text-decoration: none;
+    border: 1px solid #a4c2fd;
+  }
 `;
 
 const CardContainer = styled.div`
   padding: 3px;
-  :hover {
+
+  &:hover {
     position: relative;
     border-radius: 10px;
     background: linear-gradient(
@@ -127,10 +134,6 @@ const CardContainer = styled.div`
   }
 `;
 
-const LikeIcon = styled.i`
-  color: ${(props) => props.isLiked ? "#EE9CBF" : "#303030"} !important;
-`
-
 const [showMore, setShowMore] = useState(showMoreDefault);
 const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
@@ -138,12 +141,13 @@ const pageName = props.type === "report" ? "reports" : "proposals";
 const [replies, setReplies] = useState([]);
 
 const isLiked = (item) => {
-  return item.likes.find(item => item.
-    author_id === accountId)
-}
+  return item.likes.find((item) => item.author_id === accountId);
+};
 
 const handleLike = () => {
-  Near.call(contractName, isLiked(item) ? 'post_unlike' : 'post_like', {id: props.id})
+  Near.call(contractName, isLiked(item) ? "post_unlike" : "post_like", {
+    id: props.id,
+  });
 };
 
 const colorMap = (status) => {
@@ -233,12 +237,8 @@ const CardItem = ({ item, index }) => (
 
       <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
-          {item.likes.length}
-          <LikeIcon
-            className="bi bi-heart-fill"
-            isLiked={isLiked(item)}
-          />
-          Like
+          <span className="blue">{item.likes.length}</span>
+          <i className={`bi ${isLiked(item) ? "bi-heart-fill" : "bi-heart"}`} />
         </div>
 
         <div
@@ -258,14 +258,11 @@ const CardItem = ({ item, index }) => (
             }}
           />
         </div>
-
-        <Button role="button">
-          <span>{`Open ${item.post_type}`}</span>
-          <Link
-            to={`//*__@replace:widgetPath__*/.App?page=${item.post_type}&id=${item.id}`}
-          >
-            <i className={"bi bi-box-arrow-up-right"} />
-          </Link>
+        <Button
+          href={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
+        >
+          {`Open ${item.post_type}`}
+          <i className={"bi bi-box-arrow-up-right"} />
         </Button>
       </div>
 

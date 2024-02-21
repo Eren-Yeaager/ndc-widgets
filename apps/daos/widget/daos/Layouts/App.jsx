@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -98,12 +98,14 @@ const Container = styled.div`
 
   .btn-primary {
     border-radius: 10px;
-    background: #151718;
+    background: #a4c2fd;
     color: white !important;
     text-decoration: none;
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.15);
     padding: 10px 40px 10px 25px;
 
     &:hover {
@@ -114,12 +116,12 @@ const Container = styled.div`
 
   .btn-outline-primary {
     border-radius: 10px;
-    border: 1px solid #151718;
+    border: 1px solid #a4c2fd;
     color: #000 !important;
     text-decoration: none;
     display: flex;
     gap: 1rem;
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.15);
     padding: 10px 40px 10px 25px;
 
     &:hover {
