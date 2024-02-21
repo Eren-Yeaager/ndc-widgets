@@ -1,6 +1,7 @@
 const { item, index, showMoreDefault, showRepliesDefault } = props;
-let { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 assets = assets.home;
+const accountId = context.accountId;
 
 const Container = styled.div`
   width: 100%;
@@ -126,13 +127,24 @@ const CardContainer = styled.div`
   }
 `;
 
+const LikeIcon = styled.i`
+  color: ${(props) => props.isLiked ? "#EE9CBF" : "#303030"} !important;
+`
+
 const [showMore, setShowMore] = useState(showMoreDefault);
 const [showReply, setShowReply] = useState(showRepliesDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 const pageName = props.type === "report" ? "reports" : "proposals";
 const [replies, setReplies] = useState([]);
 
-const handleLike = () => {};
+const isLiked = (item) => {
+  return item.likes.find(item => item.
+    author_id === accountId)
+}
+
+const handleLike = () => {
+  Near.call(contractName, isLiked(item) ? 'post_unlike' : 'post_like', {id: props.id})
+};
 
 const colorMap = (status) => {
   switch (status) {
@@ -221,8 +233,12 @@ const CardItem = ({ item, index }) => (
 
       <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
-          <span className="blue">{item.likes.length}</span>
-          <i className={`bi ${liked ? "bi-heart-fill" : "bi-heart"}`} />
+          {item.likes.length}
+          <LikeIcon
+            className="bi bi-heart-fill"
+            isLiked={isLiked(item)}
+          />
+          Like
         </div>
 
         <div
