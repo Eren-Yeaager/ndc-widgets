@@ -1,4 +1,4 @@
-const { item, index, showMoreDefault, showRepliesDefault } = props;
+const { item, index, showMoreDefault, showCommentsDefault } = props;
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 assets = assets.home;
 const accountId = context.accountId;
@@ -78,11 +78,6 @@ const Card = styled.div`
   :hover {
     background: #ffffff;
   }
-
-  i,
-  .blue {
-    color: rgb(146 168 210);
-  }
 `;
 
 const Status = styled.div`
@@ -95,7 +90,7 @@ const Status = styled.div`
   color: ${(props) => props.color};
 `;
 
-const Replies = styled.div`
+const Comments = styled.div`
   border-top: 1px solid #efefef;
   padding-top: 1rem;
 `;
@@ -135,10 +130,9 @@ const CardContainer = styled.div`
 `;
 
 const [showMore, setShowMore] = useState(showMoreDefault);
-const [showReply, setShowReply] = useState(showRepliesDefault);
+const [showComments, setShowComments] = useState(showCommentsDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 const pageName = props.type === "report" ? "reports" : "proposals";
-const [replies, setReplies] = useState([]);
 
 const isLiked = (item) => {
   return item.likes.find((item) => item.author_id === accountId);
@@ -146,7 +140,7 @@ const isLiked = (item) => {
 
 const handleLike = () => {
   Near.call(contractName, isLiked(item) ? "post_unlike" : "post_like", {
-    id: props.id,
+    id: item.id,
   });
 };
 
@@ -215,7 +209,9 @@ const CardItem = ({ item, index }) => (
         <b>
           See More
           <i
-            className={`bi ${showMore === index ? "bi-eye" : "bi-eye-slash"}`}
+            className={`bi blue ${
+              showMore === index ? "bi-eye" : "bi-eye-slash"
+            }`}
           />
         </b>
       </a>
@@ -238,16 +234,20 @@ const CardItem = ({ item, index }) => (
       <div className="actions d-flex align-items-center justify-content-between">
         <div role="button" className="d-flex gap-2" onClick={handleLike}>
           <span className="blue">{item.likes.length}</span>
-          <i className={`bi ${isLiked(item) ? "bi-heart-fill" : "bi-heart"}`} />
+          <i
+            className={`bi blue ${
+              isLiked(item) ? "bi-heart-fill" : "bi-heart"
+            }`}
+          />
         </div>
 
         <div
           role="button"
           className="d-flex gap-2"
-          onClick={() => setShowReply(!showReply)}
+          onClick={() => setShowComments(!showComments)}
         >
-          <span className="blue">{replies.length}</span>
-          <i className="bi bi-chat" />
+          <span className="blue">{item.comments.length}</span>
+          <i className="bi blue bi-chat" />
         </div>
 
         <div role="button" className="d-flex gap-2">
@@ -262,17 +262,20 @@ const CardItem = ({ item, index }) => (
           href={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
         >
           {`Open ${item.post_type}`}
-          <i className={"bi bi-box-arrow-up-right"} />
+          <i className={"bi blue bi-box-arrow-up-right"} />
         </Button>
       </div>
 
-      {showReply && (
-        <Replies>
+      {showComments && (
+        <Comments>
           <Widget
-            src="/*__@replace:widgetPath__*/.Components.ReplyItem"
-            props={{ item, showCreate: true }}
+            src="/*__@replace:widgetPath__*/.Components.Comments"
+            props={{
+              postId: item.id,
+              showCreate: true,
+            }}
           />
-        </Replies>
+        </Comments>
       )}
     </Card>
   </CardContainer>

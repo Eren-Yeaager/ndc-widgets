@@ -37,6 +37,7 @@ return (
           type,
           id: items[0].id,
           showMoreDefault: items[0].id,
+          showCommentsDefault: true,
         }}
       />
     ) : (
@@ -44,10 +45,10 @@ return (
         <div className="mb-4">
           <a
             style={{ fontSize: "24px" }}
-            className="btn-primary"
+            className="btn-primary text-uppercase"
             href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}
           >
-            CREATE POST
+            create {type}
           </a>
         </div>
         <div className="d-flex flex-column gap-4">

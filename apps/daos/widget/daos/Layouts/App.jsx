@@ -99,6 +99,7 @@ const Container = styled.div`
   .btn-primary {
     border-radius: 10px;
     background: #a4c2fd;
+    border: 1px solid #a4c2fd;
     color: white !important;
     text-decoration: none;
     display: flex;
@@ -111,6 +112,7 @@ const Container = styled.div`
     &:hover {
       text-decoration: none;
       cursor: pointer;
+      border: 1px solid #a4c2fd;
     }
   }
 
@@ -135,6 +137,10 @@ const Container = styled.div`
     padding: 5px 10px 5px 20px;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
   }
+
+  .blue {
+    color: rgb(146 168 210);
+  }
 `;
 
 const Wrapper = styled.div`
@@ -151,9 +157,12 @@ function AppLayout({ page, props, children }) {
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
         <Wrapper>
-          {page !== 'activity' &&
-            <Widget src={`/*__@replace:widgetPath__*/.Components.TopNavBar`} props={props}/>
-          }
+          {page !== "home" && (
+            <Widget
+              src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
+              props={props}
+            />
+          )}
           {children}
         </Wrapper>
         <Widget

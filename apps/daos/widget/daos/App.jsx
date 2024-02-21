@@ -2,7 +2,7 @@ const { AppLayout } = VM.require(`/*__@replace:widgetPath__*/.Layouts.App`);
 const { page, ...passProps } = props;
 
 if (!AppLayout) return <Widget src="flashui.near/widget/Loading" />;
-if (!page) page = "activity";
+if (!page) page = "home";
 
 function Page() {
   switch (page) {
