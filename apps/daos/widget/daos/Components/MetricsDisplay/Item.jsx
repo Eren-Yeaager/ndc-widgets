@@ -54,7 +54,6 @@ const NameContainer = styled.div`
 `
 
 const NameInnerContainer = styled.div`
-  width: calc(50% - 5px);
   display: flex;
   align-items: center;
   gap: 5px;
