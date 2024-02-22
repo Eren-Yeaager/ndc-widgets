@@ -10,7 +10,7 @@ near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
 ## -------- Data Seed --------
 # Add DAO
- near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo", "banner_url":"banner","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+ near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo", "banner_url":"banner","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
  near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","is_congress":false}, "owners":["'$ACCOUNT_ID'","owner.testnet"], "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
 # Add DAO Proposal
