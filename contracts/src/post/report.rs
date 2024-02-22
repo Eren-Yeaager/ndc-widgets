@@ -3,7 +3,7 @@ use near_sdk::serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use near_sdk::require;
 use super::{PostId};
-use crate::{CategoryLabel, CommunityId, MetricLabel, PostLabel};
+use crate::{Vertical, CommunityId, MetricLabel, PostLabel};
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
 #[serde(crate = "near_sdk::serde")]
@@ -11,10 +11,11 @@ use crate::{CategoryLabel, CommunityId, MetricLabel, PostLabel};
 pub struct Report {
     pub title: String,
     pub description: String,
+    pub attachments: Vec<String>,
     pub labels: Vec<PostLabel>,
     pub metrics: HashMap<MetricLabel, String>,
     pub community_id: Option<CommunityId>,
-    pub category: Option<CategoryLabel>,
+    pub vertical: Option<Vertical>,
 
     // Specific fields
     pub proposal_id: PostId,

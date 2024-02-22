@@ -135,7 +135,8 @@ mod tests {
         let comment_id = contract.add_comment(
             proposal_id,
             None,
-            "Comment text".to_string()
+            "Comment text".to_string(),
+            vec![]
         );
 
         // Try to like comment 2 times, only 1 like should be added
@@ -153,7 +154,8 @@ mod tests {
         let comment_id = contract.add_comment(
             proposal_id,
             None,
-            "Comment text".to_string()
+            "Comment text".to_string(),
+            vec![]
         );
 
         contract.comment_like(comment_id.clone());

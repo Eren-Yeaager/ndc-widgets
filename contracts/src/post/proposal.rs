@@ -1,7 +1,7 @@
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use super::{PostId};
-use crate::{CategoryLabel, CommunityId, MetricLabel, PostLabel};
+use crate::{Vertical, CommunityId, MetricLabel, PostLabel};
 use std::collections::HashMap;
 use near_sdk::{require};
 
@@ -11,10 +11,11 @@ use near_sdk::{require};
 pub struct Proposal {
     pub title: String,
     pub description: String,
+    pub attachments: Vec<String>,
     pub labels: Vec<PostLabel>,
     pub metrics: HashMap<MetricLabel, String>,
     pub community_id: Option<CommunityId>,
-    pub category: Option<CategoryLabel>,
+    pub vertical: Option<Vertical>,
 
     // Specific fields
     pub reports: Vec<PostId>,

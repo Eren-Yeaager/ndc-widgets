@@ -7,7 +7,7 @@ use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId, near_bindgen, Timestamp};
-use crate::{CategoryLabel, CommentId, CommunityId, Contract, DaoId, PostId};
+use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
 use crate::post::proposal::VersionedProposal;
 use crate::post::report::VersionedReport;
@@ -110,10 +110,10 @@ impl PostBody {
         };
     }
 
-    pub fn get_post_category(&self) -> Option<CategoryLabel> {
+    pub fn get_post_vertical(&self) -> Option<Vertical> {
         return match self.clone() {
-            PostBody::Proposal(proposal) => proposal.latest_version().category,
-            PostBody::Report(report) => report.latest_version().category,
+            PostBody::Proposal(proposal) => proposal.latest_version().vertical,
+            PostBody::Report(report) => report.latest_version().vertical,
         };
     }
 
@@ -176,11 +176,11 @@ impl Contract {
         post_by_status.push(post_id.clone());
         self.post_status.insert(&PostStatus::InReview, &post_by_status);
 
-        // Add to category_posts label
-        if let Some(category) = body.get_post_category() {
-            let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
-            category_posts.push(post_id.clone());
-            self.category_posts.insert(&category, &category_posts);
+        // Add to verticals label
+        if let Some(vertical) = body.get_post_vertical() {
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
+            vertical_posts.push(post_id.clone());
+            self.vertical_posts.insert(&vertical, &vertical_posts);
         }
 
         // Add to community_posts
@@ -208,12 +208,12 @@ impl Contract {
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
         }
 
-        // Cleanup old category_posts
-        if post.snapshot.body.get_post_category().is_some() && post.snapshot.body.get_post_category() != body.get_post_category(){
-            let category = post.snapshot.body.get_post_category().unwrap();
-            let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
-            category_posts.retain(|&x| x != post.id);
-            self.category_posts.insert(&category, &category_posts);
+        // Cleanup old vertical_posts
+        if post.snapshot.body.get_post_vertical().is_some() && post.snapshot.body.get_post_vertical() != body.get_post_vertical(){
+            let vertical = post.snapshot.body.get_post_vertical().unwrap();
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
+            vertical_posts.retain(|&x| x != post.id);
+            self.vertical_posts.insert(&vertical, &vertical_posts);
         }
 
         // Cleanup old community_posts
@@ -233,12 +233,12 @@ impl Contract {
         };
         self.posts.insert(&post.id, &post.clone().into());
 
-        // Add to category_posts label
-        if let Some(category) = body.get_post_category() {
-            let mut category_posts = self.category_posts.get(&category).unwrap_or(vec![]);
-            if !category_posts.contains(&post.id) {
-                category_posts.push(post.id.clone());
-                self.category_posts.insert(&category, &category_posts);
+        // Add to vertical_posts label
+        if let Some(vertical) = body.get_post_vertical() {
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
+            if !vertical_posts.contains(&post.id) {
+                vertical_posts.push(post.id.clone());
+                self.vertical_posts.insert(&vertical, &vertical_posts);
             }
         }
 
@@ -306,11 +306,12 @@ mod tests {
                     Proposal {
                         title: "Proposal title".to_string(),
                         description: "Proposal description".to_string(),
+                        attachments: vec![],
                         labels: vec!["label1".to_string(), "label2".to_string()],
                         metrics: HashMap::new(),
                         reports: vec![],
                         community_id: None,
-                        category: None,
+                        vertical: None,
                     }
                 )
             )
@@ -325,10 +326,11 @@ mod tests {
                     Report {
                         title: "Report title".to_string(),
                         description: "Report description".to_string(),
+                        attachments: vec![],
                         labels: vec!["label1".to_string()],
                         metrics: HashMap::new(),
                         community_id: None,
-                        category: None,
+                        vertical: None,
                         proposal_id,
                     }
                 )
@@ -344,7 +346,7 @@ mod tests {
 
         let post: Post = contract.get_post_by_id(&proposal_id).into();
         assert_eq!(post.snapshot.status, PostStatus::InReview);
-        assert_eq!(post.snapshot.body.get_post_category(), None);
+        assert_eq!(post.snapshot.body.get_post_vertical(), None);
         assert_eq!(post.snapshot.body.get_post_community_id(), None);
         assert_eq!(post.snapshot_history.len(), 0);
 
@@ -352,10 +354,11 @@ mod tests {
             let VersionedProposal::V1(proposal) = vp;
             assert_eq!(proposal.title, "Proposal title".to_string());
             assert_eq!(proposal.description, "Proposal description".to_string());
+            assert_eq!(proposal.attachments.len(), 0);
             assert_eq!(proposal.labels, vec!["label1".to_string(), "label2".to_string()]);
             assert_eq!(proposal.metrics, HashMap::new());
             assert_eq!(proposal.community_id, None);
-            assert_eq!(proposal.category, None);
+            assert_eq!(proposal.vertical, None);
         }
     }
 
@@ -373,11 +376,12 @@ mod tests {
                 Proposal {
                     title: new_title.clone(),
                     description: new_description.clone(),
+                    attachments: vec!["some_url".to_string()],
                     labels: vec!["label1".to_string(), "label2".to_string()],
                     metrics: HashMap::new(),
                     reports: vec![],
                     community_id: None,
-                    category: None,
+                    vertical: None,
                 }
             )
         ));
@@ -389,11 +393,12 @@ mod tests {
             let VersionedProposal::V1(proposal) = vp;
             assert_eq!(proposal.title, new_title);
             assert_eq!(proposal.description, new_description);
+            assert_eq!(proposal.attachments.len(), 1);
             assert_eq!(proposal.labels, vec!["label1".to_string(), "label2".to_string()]);
             assert_eq!(proposal.metrics, HashMap::new());
             assert_eq!(proposal.reports.len(), 0);
             assert_eq!(proposal.community_id, None);
-            assert_eq!(proposal.category, None);
+            assert_eq!(proposal.vertical, None);
         }
     }
 
@@ -406,7 +411,7 @@ mod tests {
 
         let post: Post = contract.get_post_by_id(&report_id).into();
         assert_eq!(post.snapshot.status, PostStatus::InReview);
-        assert_eq!(post.snapshot.body.get_post_category(), None);
+        assert_eq!(post.snapshot.body.get_post_vertical(), None);
         assert_eq!(post.snapshot.body.get_post_community_id(), None);
         assert_eq!(post.snapshot_history.len(), 0);
 
@@ -418,7 +423,7 @@ mod tests {
             assert_eq!(report.labels, vec!["label1".to_string()]);
             assert_eq!(report.metrics, HashMap::new());
             assert_eq!(report.community_id, None);
-            assert_eq!(report.category, None);
+            assert_eq!(report.vertical, None);
         }
     }
 }

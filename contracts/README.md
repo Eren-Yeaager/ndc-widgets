@@ -57,7 +57,7 @@ CONTRACT=v1.test-mdao.near
 
 - Add DAO
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$ACCOUNT_ID'", "root.near"], "category_list":["label1","label2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$ACCOUNT_ID'", "root.near"], "verticals":["label1","label2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 
 - Get list of all DAOs (view)
@@ -80,22 +80,22 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}
 
 - Add Proposal
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "attachments":["some_url"], "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Add Report
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Proposal
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "labels":["label1"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Report
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Like proposals/reports
@@ -144,17 +144,17 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_post_history '{"id":1}'
 
 - Add Comment
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text", "attachments":["some_url"]}' --accountId "$ACCOUNT_ID"
 ```
 
 - Add reply to comment
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text", "attachments":[]}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit comment
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"id":1, "description":"Some text upd"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"id":1, "description":"Some text upd", "attachments":[]}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get all comments for post (view)

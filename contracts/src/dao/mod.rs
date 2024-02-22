@@ -2,7 +2,7 @@ use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId};
 use std::collections::{HashMap};
-use crate::{CategoryLabel, DaoId, MetricLabel};
+use crate::{Vertical, DaoId, MetricLabel};
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
 #[serde(crate = "near_sdk::serde")]
@@ -28,7 +28,7 @@ pub struct DAO {
     pub banner_url: String,
     pub is_congress: bool,
     pub owners: Vec<AccountId>,
-    pub category_list: Vec<CategoryLabel>,
+    pub verticals: Vec<Vertical>,
     pub metrics: Vec<MetricLabel>,
     pub metadata: HashMap<String, String>,
 }
@@ -96,7 +96,7 @@ impl Contract {
         &mut self,
         body: DAOInput,
         owners: Vec<AccountId>,
-        category_list: Vec<CategoryLabel>,
+        verticals: Vec<Vertical>,
         metrics: Vec<MetricLabel>,
         metadata: HashMap<String, String>
     ) -> DaoId {
@@ -119,7 +119,7 @@ impl Contract {
             banner_url: body.banner_url,
             is_congress: body.is_congress,
             owners: owners.clone(),
-            category_list,
+            verticals,
             metrics,
             metadata,
         };
@@ -140,7 +140,7 @@ impl Contract {
         id: DaoId,
         body: DAOInput,
         // owners: Vec<AccountId>,
-        category_list: Vec<CategoryLabel>,
+        verticals: Vec<Vertical>,
         metrics: Vec<MetricLabel>,
         metadata: HashMap<String, String>
     ) {
@@ -153,7 +153,7 @@ impl Contract {
         dao.logo_url = body.logo_url;
         dao.banner_url = body.banner_url;
         dao.is_congress = body.is_congress;
-        dao.category_list = category_list;
+        dao.verticals = verticals;
         dao.metrics = metrics;
         dao.metadata = metadata;
         // dao.owners = owners;
@@ -198,7 +198,7 @@ mod tests {
                 banner_url: "https://banner2.com".to_string(),
                 is_congress: false,
             },
-            vec!["Some category".to_string()],
+            vec!["Some vertical".to_string()],
             vec!["tx-count".to_string(), "volume".to_string()],
             metadata
         );
@@ -210,7 +210,7 @@ mod tests {
         assert_eq!(dao.logo_url, "https://logo2.com".to_string());
         assert_eq!(dao.banner_url, "https://banner2.com".to_string());
         assert_eq!(dao.is_congress, false);
-        assert_eq!(dao.category_list.len(), 1);
+        assert_eq!(dao.verticals.len(), 1);
         assert_eq!(dao.metrics.len(), 2);
         assert_eq!(dao.metadata.len(), 1);
     }

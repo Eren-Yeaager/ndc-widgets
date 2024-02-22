@@ -2,7 +2,7 @@ use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId, near_bindgen};
 use super::{Contract, DaoId};
-use crate::{CategoryLabel, CommunityId};
+use crate::{Vertical, CommunityId};
 use std::collections::HashMap;
 use crate::dao::DAO;
 
@@ -33,7 +33,7 @@ pub struct Community {
     pub handle: String,
     pub title: String,
     pub description: String,
-    pub category_list: Vec<CategoryLabel>,
+    pub verticals: Vec<Vertical>,
     pub logo_url: String,
     pub banner_url: String,
     pub owners: Vec<AccountId>,
@@ -104,7 +104,7 @@ impl Contract {
         dao_id: DaoId,
         owners: Vec<AccountId>,
         community_input: CommunityInput,
-        category_list: Vec<CategoryLabel>,
+        verticals: Vec<Vertical>,
         metadata: HashMap<String, String>
     ) -> CommunityId {
         let dao:DAO = self.get_dao_by_id(&dao_id).into();
@@ -117,8 +117,8 @@ impl Contract {
             assert_ne!(dao_community.handle, community_input.handle, "Community handle already exists");
             assert_ne!(dao_community.title, community_input.title, "Community title already exists");
         });
-        category_list.iter().for_each(|c| {
-            assert!(dao.category_list.contains(c), "Category not in DAO category list");
+        verticals.iter().for_each(|c| {
+            assert!(dao.verticals.contains(c), "Vertical not in DAO verticals list");
         });
 
         self.total_communities += 1;
@@ -130,7 +130,7 @@ impl Contract {
             handle: community_input.handle,
             title: community_input.title,
             description: community_input.description,
-            category_list,
+            verticals,
             logo_url: community_input.logo_url,
             banner_url: community_input.banner_url,
             owners,
@@ -153,7 +153,7 @@ impl Contract {
         logo_url: String,
         banner_url: String,
         owners: Vec<AccountId>,
-        category_list: Vec<CategoryLabel>,
+        verticals: Vec<Vertical>,
         metadata: HashMap<String, String>
     ) {
         let mut community: Community = self.get_community_by_id(&id).into();
@@ -170,7 +170,7 @@ impl Contract {
         community.logo_url = logo_url;
         community.banner_url = banner_url;
         community.owners = owners;
-        community.category_list = category_list;
+        community.verticals = verticals;
         community.metadata = metadata;
 
         self.communities.insert(&id, &community.into());

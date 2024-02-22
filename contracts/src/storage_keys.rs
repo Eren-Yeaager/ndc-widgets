@@ -11,7 +11,7 @@ pub enum StorageKey {
     Comments,
     Communities,
     LabelToPosts,
-    CategoryPosts,
+    VerticalPosts,
     CommunityPosts,
     PostStatus,
     PostAuthors,

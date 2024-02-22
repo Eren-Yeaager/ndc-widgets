@@ -28,7 +28,7 @@ type PostId = u64;
 type CommentId = u64;
 type CommunityId = u64;
 type PostLabel = String;
-type CategoryLabel = String;
+type Vertical = String;
 type MetricLabel = String;
 pub type Balance = u128;
 
@@ -51,7 +51,7 @@ pub struct Contract {
     // pub community_handles: UnorderedMap<String, CommunityId>,
 
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
-    pub category_posts: UnorderedMap<CategoryLabel, Vec<PostId>>,
+    pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
 
     pub post_status: LookupMap<PostStatus, Vec<PostId>>,
@@ -81,7 +81,7 @@ impl Contract {
             communities: UnorderedMap::new(StorageKey::Communities),
 
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
-            category_posts: UnorderedMap::new(StorageKey::CategoryPosts),
+            vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
 
             post_status: LookupMap::new(StorageKey::PostStatus),

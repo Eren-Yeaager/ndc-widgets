@@ -87,6 +87,7 @@ pub struct CommentSnapshot {
 #[borsh(crate = "near_sdk::borsh")]
 pub struct CommentBody {
     pub description: String,
+    pub attachments: Vec<String>,
 }
 
 use crate::*;
@@ -101,7 +102,8 @@ impl Contract {
         &mut self,
         post_id: PostId,
         reply_to: Option<CommentId>,
-        description: String
+        description: String,
+        attachments: Vec<String>,
     ) -> CommentId {
         self.total_comments += 1;
         let comment_id = self.total_comments;
@@ -118,6 +120,7 @@ impl Contract {
                 timestamp: env::block_timestamp(),
                 body: CommentBody {
                     description,
+                    attachments,
                 },
             },
             snapshot_history: vec![],
@@ -148,7 +151,12 @@ impl Contract {
 
     // Edit comment
     // Access Level: Comment author
-    pub fn edit_comment(&mut self, comment_id: CommentId, description: String) {
+    pub fn edit_comment(
+        &mut self,
+        comment_id: CommentId,
+        description: String,
+        attachments: Vec<String>,
+    ) {
         let mut comment:Comment = self.get_comment_by_id(&comment_id).into();
         let author_id = env::predecessor_account_id();
 
@@ -159,6 +167,7 @@ impl Contract {
             timestamp: env::block_timestamp(),
             body: CommentBody {
                 description,
+                attachments,
             },
         };
         self.comments.insert(&comment_id, &comment.into());
@@ -179,7 +188,8 @@ mod tests {
         contract.add_comment(
             post_id,
             reply_id,
-            "Comment text".to_string()
+            "Comment text".to_string(),
+            vec![]
         )
     }
 
@@ -197,6 +207,7 @@ mod tests {
         assert_eq!(comment.parent_comment, None);
         assert_eq!(comment.child_comments.len(), 0);
         assert_eq!(comment.snapshot.body.description, "Comment text".to_string());
+        assert_eq!(comment.snapshot.body.attachments.len(), 0);
         assert_eq!(comment.snapshot_history.len(), 0);
     }
 
@@ -209,11 +220,13 @@ mod tests {
 
         contract.edit_comment(
             comment_id,
-            "First comment edited".to_string()
+            "First comment edited".to_string(),
+            vec!["some_url".to_string()]
         );
 
         let comment:Comment = contract.get_comment_by_id(&comment_id).into();
         assert_eq!(comment.snapshot.body.description, "First comment edited".to_string());
+        assert_eq!(comment.snapshot.body.attachments.len(), 1);
         assert_eq!(comment.snapshot_history.len(), 1);
     }
 
