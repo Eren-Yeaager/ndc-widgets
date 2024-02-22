@@ -1,13 +1,23 @@
-let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
-);
+let { assets, content, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 let { Hero } = VM.require(`/*__@replace:widgetPath__*/.Components.Hero`);
-
-if (!contractName || !content || !assets || !Hero)
-  return <Widget src="flashui.near/widget/Loading" />;
 
 assets = assets.home;
 content = content.home;
+
+const Section = styled.div`
+  color: #1E1D22;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  a {
+    text-decoration-line: underline;
+  }
+
+  padding-bottom: 30px;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -23,6 +33,13 @@ const Item = styled.div`
   border: none;
   border-radius: 10px;
   margin-bottom: 20px;
+  background: linear-gradient(270deg, #efdcd1 -1.69%, #e0c6f7 43.78%, #adc3fb 99.83%);
+  padding: 2px;
+  
+  span {
+    color: #ffffff;
+    min-width: 200px;
+  }
 
   a.btn {
     &:hover {
@@ -68,6 +85,7 @@ const Item = styled.div`
     height: 100%;
     background: white;
     border-radius: 10px;
+    background: #ffffff;
   }
 
   svg {
@@ -95,10 +113,78 @@ const Item = styled.div`
   }
 `;
 
-const daos = Near.view(contractName, "get_dao_list");
+const [loading, setLoading] = useState(false);
+const daos = Near.view(contractName, 'get_dao_list')
+
+if (!daos || !contractName || !content || !assets || !Hero) return <Widget src="flashui.near/widget/Loading" />;
+
+let groupedDaos = daos.map(element => {
+  let result = {};
+  element.verticals.forEach(list => {
+    if (!result[list]) {
+      result[list] = []
+    }
+    result[list].push(element)
+  })
+
+  return result
+}).filter(item => Object.keys(item).length !== 0);
+
+let types = new Set()
+groupedDaos.forEach((item) => types.add(...Object.keys(item)))
+
+
+const typeOfProject = Array.from(types).map((item) => {
+  return { name: item.charAt(0).toUpperCase() + item.slice(1), color: '#68D895' }})
 
 return (
-  <Container>
+  <Container >
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.BadgeContainer`}
+    />
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.Title`}
+      props={{
+        imgUrl: 'https://ipfs.near.social/ipfs/bafkreihwcxkyr2pvfszwxpqs47y7gwlfz3363jead2odmrdwyqtqniuzca',
+        text: "Community Treasury"
+      }}
+    />
+
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.index`}
+      props={{
+        totalTreasury: 3000,
+        deliverTreasury: 5000,
+        typeOfProject,
+        loading,
+      }}
+    />
+
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.Title`}
+      props={{
+        imgUrl: 'https://ipfs.near.social/ipfs/bafkreiax4vgaur7pxljajkbmdedx5ynb6en7clh2vcrkciju5atd6xumiq',
+        text: "What is NDC?"
+      }}
+    />
+    <Section>
+      <a href="https://app.neardc.org/"><b>Near Digital Collective</b></a> (aka <a href="https://www.neardc.org/">NDC</a>) is the governance node of the Near blockchain ecosystem. NDC is the organisation that manages funding requests and learn more about the processes, ongoing initiatives and key members who participate in governance. The NDC's mission is to set up web3 governance on Near, restore grassroots community funding, and reboot the Near community by enabling community members to be rewarded for their contributions.
+    </Section>
+
+
+    <img src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" alt="" />
+
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.Title`}
+      props={{
+        imgUrl: 'https://ipfs.near.social/ipfs/bafkreiept3chqmiys74vvok62dmsp4i32wa4t754h5z6njx2hdw2zcx6wq',
+        text: "What is Grassroot DAO?"
+      }}
+    />
+    <Section>
+      <b>Enroll for Grassroot DAO Grant</b> Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum.
+    </Section>
+
     {daos.map((dao) => (
       <Item>
         <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
@@ -107,15 +193,30 @@ return (
             props={{ image: dao.logo_url, index }}
           />
           <h4 className="bold color-text px-3 mt-1 text-center">{dao.title}</h4>
-          <Link
-            style={{ background: "#A4C2FD", borderColor: "#A4C2FD" }}
+          <Link style={{ background: "#151718" }}
             href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${dao.id}`}
             className="btn btn-secondary d-flex justify-content-between"
           >
-            <span>Learn more</span>
+            <span>Join DAO</span>
           </Link>
         </div>
       </Item>
     ))}
+
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.Title`}
+      props={{
+        imgUrl: 'https://ipfs.near.social/ipfs/bafkreianbwxwl3i4ofrjicw7xsjizza2ixogaupcyu36b2n2uteui5povm',
+        text: "Get Funding for your project"
+      }}
+    />
+
+    <Section>
+      Participate in Grassroot, as a member or a grant receiver (Join Ambassador Programs, Create Degen content and receive rewards, Participate in content creation or implement your development Idea and onboard 1mil users)
+    </Section>
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.DaosByVertical`}
+      props={{daos}}
+    />
   </Container>
 );
