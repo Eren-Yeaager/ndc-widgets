@@ -1,9 +1,10 @@
-const { item, index, showMoreDefault, showCommentsDefault } = props;
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-assets = assets.home;
-const accountId = context.accountId;
+const { item, index, showMoreDefault, showCommentsDefault } = props;
 
 if (!item) return <Widget src="flashui.near/widget/Loading" />;
+
+assets = assets.home;
+const accountId = context.accountId;
 
 const Container = styled.div`
   width: 100%;

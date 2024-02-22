@@ -1,6 +1,8 @@
 const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { hasNotifications } = props;
 
+if (!assets) return <Widget src="flashui.near/widget/Loading" />;
+
 const Navbar = styled.div`
   padding: 1.5rem 3rem;
   width: 100%;

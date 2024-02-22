@@ -1,5 +1,7 @@
 let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
+
 let { post_id, comment_id } = props;
 
 const Container = styled.div`

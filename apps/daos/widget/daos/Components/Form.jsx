@@ -1,4 +1,3 @@
-let { socialKey } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { form, formEls, setFormEls, handleChange, handleSave } = props;
 
 const TypeSection = styled.div`

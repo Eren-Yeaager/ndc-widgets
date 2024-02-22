@@ -1,5 +1,7 @@
 let { assets, content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
+if (!assets) return <Widget src="flashui.near/widget/Loading" />;
+
 assets = assets.home;
 content = content.home;
 
