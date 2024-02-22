@@ -65,36 +65,6 @@ const Item = styled.div`
     font-size: 24px;
   }
 
-  &.dark {
-    position: relative;
-    background: linear-gradient(
-      270deg,
-      #efdcd1 -1.69%,
-      #e0c6f7 43.78%,
-      #adc3fb 99.83%
-    );
-    padding: 2px;
-
-    h4 {
-      background: linear-gradient(
-        270deg,
-        #efdcd1 -1.69%,
-        #e0c6f7 43.78%,
-        #adc3fb 99.83%
-      );
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .inner {
-      height: 100%;
-      padding: 0 2rem;
-      background: #151718;
-      border-radius: 10px;
-    }
-  }
-
   .inner {
     height: 100%;
     padding: 0 2rem;
@@ -183,8 +153,23 @@ const CreateGrassrootContainer = styled.div`
         rgba(235, 157, 187, 0.5) 50%,
         rgba(91, 153, 219, 0.5) 100%
       );
-
       filter: blur(100px);
+      animation: spin 4s linear infinite;
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+          scale: 90%;
+        }
+        50% {
+          scale: 100%;
+          transform: rotate(180deg);
+        }
+        100% {
+          scale: 90%;
+          transform: rotate(360deg);
+        }
+      }
     }
 
     .title {
@@ -192,14 +177,28 @@ const CreateGrassrootContainer = styled.div`
       font-size: 48px;
       font-weight: 700;
       padding-top: 6rem;
+      z-index: 3;
     }
 
     .description {
       width: 50%;
-      padding-top: 2rem;
       color: #fff;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 300;
+      z-index: 3;
+
+      @media screen and (max-width: 786px) {
+        width: 100%;
+      }
+    }
+
+    a {
+      width: 50%;
+      z-index: 3;
+
+      @media screen and (max-width: 786px) {
+        width: 100%;
+      }
     }
 
     img {
@@ -209,8 +208,22 @@ const CreateGrassrootContainer = styled.div`
       right: 0rem;
       bottom: 0;
       z-index: 2;
+
+      @media screen and (max-width: 786px) {
+        display: none;
+      }
     }
   }
+`;
+
+const ParalaxImg = styled.div`
+  width: 100%;
+  background-image: url(${(p) => p.src});
+  min-height: 500px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const [loading, setLoading] = useState(false);
@@ -245,7 +258,7 @@ const typeOfProject = Array.from(types).map((item) => {
 
 return (
   <Container>
-    <Widget src={`/*__@replace:widgetPath__*/.Components.BadgeContainer`} />
+    <Widget src={`/*__@replace:widgetPath__*/.Components.RunnerContainer`} />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
@@ -287,10 +300,7 @@ return (
         rewarded for their contributions.
       </Description>
     </Wrapper>
-    <img
-      src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4"
-      alt=""
-    />
+    <ParalaxImg src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
@@ -334,7 +344,7 @@ return (
     </Wrapper>
     <CreateGrassrootContainer>
       <div className="wrapper">
-        <div>
+        <div className="d-flex flex-column gap-3">
           <h1 className="title">Create your Grassroot DAO</h1>
           <p className="description">
             <ul>
@@ -350,12 +360,16 @@ return (
               </li>
             </ul>
           </p>
+          <a
+            style={{ fontSize: "24px" }}
+            className="btn-primary text-uppercase"
+            href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${1}`}
+          >
+            create proposal
+          </a>
         </div>
         <div className="circle" />
-        <img
-          src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe"
-          alt=""
-        />
+        <img src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe" />
       </div>
     </CreateGrassrootContainer>
     <Wrapper>

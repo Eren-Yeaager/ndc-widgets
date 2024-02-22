@@ -1,12 +1,13 @@
 const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); // 3 columns
-  gap: 2rem;
-  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 5rem;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr); // 1 columns
-    gap: 2rem;
+    gap: 1rem;
   }
 
   a {
@@ -40,11 +41,12 @@ const LinkList = styled.ul`
 `;
 
 const ListItem = styled.li`
-  background: #333;
+  background-color: rgb(43, 41, 51);
   color: white;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0;
+  padding: 1rem;
+  margin: 1rem 0;
   border-radius: 8px;
+  font-size: 1.2em;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -57,7 +59,9 @@ const Arrow = styled.span`
   color: #007bff;
 `;
 
-const CardContainer = styled.div``;
+const CardContainer = styled.div`
+  width: 370px;
+`;
 
 function groupByCategoryList(daos) {
   const categoryMap = {};
@@ -93,7 +97,9 @@ return (
               >
                 <ListItem key={link}>
                   <ItemText>{link.title}</ItemText>
-                  <Arrow>›</Arrow>
+                  <Arrow>
+                    <i className="bi bi-chevron-right" />
+                  </Arrow>
                 </ListItem>
               </Link>
             ))}

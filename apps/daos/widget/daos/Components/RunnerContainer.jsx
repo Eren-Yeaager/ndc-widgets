@@ -3,7 +3,19 @@ const Container = styled.div`
   display: flex;
   background-color: rgb(43, 41, 51);
   padding: 8px;
-  overflow-x: scroll;
+  overflow: hidden;
+  position: relative;
+
+  .scroll {
+    display: flex;
+    animation: scroll 30s linear infinite;
+  }
+
+  &:hover {
+    .scroll {
+      animation-play-state: paused;
+    }
+  }
 `;
 
 const Badge = styled.div`
@@ -122,24 +134,26 @@ const colorMap = (status) => {
 
 return (
   <Container>
-    {badgesData.map((badge, index) => (
-      <>
-        <Badge key={index}>
-          <Logo>
-            <img src={badge.image} />
-          </Logo>
-          <div className="d-flex flex-column gap-1">
-            <div className="d-flex gap-2 align-items-center">
-              <Amount>{badge.amount}</Amount>
-              <Label>{badge.label}</Label>
+    {[1, 2, 3].map((el) => (
+      <div className="scroll">
+        {badgesData.map((badge, index) => (
+          <Badge key={index} role="button">
+            <Logo>
+              <img src={badge.image} />
+            </Logo>
+            <div className="d-flex flex-column gap-1">
+              <div className="d-flex gap-2 align-items-center">
+                <Amount>{badge.amount}</Amount>
+                <Label>{badge.label}</Label>
+              </div>
+              <div className="d-flex gap-2 align-items-center">
+                <small>{badge.date}</small>
+                <Status color={colorMap(badge.status)}>{badge.status}</Status>
+              </div>
             </div>
-            <div className="d-flex gap-2 align-items-center">
-              <small>{badge.date}</small>
-              <Status color={colorMap(badge.status)}>{badge.status}</Status>
-            </div>
-          </div>
-        </Badge>
-      </>
+          </Badge>
+        ))}
+      </div>
     ))}
   </Container>
 );
