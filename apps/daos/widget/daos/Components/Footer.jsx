@@ -1,6 +1,8 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
+
+if (!assets) return <Widget src="flashui.near/widget/Loading" />;
 
 const page = props.page;
 const showFooterPages = [

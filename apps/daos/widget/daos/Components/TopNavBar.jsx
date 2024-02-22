@@ -1,6 +1,8 @@
 const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { hasNotifications, daoId } = props;
 
+if (!assets) return <Widget src="flashui.near/widget/Loading" />;
+
 const links = [
   {
     text: "Reports",

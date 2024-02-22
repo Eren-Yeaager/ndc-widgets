@@ -1,7 +1,10 @@
-let { assets, content, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-let { Hero } = VM.require(`/*__@replace:widgetPath__*/.Components.Hero`); 
+let { assets, content, contractName } = VM.require(
+  `/*__@replace:widgetPath__*/.Config`
+);
+let { Hero } = VM.require(`/*__@replace:widgetPath__*/.Components.Hero`);
 
-if (!contractName || !content || !assets) return <Widget src="flashui.near/widget/Loading" />;
+if (!contractName || !content || !assets || !Hero)
+  return <Widget src="flashui.near/widget/Loading" />;
 
 assets = assets.home;
 content = content.home;
@@ -92,12 +95,11 @@ const Item = styled.div`
   }
 `;
 
-const daos = Near.view(contractName, 'get_dao_list')
+const daos = Near.view(contractName, "get_dao_list");
 
 return (
-  <Container >
+  <Container>
     {daos.map((dao) => (
-
       <Item>
         <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
           <Widget
@@ -105,15 +107,15 @@ return (
             props={{ image: dao.logo_url, index }}
           />
           <h4 className="bold color-text px-3 mt-1 text-center">{dao.title}</h4>
-          <Link style={{ background: "#A4C2FD", borderColor: '#A4C2FD' }}
-          href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${dao.id}`}
-          className="btn btn-secondary d-flex justify-content-between"
-        >
-          <span>Learn more</span>
-        </Link>
+          <Link
+            style={{ background: "#A4C2FD", borderColor: "#A4C2FD" }}
+            href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${dao.id}`}
+            className="btn btn-secondary d-flex justify-content-between"
+          >
+            <span>Learn more</span>
+          </Link>
         </div>
       </Item>
-
     ))}
   </Container>
 );

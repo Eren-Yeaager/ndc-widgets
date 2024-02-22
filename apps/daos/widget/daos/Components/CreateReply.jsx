@@ -1,5 +1,8 @@
 let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { id, description } = props;
+
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
+
 const accountId = context.accountId;
 
 if (!accountId) {
