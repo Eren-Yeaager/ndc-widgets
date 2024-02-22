@@ -1,10 +1,11 @@
-const { imgUrl, text } = props
+const { imgUrl, text } = props;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 30px 0;
+  padding: 2rem 0;
+
   img {
     width: 33px;
   }
@@ -18,11 +19,11 @@ const Title = styled.div`
     line-height: normal;
     padding-left: 15px;
   }
-`
+`;
 
 return (
   <Title>
     <img src={imgUrl}></img>
     <span>{text}</span>
   </Title>
-)
+);

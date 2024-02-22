@@ -1,7 +1,7 @@
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); // 3 columns
-  gap: 4rem;
+  gap: 2rem;
   padding: 1rem;
 
   @media screen and (max-width: 768px) {
@@ -18,17 +18,18 @@ const GridContainer = styled.div`
 
 const Card = styled.div`
   background: white;
-  border-radius: 0  0 8px 8px;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  padding: 2rem;
 `;
 
-const CardTitle = styled.h2`
+const CardTitle = styled.h3`
   color: white !important;
+  font-weight: 600;
   text-align: center;
-  padding: 0.5rem 0;
+  padding: 2rem;
   border-radius: 10px 10px 0px 0px;
-  background: #A4C2FD;
+  background: #a4c2fd;
   margin-bottom: unset;
 `;
 
@@ -56,14 +57,13 @@ const Arrow = styled.span`
   color: #007bff;
 `;
 
-const CardContainer = styled.div`
-`
+const CardContainer = styled.div``;
 
 function groupByCategoryList(daos) {
   const categoryMap = {};
 
-  daos.forEach(dao => {
-    dao.verticals.forEach(category => {
+  daos.forEach((dao) => {
+    dao.verticals.forEach((category) => {
       if (!categoryMap[category]) {
         categoryMap[category] = { title: category, links: [] };
       }
@@ -72,9 +72,9 @@ function groupByCategoryList(daos) {
     });
   });
 
-  return Object.values(categoryMap).map(category => ({
+  return Object.values(categoryMap).map((category) => ({
     title: category.title,
-    links: category.links
+    links: category.links,
   }));
 }
 
@@ -89,7 +89,8 @@ return (
           <LinkList>
             {card.links.map((link) => (
               <Link
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${link.id}`}>
+                href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${link.id}`}
+              >
                 <ListItem key={link}>
                   <ItemText>{link.title}</ItemText>
                   <Arrow>›</Arrow>
@@ -102,6 +103,3 @@ return (
     ))}
   </GridContainer>
 );
-
-
-

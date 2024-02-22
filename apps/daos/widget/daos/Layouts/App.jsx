@@ -156,15 +156,17 @@ function AppLayout({ page, props, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        <Wrapper>
-          {page !== "home" && (
+        {page === "home" ? (
+          children
+        ) : (
+          <Wrapper>
             <Widget
               src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
               props={props}
             />
-          )}
-          {children}
-        </Wrapper>
+            {children}
+          </Wrapper>
+        )}
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Footer`}
           props={{ page }}
