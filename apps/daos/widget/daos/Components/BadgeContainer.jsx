@@ -5,6 +5,11 @@ const Container = styled.div`
   background-color: #1A1A1A; 
   padding: 8px;
   border-radius: 5px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    border-radius: 10px;
+  }
 `;
 
 const Badge = styled.div`

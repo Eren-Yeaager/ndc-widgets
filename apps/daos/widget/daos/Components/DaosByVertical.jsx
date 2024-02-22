@@ -4,6 +4,11 @@ const GridContainer = styled.div`
   gap: 4rem;
   padding: 1rem;
 
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr); // 1 columns
+    gap: 2rem;
+  }
+
   a {
     &:hover {
       text-decoration: none;
