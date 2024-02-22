@@ -133,13 +133,8 @@ impl Contract {
 
     // Add new DAO request/report
     // Access Level: Public
-    pub fn add_dao_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
-        body.validate();
-        self.get_dao_by_id(&dao_id);
-        if let Some(community_id) = body.get_post_community_id() {
-            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
-            assert!(dao_communities.contains(&community_id), "Community not found in DAO");
-        }
+    pub fn add_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
+        self.validate_add_post(&dao_id, &body);
 
         self.total_posts += 1;
         let author_id = env::predecessor_account_id();
@@ -161,68 +156,76 @@ impl Contract {
         };
         self.posts.insert(&post_id, &post.into());
 
-        // Add to dao_posts
-        let mut dao_posts = self.dao_posts.get(&dao_id).unwrap_or(vec![]);
-        dao_posts.push(post_id.clone());
-        self.dao_posts.insert(&dao_id, &dao_posts);
-
-        // Add to post_authors
-        let mut post_authors = self.post_authors.get(&author_id).unwrap_or(vec![]);
-        post_authors.push(post_id.clone());
-        self.post_authors.insert(&author_id, &post_authors);
-
-        // Add to post_status
-        let mut post_by_status = self.post_status.get(&PostStatus::InReview).unwrap_or(vec![]);
-        post_by_status.push(post_id.clone());
-        self.post_status.insert(&PostStatus::InReview, &post_by_status);
-
-        // Add to verticals label
-        if let Some(vertical) = body.get_post_vertical() {
-            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
-            vertical_posts.push(post_id.clone());
-            self.vertical_posts.insert(&vertical, &vertical_posts);
-        }
-
-        // Add to community_posts
-        if let Some(community_id) = body.get_post_community_id() {
-            let mut community_posts = self.community_posts.get(&community_id).unwrap_or(vec![]);
-            community_posts.push(post_id.clone());
-            self.community_posts.insert(&community_id, &community_posts);
-        }
+        // Update various post collections
+        self.add_dao_posts_internal(&dao_id, post_id);
+        self.add_post_authors_internal(&author_id, post_id);
+        self.add_post_status_internal(post_id, PostStatus::InReview);
+        self.add_vertical_posts_internal(&body, post_id);
+        self.add_community_posts_internal(&body, post_id);
 
         near_sdk::log!("POST ADDED: {}", post_id);
         post_id
     }
 
-    // Edit request/report
-    // Access Level: Post author
-    pub fn edit_dao_post(&mut self, id: PostId, body: PostBody) {
-        let mut post: Post = self.get_post_by_id(&id).into();
-
-        assert_eq!(env::predecessor_account_id(), post.author_id, "Only the author can edit the post");
-        assert_eq!(post.snapshot.status, PostStatus::InReview, "Only posts in review can be edited");
-
+    // Validate post on create
+    fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody) {
         body.validate();
+        self.get_dao_by_id(&dao_id);
         if let Some(community_id) = body.get_post_community_id() {
-            let dao_communities = self.dao_communities.get(&post.dao_id).unwrap_or(vec![]);
+            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
         }
+    }
 
-        // Cleanup old vertical_posts
-        if post.snapshot.body.get_post_vertical().is_some() && post.snapshot.body.get_post_vertical() != body.get_post_vertical(){
-            let vertical = post.snapshot.body.get_post_vertical().unwrap();
-            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
-            vertical_posts.retain(|&x| x != post.id);
+    // Update dao_posts
+    fn add_dao_posts_internal(&mut self, dao_id: &DaoId, post_id: PostId) {
+        let mut dao_posts = self.dao_posts.get(dao_id).unwrap_or_else(Vec::new);
+        dao_posts.push(post_id);
+        self.dao_posts.insert(dao_id, &dao_posts);
+    }
+
+    // Update post_authors
+    fn add_post_authors_internal(&mut self, author_id: &AccountId, post_id: PostId) {
+        let mut post_authors = self.post_authors.get(author_id).unwrap_or_else(Vec::new);
+        post_authors.push(post_id);
+        self.post_authors.insert(author_id, &post_authors);
+    }
+
+    // Update post_status
+    fn add_post_status_internal(&mut self, post_id: PostId, status: PostStatus) {
+        let mut post_by_status = self.post_status.get(&status).unwrap_or_else(Vec::new);
+        post_by_status.push(post_id);
+        self.post_status.insert(&status, &post_by_status);
+    }
+
+    // Update vertical_posts
+    fn add_vertical_posts_internal(&mut self, body: &PostBody, post_id: PostId) {
+        if let Some(vertical) = body.get_post_vertical() {
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or_else(Vec::new);
+            vertical_posts.push(post_id);
             self.vertical_posts.insert(&vertical, &vertical_posts);
         }
+    }
 
-        // Cleanup old community_posts
-        if post.snapshot.body.get_post_community_id().is_some() && post.snapshot.body.get_post_community_id() != body.get_post_community_id(){
-            let community_id = post.snapshot.body.get_post_community_id().unwrap();
-            let mut community_posts = self.community_posts.get(&community_id).unwrap_or(vec![]);
-            community_posts.retain(|&x| x != post.id);
+    // Update community_posts
+    fn add_community_posts_internal(&mut self, body: &PostBody, post_id: PostId) {
+        if let Some(community_id) = body.get_post_community_id() {
+            let mut community_posts = self.community_posts.get(&community_id).unwrap_or_else(Vec::new);
+            community_posts.push(post_id);
             self.community_posts.insert(&community_id, &community_posts);
         }
+    }
+
+
+    // Edit request/report
+    // Access Level: Post author
+    pub fn edit_post(&mut self, id: PostId, body: PostBody) {
+        let mut post: Post = self.get_post_by_id(&id).into();
+        self.validate_edit_post(&post, &body);
+
+        // Cleanup and update posts vertical and community
+        self.update_vertical_posts_internal(&post, &body);
+        self.update_community_posts_internal(&post, &body);
 
         post.snapshot_history.push(post.snapshot.clone());
         post.snapshot = PostSnapshot {
@@ -233,25 +236,73 @@ impl Contract {
         };
         self.posts.insert(&post.id, &post.clone().into());
 
-        // Add to vertical_posts label
-        if let Some(vertical) = body.get_post_vertical() {
-            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or(vec![]);
+        near_sdk::log!("POST EDITED: {}", post.id);
+    }
+
+    // Validate post on edit
+    fn validate_edit_post(&self, post: &Post, body: &PostBody) {
+        assert_eq!(env::predecessor_account_id(), post.author_id, "Only the author can edit the post");
+        assert_eq!(post.snapshot.status, PostStatus::InReview, "Only posts in review can be edited");
+        body.validate();
+
+        if let Some(community_id) = body.get_post_community_id() {
+            let dao_communities = self.dao_communities.get(&post.dao_id).unwrap_or(vec![]);
+            assert!(dao_communities.contains(&community_id), "Community not found in DAO");
+        }
+    }
+
+    // Cleanup and update vertical_posts
+    fn update_vertical_posts_internal(&mut self, post: &Post, body: &PostBody) {
+        let current_vertical = post.snapshot.body.get_post_vertical();
+        let new_vertical = body.get_post_vertical();
+
+        // If the vertical hasn't changed, there's nothing to update.
+        if current_vertical == new_vertical {
+            return;
+        }
+
+        // Remove post from the old vertical if it exists.
+        if let Some(vertical) = current_vertical {
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or_else(Vec::new);
+            vertical_posts.retain(|&x| x != post.id);
+            self.vertical_posts.insert(&vertical, &vertical_posts);
+        }
+
+        // Add post to the new vertical if it's different from the current.
+        if let Some(vertical) = new_vertical {
+            let mut vertical_posts = self.vertical_posts.get(&vertical).unwrap_or_else(Vec::new);
             if !vertical_posts.contains(&post.id) {
                 vertical_posts.push(post.id.clone());
                 self.vertical_posts.insert(&vertical, &vertical_posts);
             }
         }
+    }
 
-        // Add to community_posts
-        if let Some(community_id) = body.get_post_community_id() {
-            let mut community_posts = self.community_posts.get(&community_id).unwrap_or(vec![]);
-            if community_posts.contains(&post.id) {
+    // Cleanup and update community_posts
+    fn update_community_posts_internal(&mut self, post: &Post, body: &PostBody) {
+        let current_community_id = post.snapshot.body.get_post_community_id();
+        let new_community_id = body.get_post_community_id();
+
+        // If the community hasn't changed, there's nothing to update.
+        if current_community_id == new_community_id {
+            return;
+        }
+
+        // Remove post from the old community if it exists.
+        if let Some(community_id) = current_community_id {
+            let mut community_posts = self.community_posts.get(&community_id).unwrap_or_else(Vec::new);
+            community_posts.retain(|&x| x != post.id);
+            self.community_posts.insert(&community_id, &community_posts);
+        }
+
+        // Add post to the new community if it's different from the current.
+        if let Some(community_id) = new_community_id {
+            let mut community_posts = self.community_posts.get(&community_id).unwrap_or_else(Vec::new);
+            if !community_posts.contains(&post.id) {
                 community_posts.push(post.id.clone());
                 self.community_posts.insert(&community_id, &community_posts);
             }
         }
-
-        near_sdk::log!("POST EDITED: {}", post.id);
     }
 
     // Change request/report status
@@ -259,33 +310,38 @@ impl Contract {
     pub fn change_post_status(&mut self, id: PostId, status: PostStatus) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
-        let dao_owners = self.get_dao_by_id(&post.dao_id).latest_version().owners;
-        assert!(dao_owners.contains(&env::predecessor_account_id()), "Only DAO owners can change the post status");
+        self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
         assert_ne!(post.snapshot.status, status, "Post already has this status");
 
         // TODO: Add restrictions & rules for status changes
 
-        // Cleanup old post_status
-        let mut post_by_status = self.post_status.get(&post.snapshot.status).unwrap_or(vec![]);
-        post_by_status.retain(|&x| x != post.id);
-        self.post_status.insert(&post.snapshot.status, &post_by_status);
+        // Cleanup old post_status and add to new post_status
+        self.update_post_status_internal(&post, status.clone());
 
         // Update post
         post.snapshot_history.push(post.snapshot.clone());
         post.snapshot = PostSnapshot {
-            status: status.clone(),
+            status,
             editor_id: env::predecessor_account_id(),
             timestamp: env::block_timestamp(),
             body: post.snapshot.body.clone(),
         };
         self.posts.insert(&post.id, &post.clone().into());
 
-        // Add to new post_status
-        let mut post_by_status = self.post_status.get(&status).unwrap_or(vec![]);
-        post_by_status.push(post.id.clone());
-        self.post_status.insert(&status, &post_by_status);
-
         near_sdk::log!("POST STATUS CHANGED: {}", post.id);
+    }
+
+    // Cleanup old post_status and add to new post_status
+    fn update_post_status_internal(&mut self, post: &Post, new_status: PostStatus) {
+        // Cleanup old post_status
+        let mut post_by_status = self.post_status.get(&post.snapshot.status).unwrap_or_default();
+        post_by_status.retain(|&x| x != post.id);
+        self.post_status.insert(&post.snapshot.status, &post_by_status);
+
+        // Add to new post_status
+        let mut post_by_new_status = self.post_status.get(&new_status).unwrap_or_default();
+        post_by_new_status.push(post.id.clone());
+        self.post_status.insert(&new_status, &post_by_new_status);
     }
 }
 
@@ -299,7 +355,7 @@ mod tests {
     use crate::post::report::{Report, VersionedReport};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
-        contract.add_dao_post(
+        contract.add_post(
             *dao_id,
             PostBody::Proposal(
                 VersionedProposal::V1(
@@ -319,7 +375,7 @@ mod tests {
     }
 
     pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: PostId) -> PostId {
-        contract.add_dao_post(
+        contract.add_post(
             dao_id,
             PostBody::Report(
                 VersionedReport::V1(
@@ -371,7 +427,7 @@ mod tests {
         let new_title = "New Proposal title".to_string();
         let new_description = "New Proposal description".to_string();
 
-        contract.edit_dao_post(proposal_id, PostBody::Proposal(
+        contract.edit_post(proposal_id, PostBody::Proposal(
             VersionedProposal::V1(
                 Proposal {
                     title: new_title.clone(),

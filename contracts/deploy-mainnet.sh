@@ -3,12 +3,15 @@
 ACCOUNT_ID=test-mdao.near
 CONTRACT=v1.test-mdao.near
 
-## Full redeploy
+## Full redeploy - cleanup storage and remove account
 # NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
+# NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
+
+## Create new account
 # NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 5
 # NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
- # Update
+ # Update contract
  NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
 
 ## -------- Data Seed --------
@@ -26,11 +29,11 @@ CONTRACT=v1.test-mdao.near
 
 #
 ## Add DAO Proposal
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"NEAR Media - March, 2024", "description":"Hello, NEAR Fam! We are excited to present our work here. It’s a wonderful experience to be with you all. Please Look out for our proposal!", "attachments":[], "labels":["near-media"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG)", "description":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG) Our vision is to revolutionize marketing, promotion, and community outreach efforts for blockchain companies through strategic leveraging of our extensive network and partnerships. By harnessing the power of our 47 LinkedIn Groups, combined with the Blockchain Industry Group (BIG), we aim to provide unparalleled visibility and engagement opportunities for brands within the blockchain ecosystem.", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":1, "body":{"title":"ETH Denver Vibe Check 2.0", "description":"<b>ETH Denver Vibe Check 2.0</b><br />The second edition of Vibe Check is coming to Denver! Proof of Vibes is hosting and producing this event in partnership with Illust, Denver MCA, Denver Walls, Groovy Gravy, DotConnector, and Sukuri Protocol.", "attachments":[], "labels":["ar", "live-music", "food", "art", "web3", "vr"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":2, "body":{"title":"Zombie Killer Event - February, 2024", "description":"Create kill event for ZomLand community", "attachments":[], "labels":["zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao_post '{"dao_id":2, "body":{"title":"Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard!", "attachments":[], "labels":["near-gaming", "zomland"], "metrics":{}, "proposal_id":4, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"NEAR Media - March, 2024", "description":"Hello, NEAR Fam! We are excited to present our work here. It’s a wonderful experience to be with you all. Please Look out for our proposal!", "attachments":[], "labels":["near-media"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG)", "description":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG) Our vision is to revolutionize marketing, promotion, and community outreach efforts for blockchain companies through strategic leveraging of our extensive network and partnerships. By harnessing the power of our 47 LinkedIn Groups, combined with the Blockchain Industry Group (BIG), we aim to provide unparalleled visibility and engagement opportunities for brands within the blockchain ecosystem.", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"ETH Denver Vibe Check 2.0", "description":"<b>ETH Denver Vibe Check 2.0</b><br />The second edition of Vibe Check is coming to Denver! Proof of Vibes is hosting and producing this event in partnership with Illust, Denver MCA, Denver Walls, Groovy Gravy, DotConnector, and Sukuri Protocol.", "attachments":[], "labels":["ar", "live-music", "food", "art", "web3", "vr"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Zombie Killer Event - February, 2024", "description":"Create kill event for ZomLand community", "attachments":[], "labels":["zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard!", "attachments":[], "labels":["near-gaming", "zomland"], "metrics":{}, "proposal_id":4, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 #
 #
 ## Like Proposal/Report
