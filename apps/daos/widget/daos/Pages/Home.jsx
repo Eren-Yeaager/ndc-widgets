@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const Item = styled.div`
   width: 350px;
-  height: 280px;
+  height: 350px;
   border-radius: 10px;
   border: none;
   border-radius: 10px;
@@ -38,7 +38,11 @@ const Item = styled.div`
   
   span {
     color: #ffffff;
-    min-width: 200px;
+  }
+
+  .bi-plus-circle:hover {
+    color: rgb(164, 194, 253);
+    fill: rgb(164, 194, 253);
   }
 
   a.btn {
@@ -113,6 +117,35 @@ const Item = styled.div`
   }
 `;
 
+const DaoDesc = styled.div`
+  color: #1E1D22;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit text to 3 lines, adjust as needed */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const DaoLink = styled.a`
+ min-width: 200px;
+ box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+ background: black;
+ i {
+  padding-left: 30px;
+ }
+ span {
+  padding-right: 35px;
+ }
+ :hover { 
+  background: black;
+ }
+`
+
 const [loading, setLoading] = useState(false);
 const daos = Near.view(contractName, 'get_dao_list')
 
@@ -135,7 +168,8 @@ groupedDaos.forEach((item) => types.add(...Object.keys(item)))
 
 
 const typeOfProject = Array.from(types).map((item) => {
-  return { name: item.charAt(0).toUpperCase() + item.slice(1), color: '#68D895' }})
+  return { name: item.charAt(0).toUpperCase() + item.slice(1), color: '#68D895' }
+})
 
 return (
   <Container >
@@ -193,12 +227,14 @@ return (
             props={{ image: dao.logo_url, index }}
           />
           <h4 className="bold color-text px-3 mt-1 text-center">{dao.title}</h4>
-          <Link style={{ background: "#151718" }}
+          <DaoDesc>{dao.description}</DaoDesc>
+          <DaoLink
             href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${dao.id}`}
             className="btn btn-secondary d-flex justify-content-between"
           >
+            <i class="bi bi-plus-circle"></i>
             <span>Join DAO</span>
-          </Link>
+          </DaoLink>
         </div>
       </Item>
     ))}
@@ -216,7 +252,7 @@ return (
     </Section>
     <Widget
       src={`/*__@replace:widgetPath__*/.Components.DaosByVertical`}
-      props={{daos}}
+      props={{ daos }}
     />
   </Container>
 );
