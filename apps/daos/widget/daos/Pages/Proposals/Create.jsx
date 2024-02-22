@@ -155,7 +155,7 @@ const handleSave = () => {
     body.proposal_version = "V1";
   }
 
-  Near.call(contractName, "add_dao_post", {
+  Near.call(contractName, "add_post", {
     dao_id: parseInt(daoId),
     body,
   });

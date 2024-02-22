@@ -102,12 +102,7 @@ impl Contract {
     ) -> DaoId {
         near_sdk::assert_self();
 
-        // check DAO: handle and title are unique
-        self.dao.iter().for_each(|(_, dao_ref)| {
-            let dao: DAO = dao_ref.into();
-            assert_ne!(dao.handle, body.handle, "DAO handle already exists");
-            assert_ne!(dao.title, body.title, "DAO title already exists");
-        });
+        self.validate_dao_uniqueness(&body);
 
         let id = self.dao.len() + 1 as DaoId;
         let dao = DAO {
@@ -131,6 +126,20 @@ impl Contract {
 
         near_sdk::log!("DAO ADDED: {}", id);
         id
+    }
+
+    // Validate DAO uniqueness (handle and title)
+    fn validate_dao_uniqueness(&self, body: &DAOInput) {
+        self.dao.iter().for_each(|(_, dao_ref)| {
+            let dao: DAO = dao_ref.into();
+            assert_ne!(dao.handle, body.handle, "DAO handle already exists");
+            assert_ne!(dao.title, body.title, "DAO title already exists");
+        });
+    }
+
+    pub(crate) fn validate_dao_ownership(&self, account_id: &AccountId, dao_id: &DaoId) {
+        let dao: DAO = self.get_dao_by_id(dao_id).into();
+        assert!(dao.owners.contains(account_id), "Must be DAO owner to add community");
     }
 
     // Edit DAO

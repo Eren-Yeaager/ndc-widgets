@@ -107,23 +107,14 @@ impl Contract {
         verticals: Vec<Vertical>,
         metadata: HashMap<String, String>
     ) -> CommunityId {
-        let dao:DAO = self.get_dao_by_id(&dao_id).into();
-        assert!(dao.owners.contains(&env::predecessor_account_id()), "Must be DAO owner to add community");
-
+        self.validate_dao_ownership(&env::predecessor_account_id(), &dao_id);
         community_input.validate();
-        let mut dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
-        dao_communities.iter().for_each(|c| {
-            let dao_community:Community = self.get_community_by_id(c).into();
-            assert_ne!(dao_community.handle, community_input.handle, "Community handle already exists");
-            assert_ne!(dao_community.title, community_input.title, "Community title already exists");
-        });
-        verticals.iter().for_each(|c| {
-            assert!(dao.verticals.contains(c), "Vertical not in DAO verticals list");
-        });
+
+        self.validate_community_uniqueness(&dao_id, &community_input);
+        self.validate_verticals_in_dao(&dao_id, &verticals);
 
         self.total_communities += 1;
         let id  = self.total_communities;
-
         let community = Community {
             id: id.clone(),
             dao_list: vec![dao_id],
@@ -138,10 +129,33 @@ impl Contract {
         };
         self.communities.insert(&id, &community.into());
 
-        dao_communities.push(id);
-        self.dao_communities.insert(&dao_id, &dao_communities);
-
+        self.add_dao_communities(&dao_id, id.clone());
         id
+    }
+
+    // Add community to DAO community list
+    fn add_dao_communities(&mut self, dao_id: &DaoId, community_id: CommunityId) {
+        let mut dao_communities = self.dao_communities.get(dao_id).unwrap_or(vec![]);
+        dao_communities.push(community_id);
+        self.dao_communities.insert(dao_id, &dao_communities);
+    }
+
+    // Validate uniqueness of community (handle and title)
+    fn validate_community_uniqueness(&self, dao_id: &DaoId, community_input: &CommunityInput) {
+        let dao_communities = self.dao_communities.get(dao_id).unwrap_or(vec![]);
+        dao_communities.iter().for_each(|c| {
+            let dao_community:Community = self.get_community_by_id(c).into();
+            assert_ne!(dao_community.handle, community_input.handle, "Community handle already exists");
+            assert_ne!(dao_community.title, community_input.title, "Community title already exists");
+        });
+    }
+
+    // Validate verticals in list of DAO verticals
+    fn validate_verticals_in_dao(&self, dao_id: &DaoId, verticals: &Vec<Vertical>) {
+        let dao:DAO = self.get_dao_by_id(dao_id).into();
+        verticals.iter().for_each(|c| {
+            assert!(dao.verticals.contains(c), "Vertical not in DAO verticals list");
+        });
     }
 
     // Edit DAO community
@@ -158,6 +172,7 @@ impl Contract {
     ) {
         let mut community: Community = self.get_community_by_id(&id).into();
         let mut can_edit = false;
+
         community.dao_list.iter().for_each(|dao_id| {
             let dao:DAO = self.get_dao_by_id(dao_id).into();
             if dao.owners.contains(&env::predecessor_account_id()) {

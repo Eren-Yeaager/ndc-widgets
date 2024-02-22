@@ -127,26 +127,36 @@ impl Contract {
         };
         self.comments.insert(&comment_id, &comment.into());
 
-        // Add comment ID to parent comment
-        if reply_to.is_some() {
-            let reply_id = reply_to.unwrap();
-            let mut parent_comment:Comment = self.comments.get(&reply_id).expect("Parent comment not found").into();
-            parent_comment.child_comments.insert(comment_id.clone());
-            self.comments.insert(&reply_id, &parent_comment.into());
-        }
-
-        // Add comment ID to post
-        let mut post:Post = self.posts.get(&post_id).expect("Post not found").into();
-        post.comments.insert(comment_id.clone());
-        self.posts.insert(&post_id, &post.into());
-
-        // Add comment ID for author
-        let mut my_comments = self.comment_authors.get(&author_id).unwrap_or(vec![]);
-        my_comments.push(comment_id);
-        self.comment_authors.insert(&author_id, &my_comments);
+        self.update_parent_comment(reply_to, comment_id);
+        self.add_comment_to_post(&post_id, comment_id);
+        self.update_author_comments(&author_id, comment_id);
 
         near_sdk::log!("COMMENT ADDED: {}", comment_id);
         comment_id
+    }
+
+    // Add comment ID to parent comment
+    fn update_parent_comment(&mut self, reply_to: Option<CommentId>, comment_id: CommentId) {
+        if reply_to.is_some() {
+            let reply_id = reply_to.unwrap();
+            let mut parent_comment:Comment = self.get_comment_by_id(&reply_id).into();
+            parent_comment.child_comments.insert(comment_id.clone());
+            self.comments.insert(&reply_id, &parent_comment.into());
+        }
+    }
+
+    // Add comment ID to post
+    fn add_comment_to_post(&mut self, post_id: &PostId, comment_id: CommentId) {
+        let mut post:Post = self.get_post_by_id(&post_id).into();
+        post.comments.insert(comment_id.clone());
+        self.posts.insert(&post_id, &post.into());
+    }
+
+    // Add comment ID to author
+    fn update_author_comments(&mut self, author_id: &AccountId, comment_id: CommentId) {
+        let mut my_comments = self.comment_authors.get(author_id).unwrap_or(vec![]);
+        my_comments.push(comment_id);
+        self.comment_authors.insert(&author_id, &my_comments);
     }
 
     // Edit comment
@@ -158,9 +168,8 @@ impl Contract {
         attachments: Vec<String>,
     ) {
         let mut comment:Comment = self.get_comment_by_id(&comment_id).into();
-        let author_id = env::predecessor_account_id();
 
-        assert_eq!(comment.author_id, author_id, "You are not the author of this comment");
+        self.validate_comment_author(&comment);
 
         comment.snapshot_history.push(comment.snapshot.clone());
         comment.snapshot = CommentSnapshot {
@@ -173,6 +182,11 @@ impl Contract {
         self.comments.insert(&comment_id, &comment.into());
 
         near_sdk::log!("COMMENT EDITED: {}", comment_id);
+    }
+
+    fn validate_comment_author(&self, comment: &Comment) {
+        let author_id = env::predecessor_account_id();
+        assert_eq!(comment.author_id, author_id, "You are not the author of this comment");
     }
 }
 
