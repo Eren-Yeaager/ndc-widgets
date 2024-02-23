@@ -9,7 +9,7 @@ function Page() {
     case "comments": {
       return (
         <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Comment`}
+          src={`/*__@replace:widgetPath__*/.Pages.Comments.Index`}
           props={passProps}
         />
       );
@@ -75,6 +75,14 @@ function Page() {
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
           props={{ type: "Proposal", ...passProps }}
+        />
+      );
+    }
+    case "proposal": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Proposals.Index`}
+          props={{ ...passProps }}
         />
       );
     }

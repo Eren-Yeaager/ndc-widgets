@@ -255,12 +255,12 @@ const CardItem = ({ item, index }) => (
           <Widget
             src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
             props={{
-              text: `https://near.org/ndcdev.near/widget/daos.App?page=${pageName}&id=${item.id}`,
+              text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
             }}
           />
         </div>
         <Button
-          href={`//*__@replace:widgetPath__*/.App?page=proposals&id=${item.id}`}
+          href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
         >
           {`Open ${item.post_type}`}
           <i className={"bi blue bi-box-arrow-up-right"} />

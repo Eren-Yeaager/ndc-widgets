@@ -269,7 +269,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl: content.communityTreasury.image,
-          text: content.communityTreasury.title
+          text: content.communityTreasury.title,
         }}
       />
 
@@ -280,35 +280,29 @@ return (
           deliverTreasury: 5000,
           typeOfProject,
           loading,
-          text: content.communityTreasury.metrics
+          text: content.communityTreasury.metrics,
         }}
       />
 
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          imgUrl:
-            content.whatIsNDC.image,
+          imgUrl: content.whatIsNDC.image,
           text: content.whatIsNDC.title,
         }}
       />
-      <Description>
-        {content.whatIsNDC.text}
-      </Description>
+      <Description>{content.whatIsNDC.text}</Description>
     </Wrapper>
     <ParalaxImg src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          imgUrl:
-            content.whatisGrassrootDAO.image,
+          imgUrl: content.whatisGrassrootDAO.image,
           text: content.whatisGrassrootDAO.title,
         }}
       />
-      <Description>
-        {content.whatisGrassrootDAO.text}
-      </Description>
+      <Description>{content.whatisGrassrootDAO.text}</Description>
 
       <div className="d-flex flex-wrap justify-content-center gap-3">
         {daos.map((dao) => (
@@ -323,7 +317,7 @@ return (
               </h4>
               <DaoDesc>{dao.description}</DaoDesc>
               <DaoLink
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${dao.id}`}
+                href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.id}`}
                 className="btn btn-secondary d-flex justify-content-between"
               >
                 <i class="bi bi-plus-circle"></i>
@@ -340,19 +334,15 @@ return (
           <h1 className="title">{content.createyourGrassrootDAO.title}</h1>
           <p className="description">
             <ul>
-              <li>
-                {content.createyourGrassrootDAO.items.first}
-              </li>
+              <li>{content.createyourGrassrootDAO.items.first}</li>
               <li>{content.createyourGrassrootDAO.items.second}</li>
-              <li>
-                {content.createyourGrassrootDAO.items.third}
-              </li>
+              <li>{content.createyourGrassrootDAO.items.third}</li>
             </ul>
           </p>
           <a
             style={{ fontSize: "24px" }}
             className="btn-primary text-uppercase"
-            href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${1}`}
+            href={`//*__@replace:widgetPath__*/.App?page=proposals`}
           >
             create proposal
           </a>
@@ -365,15 +355,12 @@ return (
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          imgUrl:
-            content.GetFundingForYourProject.image,
+          imgUrl: content.GetFundingForYourProject.image,
           text: content.GetFundingForYourProject.title,
         }}
       />
 
-      <Description>
-        {content.GetFundingForYourProject.text}
-      </Description>
+      <Description>{content.GetFundingForYourProject.text}</Description>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.DaosByVertical`}
         props={{ daos }}

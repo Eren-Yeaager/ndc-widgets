@@ -2,7 +2,7 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
-const { daoId } = props;
+const { dao_id } = props;
 
 const Container = styled.div`
   position: relative;
@@ -103,13 +103,13 @@ const form = {
       type: "textarea",
       required: true,
     },
-    {
-      name: "requested_amount",
-      label: "Requested Amount (USD)",
-      value: "",
-      type: "number",
-      required: true,
-    },
+    // {
+    //   name: "requested_amount",
+    //   label: "Requested Amount (USD)",
+    //   value: "",
+    //   type: "number",
+    //   required: true,
+    // },
     {
       name: "tags",
       label: "Tags",
@@ -146,6 +146,7 @@ const handleSave = () => {
     post_type: formEls.type,
     metrics: {},
     reports: [],
+    attachments: [],
   };
 
   if (formEls.type === "Report") {
@@ -156,7 +157,7 @@ const handleSave = () => {
   }
 
   Near.call(contractName, "add_post", {
-    dao_id: parseInt(daoId),
+    dao_id: parseInt(dao_id),
     body,
   });
 };

@@ -31,7 +31,7 @@ const links = [
 const Navbar = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0 3rem;
   gap: 3rem;
   align-items: center;
