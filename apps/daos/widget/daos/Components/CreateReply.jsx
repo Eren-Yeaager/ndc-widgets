@@ -12,6 +12,7 @@ if (!accountId) {
 State.init({
   text: "",
   showPreview: false,
+  attachments: [],
 });
 
 const profile = Social.getr(`${accountId}/profile`);
@@ -20,19 +21,21 @@ const autocompleteEnabled = true;
 const content = {
   accountId,
   text: state.text,
+  attachments: state.attachments,
 };
 
 function composeData() {
   Near.call(contractName, "add_comment", {
     post_id: id,
     description: state.text,
-    attachments: [],
+    attachments: state.attachments,
   });
 }
 
 function onCommit() {
   State.update({
     text: "",
+    attachments: [],
   });
 }
 
@@ -172,7 +175,8 @@ const Actions = styled.div`
   right: var(--padding);
 
   .commit-post-button,
-  .preview-post-button {
+  .preview-post-button,
+  .attachment-button {
     background: #a4c2fd;
     color: #09342e;
     border-radius: 40px;
@@ -197,7 +201,8 @@ const Actions = styled.div`
     }
   }
 
-  .preview-post-button {
+  .preview-post-button,
+  .attachment-button {
     color: #11181c;
     background: #f1f3f5;
     padding: 0;
@@ -279,12 +284,16 @@ return (
     {state.showPreview ? (
       <PreviewWrapper>
         <Widget
-          src="/*__@replace:widgetPath__*/.Components.ReplyItem"
+          src="/*__@replace:widgetPath__*/.Components.Comment"
           props={{
-            item: {
-              text: state.text,
-              isPreview: true,
+            comment: {
+              snapshot: {
+                timestamp: `${new Date().getTime()}000000`,
+                description: state.text,
+                attachments: state.attachments,
+              },
             },
+            isPreview: true,
           }}
         />
       </PreviewWrapper>
@@ -354,6 +363,13 @@ return (
           <i className="bi bi-eye-fill" />
         )}
       </button>
+
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
+        props={{
+          onChange: (file) => State.update({ attachments: [file] }),
+        }}
+      />
 
       <CommitButton
         disabled={!state.text}

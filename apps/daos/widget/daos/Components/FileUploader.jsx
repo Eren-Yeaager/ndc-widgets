@@ -1,6 +1,4 @@
 const fileAccept = props.fileAccept || "*";
-const fileIcon = props.fileIcon || "bi-file";
-const buttonText = props.buttonText || "Upload a file";
 const onChange = props.onChange;
 
 State.init({
@@ -13,17 +11,17 @@ const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
 return (
   <div style={{ width: "max-content" }}>
-    {state.cid && (
+    {/* {state.cid && (
       <a href={ipfsUrl(state.cid)} download>
         {state.filename}
       </a>
-    )}
+    )} */}
     <Files
       multiple={false}
       accepts={["image/*", "video/*", ".pdf"]}
       minFileSize={1}
       clickable
-      className="btn btn-outline-primary"
+      className="d-flex justify-content-center align-items-center attachment-button"
       onChange={(files) => {
         if (!files || !files.length) return;
 
@@ -40,7 +38,11 @@ return (
         });
       }}
     >
-      {state.uploading ? "Uploading" : state.cid ? "Replace" : buttonText}
+      {state.cid ? (
+        <i className="bi bi-arrow-clockwise" />
+      ) : (
+        <i className="bi bi-image" />
+      )}
     </Files>
   </div>
 );

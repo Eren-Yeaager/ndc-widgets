@@ -23,48 +23,58 @@ const formatValue = (value) => {
 };
 
 const Desc = styled.span`
-  color: #FCF8FF;
+  color: #fcf8ff;
   text-align: center;
   font-family: Montserrat;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
-`
+`;
 
 const Name = styled.div`
-  color: #FCF8FF;
+  color: #fcf8ff;
   text-align: center;
   font-family: Montserrat;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; 
-`
+  line-height: 20px;
+`;
 
 const NameContainer = styled.div`
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   flex-wrap: wrap;
-  align-content: flex-start; 
+  align-content: flex-start;
   width: 100%;
-  max-width: 600px; 
+  max-width: 600px;
   gap: 10px;
   justify-content: space-evently;
-`
+`;
 
 const NameInnerContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-`
+`;
 
 return (
   <div className="item">
     <div className="inner">
-      {loading ? <Loading /> : type === 'list' ?  <NameContainer>
-        {value.map((item) => (<NameInnerContainer><Circle color={item.color} /> <Name>{item.name}</Name></NameInnerContainer>))}
-      </NameContainer> : <span>{formatValue(value)}</span>}
+      {loading ? (
+        <Loading />
+      ) : type === "list" ? (
+        <NameContainer>
+          {value.map((item) => (
+            <NameInnerContainer>
+              <Circle color={item.color} /> <Name>{item.name}</Name>
+            </NameInnerContainer>
+          ))}
+        </NameContainer>
+      ) : (
+        <span>{formatValue(value)}</span>
+      )}
     </div>
 
     <div className="d-flex justify-content-center align-items-center gap-2">

@@ -42,9 +42,9 @@ return {
 
       .inner {
         border-radius: 20px;
-        background: #2B2933;
+        background: #2b2933;
         padding: 10px 20px;
-        color: #A4C2FD;
+        color: #a4c2fd;
         margin: 0 30px;
         span {
           font-size: 60px;
