@@ -1,8 +1,9 @@
+const { proposals } = props;
+
 const Container = styled.div`
   width: 100%;
   display: flex;
   background-color: rgb(43, 41, 51);
-  padding: 8px;
   overflow: hidden;
   position: relative;
 
@@ -18,28 +19,38 @@ const Container = styled.div`
   }
 `;
 
-const Badge = styled.div`
+const Badge = styled.a`
   width: 350px;
   min-width: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  padding: 10px 0;
+  padding: 18px 0;
   gap: 1rem;
   color: white;
   font-size: 1em;
   border-left: 0.5px solid rgba(164, 194, 253, 0.1);
   border-right: 0.5px solid rgba(164, 194, 253, 0.1);
+
+  &:hover {
+    text-decoration: none;
+    background: #3d3947;
+  }
+
+  small {
+    color: white;
+  }
 `;
 
 const Amount = styled.span`
   font-weight: bold;
   margin-right: 5px;
-  color: #fdefb1;
+  color: #fdefb1 !important;
 `;
 
 const Label = styled.span`
+  color: white;
   font-size: 1em;
   font-weight: 600;
 `;
@@ -72,49 +83,6 @@ const Logo = styled.span`
   }
 `;
 
-const badgesData = [
-  {
-    amount: "20,000$",
-    label: "Marketing DAO",
-    date: "Nov 22, 2023",
-    image:
-      "https://ipfs.near.social/ipfs/bafkreictoneit73n5dtqkzacepuoywtuwlee5ejnolcn7gam3xfdrabmba",
-    status: "New",
-  },
-  {
-    amount: "7,000$",
-    label: "Marketing DAO",
-    date: "Nov 22, 2023",
-    image:
-      "https://ipfs.near.social/ipfs/bafkreictoneit73n5dtqkzacepuoywtuwlee5ejnolcn7gam3xfdrabmba",
-    status: "Closed",
-  },
-  {
-    amount: "10,000$",
-    label: "Marketing DAO",
-    date: "Nov 22, 2023",
-    image:
-      "https://ipfs.near.social/ipfs/bafkreictoneit73n5dtqkzacepuoywtuwlee5ejnolcn7gam3xfdrabmba",
-    status: "InReview",
-  },
-  {
-    amount: "800$",
-    label: "Marketing DAO",
-    date: "Nov 22, 2023",
-    image:
-      "https://ipfs.near.social/ipfs/bafkreictoneit73n5dtqkzacepuoywtuwlee5ejnolcn7gam3xfdrabmba",
-    status: "Approved",
-  },
-  {
-    amount: "800$",
-    label: "Marketing DAO",
-    date: "Nov 22, 2023",
-    image:
-      "https://ipfs.near.social/ipfs/bafkreictoneit73n5dtqkzacepuoywtuwlee5ejnolcn7gam3xfdrabmba",
-    status: "Rejected",
-  },
-];
-
 const colorMap = (status) => {
   switch (status) {
     case "New":
@@ -132,23 +100,32 @@ const colorMap = (status) => {
   }
 };
 
+const formatDate = (timestamp) =>
+  new Date(parseInt(timestamp) / 1000000).toLocaleDateString();
+
 return (
   <Container>
     {[1, 2, 3].map((el) => (
       <div className="scroll">
-        {badgesData.map((badge, index) => (
-          <Badge key={index} role="button">
+        {proposals.map(({ proposal, dao }, index) => (
+          <Badge
+            key={index}
+            role="button"
+            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${proposal.id}`}
+          >
             <Logo>
-              <img src={badge.image} />
+              <img src={dao.logo_url} />
             </Logo>
             <div className="d-flex flex-column gap-1">
               <div className="d-flex gap-2 align-items-center">
-                <Amount>{badge.amount}</Amount>
-                <Label>{badge.label}</Label>
+                <Amount>${proposal.amount ?? 10593}</Amount>
+                <Label>{dao.title}</Label>
               </div>
               <div className="d-flex gap-2 align-items-center">
-                <small>{badge.date}</small>
-                <Status color={colorMap(badge.status)}>{badge.status}</Status>
+                <small>{formatDate(proposal.timestamp)}</small>
+                <Status color={colorMap(proposal.status)}>
+                  {proposal.status}
+                </Status>
               </div>
             </div>
           </Badge>

@@ -1,7 +1,6 @@
 let { assets, content, contractName } = VM.require(
   `/*__@replace:widgetPath__*/.Config`
 );
-let { Hero } = VM.require(`/*__@replace:widgetPath__*/.Components.Hero`);
 
 assets = assets.home;
 content = content.home;
@@ -232,9 +231,14 @@ const ParalaxImg = styled.div`
 `;
 
 const [loading, setLoading] = useState(false);
-const daos = Near.view(contractName, "get_dao_list");
 
-if (!daos || !contractName || !content || !assets || !Hero)
+const daos = Near.view(contractName, "get_dao_list");
+let proposals = Near.view(contractName, "get_all_posts", {
+  page: 0,
+  limit: 100,
+});
+
+if (!daos || !contractName || !content || !assets || !proposals)
   return <Widget src="flashui.near/widget/Loading" />;
 
 let groupedDaos = daos
@@ -251,6 +255,13 @@ let groupedDaos = daos
   })
   .filter((item) => Object.keys(item).length !== 0);
 
+proposals = proposals.map((proposal) => {
+  return {
+    proposal,
+    dao: daos.find((dao) => dao.id === proposal.dao_id),
+  };
+});
+
 let types = new Set();
 groupedDaos.forEach((item) => types.add(...Object.keys(item)));
 
@@ -263,7 +274,10 @@ const typeOfProject = Array.from(types).map((item) => {
 
 return (
   <Container>
-    <Widget src={`/*__@replace:widgetPath__*/.Components.RunnerContainer`} />
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.RunnerContainer`}
+      props={{ proposals }}
+    />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
