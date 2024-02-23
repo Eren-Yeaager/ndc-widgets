@@ -4,15 +4,13 @@ ACCOUNT_ID=test-mdao.near
 CONTRACT=v1.test-mdao.near
 
 ## Full redeploy - cleanup storage and remove account
-# NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
 # NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
-
-## Create new account
+# NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
 # NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 5
 # NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
- # Update contract
- NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
+## Update contract
+# NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
 
 ## -------- Data Seed --------
 ## Add DAOs
@@ -28,33 +26,41 @@ CONTRACT=v1.test-mdao.near
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"SHE IS NEAR", "handle":"she-is-near", "description":"Empowers women on Near and fortifies the NEAR Protocol with fresh female talent, spreading awareness about NEAR within the Women-in-web3 communities.","logo_url":"https://ipfs.near.social/ipfs/bafkreidmwibzmgae343yxjddkw6v64yzbiyjjsl5y6vncjcee7akso5mpm", "banner_url":"","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
 
 #
-## Add DAO Proposal
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"NEAR Media - March, 2024", "description":"Hello, NEAR Fam! We are excited to present our work here. It’s a wonderful experience to be with you all. Please Look out for our proposal!", "attachments":[], "labels":["near-media"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG)", "description":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG) Our vision is to revolutionize marketing, promotion, and community outreach efforts for blockchain companies through strategic leveraging of our extensive network and partnerships. By harnessing the power of our 47 LinkedIn Groups, combined with the Blockchain Industry Group (BIG), we aim to provide unparalleled visibility and engagement opportunities for brands within the blockchain ecosystem.", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"ETH Denver Vibe Check 2.0", "description":"<b>ETH Denver Vibe Check 2.0</b><br />The second edition of Vibe Check is coming to Denver! Proof of Vibes is hosting and producing this event in partnership with Illust, Denver MCA, Denver Walls, Groovy Gravy, DotConnector, and Sukuri Protocol.", "attachments":[], "labels":["ar", "live-music", "food", "art", "web3", "vr"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Zombie Killer Event - February, 2024", "description":"Create kill event for ZomLand community", "attachments":[], "labels":["zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard!", "attachments":[], "labels":["near-gaming", "zomland"], "metrics":{}, "proposal_id":4, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
-#
-#
-## Like Proposal/Report
-# NEAR_ENV=mainnet near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
-#
-## Add Comment
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Impressive work presented at NEAR today!", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Thrilled to be part of the NEAR community! The presentation today was truly inspiring. It is great to see such innovative ideas coming to life! Looking forward to reviewing your proposal in detail. These events always remind me of the incredible talent and innovation within our community.", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Fantastic presentation! Waiting to explore your proposal in depth. The NEAR community never ceases to amaze.", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Ok, attached NEAR logo", "attachments":["https://near.org/_next/static/media/near-logo.1416a213.svg"]}' --accountId "$ACCOUNT_ID"
-#
-## Add Comment reply
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_id":1, "description":"Level 2 comment, some reply comment text", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":1, "description":"Level 2 comment. Thank you!", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":1, "description":"Level 2 comment. Thank you!", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Yep, fantastic opportunity to witness the unveiling of your work at NEAR. Your enthusiasm is contagious, and I am eagerly anticipating the proposal. This gathering of like-minded individuals is what makes these events so special", "attachments":[]}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Agree, comment with 2 attachments!", "attachments":["https://public.bnbstatic.com/static/academy/uploads-original/e196996f8ae34464b849c4b6e0ea9112.png", "https://nearweek.com/uploads/embed,f_webp,w_320/placeholder_medium_1_b968e77065.jpg"]}' --accountId "$ACCOUNT_ID"
-#
-#
-## Like comment
-# NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
-#
-## Remove like from post
-# NEAR_ENV=mainnet near call "$CONTRACT" post_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
+# Add DAO Proposal
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"NEAR Media - March, 2024", "description":"Hello, NEAR Fam! We are excited to present our work here. It’s a wonderful experience to be with you all. Please Look out for our proposal!", "attachments":[], "labels":["near-media"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG)", "description":"Marketing and Community Outreach Grant Proposal from the Blockchain Industry Group (BIG) Our vision is to revolutionize marketing, promotion, and community outreach efforts for blockchain companies through strategic leveraging of our extensive network and partnerships. By harnessing the power of our 47 LinkedIn Groups, combined with the Blockchain Industry Group (BIG), we aim to provide unparalleled visibility and engagement opportunities for brands within the blockchain ecosystem.", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"ETH Denver Vibe Check 2.0", "description":"<b>ETH Denver Vibe Check 2.0</b><br />The second edition of Vibe Check is coming to Denver! Proof of Vibes is hosting and producing this event in partnership with Illust, Denver MCA, Denver Walls, Groovy Gravy, DotConnector, and Sukuri Protocol.", "attachments":[], "labels":["ar", "live-music", "food", "art", "web3", "vr"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard!", "attachments":[], "labels":["near-gaming", "zomland"], "metrics":{}, "proposal_id":4, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Zombie Killer Event - February, 2024", "description":"Create kill event for ZomLand community", "attachments":[], "labels":["zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"NEAR Developer Conference 2024", "description":"We are thrilled to announce the NEAR Developer Conference 2024! Event dedicated to developers, innovators, and creators in the NEAR ecosystem. The conference will feature workshops, keynote speeches, and networking opportunities to explore the latest in blockchain technology and its applications. Stay tuned for more details!", "attachments":[], "labels":["near-blockchain", "innovation"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Sustainable Blockchain Solutions Challenge", "description":"We are launching the Sustainable Blockchain Solutions Challenge! This initiative aims to encourage projects that leverage blockchain technology for sustainable environmental solutions. Participants can submit their projects for a chance to win funding and support from our expert panel.", "attachments":[], "labels":["sustainability", "blockchain-innovation", "challenge"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"NEAR Education Grant Program", "description":"Introducing the NEAR Education Grant Program, aimed at supporting educational initiatives and projects that promote blockchain literacy and skills. We invite educational institutions, non-profits, and community leaders to apply for grants to launch or expand their blockchain education efforts.", "attachments":[], "labels":["education", "blockchain-literacy", "grants"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"NEAR Art Gallery Virtual Exhibition", "description":"Join us for the NEAR Art Gallery Virtual Exhibition, showcasing the works of artists from around the world who are integrating blockchain technology into their art. This virtual event will feature interactive galleries, artist talks, and live performances.", "attachments":[], "labels":["art", "virtual-exhibition", "blockchain-art"], "metrics":{}, "proposal_id":2, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Blockchain for Social Impact Initiative", "description":"We are excited to launch the Blockchain for Social Impact Initiative. This program focuses on supporting projects that use blockchain technology to create positive social change. Projects focusing on areas like financial inclusion, healthcare, and education are encouraged to apply.", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+
+# Change posts status to new
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":2, "status":"New"}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":3, "status":"Closed"}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":4, "status":"New"}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":6, "status":"New"}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":7, "status":"Rejected"}' --accountId "$ACCOUNT_ID"
+
+# Like Proposal/Report
+ NEAR_ENV=mainnet near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
+
+# Add Comment
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Impressive work presented at NEAR today!", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Thrilled to be part of the NEAR community! The presentation today was truly inspiring. It is great to see such innovative ideas coming to life! Looking forward to reviewing your proposal in detail. These events always remind me of the incredible talent and innovation within our community.", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Fantastic presentation! Waiting to explore your proposal in depth. The NEAR community never ceases to amaze.", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Ok, attached NEAR logo", "attachments":["https://near.org/_next/static/media/near-logo.1416a213.svg"]}' --accountId "$ACCOUNT_ID"
+
+# Add Comment reply
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_id":1, "description":"Level 2 comment, some reply comment text", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":1, "description":"Level 2 comment. Thank you!", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":1, "description":"Level 2 comment. Thank you!", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Yep, fantastic opportunity to witness the unveiling of your work at NEAR. Your enthusiasm is contagious, and I am eagerly anticipating the proposal. This gathering of like-minded individuals is what makes these events so special", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Agree, comment with 2 attachments!", "attachments":["https://public.bnbstatic.com/static/academy/uploads-original/e196996f8ae34464b849c4b6e0ea9112.png", "https://nearweek.com/uploads/embed,f_webp,w_320/placeholder_medium_1_b968e77065.jpg"]}' --accountId "$ACCOUNT_ID"
+
+# Like comment
+ NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"

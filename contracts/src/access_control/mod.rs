@@ -104,5 +104,32 @@ impl Contract {
 
         self.owner_access.insert(owner, &account_access);
     }
+}
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use near_sdk::{AccountId};
+    use crate::access_control::AccessPermissionType;
+    use crate::tests::{create_new_dao, setup_contract};
+
+    #[test]
+    pub fn test_add_owners_access() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let new_owner:AccountId = "new_owner.near".parse().unwrap();
+        contract.add_owners_access(&vec![new_owner.clone()], AccessPermissionType::DAO, dao_id.clone());
+        assert!(contract.is_account_access(&new_owner, &AccessPermissionType::DAO, dao_id, None));
+    }
+
+    #[test]
+    pub fn test_remove_owners_access() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let new_owner:AccountId = "new_owner.near".parse().unwrap();
+        contract.add_owners_access(&vec![new_owner.clone()], AccessPermissionType::DAO, dao_id.clone());
+        contract.remove_owner_access(&new_owner, AccessPermissionType::DAO, dao_id);
+        assert!(!contract.is_account_access(&new_owner, &AccessPermissionType::DAO, dao_id, None));
+    }
 }

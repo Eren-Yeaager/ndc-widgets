@@ -192,12 +192,17 @@ NEAR_ENV=mainnet near call "$CONTRACT" comment_unlike '{"id":1}' --accountId "$A
 
 - Add community
 ```cmd
-NEAR_ENV=mainnet near
+NEAR_ENV=mainnet near call "$CONTRACT" add_community '{"dao_id":1, "community_input":{"handle":"community-handle", "title":"Community title", "description":"Some description", "logo_url":"logo url", "banner_url":"banner url"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit community
 ```cmd
-NEAR_ENV=mainnet near 
+NEAR_ENV=mainnet near call "$CONTRACT" edit_community '{"id":1, "description":"Some description upd...","logo_url":"logo url upd", "banner_url":"banner url upd","owners":["'$ACCOUNT_ID'"], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
+```
+
+- Change community status
+```cmd
+NEAR_ENV=mainnet near call "$CONTRACT" change_community_status '{"id":1, "status":"Inactive"}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get list of communities for DAO (view)
@@ -220,3 +225,11 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-
 ```cmd
 NEAR_ENV=mainnet near view "$CONTRACT" get_account_access '{"account_id":"account.near"}'
 ```
+
+### User
+
+- Get user follow list by type (view)
+```cmd
+NEAR_ENV=mainnet near view "$CONTRACT" get_follow_list '{"follow_type":"DAO", dao_id":1}'
+```
+follow_type options: DAO, Community
