@@ -19,18 +19,18 @@ return (
     <Item
       value={totalTreasury}
       loading={loading}
-      text="Total that we have"
+      text={props.text.totalTreasury}
     />
     <Item
       value={deliverTreasury}
       loading={loading}
-      text="How much was delivered"
+      text={props.text.deliverTreasury}
     />
     <Item
       value={typeOfProject}
       loading={loading}
       type="list"
-      text="What types of projects do we support"
+      text={props.text.typeOfProject}
     />
   </Items>
 );

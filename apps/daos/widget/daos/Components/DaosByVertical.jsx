@@ -93,7 +93,7 @@ return (
           <LinkList>
             {card.links.map((link) => (
               <Link
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&daoId=${link.id}`}
+                href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
               >
                 <ListItem key={link}>
                   <ItemText>{link.title}</ItemText>
