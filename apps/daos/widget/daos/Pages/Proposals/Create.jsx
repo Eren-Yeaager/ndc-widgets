@@ -142,7 +142,7 @@ const handleSave = () => {
   let body = {
     title: formEls.project_name,
     description: formEls.description,
-    labels: formEls.tags,
+    labels: formEls.tags ?? [],
     post_type: formEls.type,
     metrics: {},
     reports: [],
