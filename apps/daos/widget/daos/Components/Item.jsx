@@ -121,6 +121,7 @@ const Button = styled.a`
 `;
 
 const CardContainer = styled.div`
+  width: 100%;
   padding: 3px;
 
   &:hover {
@@ -198,10 +199,13 @@ const CardItem = ({ item, index }) => (
           <div className="info">
             <small style={{ width: "150px" }}>Requested sponsor:</small>
             {dao && (
-              <div className="d-flex align-items-center gap-1">
+              <a
+                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.id}`}
+                className="d-flex align-items-center gap-1"
+              >
                 <img className="dao-img" src={dao.logo_url} />
                 <small>{dao.title}</small>
-              </div>
+              </a>
             )}
           </div>
         </div>
