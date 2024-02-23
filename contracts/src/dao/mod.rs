@@ -137,6 +137,7 @@ impl Contract {
         });
     }
 
+    // Validate DAO ownership
     pub(crate) fn validate_dao_ownership(&self, account_id: &AccountId, dao_id: &DaoId) {
         let dao: DAO = self.get_dao_by_id(dao_id).into();
         assert!(dao.owners.contains(account_id), "Must be DAO owner to add community");
@@ -169,6 +170,17 @@ impl Contract {
 
         self.dao.insert(&id, &dao.into());
     }
+
+    pub fn user_follow_dao(&mut self, id: DaoId){
+        let account_id = env::predecessor_account_id();
+        self.get_dao_by_id(&id);
+
+        let mut user_follow_list = self.user_follow.get(&(FollowType::DAO, account_id.clone())).unwrap_or(vec![]);
+        if !user_follow_list.contains(&id) {
+            user_follow_list.push(id);
+            self.user_follow.insert(&(FollowType::DAO, account_id), &user_follow_list);
+        }
+    }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]
@@ -176,6 +188,7 @@ mod tests {
     use std::collections::HashMap;
     use super::{DAO, DAOInput};
     use crate::tests::{setup_contract, create_new_dao};
+    use crate::user::FollowType;
 
     #[test]
     pub fn test_add_dao() {
@@ -222,5 +235,16 @@ mod tests {
         assert_eq!(dao.verticals.len(), 1);
         assert_eq!(dao.metrics.len(), 2);
         assert_eq!(dao.metadata.len(), 1);
+    }
+
+    #[test]
+    pub fn test_user_follow_dao() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        contract.user_follow_dao(dao_id.clone());
+        let user_follow_list = contract.user_follow.get(&(FollowType::DAO, context.signer_account_id.clone())).unwrap();
+        assert_eq!(user_follow_list.len(), 1);
+        assert_eq!(user_follow_list[0], dao_id);
     }
 }

@@ -85,7 +85,7 @@ impl Contract {
     //     self.posts.clear();
     //     self.communities.clear();
     //     self.label_to_posts.clear();
-    //     self.category_posts.clear();
+    //     self.vertical_posts.clear();
     // }
 
 }

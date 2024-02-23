@@ -28,7 +28,7 @@ pub enum PostStatus {
     InReview,
     New,
     Approved,
-    Rejected { reason: String },
+    Rejected,
     Closed
 }
 

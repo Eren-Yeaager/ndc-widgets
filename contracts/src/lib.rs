@@ -6,6 +6,7 @@ pub mod post;
 pub mod migrations;
 pub mod str_serializers;
 mod user;
+mod errors;
 
 use std::collections::HashSet;
 use storage_keys::*;
@@ -21,7 +22,7 @@ use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
 use crate::dao::{VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
-use crate::user::UserFollow;
+use crate::user::{FollowType};
 
 type DaoId = u64;
 type PostId = u64;
@@ -57,7 +58,7 @@ pub struct Contract {
     pub post_status: LookupMap<PostStatus, Vec<PostId>>,
     pub post_authors: UnorderedMap<AccountId, Vec<PostId>>,
     pub comment_authors: UnorderedMap<AccountId, Vec<CommentId>>,
-    pub user_follow: LookupMap<AccountId, Vec<UserFollow>>,
+    pub user_follow: LookupMap<(FollowType, AccountId), Vec<u64>>,
     pub owner_access: LookupMap<AccountId, Vec<VersionedAccessMetadata>>,
 }
 
@@ -194,6 +195,11 @@ impl Contract {
         community.unwrap_or_else(|| panic!("Community with handle {} not found", handle))
     }
 
+    // Communities: Get follow list for user
+    pub fn get_follow_id_list(&self, follow_type: FollowType, account_id: AccountId) -> Vec<u64> {
+        self.user_follow.get(&(follow_type, account_id)).unwrap_or_default()
+    }
+
     // Access-control: Get the access rules list for a specific account
     pub fn get_account_access(&self, account_id: AccountId) -> Vec<VersionedAccessMetadata> {
         self.owner_access.get(&account_id).unwrap_or(vec![])
@@ -261,7 +267,7 @@ pub mod tests {
                 is_congress: false,
             },
             vec![context.signer_account_id.clone()],
-            vec![],
+            vec!["gaming".to_string()],
             vec![],
             HashMap::new()
         )
