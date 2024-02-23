@@ -268,9 +268,8 @@ return (
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          imgUrl:
-            "https://ipfs.near.social/ipfs/bafkreihwcxkyr2pvfszwxpqs47y7gwlfz3363jead2odmrdwyqtqniuzca",
-          text: "Community Treasury",
+          imgUrl: content.communityTreasury.image,
+          text: content.communityTreasury.title
         }}
       />
 
@@ -281,6 +280,7 @@ return (
           deliverTreasury: 5000,
           typeOfProject,
           loading,
+          text: content.communityTreasury.metrics
         }}
       />
 
@@ -288,21 +288,12 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl:
-            "https://ipfs.near.social/ipfs/bafkreiax4vgaur7pxljajkbmdedx5ynb6en7clh2vcrkciju5atd6xumiq",
-          text: "What is NDC?",
+            content.whatIsNDC.image,
+          text: content.whatIsNDC.title,
         }}
       />
       <Description>
-        <a href="https://app.neardc.org/">
-          <b>Near Digital Collective</b>
-        </a>{" "}
-        (aka <a href="https://www.neardc.org/">NDC</a>) is the governance node
-        of the Near blockchain ecosystem. NDC is the organisation that manages
-        funding requests and learn more about the processes, ongoing initiatives
-        and key members who participate in governance. The NDC's mission is to
-        set up web3 governance on Near, restore grassroots community funding,
-        and reboot the Near community by enabling community members to be
-        rewarded for their contributions.
+        {content.whatIsNDC.text}
       </Description>
     </Wrapper>
     <ParalaxImg src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" />
@@ -311,16 +302,12 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl:
-            "https://ipfs.near.social/ipfs/bafkreiept3chqmiys74vvok62dmsp4i32wa4t754h5z6njx2hdw2zcx6wq",
-          text: "What is Grassroot DAO?",
+            content.whatisGrassrootDAO.image,
+          text: content.whatisGrassrootDAO.title,
         }}
       />
       <Description>
-        <b>Enroll for Grassroot DAO Grant</b> Lorem Ipsum Lorem Ipsum Lorem
-        Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
-        Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
-        Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
-        Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum.
+        {content.whatisGrassrootDAO.text}
       </Description>
 
       <div className="d-flex flex-wrap justify-content-center gap-3">
@@ -350,18 +337,15 @@ return (
     <CreateGrassrootContainer>
       <div className="wrapper">
         <div className="d-flex flex-column gap-3">
-          <h1 className="title">Create your Grassroot DAO</h1>
+          <h1 className="title">{content.createyourGrassrootDAO.title}</h1>
           <p className="description">
             <ul>
               <li>
-                Create your KPIs, process, prepare the team, create a
-                presentation, and submit your proposal!
+                {content.createyourGrassrootDAO.items.first}
               </li>
-              <li>Timelines: 13-19th of each month</li>
+              <li>{content.createyourGrassrootDAO.items.second}</li>
               <li>
-                <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
-                  Examples
-                </a>
+                {content.createyourGrassrootDAO.items.third}
               </li>
             </ul>
           </p>
@@ -382,16 +366,13 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl:
-            "https://ipfs.near.social/ipfs/bafkreianbwxwl3i4ofrjicw7xsjizza2ixogaupcyu36b2n2uteui5povm",
-          text: "Get Funding for your project",
+            content.GetFundingForYourProject.image,
+          text: content.GetFundingForYourProject.title,
         }}
       />
 
       <Description>
-        Participate in Grassroot, as a member or a grant receiver (Join
-        Ambassador Programs, Create Degen content and receive rewards,
-        Participate in content creation or implement your development Idea and
-        onboard 1mil users)
+        {content.GetFundingForYourProject.text}
       </Description>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.DaosByVertical`}
