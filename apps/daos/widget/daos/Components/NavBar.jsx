@@ -50,14 +50,16 @@ return (
       <LinksContainer>
         <div className="position-relative">
           <a href="//*__@replace:widgetPath__*/.App?page=notifications">
-            <i className="bi bi-bell-fill fs-3" />
+            <i className="bi bi-bell-fill text-secondary fs-3" />
           </a>
           {hasNotifications && <div class="circle" />}
         </div>
         <a href="//*__@replace:widgetPath__*/.App?page=setttings">
-          <i className="bi bi-gear-fill fs-3" />
+          <i className="bi bi-gear-fill text-secondary fs-3" />
         </a>
-        <a href="//*__@replace:widgetPath__*/.App?page=profile">
+        <a
+          href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
+        >
           <i className="bi bi-person-circle fs-3" />
         </a>
       </LinksContainer>

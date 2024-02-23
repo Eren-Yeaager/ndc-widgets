@@ -26,6 +26,7 @@ function composeData() {
   Near.call(contractName, "add_comment", {
     post_id: id,
     description: state.text,
+    attachments: [],
   });
 }
 

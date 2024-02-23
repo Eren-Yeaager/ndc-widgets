@@ -339,13 +339,6 @@ return (
               <li>{content.createyourGrassrootDAO.items.third}</li>
             </ul>
           </p>
-          <a
-            style={{ fontSize: "24px" }}
-            className="btn-primary text-uppercase"
-            href={`//*__@replace:widgetPath__*/.App?page=proposals`}
-          >
-            create proposal
-          </a>
         </div>
         <div className="circle" />
         <img src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe" />

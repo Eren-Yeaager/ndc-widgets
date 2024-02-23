@@ -2,7 +2,7 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
-let { dao_id, type } = props;
+let { dao_id, type, accountId } = props;
 
 const Container = styled.div`
   width: 100%;
@@ -29,10 +29,11 @@ if (dao_id) {
   dao = Near.view(contractName, "get_dao_by_id", {
     id: parseInt(dao_id),
   });
-} else
+} else if (accountId)
   items = Near.view(contractName, "get_posts_by_author", {
-    author: context.accountId,
+    author: accountId,
   });
+else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -46,7 +47,7 @@ return (
             {dao.title}
           </h1>
 
-          <div className="my-4">
+          <div className="mt-4">
             <a
               style={{ fontSize: "24px" }}
               className="btn-primary text-uppercase"
@@ -56,13 +57,15 @@ return (
             </a>
           </div>
         </>
-      ) : (
+      ) : accountId ? (
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
           props={props}
         />
+      ) : (
+        <h1>All Proposals</h1>
       )}
-      <div className="d-flex flex-column gap-4">
+      <div className="d-flex flex-column gap-4 mt-4">
         {items?.length ? (
           items
             .filter((i) => i.post_type === type)

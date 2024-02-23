@@ -33,6 +33,11 @@ const Card = styled.div`
     font-size: 14px;
   }
 
+  .dao-img {
+    width: 20px;
+    height: 20px;
+  }
+
   .metric {
     border-radius: 10px;
     height: 80px;
@@ -145,6 +150,10 @@ const handleLike = () => {
   });
 };
 
+const dao = Near.view(contractName, "get_dao_by_id", {
+  id: item.dao_id,
+});
+
 const colorMap = (status) => {
   switch (status) {
     case "New":
@@ -169,7 +178,7 @@ const CardItem = ({ item, index }) => (
         <Widget
           src="mob.near/widget/Profile"
           props={{
-            accountId: item.editor_id,
+            accountId: item.author_id,
             tooltip: true,
           }}
         />
@@ -188,18 +197,12 @@ const CardItem = ({ item, index }) => (
           </div>
           <div className="info">
             <small style={{ width: "150px" }}>Requested sponsor:</small>
-            <div className="d-flex align-items-center gap-1">
-              <small>
-                <Widget
-                  src="mob.near/widget/ProfileImage"
-                  props={{
-                    accountId: item.editor_id,
-                    style: { height: "20px", width: "20px" },
-                  }}
-                />
-              </small>
-              <small>{item.editor_id}</small>
-            </div>
+            {dao && (
+              <div className="d-flex align-items-center gap-1">
+                <img className="dao-img" src={dao.logo_url} />
+                <small>{dao.title}</small>
+              </div>
+            )}
           </div>
         </div>
       </div>
