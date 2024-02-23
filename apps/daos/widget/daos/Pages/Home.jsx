@@ -132,6 +132,11 @@ const CreateGrassrootContainer = styled.div`
   background: #1e1d22;
   height: 650px;
 
+  @media screen and (max-width: 768px) {
+    height: auto;
+    padding-bottom: 20px;
+  }
+
   .wrapper {
     position: relative;
     width: 80%;
