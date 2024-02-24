@@ -14,9 +14,9 @@ near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
  near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","is_congress":false}, "owners":["'$ACCOUNT_ID'","owner.testnet"], "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
 # Add DAO Proposal
- near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title #1", "description":"Proposal description 1...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title #1", "description":"Proposal description 1...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 3000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
  near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title #2", "description":"Report description 2...", "attachments":["https://some_attachment.com", "https://some2_attachment.com"], "labels":["report-label", "gaming"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
- near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Proposal title #3", "description":"Proposal description 3...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Proposal title #3", "description":"Proposal description 3...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 10000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 
 # Like Proposal/Report
  near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"

@@ -19,6 +19,7 @@ pub struct Proposal {
 
     // Specific fields
     pub reports: Vec<PostId>,
+    pub requested_amount: u32,
     // #[serde(with = "u64_dec_format")]
     // pub due_timestamp: Option<Timestamp>,
 }
