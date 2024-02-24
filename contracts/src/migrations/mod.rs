@@ -67,25 +67,25 @@ impl Contract {
     }
 
     // Temporary function - state cleanup
-    // pub fn unsafe_self_state_cleanup(&mut self) {
-    //     near_sdk::assert_self();
-    //
-    //     // map all self.dao and cleanup posts for each dao
-    //     self.dao.iter().for_each(|(dao_id, _)| {
-    //         self.dao_posts.remove(&dao_id);
-    //         self.dao_communities.remove(&dao_id);
-    //     });
-    //
-    //     // use total_comments variable to map all comment and remove all comments
-    //     for i in 1..=self.total_comments {
-    //         self.comments.remove(&i);
-    //     }
-    //
-    //     self.dao.clear();
-    //     self.posts.clear();
-    //     self.communities.clear();
-    //     self.label_to_posts.clear();
-    //     self.vertical_posts.clear();
-    // }
+    pub fn unsafe_self_state_cleanup(&mut self) {
+        near_sdk::assert_self();
+
+        // map all self.dao and cleanup posts for each dao
+        self.dao.iter().for_each(|(dao_id, _)| {
+            self.dao_posts.remove(&dao_id);
+            self.dao_communities.remove(&dao_id);
+        });
+
+        // use total_comments variable to map all comment and remove all comments
+        for i in 1..=self.total_comments {
+            self.comments.remove(&i);
+        }
+
+        self.dao.clear();
+        self.posts.clear();
+        self.communities.clear();
+        self.label_to_posts.clear();
+        self.vertical_posts.clear();
+    }
 
 }
