@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -331,7 +331,7 @@ return (
               </h4>
               <DaoDesc>{dao.description}</DaoDesc>
               <DaoLink
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.id}`}
+                href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`}
                 className="btn btn-secondary d-flex justify-content-between"
               >
                 <i class="bi bi-plus-circle"></i>

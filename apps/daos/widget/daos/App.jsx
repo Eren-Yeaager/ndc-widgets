@@ -78,6 +78,14 @@ function Page() {
         />
       );
     }
+    case "dao": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Dao`}
+          props={{ ...passProps }}
+        />
+      );
+    }
     case "proposal": {
       return (
         <Widget

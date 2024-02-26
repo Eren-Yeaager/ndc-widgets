@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -165,7 +165,7 @@ function AppLayout({ page, props, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        {page === "home" ? children : <Wrapper>{children}</Wrapper>}
+        {page === "home" || "dao" ? children : <Wrapper>{children}</Wrapper>}
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Footer`}
           props={{ page }}
