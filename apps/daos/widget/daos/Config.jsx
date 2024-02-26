@@ -104,6 +104,9 @@ return {
               },
             },
           },
+          projects: {
+            title: "Featured Projects",
+          },
         },
       },
       2: {
@@ -193,6 +196,9 @@ return {
                 link: "",
               },
             },
+          },
+          projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -284,6 +290,9 @@ return {
               },
             },
           },
+          projects: {
+            title: "Featured Projects",
+          },
         },
       },
       4: {
@@ -374,6 +383,9 @@ return {
               },
             },
           },
+          projects: {
+            title: "Featured Projects",
+          },
         },
       },
       5: {
@@ -463,6 +475,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -553,6 +567,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -643,6 +659,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -733,6 +751,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -823,6 +843,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },
@@ -913,6 +935,8 @@ return {
                 link: "",
               },
             },
+          },projects: {
+            title: "Featured Projects",
           },
         },
       },

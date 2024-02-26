@@ -12,14 +12,36 @@ const Container = styled.div`
 `;
 
 const Section = styled.div`
-  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 4rem;
   background: ${(p) => (p.bgColor ? p.bgColor : "inherit")};
 
   h2 {
     font-size: 3rem;
     font-weight: 600;
     width: 80%;
+  }
 
+  h4 {
+    color: #1e1d22;
+    font-size: 24px;
+    font-weight: 400;
+    width: 50%;
+  }
+
+  h3 {
+    color: #222325;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+
+  h2,
+  h3,
+  h4 {
     @media screen and (max-width: 786px) {
       width: 100%;
     }
@@ -27,13 +49,14 @@ const Section = styled.div`
 
   .item {
     color: inherit;
-    width: 350px;
-    height: 400px;
+    width: 400px;
+    height: 380px;
     border-radius: 10px;
     background: #fff;
     box-shadow: 0px 30px 80px 0px rgba(0, 0, 0, 0.1);
 
     .header {
+      display: flex;
       border-radius: 10px 10px 0px 0px;
       background: rgba(237, 209, 241, 0.2);
 
@@ -69,6 +92,7 @@ const Section = styled.div`
       font-weight: 400;
       color: #151718;
       padding: 5px 15px;
+      width: 100%;
 
       div {
         width: 80%;
@@ -85,9 +109,52 @@ const Section = styled.div`
   }
 `;
 
+const ProjectsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProjectContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+
+  .wrapper {
+    background: white;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0px 20px 40px 0px rgba(61, 72, 102, 0.4);
+    padding: 5px;
+
+    .image {
+      border-radius: 20px;
+      width: 230px;
+      height: 230px;
+      background:
+        ${(p) => (p.src ? `url(${p.src})` : none)},
+        lightgray 50% / cover no-repeat;
+    }
+  }
+
+  .title {
+    color: #222325;
+    font-size: 20px;
+    font-weight: 400;
+  }
+`;
+
 const [loading, setLoading] = useState(false);
 
 const dao = Near.view(contractName, "get_dao_by_id", { id: parseInt(id) });
+const projects = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(id),
+});
 
 if (!dao || !contractName || !content || !assets)
   return <Widget src="flashui.near/widget/Loading" />;
@@ -116,13 +183,22 @@ const Info = ({ card }) => (
   </div>
 );
 
+const ProjectCard = ({ project }) => (
+  <ProjectContainer src={project.logo_url}>
+    <div className="wrapper">
+      <div className="image" />
+    </div>
+    <span className="title">{project.title}</span>
+  </ProjectContainer>
+);
+
 const section = content.daos[id].sections;
-console.log(section.info.cards);
+
 return (
   <Container>
     <img className="hero-img" src={dao.banner_url} />
 
-    <Section className="d-flex flex-column gap-5">
+    <Section>
       <h2>{dao.title}</h2>
       <h4>{dao.description}</h4>
       <div className="d-flex flex-wrap gap-5 justify-content-center">
@@ -132,21 +208,23 @@ return (
       </div>
     </Section>
 
-    <Section className="d-flex flex-column gap-5">
-      <h2>{section.roadmap.title}</h2>
-      <p>{section.roadmap.description}</p>
-      <ReadMore
-        href={section.roadmap.button.link}
-        title={section.roadmap.button.title}
-      />
-    </Section>
+    {projects?.length && (
+      <Section>
+        <h3>{section.projects.title}</h3>
+        <ProjectsContainer>
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </ProjectsContainer>
+      </Section>
+    )}
 
-    <Section className="d-flex flex-column gap-5">
+    <Section>
       <h2>{section.guidance.title}</h2>
       <p>{section.guidance.description}</p>
     </Section>
 
-    <Section className="d-flex flex-column gap-5">
+    <Section>
       <h2>{section.office.title}</h2>
       <p>{section.office.description}</p>
     </Section>

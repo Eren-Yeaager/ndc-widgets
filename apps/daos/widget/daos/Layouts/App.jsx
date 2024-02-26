@@ -165,7 +165,11 @@ function AppLayout({ page, props, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        {page === "home" || "dao" ? children : <Wrapper>{children}</Wrapper>}
+        {["home", "dao"].includes(page) ? (
+          children
+        ) : (
+          <Wrapper>{children}</Wrapper>
+        )}
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Footer`}
           props={{ page }}
