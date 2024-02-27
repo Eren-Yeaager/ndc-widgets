@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 5rem;
   align-items: center;
 `;
 
@@ -297,7 +297,8 @@ return (
           text: content.communityTreasury.metrics,
         }}
       />
-
+    </Wrapper>
+    <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
@@ -307,7 +308,10 @@ return (
       />
       <Description>{content.whatIsNDC.text}</Description>
     </Wrapper>
-    <ParalaxImg src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" />
+    <ParalaxImg
+      style={{ marginTop: "-5rem" }}
+      src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4"
+    />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}

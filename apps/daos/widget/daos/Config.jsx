@@ -475,7 +475,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -567,7 +568,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -659,7 +661,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -751,7 +754,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -843,7 +847,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -935,7 +940,8 @@ return {
                 link: "",
               },
             },
-          },projects: {
+          },
+          projects: {
             title: "Featured Projects",
           },
         },
@@ -947,9 +953,9 @@ return {
         image:
           "https://ipfs.near.social/ipfs/bafkreihwcxkyr2pvfszwxpqs47y7gwlfz3363jead2odmrdwyqtqniuzca",
         metrics: {
-          totalTreasury: "Total that we have",
-          deliverTreasury: "How much was delivered",
-          typeOfProject: "What types of projects do we support",
+          totalTreasury: "Total amount of funds",
+          deliverTreasury: "Distributed amount of funds",
+          typeOfProject: "Types of projects we support",
         },
       },
 

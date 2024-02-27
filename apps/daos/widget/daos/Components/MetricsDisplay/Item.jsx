@@ -1,6 +1,6 @@
 const { value, text, loading, type } = props;
 const { Circle } = VM.require(
-  `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`,
+  `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`
 );
 
 const Loading = () => <Widget src="flashui.near/widget/Loading" />;
@@ -78,7 +78,8 @@ return (
     </div>
 
     <div className="d-flex justify-content-center align-items-center gap-2">
-      <Circle color={color} /> <Desc>{text}</Desc>
+      {color && <Circle color={color} />}
+      <Desc>{text}</Desc>
     </div>
   </div>
 );
