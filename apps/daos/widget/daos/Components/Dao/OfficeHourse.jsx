@@ -3,11 +3,18 @@ const FlexContainer = styled.div`
   display: flex;
   border-radius: 10px;
   background: #FFF;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ContentArea = styled.div`
   padding: 40px;
   width: 60%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const PrimaryButton = styled.a`
@@ -23,6 +30,10 @@ const PrimaryButton = styled.a`
     :hover {
       border: black;
     }
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
    }
   
 `;
@@ -31,6 +42,10 @@ const ButtonGroup = styled.div`
   display: flex;
   padding-top: 20px;
   justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
 
 
@@ -43,6 +58,9 @@ const SecondaryButton = styled.a`
     display: flex;
     margin-top: 20px;
     border-radius: 10px;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
 
     :hover {
       border: black;

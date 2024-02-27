@@ -99,7 +99,7 @@ return {
                 link: "",
               },
               calendar: {
-                text: "Editorial Calendar",
+                text: "Calendar",
                 link: "",
               },
             },
