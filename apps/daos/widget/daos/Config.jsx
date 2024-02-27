@@ -1025,8 +1025,8 @@ return {
     },
   },
   socials: {
-    "twitter-x": "https://twitter.com/MarketingDAOers",
-    telegram: "https://t.me/ndc_marketing",
+    "twitter-x": "https://x.com/neardc",
+    telegram: "https://t.me/neardigitalcollective",
     envelope: "mailto:marketingdao@proton.me",
   },
 };
