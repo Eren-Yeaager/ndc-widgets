@@ -27,6 +27,7 @@ const Info = ({ card }) => (
 const TopContainer = styled.div`
   width: 70%;
   padding-bottom: 20px;
+  padding-left: 10px;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
