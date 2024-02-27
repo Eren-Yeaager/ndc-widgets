@@ -116,29 +116,45 @@ const projects = Near.view(contractName, "get_dao_communities", {
 if (!dao || !contractName || !content)
   return <Widget src="flashui.near/widget/Loading" />;
 
+const ProjectCard = ({ project }) => (
+  <ProjectContainer src={project.logo_url}>
+    <div className="wrapper">
+      <div className="image" />
+    </div>
+    <span className="title">{project.title}</span>
+  </ProjectContainer>
+);
+
 const section = content.daos[id].sections;
 
 return (
   <Container>
     <img className="hero-img" src={dao.banner_url} />
 
-    <Section>
-      <Widget
+    <Section className="d-flex flex-column gap-5">
+    <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Info`}
-        props={{ section, dao }}
-      />{" "}
+        props={{ dao: dao, section: section }}
+      />
     </Section>
 
-    {projects?.length && (
+    {projects?.length ? (
       <Section>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
           props={{ section, projects }}
         />
       </Section>
-    )}
+    ): null}
 
-    <Section>
+    <Section style={{background: 'black'}}>
+    <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Dao.Guidance`}
+        props={{ section: section }}
+      />
+    </Section>
+
+    <Section className="d-flex flex-column gap-5">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
         props={{ section }}
