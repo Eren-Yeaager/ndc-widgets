@@ -3,8 +3,11 @@ const { Items } = VM.require(
   `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`
 );
 
-const [totalTreasury, setTotalTreasury] = useState(0);
-const [loading, setLoading] = useState(false);
+if (!Items || !daos) return <Widget src="flashui.near/widget/Loading" />;
+
+const baseUrl = "https://api.pikespeak.ai";
+const [totalTreasury, setTotalTreasury] = useState(null);
+const [loading, setLoading] = useState(true);
 
 const getTotalTreasury = async (accountId) => {
   try {
@@ -22,54 +25,47 @@ const getTotalTreasury = async (accountId) => {
 
 const fetchDaoFunds = async () => {
   const totalDAOTreasuryAmount = 0;
-  setLoading(false);
 
-  const promises = daos.flatMap((dao) => [
+  const promises = daos.flatMap((dao) =>
     getTotalTreasury(dao.account_id).then((resp) => {
       if (!resp.body) return;
 
       const data = resp.body;
-      if (data)
+      if (data) {
         totalDAOTreasuryAmount +=
           data.find((d) => d.contract === "Near")?.amount ?? 0;
-    }),
-  ]);
+      }
+    })
+  );
 
-  Promise.all(promises).then((res) => {
-    setTotalTreasury(res);
+  Promise.all(promises).then(() => {
+    setTotalTreasury(totalDAOTreasuryAmount);
     setLoading(false);
   });
 };
 
 fetchDaoFunds();
-if (!Items || loading) return <Widget src="flashui.near/widget/Loading" />;
-
-const Item = ({ value, text, color, type }) => {
-  return (
-    <Widget
-      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
-      props={{ value, text, color, type }}
-    />
-  );
-};
 
 return (
   <Items>
-    <Item
-      value={totalTreasury}
-      loading={loading}
-      text={props.text.totalTreasury}
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      props={{ value: totalTreasury, text: props.text.totalTreasury, loading }}
     />
-    <Item
-      value={deliverTreasury}
-      loading={loading}
-      text={props.text.deliverTreasury}
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      props={{
+        value: deliverTreasury,
+        text: props.text.deliverTreasury,
+      }}
     />
-    <Item
-      value={typeOfProject}
-      loading={loading}
-      type="list"
-      text={props.text.typeOfProject}
+    <Widget
+      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      props={{
+        value: typeOfProject,
+        text: props.text.typeOfProject,
+        type: "list",
+      }}
     />
   </Items>
 );

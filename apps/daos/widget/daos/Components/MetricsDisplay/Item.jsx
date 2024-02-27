@@ -9,7 +9,7 @@ if (!Circle) return <Loading />;
 const formatValue = (value) => {
   const val = value ? parseFloat(value) : null;
 
-  if (!val) return "n/a";
+  if (val === null || val === undefined) return "n/a";
 
   return val >= 1000000000
     ? `${parseFloat(val / 1000000000).toFixed(2)}B`

@@ -253,10 +253,11 @@ const staticProjects = [
 let projects = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
 });
-projects = [...staticProjects, ...projects];
 
-if (!daos || !contractName || !content || !assets || !proposals)
+if (!daos || !contractName || !content || !assets || !proposals || !projects)
   return <Widget src="flashui.near/widget/Loading" />;
+
+projects = [...staticProjects, ...projects];
 
 let groupedDaos = daos
   .map((element) => {
@@ -297,7 +298,7 @@ const sorted = (a, b) => {
     return 1;
   }
   return 0;
-}
+};
 
 return (
   <Container>
