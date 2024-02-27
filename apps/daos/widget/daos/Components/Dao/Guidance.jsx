@@ -1,4 +1,3 @@
-
 const Item = styled.div`
   width: 350px;
   height: 280px;
@@ -87,12 +86,14 @@ const Item = styled.div`
 `;
 
 const Container = styled.div`
-  h3, h4, span {
-    color: white
+  h3,
+  h4,
+  span {
+    color: white;
   }
 
   .subTitle {
-    color: #FFF;
+    color: #fff;
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
@@ -100,7 +101,7 @@ const Container = styled.div`
   }
 
   .title {
-    color: #FFF;
+    color: #fff;
     font-size: 32px;
     font-style: normal;
     font-weight: 600;
@@ -113,34 +114,44 @@ const Container = styled.div`
       width: 100%;
     }
   }
-`
 
-const { section } = props
+  @media screen and (max-width: 786px) {
+    padding: 2rem;
+  }
+`;
+
+const { section } = props;
 
 return (
   <Container>
- 
-    <div style={{paddingTop: '40px'}} className="d-flex flex-wrap gap-5 justify-content-center">
-    <div className="topSection">
-      <h3 className="subTitle">{section.guidance.subTitle}</h3>
-      <h4 className="title">{section.guidance.title}</h4>
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Description`}
-        props={{ text: section.guidance.description }}
-      />
-    </div>
-    {section.guidance.cards.map((card) => (
-      <Item className="dark">
-        <div className="inner d-flex flex-column justify-content-center gap-3 align-items-lefy">
-          <h4 className="bold color-text px-3 mt-1 text-left">{card.title}</h4>
-          <span className="bold color-text px-3 mt-1 text-left">{card.description}</span>
-          <div className="d-flex px-3">
-            <a href={card.button.link}>{card.button.title}</a>
-            <i className="bi bi-chevron-right" />
-        </div>
-        </div>
-      </Item>
-    ))}
+    <div
+      style={{ paddingTop: "40px" }}
+      className="d-flex flex-wrap gap-5 justify-content-center"
+    >
+      <div className="topSection">
+        <h3 className="subTitle">{section.guidance.subTitle}</h3>
+        <h4 className="title">{section.guidance.title}</h4>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Description`}
+          props={{ text: section.guidance.description }}
+        />
+      </div>
+      {section.guidance.cards.map((card) => (
+        <Item className="dark">
+          <div className="inner d-flex flex-column justify-content-center gap-3 align-items-lefy">
+            <h4 className="bold color-text px-3 mt-1 text-left">
+              {card.title}
+            </h4>
+            <span className="bold color-text px-3 mt-1 text-left">
+              {card.description}
+            </span>
+            <div className="d-flex px-3">
+              <a href={card.button.link}>{card.button.title}</a>
+              <i className="bi bi-chevron-right" />
+            </div>
+          </div>
+        </Item>
+      ))}
     </div>
   </Container>
-)
+);

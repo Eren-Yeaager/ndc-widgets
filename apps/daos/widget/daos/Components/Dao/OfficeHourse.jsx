@@ -1,8 +1,12 @@
-
-const FlexContainer = styled.div`
+const Wrapper = styled.div`
   display: flex;
   border-radius: 10px;
-  background: #FFF;
+  background: #fff;
+
+  div.content {
+    position: relative;
+    z-index: 3;
+  }
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -34,8 +38,7 @@ const PrimaryButton = styled.a`
     @media screen and (max-width: 768px) {
       width: 100%;
     }
-   }
-  
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -47,7 +50,6 @@ const ButtonGroup = styled.div`
     flex-direction: column;
   }
 `;
-
 
 const SecondaryButton = styled.a`
   &.btn-primary {
@@ -75,7 +77,7 @@ const Image = styled.img`
 const { section } = props;
 
 return (
-  <FlexContainer>
+  <Wrapper>
     <ContentArea>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
@@ -85,20 +87,29 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Description`}
         props={{ text: section.office.description }}
       />
-      <PrimaryButton className="btn-primary d-flex" href={section.office.buttons.book.link}>
+      <PrimaryButton
+        className="btn-primary d-flex"
+        href={section.office.buttons.book.link}
+      >
         <div>
           {section.office.buttons.book.text}
           <i className="bi bi-chevron-right" />
         </div>
       </PrimaryButton>
       <ButtonGroup>
-        <SecondaryButton className="btn-primary d-flex" href={section.office.buttons.workshops.link}>
+        <SecondaryButton
+          className="btn-primary d-flex"
+          href={section.office.buttons.workshops.link}
+        >
           <div>
             {section.office.buttons.workshops.text}
             <i className="bi bi-chevron-right" />
           </div>
         </SecondaryButton>
-        <SecondaryButton className="btn-primary d-flex" href={section.office.buttons.book.calendar.link}>
+        <SecondaryButton
+          className="btn-primary d-flex"
+          href={section.office.buttons.book.calendar.link}
+        >
           <div>
             {section.office.buttons.calendar.text}
             <i className="bi bi-chevron-right" />
@@ -109,6 +120,5 @@ return (
     <div>
       <Image src={section.office.image} alt="Office" />
     </div>
-  </FlexContainer>
+  </Wrapper>
 );
-

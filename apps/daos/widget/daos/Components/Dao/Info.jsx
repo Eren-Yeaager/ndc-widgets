@@ -12,17 +12,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Circle = styled.div`
-  position: absolute;
-  top: ${(p) => p.shift}%;
-  right: -50%;
-  border-radius: 50%;
-  z-index: 2;
-  width: ${(p) => p.size}rem;
-  height: ${(p) => p.size}rem;
-  background: ${(p) => p.color};
-`;
-
 const ReadMore = ({ title, href }) => (
   <a href="" className="text-center btn-primary d-flex justify-content-end">
     <div className="d-flex justify-content-between">
@@ -76,8 +65,6 @@ return (
       </div>
     </div>
 
-    <Circle color="#e5e4f5" size={100} shift={-10} />
-    <Circle color="#d5d5eb" size={95} shift={0} />
-    <Circle color="#cacae2" size={90} shift={10} />
+    <Widget src={`/*__@replace:widgetPath__*/.Components.Circles`} />
   </Wrapper>
 );

@@ -1,5 +1,5 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
@@ -34,7 +34,7 @@ const Description = styled.p`
   width: 50%;
 
   @media screen and (max-width: 786px) {
-    width: 100%;
+    width: 80%;
   }
 `;
 
