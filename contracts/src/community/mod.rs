@@ -15,6 +15,7 @@ pub struct CommunityInput {
     pub description: String,
     pub logo_url: String,
     pub banner_url: String,
+    pub accounts: Vec<AccountId>,
 }
 
 impl CommunityInput {
@@ -46,6 +47,7 @@ pub struct Community {
     pub banner_url: String,
     pub status: CommunityStatus,
     pub owners: Vec<AccountId>,
+    pub accounts: Vec<AccountId>,
     pub metadata: HashMap<String, String>
 }
 
@@ -133,6 +135,7 @@ impl Contract {
             status: CommunityStatus::Active,
             logo_url: community_input.logo_url,
             banner_url: community_input.banner_url,
+            accounts: community_input.accounts,
             owners,
             metadata
         };
@@ -186,6 +189,7 @@ impl Contract {
         logo_url: String,
         banner_url: String,
         owners: Vec<AccountId>,
+        accounts: Vec<AccountId>,
         verticals: Vec<Vertical>,
         metadata: HashMap<String, String>
     ) {
@@ -199,6 +203,7 @@ impl Contract {
         community.owners = owners;
         community.verticals = verticals;
         community.metadata = metadata;
+        community.accounts = accounts;
 
         self.communities.insert(&id, &community.into());
     }
@@ -231,6 +236,7 @@ mod tests {
                 description: "Test Community Description".to_string(),
                 logo_url: "https://test.com/logo.png".to_string(),
                 banner_url: "https://test.com/banner.png".to_string(),
+                accounts: vec![]
             },
             vec!["gaming".to_string()],
             HashMap::new()
@@ -265,6 +271,7 @@ mod tests {
             "https://new.com/logo.png".to_string(),
             "https://new.com/banner.png".to_string(),
             vec![context.signer_account_id.clone()],
+            vec![],
             vec!["gaming".to_string()],
             HashMap::new()
         );

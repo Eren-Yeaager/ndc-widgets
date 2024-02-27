@@ -521,7 +521,7 @@ dependencies = [
  "env_logger",
  "libloading",
  "log",
- "near-abi 0.3.0",
+ "near-abi",
  "rustc_version",
  "schemars",
  "serde_json",
@@ -1836,25 +1836,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "near-abi"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b8eefe71c3aad3f0a02083db99552982ee2d1a97c06e31a8958245d5955be0c"
-dependencies = [
- "borsh 1.3.1",
- "schemars",
- "semver",
- "serde",
-]
-
-[[package]]
 name = "near-account-id"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35cbb989542587b47205e608324ddd391f0cee1c22b4b64ae49f458334b95907"
 dependencies = [
  "borsh 1.3.1",
- "schemars",
  "serde",
 ]
 
@@ -1895,9 +1882,9 @@ dependencies = [
 
 [[package]]
 name = "near-contract-standards"
-version = "5.0.0-alpha.2"
+version = "5.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d38b06d3d0820dcf796f82b3990c6131a683ac24632a7bd4a06e2f06efa22aa"
+checksum = "6d60a794d819e96fb307eb9afe5dd5d5c5dc7a73ce46eb8a94a0f40c387a165b"
 dependencies = [
  "near-sdk",
 ]
@@ -2003,7 +1990,7 @@ dependencies = [
  "prometheus",
  "serde",
  "serde_json",
- "strum",
+ "strum 0.24.1",
  "thiserror",
  "tokio",
  "tracing",
@@ -2027,7 +2014,7 @@ dependencies = [
  "serde",
  "serde_repr",
  "serde_yaml",
- "strum",
+ "strum 0.24.1",
  "thiserror",
 ]
 
@@ -2067,7 +2054,7 @@ dependencies = [
  "serde_yaml",
  "sha3",
  "smart-default",
- "strum",
+ "strum 0.24.1",
  "thiserror",
  "time",
  "tracing",
@@ -2091,7 +2078,7 @@ dependencies = [
  "serde_repr",
  "serde_with",
  "sha2",
- "strum",
+ "strum 0.24.1",
  "thiserror",
 ]
 
@@ -2134,26 +2121,19 @@ dependencies = [
 
 [[package]]
 name = "near-sdk"
-version = "5.0.0-alpha.2"
+version = "5.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8869ab54cd71a1a4239002f8c00b9e6742725c386e23084be98dd4bb69336266"
+checksum = "b5c2e7c9524308b1b301cca05d875de13b3b20dc8b92e71f3890b380372e4c88"
 dependencies = [
- "base64 0.13.1",
+ "base64 0.21.7",
  "borsh 1.3.1",
- "bs58 0.4.0",
- "near-abi 0.4.2",
+ "bs58 0.5.0",
  "near-account-id",
- "near-crypto",
  "near-gas",
- "near-parameters",
- "near-primitives",
- "near-primitives-core",
  "near-sdk-macros",
  "near-sys",
  "near-token",
- "near-vm-runner",
  "once_cell",
- "schemars",
  "serde",
  "serde_json",
  "wee_alloc",
@@ -2161,9 +2141,9 @@ dependencies = [
 
 [[package]]
 name = "near-sdk-macros"
-version = "5.0.0-alpha.2"
+version = "5.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0efa94eb99a64491323b71ba2c0591ce4649817f26339de56f110f00649ea908"
+checksum = "e1e9b23d9d7757ade258921c9cbc7923542e64d9d3b52a6cd91f746c77cb0a0f"
 dependencies = [
  "Inflector",
  "darling",
@@ -2171,8 +2151,8 @@ dependencies = [
  "quote",
  "serde",
  "serde_json",
- "strum",
- "strum_macros",
+ "strum 0.26.1",
+ "strum_macros 0.26.1",
  "syn 2.0.48",
 ]
 
@@ -2195,7 +2175,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7b68f3f8a2409f72b43efdbeff8e820b81e70824c49fee8572979d789d1683fb"
 dependencies = [
  "borsh 1.3.1",
- "schemars",
  "serde",
 ]
 
@@ -2255,7 +2234,7 @@ dependencies = [
  "serde_with",
  "sha2",
  "sha3",
- "strum",
+ "strum 0.24.1",
  "thiserror",
  "tracing",
  "zeropool-bn",
@@ -3502,8 +3481,14 @@ version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "063e6045c0e62079840579a7e47a355ae92f60eb74daaf156fb1e84ba164e63f"
 dependencies = [
- "strum_macros",
+ "strum_macros 0.24.3",
 ]
+
+[[package]]
+name = "strum"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "723b93e8addf9aa965ebe2d11da6d7540fa2283fcea14b3371ff055f7ba13f5f"
 
 [[package]]
 name = "strum_macros"
@@ -3516,6 +3501,19 @@ dependencies = [
  "quote",
  "rustversion",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "strum_macros"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a3417fc93d76740d974a01654a09777cb500428cc874ca9f45edfe0c4d4cd18"
+dependencies = [
+ "heck 0.4.1",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 2.0.48",
 ]
 
 [[package]]

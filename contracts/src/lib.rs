@@ -7,6 +7,8 @@ pub mod migrations;
 pub mod str_serializers;
 mod user;
 mod errors;
+mod notify;
+mod social_db;
 
 use std::collections::HashSet;
 use storage_keys::*;
@@ -51,6 +53,7 @@ pub struct Contract {
     pub communities: UnorderedMap<CommunityId, VersionedCommunity>,
     // pub community_handles: UnorderedMap<String, CommunityId>,
 
+    pub proposal_type_summary: UnorderedMap<PostStatus, u64>,
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
@@ -81,6 +84,7 @@ impl Contract {
             comments: LookupMap::new(StorageKey::Comments),
             communities: UnorderedMap::new(StorageKey::Communities),
 
+            proposal_type_summary: UnorderedMap::new(StorageKey::ProposalTypeSummary),
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
@@ -138,6 +142,11 @@ impl Contract {
     // Posts: Get Proposals/Reports by ID
     pub fn get_post_by_id(&self, id: &PostId) -> VersionedPost {
         self.posts.get(id).unwrap_or_else(|| panic!("Post id {} not found", id))
+    }
+
+    // Posts: Get total requested_amount  for posts by status
+    pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, u64)> {
+        self.proposal_type_summary.iter().collect()
     }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
@@ -265,6 +274,7 @@ pub mod tests {
                 logo_url: "https://logo.com".to_string(),
                 banner_url: "https://banner.com".to_string(),
                 is_congress: false,
+                account_id: "some_acc.near".parse().unwrap(),
             },
             vec![context.signer_account_id.clone()],
             vec!["gaming".to_string()],
