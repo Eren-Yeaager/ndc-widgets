@@ -18,6 +18,10 @@ const Section = styled.div`
   gap: 3rem;
   padding: 4rem;
   background: ${(p) => (p.bgColor ? p.bgColor : "inherit")};
+  
+  @media screen and (max-width: 786px) {
+    padding: 2rem;
+  }
 
   &.with-circles {
     padding: 0;
@@ -121,6 +125,15 @@ const projects = Near.view(contractName, "get_dao_communities", {
 if (!dao || !contractName || !content)
   return <Widget src="flashui.near/widget/Loading" />;
 
+const ProjectCard = ({ project }) => (
+  <ProjectContainer src={project.logo_url}>
+    <div className="wrapper">
+      <div className="image" />
+    </div>
+    <span className="title">{project.title}</span>
+  </ProjectContainer>
+);
+
 const section = content.daos[id].sections;
 
 return (
@@ -145,7 +158,14 @@ return (
       ""
     )}
 
-    <Section>
+    <Section style={{background: 'black'}}>
+    <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Dao.Guidance`}
+        props={{ section: section }}
+      />
+    </Section>
+
+    <Section className="d-flex flex-column gap-5">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
         props={{ section }}

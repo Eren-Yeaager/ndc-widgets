@@ -59,9 +59,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Build DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
             cards: [
               {
                 title: "Become a member",
@@ -99,7 +99,7 @@ return {
                 link: "",
               },
               calendar: {
-                text: "Editorial Calendar",
+                text: "Calendar",
                 link: "",
               },
             },
@@ -152,9 +152,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Gaming DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Focuses on the development of the NEAR gaming ecosystem, increasing the number of games and players on NEAR.",
             cards: [
               {
                 title: "Become a member",
@@ -245,9 +245,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Marketing DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem",
             cards: [
               {
                 title: "Become a member",
@@ -338,9 +338,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Near Research Collective",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Empowers and educates within the NEAR ecosystem, cultivating a new wave of experts in blockchain technology and its applications              .",
             cards: [
               {
                 title: "Become a member",
@@ -431,9 +431,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Degen DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Brings together experienced enthusiasts and empowers them to support the Near, Aurora, and NDC ecosystem, actively promoting, generating content, and attracting new users              .",
             cards: [
               {
                 title: "Become a member",
@@ -524,9 +524,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Onboard DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem              .",
             cards: [
               {
                 title: "Become a member",
@@ -617,9 +617,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Aurora Community DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Stands at the heart of the Aurora ecosystem, embodying collaboration, expanding user base, increasing transactions on Aurora  and Near networks",
             cards: [
               {
                 title: "Become a member",
@@ -710,9 +710,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "Near Globe DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Leads and supports regional communities to represent NEAR in different countries and work on building communities in specific languages",
             cards: [
               {
                 title: "Become a member",
@@ -803,9 +803,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "NFT DAO",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Aims to provide solutions and standards for NFTs on NEAR. Primary objective is to revitalize and expand the Near NFT ecosystem.",
             cards: [
               {
                 title: "Become a member",
@@ -896,9 +896,9 @@ return {
           },
           guidance: {
             subTitle: "GUIDANCE",
-            title: "Lopem Ipsum",
+            title: "SHE IS NEAR",
             description:
-              "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+              "Empowers women on Near and fortifies the NEAR Protocol with fresh female talent, spreading awareness about NEAR within the Women-in-web3 communities.",
             cards: [
               {
                 title: "Become a member",
@@ -1025,8 +1025,8 @@ return {
     },
   },
   socials: {
-    "twitter-x": "https://twitter.com/MarketingDAOers",
-    telegram: "https://t.me/ndc_marketing",
+    "twitter-x": "https://x.com/neardc",
+    telegram: "https://t.me/neardigitalcollective",
     envelope: "mailto:marketingdao@proton.me",
   },
 };

@@ -1,4 +1,4 @@
-const { section, dao } = props;
+const { dao, section } = props;
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,9 +24,9 @@ const Circle = styled.div`
 `;
 
 const ReadMore = ({ title, href }) => (
-  <a href={href} className="text-center btn-primary d-flex justify-content-end">
+  <a href="" className="text-center btn-primary d-flex justify-content-end">
     <div className="d-flex justify-content-between">
-      <span>{title}</span>
+      <a href={href}>{title}</a>
       <i className="bi bi-chevron-right" />
     </div>
   </a>
@@ -46,6 +46,15 @@ const Info = ({ card }) => (
     </div>
   </div>
 );
+
+const TopContainer = styled.div`
+  width: 70%;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
 
 return (
   <Wrapper>

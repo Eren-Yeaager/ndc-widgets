@@ -289,6 +289,16 @@ const typeOfProject = Array.from(types).map((item) => {
   };
 });
 
+const sorted = (a, b) => {
+  if (a.title < b.title) {
+    return -1;
+  }
+  if (a.title > b.title) {
+    return 1;
+  }
+  return 0;
+}
+
 return (
   <Container>
     <Widget
@@ -340,7 +350,7 @@ return (
       <Description>{content.whatisGrassrootDAO.text}</Description>
 
       <div className="d-flex flex-wrap justify-content-center gap-3">
-        {daos.map((dao) => (
+        {daos.sort(sorted).map((dao) => (
           <Item>
             <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
               <Widget
