@@ -76,11 +76,6 @@ const Logo = styled.span`
   width: 50px;
   height: 50px;
   background: #151718;
-
-  img {
-    width: 28px;
-    height: 28px;
-  }
 `;
 
 const colorMap = (status) => {
@@ -118,7 +113,7 @@ return (
             </Logo>
             <div className="d-flex flex-column gap-1">
               <div className="d-flex gap-2 align-items-center">
-                <Amount>${proposal.amount ?? 10593}</Amount>
+                <Amount>${proposal.requested_amount ?? 0}</Amount>
                 <Label>{dao.title}</Label>
               </div>
               <div className="d-flex gap-2 align-items-center">

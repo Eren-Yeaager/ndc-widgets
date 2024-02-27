@@ -12,7 +12,6 @@ return {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding-bottom: 30px;
 
     @media screen and (max-width: 1188px) {
       justify-content: center;
@@ -29,6 +28,7 @@ return {
       width: 100%;
       height: 200px;
       gap: 1rem;
+      padding: 1rem 2rem;
       border-radius: 30px;
       background: #1e1d22;
       box-shadow: 0px 30px 40px 0px rgba(0, 0, 0, 0.3);
@@ -45,7 +45,6 @@ return {
         background: #2b2933;
         padding: 10px 20px;
         color: #a4c2fd;
-        margin: 0 30px;
         span {
           font-size: 60px;
         }

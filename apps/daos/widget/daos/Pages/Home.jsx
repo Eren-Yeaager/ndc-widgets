@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 5rem;
   align-items: center;
 `;
 
@@ -237,6 +237,23 @@ let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
 });
+const staticProjects = [
+  {
+    title: "Here Wallet",
+    logo_url:
+      "https://pbs.twimg.com/profile_images/1742708054792060928/3KWnbzXL_400x400.jpg",
+  },
+  {
+    title: "Meteor Wallet",
+    logo_url:
+      "https://pbs.twimg.com/profile_images/1759477169019920384/VJ26EYOK_400x400.jpg",
+  },
+];
+
+let projects = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(2),
+});
+projects = [...staticProjects, ...projects];
 
 if (!daos || !contractName || !content || !assets || !proposals)
   return <Widget src="flashui.near/widget/Loading" />;
@@ -272,6 +289,16 @@ const typeOfProject = Array.from(types).map((item) => {
   };
 });
 
+const sorted = (a, b) => {
+  if (a.title < b.title) {
+    return -1;
+  }
+  if (a.title > b.title) {
+    return 1;
+  }
+  return 0;
+}
+
 return (
   <Container>
     <Widget
@@ -290,14 +317,15 @@ return (
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.index`}
         props={{
-          totalTreasury: 3000,
-          deliverTreasury: 5000,
+          daos,
+          deliverTreasury: 272482,
           typeOfProject,
           loading,
           text: content.communityTreasury.metrics,
         }}
       />
-
+    </Wrapper>
+    <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
@@ -307,7 +335,10 @@ return (
       />
       <Description>{content.whatIsNDC.text}</Description>
     </Wrapper>
-    <ParalaxImg src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4" />
+    <ParalaxImg
+      style={{ marginTop: "-5rem" }}
+      src="https://ipfs.near.social/ipfs/bafybeid2ckdorccexjqxnsi3kr4epif4xgqbagdykxtn7wacqk5ajujvy4"
+    />
     <Wrapper>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
@@ -319,7 +350,7 @@ return (
       <Description>{content.whatisGrassrootDAO.text}</Description>
 
       <div className="d-flex flex-wrap justify-content-center gap-3">
-        {daos.map((dao) => (
+        {daos.sort(sorted).map((dao) => (
           <Item>
             <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
               <Widget
@@ -331,7 +362,7 @@ return (
               </h4>
               <DaoDesc>{dao.description}</DaoDesc>
               <DaoLink
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.id}`}
+                href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`}
                 className="btn btn-secondary d-flex justify-content-between"
               >
                 <i class="bi bi-plus-circle"></i>
@@ -342,6 +373,19 @@ return (
         ))}
       </div>
     </Wrapper>
+
+    {projects?.length && (
+      <Wrapper>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
+          props={{
+            section: { projects: { title: "Featured Products" } },
+            projects,
+          }}
+        />
+      </Wrapper>
+    )}
+
     <CreateGrassrootContainer>
       <div className="wrapper">
         <div className="d-flex flex-column gap-3">

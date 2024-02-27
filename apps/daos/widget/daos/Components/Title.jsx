@@ -4,10 +4,11 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 2rem 0;
+  margin-bottom: 2rem;
 
   img {
     width: 33px;
+    margin-right: 15px;
   }
 
   span {
@@ -17,13 +18,12 @@ const Title = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    padding-left: 15px;
   }
 `;
 
 return (
   <Title>
-    <img src={imgUrl}></img>
-    <span>{text}</span>
+    {imgUrl && <img src={imgUrl}></img>}
+    <span style={{ ...props.style }}>{text}</span>
   </Title>
 );

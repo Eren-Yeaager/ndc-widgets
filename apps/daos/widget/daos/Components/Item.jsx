@@ -187,26 +187,47 @@ const CardItem = ({ item, index }) => (
           <Status color={colorMap(item.status)}>{item.status}</Status>
         </div>
       </div>
-      <div className="d-flex flex-column gap-2">
+      <div className="d-flex flex-column gap-3">
         <h3>{item.title}</h3>
         <div className="d-flex flex-column gap-1">
           <div className="info">
-            <small>
-              <span>Created at:</span>
+            <span style={{ width: "12rem" }}>Created at:</span>
+            <span>
+              <i className="bi bi-calendar" />{" "}
               {new Date(item.timestamp / 1000000).toLocaleDateString()}
-            </small>
+            </span>
           </div>
+          {item.snapshot_history.length > 1 ? (
+            <div className="info">
+              <span style={{ width: "12rem" }}>Last Edited at:</span>
+              <span>
+                <i className="bi bi-calendar" />{" "}
+                {new Date(
+                  item.snapshot_history[item.snapshot_history.length - 1]
+                    .timestamp / 1000000
+                ).toLocaleDateString()}
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="info">
-            <small style={{ width: "150px" }}>Requested sponsor:</small>
+            <span style={{ width: "12rem" }}>Requested sponsor:</span>
             {dao && (
               <a
                 href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.id}`}
                 className="d-flex align-items-center gap-1"
               >
                 <img className="dao-img" src={dao.logo_url} />
-                <small>{dao.title}</small>
+                <span>{dao.title}</span>
               </a>
             )}
+          </div>
+          <div className="info">
+            <span style={{ width: "12rem" }}>Requested amount:</span>
+            <span>
+              <b>${dao.requested_amount ?? 0}</b>
+            </span>
           </div>
         </div>
       </div>

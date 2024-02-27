@@ -15,15 +15,947 @@ return {
     },
   },
   content: {
+    daos: {
+      1: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Build DAO",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      2: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Gaming DAO",
+            description:
+              "Focuses on the development of the NEAR gaming ecosystem, increasing the number of games and players on NEAR.",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      3: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Marketing DAO",
+            description:
+              "Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      4: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Near Research Collective",
+            description:
+              "Empowers and educates within the NEAR ecosystem, cultivating a new wave of experts in blockchain technology and its applications              .",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      5: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Degen DAO",
+            description:
+              "Brings together experienced enthusiasts and empowers them to support the Near, Aurora, and NDC ecosystem, actively promoting, generating content, and attracting new users              .",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      6: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Onboard DAO",
+            description:
+              "Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem              .",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      7: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Aurora Community DAO",
+            description:
+              "Stands at the heart of the Aurora ecosystem, embodying collaboration, expanding user base, increasing transactions on Aurora  and Near networks",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      8: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Near Globe DAO",
+            description:
+              "Leads and supports regional communities to represent NEAR in different countries and work on building communities in specific languages",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      9: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "NFT DAO",
+            description:
+              "Aims to provide solutions and standards for NFTs on NEAR. Primary objective is to revitalize and expand the Near NFT ecosystem.",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      10: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "SHE IS NEAR",
+            description:
+              "Empowers women on Near and fortifies the NEAR Protocol with fresh female talent, spreading awareness about NEAR within the Women-in-web3 communities.",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+    },
     home: {
       communityTreasury: {
         title: "Community Treasury",
         image:
           "https://ipfs.near.social/ipfs/bafkreihwcxkyr2pvfszwxpqs47y7gwlfz3363jead2odmrdwyqtqniuzca",
         metrics: {
-          totalTreasury: "Total that we have",
-          deliverTreasury: "How much was delivered",
-          typeOfProject: "What types of projects do we support",
+          totalTreasury: "Total amount of funds",
+          deliverTreasury: "Distributed amount of funds",
+          typeOfProject: "Types of projects we support",
         },
       },
 
@@ -93,8 +1025,8 @@ return {
     },
   },
   socials: {
-    "twitter-x": "https://twitter.com/MarketingDAOers",
-    telegram: "https://t.me/ndc_marketing",
+    "twitter-x": "https://x.com/neardc",
+    telegram: "https://t.me/neardigitalcollective",
     envelope: "mailto:marketingdao@proton.me",
   },
 };
