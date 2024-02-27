@@ -1,0 +1,96 @@
+
+const FlexContainer = styled.div`
+  display: flex;
+  border-radius: 10px;
+  background: #FFF;
+`;
+
+const ContentArea = styled.div`
+  padding: 40px;
+  width: 60%;
+`;
+
+const PrimaryButton = styled.a`
+  &.btn-primary {
+    margin-top: 20px;
+    border-radius: 10px;
+    background: #151718;
+    border: #151718;
+    box-shadow: 0px 20px 30px 0px rgba(31, 27, 50, 0.22);
+    display: flex;
+    color: white;
+
+    :hover {
+      border: black;
+    }
+   }
+  
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  padding-top: 20px;
+  justify-content: space-between;
+`;
+
+
+const SecondaryButton = styled.a`
+  &.btn-primary {
+    width: 45%;
+    background: white;
+    border: black;
+    color: black !important;
+    display: flex;
+    margin-top: 20px;
+    border-radius: 10px;
+
+    :hover {
+      border: black;
+    }
+  }
+`;
+
+const Image = styled.img`
+  width: 100%;
+`;
+
+const { section } = props;
+
+return (
+  <FlexContainer>
+    <ContentArea>
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Title`}
+        props={{ text: section.office.title, style: { padding: 0 } }}
+      />
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Description`}
+        props={{ text: section.office.description }}
+      />
+      <PrimaryButton className="btn-primary d-flex" href={section.office.buttons.book.link}>
+        <div>
+          {section.office.buttons.book.text}
+          <i className="bi bi-chevron-right" />
+        </div>
+      </PrimaryButton>
+      <ButtonGroup>
+        <SecondaryButton className="btn-primary d-flex" href={section.office.buttons.workshops.link}>
+          <div>
+            {section.office.buttons.workshops.text}
+            <i className="bi bi-chevron-right" />
+          </div>
+        </SecondaryButton>
+        <SecondaryButton className="btn-primary d-flex" href={section.office.buttons.book.calendar.link}>
+          <div>
+            {section.office.buttons.calendar.text}
+            <i className="bi bi-chevron-right" />
+          </div>
+        </SecondaryButton>
+      </ButtonGroup>
+    </ContentArea>
+    <div>
+      <Image src={section.office.image} alt="Office" />
+    </div>
+  </FlexContainer>
+);
+
