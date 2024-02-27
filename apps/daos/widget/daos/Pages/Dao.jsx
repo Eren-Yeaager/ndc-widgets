@@ -17,6 +17,10 @@ const Section = styled.div`
   gap: 3rem;
   padding: 4rem;
   background: ${(p) => (p.bgColor ? p.bgColor : "inherit")};
+  
+  @media screen and (max-width: 786px) {
+    padding: 2rem;
+  }
 
   h2 {
     font-size: 3rem;
