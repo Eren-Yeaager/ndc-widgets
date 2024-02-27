@@ -12,11 +12,16 @@ const Container = styled.div`
 `;
 
 const Section = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 3rem;
   padding: 4rem;
   background: ${(p) => (p.bgColor ? p.bgColor : "inherit")};
+
+  &.with-circles {
+    padding: 0;
+  }
 
   h2 {
     font-size: 3rem;
@@ -122,20 +127,22 @@ return (
   <Container>
     <img className="hero-img" src={dao.banner_url} />
 
-    <Section>
+    <Section className="with-circles">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Info`}
         props={{ section, dao }}
-      />{" "}
+      />
     </Section>
 
-    {projects?.length && (
+    {projects?.length > 0 ? (
       <Section>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
           props={{ section, projects }}
         />
       </Section>
+    ) : (
+      ""
     )}
 
     <Section>

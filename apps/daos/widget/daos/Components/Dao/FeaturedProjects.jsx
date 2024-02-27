@@ -27,9 +27,6 @@ const ProjectContainer = styled.div`
       border-radius: 20px;
       width: 230px;
       height: 230px;
-      background:
-        ${(p) => (p.src ? `url(${p.src})` : none)},
-        lightgray 100% / cover no-repeat;
     }
   }
 
@@ -41,9 +38,9 @@ const ProjectContainer = styled.div`
 `;
 
 const ProjectCard = ({ project }) => (
-  <ProjectContainer src={project.logo_url}>
+  <ProjectContainer>
     <div className="wrapper">
-      <div className="image" />
+      <img className="image" src={project.logo_url} />
     </div>
     <span className="title">{project.title}</span>
   </ProjectContainer>

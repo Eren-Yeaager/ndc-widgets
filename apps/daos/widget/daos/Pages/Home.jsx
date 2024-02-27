@@ -237,6 +237,23 @@ let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
 });
+const staticProjects = [
+  {
+    title: "Here Wallet",
+    logo_url:
+      "https://pbs.twimg.com/profile_images/1742708054792060928/3KWnbzXL_400x400.jpg",
+  },
+  {
+    title: "Meteor Wallet",
+    logo_url:
+      "https://pbs.twimg.com/profile_images/1759477169019920384/VJ26EYOK_400x400.jpg",
+  },
+];
+
+let projects = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(2),
+});
+projects = [...staticProjects, ...projects];
 
 if (!daos || !contractName || !content || !assets || !proposals)
   return <Widget src="flashui.near/widget/Loading" />;
@@ -290,8 +307,8 @@ return (
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.index`}
         props={{
-          totalTreasury: 3000,
-          deliverTreasury: 5000,
+          daos,
+          deliverTreasury: 272482,
           typeOfProject,
           loading,
           text: content.communityTreasury.metrics,
@@ -346,6 +363,19 @@ return (
         ))}
       </div>
     </Wrapper>
+
+    {projects?.length && (
+      <Wrapper>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
+          props={{
+            section: { projects: { title: "Featured Products" } },
+            projects,
+          }}
+        />
+      </Wrapper>
+    )}
+
     <CreateGrassrootContainer>
       <div className="wrapper">
         <div className="d-flex flex-column gap-3">
