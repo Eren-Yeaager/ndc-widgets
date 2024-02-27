@@ -50,11 +50,10 @@ impl Contract {
             timestamp: env::block_timestamp(),
         };
         post.likes.insert(like);
-        self.posts.insert(&id, &post.into());
+        self.posts.insert(&id, &post.clone().into());
 
-        // TODO: Add notification
-        // let post_author = post.author_id.clone();
-        // notify::notify_like(post_id, post_author);
+        // Like Post Notification
+        notify::notify_like(post.id.into(), post.author_id);
     }
 
     // Remove like from request/report
@@ -68,6 +67,7 @@ impl Contract {
 
     // Like comment
     // Access Level: Public
+    #[payable]
     pub fn comment_like(&mut self, id: CommentId) {
         let mut comment:Comment = self.get_comment_by_id(&id).into();
         let author_id = env::predecessor_account_id();
@@ -76,11 +76,10 @@ impl Contract {
             timestamp: env::block_timestamp(),
         };
         comment.likes.insert(like);
-        self.comments.insert(&id, &comment.into());
+        self.comments.insert(&id, &comment.clone().into());
 
-        // TODO: Add notification
-        // let post_author = ...;
-        // notify::notify_like(post_id, post_author);
+        // Like Comment Notification
+        notify::notify_like(comment.id.into(), comment.author_id);
     }
 
     // Remove like from comment
