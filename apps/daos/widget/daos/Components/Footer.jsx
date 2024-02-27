@@ -9,6 +9,7 @@ const showFooterPages = [
   null,
   undefined,
   "home",
+  "dao",
   "councils",
   "guidance",
   "achievements",

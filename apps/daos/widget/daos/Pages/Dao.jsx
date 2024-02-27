@@ -66,7 +66,7 @@ const Section = styled.div`
     }
 
     .icon {
-      width: 50px;
+      width: 40px;
     }
 
     p {
@@ -77,6 +77,10 @@ const Section = styled.div`
 
     a {
       color: #151718 !important;
+      
+      :hover {
+        text-decoration: none
+      }
     }
 
     @media screen and (max-width: 786px) {
@@ -170,7 +174,7 @@ const ReadMore = ({ title, href }) => (
 
 const Info = ({ card }) => (
   <div className="item d-flex flex-column gap-2 justify-content-between">
-    <div className="header gap-3 p-4 text-center">
+    <div className="header d-flex gap-3 p-4 text-center">
       <img className="icon" src={card.icon} />
       <h4>{card.title}</h4>
     </div>
@@ -198,9 +202,17 @@ return (
   <Container>
     <img className="hero-img" src={dao.banner_url} />
 
-    <Section>
-      <h2>{dao.title}</h2>
-      <h4>{dao.description}</h4>
+    <Section className="d-flex flex-column gap-5">
+      <div style={{ width: "720px" }}>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Title`}
+          props={{ text: dao.title, style: { padding: 0 } }}
+        />
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Description`}
+          props={{ text: dao.description }}
+        />
+      </div>
       <div className="d-flex flex-wrap gap-5 justify-content-center">
         {section.info.cards.map((card) => (
           <Info card={card} />
@@ -208,7 +220,7 @@ return (
       </div>
     </Section>
 
-    {projects?.length && (
+    {projects?.length ? (
       <Section>
         <h3>{section.projects.title}</h3>
         <ProjectsContainer>
@@ -217,16 +229,18 @@ return (
           ))}
         </ProjectsContainer>
       </Section>
-    )}
+    ): null}
 
     <Section>
       <h2>{section.guidance.title}</h2>
       <p>{section.guidance.description}</p>
     </Section>
 
-    <Section>
-      <h2>{section.office.title}</h2>
-      <p>{section.office.description}</p>
+    <Section className="d-flex flex-column gap-5">
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
+        props={{ section: section }}
+      />
     </Section>
   </Container>
 );

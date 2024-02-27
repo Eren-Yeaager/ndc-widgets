@@ -23,7 +23,7 @@ const Title = styled.div`
 
 return (
   <Title>
-    <img src={imgUrl}></img>
-    <span>{text}</span>
+    {imgUrl && <img src={imgUrl}></img>}
+    <span style={{...props.style}}>{text}</span>
   </Title>
 );
