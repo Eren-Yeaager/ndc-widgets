@@ -1,5 +1,5 @@
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { item, index, showMoreDefault, showCommentsDefault } = props;
+const { item, index, showMoreDefault, showCommentsDefault, type, preview } = props;
 
 if (!item) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -139,10 +139,10 @@ const CardContainer = styled.div`
 const [showMore, setShowMore] = useState(showMoreDefault);
 const [showComments, setShowComments] = useState(showCommentsDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
-const pageName = props.type === "report" ? "reports" : "proposals";
+const pageName = type === "Report" ? "reports" : "proposals";
 
 const isLiked = (item) => {
-  return item.likes.find((item) => item.author_id === accountId);
+  return item.likes && item.likes.find((item) => item.author_id === accountId);
 };
 
 const handleLike = () => {
@@ -152,7 +152,7 @@ const handleLike = () => {
 };
 
 const dao = Near.view(contractName, "get_dao_by_id", {
-  id: item.dao_id,
+  id: parseInt(item.dao_id),
 });
 
 const colorMap = (status) => {
@@ -183,9 +183,11 @@ const CardItem = ({ item, index }) => (
             tooltip: true,
           }}
         />
-        <div className="d-flex gap-3 align-items-center justify-content-between">
-          <Status color={colorMap(item.status)}>{item.status}</Status>
-        </div>
+        {item.status && (
+          <div className="d-flex gap-3 align-items-center justify-content-between">
+            <Status color={colorMap(item.status)}>{item.status}</Status>
+          </div>
+        )}
       </div>
       <div className="d-flex flex-column gap-3">
         <h3>{item.title}</h3>
@@ -194,7 +196,9 @@ const CardItem = ({ item, index }) => (
             <span style={{ width: "12rem" }}>Created at:</span>
             <span>
               <i className="bi bi-calendar" />{" "}
-              {new Date(item.timestamp / 1000000).toLocaleDateString()}
+              {item.timestamp
+                ? new Date(item.timestamp / 1000000).toLocaleDateString()
+                : new Date().toLocaleDateString()}
             </span>
           </div>
           {item.snapshot_history.length > 1 ? (
@@ -260,40 +264,42 @@ const CardItem = ({ item, index }) => (
         </div>
       )}
 
-      <div className="actions d-flex align-items-center justify-content-between">
-        <div role="button" className="d-flex gap-2" onClick={handleLike}>
-          <span className="blue">{item.likes.length}</span>
-          <i
-            className={`bi blue ${
-              isLiked(item) ? "bi-heart-fill" : "bi-heart"
-            }`}
-          />
-        </div>
+      {!preview && (
+        <div className="actions d-flex align-items-center justify-content-between">
+          <div role="button" className="d-flex gap-2" onClick={handleLike}>
+            <span className="blue">{item.likes.length}</span>
+            <i
+              className={`bi blue ${
+                isLiked(item) ? "bi-heart-fill" : "bi-heart"
+              }`}
+            />
+          </div>
 
-        <div
-          role="button"
-          className="d-flex gap-2"
-          onClick={() => setShowComments(!showComments)}
-        >
-          <span className="blue">{item.comments.length}</span>
-          <i className="bi blue bi-chat" />
-        </div>
+          <div
+            role="button"
+            className="d-flex gap-2"
+            onClick={() => setShowComments(!showComments)}
+          >
+            <span className="blue">{item.comments.length}</span>
+            <i className="bi blue bi-chat" />
+          </div>
 
-        <div role="button" className="d-flex gap-2">
-          <Widget
-            src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-            props={{
-              text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
-            }}
-          />
+          <div role="button" className="d-flex gap-2">
+            <Widget
+              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              props={{
+                text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
+              }}
+            />
+          </div>
+          <Button
+            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
+          >
+            {`Open ${item.post_type}`}
+            <i className={"bi blue bi-box-arrow-up-right"} />
+          </Button>
         </div>
-        <Button
-          href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
-        >
-          {`Open ${item.post_type}`}
-          <i className={"bi blue bi-box-arrow-up-right"} />
-        </Button>
-      </div>
+      )}
 
       {showComments && (
         <Comments>

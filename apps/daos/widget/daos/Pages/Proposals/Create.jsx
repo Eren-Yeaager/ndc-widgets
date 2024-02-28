@@ -178,7 +178,7 @@ return (
 
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Form"
-          props={{ form, formEls, setFormEls, handleChange, handleSave }}
+          props={{ form, formEls, setFormEls, handleChange, handleSave, dao_id }}
         />
       </FormWrapper>
     </div>
