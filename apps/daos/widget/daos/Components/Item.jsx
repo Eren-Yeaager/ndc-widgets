@@ -226,7 +226,7 @@ const CardItem = ({ item, index }) => (
           <div className="info">
             <span style={{ width: "12rem" }}>Requested amount:</span>
             <span>
-              <b>${dao.requested_amount ?? 0}</b>
+              <b>${item.requested_amount ?? 0}</b>
             </span>
           </div>
         </div>
