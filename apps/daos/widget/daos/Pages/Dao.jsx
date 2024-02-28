@@ -154,15 +154,15 @@ return (
     <Section style={{ background: "black" }}>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Guidance`}
-        props={{ section: section }}
+        props={{ section: section, dao_id: id }}
       />
     </Section>
 
-    <Section className="d-flex flex-column gap-5">
+    {false && <Section className="d-flex flex-column gap-5">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
         props={{ section }}
       />
-    </Section>
+    </Section>}
   </Container>
 );

@@ -212,7 +212,7 @@ impl Contract {
     // Update proposal_type_summary (only for proposals)
     fn add_proposal_type_summary_internal(&mut self, body: &PostBody) {
         if let PostBody::Proposal(post) = body {
-            let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0);
+            let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0.0);
             proposals_summary += post.clone().latest_version().requested_amount;
             self.proposal_type_summary.insert(&PostStatus::InReview, &proposals_summary);
         }
@@ -271,7 +271,7 @@ impl Contract {
                 let new_amount = new_post.clone().latest_version().requested_amount;
 
                 if old_amount != new_amount {
-                    let mut proposals_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0);
+                    let mut proposals_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
                     proposals_summary = proposals_summary + new_amount - old_amount;
                     self.proposal_type_summary.insert(&post.snapshot.status, &proposals_summary);
                 }
@@ -375,11 +375,11 @@ impl Contract {
 
     fn move_proposal_type_summary_internal(&mut self, post: &Post,  new_status: &PostStatus) {
         if let PostBody::Proposal(proposal) = &post.snapshot.body {
-            let mut status_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0);
+            let mut status_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
             status_summary -= proposal.clone().latest_version().requested_amount;
             self.proposal_type_summary.insert(&post.snapshot.status, &status_summary);
 
-            let mut status_summary = self.proposal_type_summary.get(new_status).unwrap_or(0);
+            let mut status_summary = self.proposal_type_summary.get(new_status).unwrap_or(0.0);
             status_summary += proposal.clone().latest_version().requested_amount;
             self.proposal_type_summary.insert(new_status, &status_summary);
         }
