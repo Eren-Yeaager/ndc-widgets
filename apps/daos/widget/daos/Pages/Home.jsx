@@ -232,21 +232,21 @@ const ParalaxImg = styled.div`
 
 const SubmitProposal = styled.button`
   background: linear-gradient(to right, #000000, #434343);
-  color: white; 
-  border: 2px solid #FFD700;
-  border-radius: 25px; 
+  color: white;
+  border: 2px solid #ffd700;
+  border-radius: 25px;
   padding: 10px 20px;
-  font-size: 16px; 
+  font-size: 16px;
   font-weight: bold;
-  cursor: pointer; 
-  outline: none; 
+  cursor: pointer;
+  outline: none;
   transition: all 0.3s ease;
 
   :hover {
     background: linear-gradient(to right, #434343, #000000);
-    border-color: #FFA500;
-}
-` 
+    border-color: #ffa500;
+  }
+`;
 
 const [loading, setLoading] = useState(false);
 
@@ -255,18 +255,6 @@ let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
 });
-const staticProjects = [
-  {
-    title: "Here Wallet",
-    logo_url:
-      "https://pbs.twimg.com/profile_images/1742708054792060928/3KWnbzXL_400x400.jpg",
-  },
-  {
-    title: "Meteor Wallet",
-    logo_url:
-      "https://pbs.twimg.com/profile_images/1759477169019920384/VJ26EYOK_400x400.jpg",
-  },
-];
 
 let projects = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
@@ -274,8 +262,6 @@ let projects = Near.view(contractName, "get_dao_communities", {
 
 if (!daos || !contractName || !content || !assets || !proposals || !projects)
   return <Widget src="flashui.near/widget/Loading" />;
-
-projects = [...staticProjects, ...projects];
 
 let groupedDaos = daos
   .map((element) => {
