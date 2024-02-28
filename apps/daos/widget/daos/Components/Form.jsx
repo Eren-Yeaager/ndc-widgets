@@ -1,4 +1,4 @@
-const { form, formEls, setFormEls, handleChange, handleSave } = props;
+const { form, formEls, setFormEls, handleChange, handleSave, dao_id } = props;
 
 const TypeSection = styled.div`
   border-radius: 50px;
@@ -82,9 +82,11 @@ return (
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Item"
           props={{
-            item: formEls,
+            item: { ...formEls, dao_id },
             index: 0,
+            type: formEls.type,
             showMoreDefault: 0,
+            preview: true,
           }}
         />
         <ButtonContainer>
