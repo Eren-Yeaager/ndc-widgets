@@ -24,11 +24,11 @@ const Card = styled.div`
   padding: 2rem;
 `;
 
-const CardTitle = styled.h3`
+const CardTitle = styled.h4`
   color: white !important;
   font-weight: 600;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 10px 10px 0px 0px;
   background: #a4c2fd;
   margin-bottom: unset;
@@ -84,30 +84,41 @@ function groupByCategoryList(daos) {
 
 const groupedByCategory = groupByCategoryList(props.daos);
 
+const CardBlock = ({ id }) => (
+  <>
+    <CardTitle>{groupedByCategory[id].title}</CardTitle>
+    <Card key={groupedByCategory[id].title}>
+      <LinkList>
+        {groupedByCategory[id].links.map((link) => (
+          <Link
+            href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
+          >
+            <ListItem key={link}>
+              <ItemText>{link.title}</ItemText>
+              <Arrow>
+                <i className="bi bi-chevron-right" />
+              </Arrow>
+            </ListItem>
+          </Link>
+        ))}
+      </LinkList>
+    </Card>
+  </>
+);
+
 return (
   <GridContainer>
-    {groupedByCategory
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .map((card) => (
-        <CardContainer>
-          <CardTitle>{card.title}</CardTitle>
-          <Card key={card.title}>
-            <LinkList>
-              {card.links.map((link) => (
-                <Link
-                  href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
-                >
-                  <ListItem key={link}>
-                    <ItemText>{link.title}</ItemText>
-                    <Arrow>
-                      <i className="bi bi-chevron-right" />
-                    </Arrow>
-                  </ListItem>
-                </Link>
-              ))}
-            </LinkList>
-          </Card>
-        </CardContainer>
-      ))}
+    <CardContainer>
+      <CardBlock id={1} />
+    </CardContainer>
+    <CardContainer>
+      <CardBlock id={0} />
+      <CardBlock id={2} />
+    </CardContainer>
+    <CardContainer>
+      <CardBlock id={3} />
+      <CardBlock id={4} />
+      <CardBlock id={5} />
+    </CardContainer>
   </GridContainer>
 );

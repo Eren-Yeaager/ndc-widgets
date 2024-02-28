@@ -139,9 +139,9 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-let daos = null
+let daos = null;
 
-daos = Near.view(contractName, "get_dao_list")
+daos = Near.view(contractName, "get_dao_list");
 
 if (daos) {
   daos = daos.map((dao) => {
