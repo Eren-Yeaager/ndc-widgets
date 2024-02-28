@@ -50,9 +50,11 @@ return (
   <>
     <h3>{section.projects.title}</h3>
     <ProjectsContainer>
-      {projects.map((project) => (
-        <ProjectCard project={project} />
-      ))}
+      {projects
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map((project) => (
+          <ProjectCard project={project} />
+        ))}
     </ProjectsContainer>
   </>
 );

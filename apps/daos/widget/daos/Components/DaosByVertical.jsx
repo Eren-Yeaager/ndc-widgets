@@ -86,26 +86,28 @@ const groupedByCategory = groupByCategoryList(props.daos);
 
 return (
   <GridContainer>
-    {groupedByCategory.map((card) => (
-      <CardContainer>
-        <CardTitle>{card.title}</CardTitle>
-        <Card key={card.title}>
-          <LinkList>
-            {card.links.map((link) => (
-              <Link
-                href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
-              >
-                <ListItem key={link}>
-                  <ItemText>{link.title}</ItemText>
-                  <Arrow>
-                    <i className="bi bi-chevron-right" />
-                  </Arrow>
-                </ListItem>
-              </Link>
-            ))}
-          </LinkList>
-        </Card>
-      </CardContainer>
-    ))}
+    {groupedByCategory
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .map((card) => (
+        <CardContainer>
+          <CardTitle>{card.title}</CardTitle>
+          <Card key={card.title}>
+            <LinkList>
+              {card.links.map((link) => (
+                <Link
+                  href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
+                >
+                  <ListItem key={link}>
+                    <ItemText>{link.title}</ItemText>
+                    <Arrow>
+                      <i className="bi bi-chevron-right" />
+                    </Arrow>
+                  </ListItem>
+                </Link>
+              ))}
+            </LinkList>
+          </Card>
+        </CardContainer>
+      ))}
   </GridContainer>
 );
