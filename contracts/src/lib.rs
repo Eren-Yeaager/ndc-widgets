@@ -6,7 +6,6 @@ pub mod post;
 pub mod migrations;
 pub mod str_serializers;
 mod user;
-mod errors;
 mod notify;
 mod social_db;
 
@@ -53,7 +52,7 @@ pub struct Contract {
     pub communities: UnorderedMap<CommunityId, VersionedCommunity>,
     // pub community_handles: UnorderedMap<String, CommunityId>,
 
-    pub proposal_type_summary: UnorderedMap<PostStatus, u64>,
+    pub proposal_type_summary: UnorderedMap<PostStatus, f64>,
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
@@ -145,7 +144,7 @@ impl Contract {
     }
 
     // Posts: Get total requested_amount  for posts by status
-    pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, u64)> {
+    pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, f64)> {
         self.proposal_type_summary.iter().collect()
     }
 
