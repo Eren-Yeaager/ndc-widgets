@@ -103,13 +103,13 @@ const form = {
       type: "textarea",
       required: true,
     },
-    // {
-    //   name: "requested_amount",
-    //   label: "Requested Amount (USD)",
-    //   value: "",
-    //   type: "number",
-    //   required: true,
-    // },
+    {
+      name: "requested_amount",
+      label: "Requested Amount (USD)",
+      value: "",
+      type: "number",
+      required: false,
+    },
     {
       name: "tags",
       label: "Tags",
@@ -144,6 +144,7 @@ const handleSave = () => {
     description: formEls.description,
     labels: formEls.tags ?? [],
     post_type: formEls.type,
+    requested_amount: parseInt(formEls.requested_amount ?? 0),
     metrics: {},
     reports: [],
     attachments: [],
