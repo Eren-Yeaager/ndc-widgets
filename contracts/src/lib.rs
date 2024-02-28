@@ -245,7 +245,7 @@ impl Contract {
 #[cfg(all(test, not(target_arch = "wasm32")))]
 pub mod tests {
     use std::collections::HashMap;
-    use near_sdk::test_utils::{VMContextBuilder};
+    use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::{testing_env, VMContext};
     use crate::{Contract, DaoId};
     use crate::dao::DAOInput;
