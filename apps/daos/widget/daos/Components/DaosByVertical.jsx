@@ -4,6 +4,7 @@ const GridContainer = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-bottom: 5rem;
+  height: 100%;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr); // 1 columns
@@ -22,6 +23,7 @@ const Card = styled.div`
   border-radius: 0 0 8px 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  height: ${(p) => (p.height ? p.height + "%" : "auto")};
 `;
 
 const CardTitle = styled.h4`
@@ -65,7 +67,8 @@ const CardContainer = styled.div`
 
 const CardBlockContainer = styled.div`
   margin-top: 1rem;
-`
+  height: ${(p) => (p.height ? "100%" : "auto")};
+`;
 
 function groupByCategoryList(daos) {
   const categoryMap = {};
@@ -88,10 +91,10 @@ function groupByCategoryList(daos) {
 
 const groupedByCategory = groupByCategoryList(props.daos);
 
-const CardBlock = ({ id }) => (
-  <CardBlockContainer>
+const CardBlock = ({ height, id }) => (
+  <CardBlockContainer height={height}>
     <CardTitle>{groupedByCategory[id].title}</CardTitle>
-    <Card key={groupedByCategory[id].title}>
+    <Card key={groupedByCategory[id].title} height={height}>
       <LinkList>
         {groupedByCategory[id].links.map((link) => (
           <Link
@@ -113,11 +116,11 @@ const CardBlock = ({ id }) => (
 return (
   <GridContainer>
     <CardContainer>
-      <CardBlock id={1} />
+      <CardBlock height={90} id={1} />
     </CardContainer>
     <CardContainer>
       <CardBlock id={0} />
-      <CardBlock id={2} />
+      <CardBlock height={50} id={2} />
     </CardContainer>
     <CardContainer>
       <CardBlock id={3} />
