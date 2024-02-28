@@ -22,17 +22,12 @@ const ReadMore = ({ title, href }) => (
 );
 
 const Info = ({ card }) => (
-  <div className="item d-flex flex-column mt-5 gap-2 justify-content-between">
-    <div className="header d-flex gap-3 p-4 text-center">
+  <div className="item d-flex mt-5 flex-column gap-3">
+    <div className="header d-flex gap-3 text-center">
       <img className="icon" src={card.icon} />
       <h4>{card.title}</h4>
     </div>
-    <div className="p-4 text-center">
-      <p>{card.description}</p>
-    </div>
-    <div className="px-5 pb-4">
-      <ReadMore href={card.button.link} title={card.button.title} />
-    </div>
+    <p>{card.description}</p>
   </div>
 );
 
@@ -58,7 +53,7 @@ return (
           props={{ text: dao.description }}
         />
       </div>
-      <div className="d-flex flex-wrap gap-5 justify-content-center">
+      <div className="d-flex flex-column">
         {section.info.cards.map((card) => (
           <Info card={card} />
         ))}

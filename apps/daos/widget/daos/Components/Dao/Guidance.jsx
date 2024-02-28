@@ -120,7 +120,23 @@ const Container = styled.div`
   }
 `;
 
-const { section } = props;
+const SubmitProposal = styled.a`
+  width: 100%;
+  border: 2px solid #efdcd1;
+  border-radius: 10px;
+  padding: 5px 15px;
+  background: linear-gradient(
+    270deg,
+    #efdcd1 -1.69%,
+    #e0c6f7 43.78%,
+    #adc3fb 99.83%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+` 
+
+const { section, dao_id } = props;
 
 return (
   <Container>
@@ -152,6 +168,12 @@ return (
           </div>
         </Item>
       ))}
+
+      <div className="d-flex px-3">
+        <SubmitProposal href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}>Submit Proposal</SubmitProposal>
+        <i className="bi bi-chevron-right" />
+      </div>
+
     </div>
   </Container>
 );

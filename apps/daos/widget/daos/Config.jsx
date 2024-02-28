@@ -1026,7 +1026,6 @@ return {
   },
   socials: {
     "twitter-x": "https://x.com/neardc",
-    telegram: "https://t.me/neardigitalcollective",
-    envelope: "mailto:marketingdao@proton.me",
+    telegram: "https://t.me/neardigitalcollective"
   },
 };
