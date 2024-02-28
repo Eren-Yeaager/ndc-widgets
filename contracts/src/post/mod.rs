@@ -424,7 +424,7 @@ mod tests {
                         labels: vec!["label1".to_string(), "label2".to_string()],
                         metrics: HashMap::new(),
                         reports: vec![],
-                        requested_amount: 1000,
+                        requested_amount: 1000.0,
                         community_id: None,
                         vertical: None,
                     }
@@ -495,7 +495,7 @@ mod tests {
                     labels: vec!["label1".to_string(), "label2".to_string()],
                     metrics: HashMap::new(),
                     reports: vec![],
-                    requested_amount: 1000,
+                    requested_amount: 1000.0,
                     community_id: None,
                     vertical: None,
                 }
@@ -513,7 +513,7 @@ mod tests {
             assert_eq!(proposal.labels, vec!["label1".to_string(), "label2".to_string()]);
             assert_eq!(proposal.metrics, HashMap::new());
             assert_eq!(proposal.reports.len(), 0);
-            assert_eq!(proposal.requested_amount, 1000);
+            assert_eq!(proposal.requested_amount, 1000.0);
             assert_eq!(proposal.community_id, None);
             assert_eq!(proposal.vertical, None);
         }
