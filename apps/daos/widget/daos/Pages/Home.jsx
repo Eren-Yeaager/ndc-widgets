@@ -235,17 +235,12 @@ const SubmitProposal = styled.button`
   color: white;
   border: 2px solid #ffd700;
   border-radius: 25px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 15px 25px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
-
-  :hover {
-    background: linear-gradient(to right, #434343, #000000);
-    border-color: #ffa500;
-  }
 `;
 
 const [loading, setLoading] = useState(false);

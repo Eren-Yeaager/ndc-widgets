@@ -124,7 +124,7 @@ const SubmitProposal = styled.a`
   width: 100%;
   border: 2px solid #efdcd1;
   border-radius: 10px;
-  padding: 5px 15px;
+  padding: 10px 25px;
   background: linear-gradient(
     270deg,
     #efdcd1 -1.69%,
@@ -134,16 +134,13 @@ const SubmitProposal = styled.a`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-` 
+`;
 
 const { section, dao_id } = props;
 
 return (
   <Container>
-    <div
-      style={{ paddingTop: "40px" }}
-      className="d-flex flex-wrap gap-5 justify-content-center"
-    >
+    <div className="d-flex flex-wrap gap-5 pt-3">
       <div className="topSection">
         <h3 className="subTitle">{section.guidance.subTitle}</h3>
         <h4 className="title">{section.guidance.title}</h4>
@@ -152,28 +149,33 @@ return (
           props={{ text: section.guidance.description }}
         />
       </div>
-      {section.guidance.cards.map((card) => (
-        <Item className="dark">
-          <div className="inner d-flex flex-column justify-content-center gap-3 align-items-lefy">
-            <h4 className="bold color-text px-3 mt-1 text-left">
-              {card.title}
-            </h4>
-            <span className="bold color-text px-3 mt-1 text-left">
-              {card.description}
-            </span>
-            <div className="d-flex px-3">
-              <a href={card.button.link}>{card.button.title}</a>
-              <i className="bi bi-chevron-right" />
+      <div className="d-flex c w-100 gap-5">
+        {section.guidance.cards.map((card) => (
+          <Item className="dark">
+            <div className="inner d-flex flex-column justify-content-center gap-3 align-items-lefy">
+              <h4 className="bold color-text px-3 mt-1 text-left">
+                {card.title}
+              </h4>
+              <span className="bold color-text px-3 mt-1 text-left">
+                {card.description}
+              </span>
+              <div className="d-flex px-3">
+                <a href={card.button.link}>{card.button.title}</a>
+                <i className="bi bi-chevron-right" />
+              </div>
             </div>
-          </div>
-        </Item>
-      ))}
-
-      <div className="d-flex px-3">
-        <SubmitProposal href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}>Submit Proposal</SubmitProposal>
-        <i className="bi bi-chevron-right" />
+          </Item>
+        ))}
       </div>
 
+      <div className="d-flex px-3">
+        <SubmitProposal
+          href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}
+        >
+          Submit Proposal
+        </SubmitProposal>
+        <i className="bi bi-chevron-right" />
+      </div>
     </div>
   </Container>
 );
