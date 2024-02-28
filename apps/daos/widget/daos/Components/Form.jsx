@@ -1,4 +1,14 @@
-const { form, formEls, setFormEls, handleChange, handleSave, handleSelectDao, daos, selectedDaoId, dao_id } = props;
+const {
+  form,
+  formEls,
+  setFormEls,
+  handleChange,
+  handleSave,
+  handleSelectDao,
+  daos,
+  selectedDaoId,
+  dao_id,
+} = props;
 
 const TypeSection = styled.div`
   border-radius: 50px;
@@ -112,12 +122,14 @@ return (
             </TypeSection>
           </div>
         </div>
-        <label>
-          Select Dao
-        </label>
-        <select className="form-control" value={selectedDaoId} onChange={handleSelectDao}>
+        <label>Select Dao</label>
+        <select
+          className="form-control"
+          value={selectedDaoId}
+          onChange={handleSelectDao}
+        >
           {daos.map((dao) => (
-             <option value={dao.id}>{dao.name}</option>
+            <option value={dao.id}>{dao.name}</option>
           ))}
         </select>
         {form[formEls.type].map((el) => (

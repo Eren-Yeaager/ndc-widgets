@@ -1,6 +1,6 @@
 const { daos, deliverTreasury, typeOfProject } = props;
 const { Items } = VM.require(
-  `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`
+  `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`,
 );
 
 if (!Items || !daos) return <Widget src="flashui.near/widget/Loading" />;
@@ -35,7 +35,7 @@ const fetchDaoFunds = async () => {
         totalDAOTreasuryAmount +=
           data.find((d) => d.contract === "Near")?.amount ?? 0;
       }
-    })
+    }),
   );
 
   Promise.all(promises).then(() => {
