@@ -46,9 +46,12 @@ impl VersionedProposal {
         self.into()
     }
 
-    // pub fn latest_version(self) -> ProposalV2 {
-    //     self.into()
-    // }
+    pub fn latest_version_mut(&mut self) -> &mut Proposal {
+        match self {
+            VersionedProposal::V1(proposal) => proposal,
+            // VersionedProposal::V2(proposal) => proposal,
+        }
+    }
 
     pub fn validate(&self) {
         return match self.clone() {

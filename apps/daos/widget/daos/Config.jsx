@@ -946,6 +946,99 @@ return {
           },
         },
       },
+      11: {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `NEAR Protocol is your fast, low-cost
+              and reliable gateway to the Open Web NEAR
+              to ensure security, liveness, and fault tolerance of the network`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Africa Community DAO",
+            description:
+              "Leads and supports Africa regional communities. Aims to support growth and dApps development specifically for African users.",
+            cards: [
+              {
+                title: "Become a member",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "We believe that communities are the foundation of a decentralized ecosystem. Explore and engage with our diverse range of communities today.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      }
     },
     home: {
       communityTreasury: {

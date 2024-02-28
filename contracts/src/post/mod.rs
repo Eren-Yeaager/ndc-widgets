@@ -163,7 +163,12 @@ impl Contract {
         self.add_post_status_internal(post_id, PostStatus::InReview);
         self.add_vertical_posts_internal(&body, post_id);
         self.add_community_posts_internal(&body, post_id);
+
+        // Proposals
         self.add_proposal_type_summary_internal(&body);
+
+        // Reports
+        self.assign_report_to_proposal(&body, post_id.clone());
 
         near_sdk::log!("POST ADDED: {}", post_id);
         post_id
@@ -215,6 +220,18 @@ impl Contract {
             let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0.0);
             proposals_summary += post.clone().latest_version().requested_amount;
             self.proposal_type_summary.insert(&PostStatus::InReview, &proposals_summary);
+        }
+    }
+
+    fn assign_report_to_proposal(&mut self, body: &PostBody, post_id: PostId) {
+        if let PostBody::Report(report) = body {
+            let proposal_id = report.clone().latest_version().proposal_id;
+            let mut proposal_post: Post = self.get_post_by_id(&proposal_id).into();
+
+            if let PostBody::Proposal(proposal) = &mut proposal_post.snapshot.body {
+                proposal.latest_version_mut().reports.push(post_id);
+                self.posts.insert(&proposal_id, &proposal_post.into());
+            }
         }
     }
 
