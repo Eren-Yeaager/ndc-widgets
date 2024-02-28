@@ -102,6 +102,7 @@ const Container = styled.div`
   }
 
   .title {
+    width: 100%;
     color: #fff;
     font-size: 32px;
     font-style: normal;
@@ -111,13 +112,14 @@ const Container = styled.div`
 
   .topSection {
     width: 87%;
+
     @media screen and (max-width: 786px) {
       width: 100%;
     }
   }
 
   @media screen and (max-width: 786px) {
-    padding: 1rem;
+    padding: 0rem;
   }
 `;
 
@@ -177,8 +179,8 @@ return (
             href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}
           >
             Submit Proposal
+            <i className="bi bi-chevron-right" />
           </SubmitProposal>
-          <i className="bi bi-chevron-right" />
         </div>
       </div>
     </div>

@@ -6,6 +6,10 @@ const Wrapper = styled.div`
   z-index: 1;
   padding: 4rem;
 
+  @media screen and (max-width: 786px) {
+    padding: 2rem;
+  }
+
   div.content {
     position: relative;
     z-index: 3;
@@ -30,15 +34,6 @@ const Info = ({ card }) => (
     <p>{card.description}</p>
   </div>
 );
-
-const TopContainer = styled.div`
-  width: 70%;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-`;
 
 return (
   <Wrapper>
