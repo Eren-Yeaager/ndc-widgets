@@ -18,7 +18,7 @@ const Section = styled.div`
   gap: 3rem;
   padding: 4rem;
   background: ${(p) => (p.bgColor ? p.bgColor : "inherit")};
-  
+
   @media screen and (max-width: 786px) {
     padding: 2rem;
   }
@@ -49,17 +49,10 @@ const Section = styled.div`
   }
 
   .item {
-    color: inherit;
-    width: 400px;
-    height: 380px;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0px 30px 80px 0px rgba(0, 0, 0, 0.1);
-
+    width: 75%;
     .header {
       display: flex;
       border-radius: 10px 10px 0px 0px;
-      background: rgba(237, 209, 241, 0.2);
 
       h4 {
         margin: 10px 0 0 0;
@@ -158,8 +151,8 @@ return (
       ""
     )}
 
-    <Section style={{background: 'black'}}>
-    <Widget
+    <Section style={{ background: "black" }}>
+      <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Guidance`}
         props={{ section: section }}
       />
