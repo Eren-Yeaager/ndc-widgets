@@ -1133,8 +1133,8 @@ return {
         image:
           "https://ipfs.near.social/ipfs/bafkreihwcxkyr2pvfszwxpqs47y7gwlfz3363jead2odmrdwyqtqniuzca",
         metrics: {
-          totalTreasury: "Total amount of funds",
-          deliverTreasury: "Distributed amount of funds",
+          totalTreasury: "Total amount of NEAR",
+          deliverTreasury: "Distributed amount of NEAR",
           typeOfProject: "Types of projects we support",
         },
       },
