@@ -233,7 +233,7 @@ const ParalaxImg = styled.div`
 const SubmitProposal = styled.button`
   background: linear-gradient(to right, #000000, #434343);
   color: white;
-  border: 2px solid #ffd700;
+  border: 2px solid #efdcd1;
   border-radius: 25px;
   padding: 15px 25px;
   font-size: 18px;

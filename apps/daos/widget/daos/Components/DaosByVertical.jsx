@@ -63,6 +63,10 @@ const CardContainer = styled.div`
   width: 370px;
 `;
 
+const CardBlockContainer = styled.div`
+  margin-top: 1rem;
+`
+
 function groupByCategoryList(daos) {
   const categoryMap = {};
 
@@ -85,7 +89,7 @@ function groupByCategoryList(daos) {
 const groupedByCategory = groupByCategoryList(props.daos);
 
 const CardBlock = ({ id }) => (
-  <>
+  <CardBlockContainer>
     <CardTitle>{groupedByCategory[id].title}</CardTitle>
     <Card key={groupedByCategory[id].title}>
       <LinkList>
@@ -103,7 +107,7 @@ const CardBlock = ({ id }) => (
         ))}
       </LinkList>
     </Card>
-  </>
+  </CardBlockContainer>
 );
 
 return (

@@ -37,6 +37,11 @@ const ProjectContainer = styled.div`
   }
 `;
 
+const ProjectsTitle = styled.h3`
+  text-align: center;
+  margin-bottom: 1rem;
+`
+
 const ProjectCard = ({ project }) => (
   <ProjectContainer>
     <div className="wrapper">
@@ -48,7 +53,7 @@ const ProjectCard = ({ project }) => (
 
 return (
   <>
-    <h3>{section.projects.title}</h3>
+    <ProjectsTitle>{section.projects.title}</ProjectsTitle>
     <ProjectsContainer>
       {projects
         .sort((a, b) => a.title.localeCompare(b.title))
