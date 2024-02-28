@@ -139,9 +139,15 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-const daos = Near.view(contractName, "get_dao_list").map((dao) => {
-  return { name: dao.title, id: dao.id };
-});
+let daos = null
+
+daos = Near.view(contractName, "get_dao_list")
+
+if (daos) {
+  daos = daos.map((dao) => {
+    return { name: dao.title, id: dao.id };
+  });
+}
 
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
