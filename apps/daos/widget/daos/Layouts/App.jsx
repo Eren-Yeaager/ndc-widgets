@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -158,6 +158,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 75%;
   margin: 3rem 0;
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
+  }
 `;
 
 function AppLayout({ page, props, children }) {
