@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -318,6 +318,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.index`}
         props={{
           daos,
+          totalTreasury: 3893275,
           deliverTreasury: 272482,
           typeOfProject,
           loading,

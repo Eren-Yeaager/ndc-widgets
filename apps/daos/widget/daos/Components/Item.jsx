@@ -209,7 +209,7 @@ const CardItem = ({ item, index }) => (
                 <i className="bi bi-calendar" />{" "}
                 {new Date(
                   item.snapshot_history[item.snapshot_history.length - 1]
-                    .timestamp / 1000000
+                    .timestamp / 1000000,
                 ).toLocaleDateString()}
               </span>
             </div>
