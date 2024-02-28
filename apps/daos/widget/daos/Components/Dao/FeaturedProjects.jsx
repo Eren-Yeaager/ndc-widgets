@@ -38,7 +38,6 @@ const ProjectContainer = styled.div`
 `;
 
 const ProjectsTitle = styled.h3`
-  text-align: center;
   margin-bottom: 1rem;
 `
 
