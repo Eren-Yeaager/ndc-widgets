@@ -108,6 +108,7 @@ impl Contract {
         self.total_comments += 1;
         let comment_id = self.total_comments;
         let author_id = env::predecessor_account_id();
+        let post:Post = self.get_post_by_id(&post_id).into();
 
         let comment = Comment {
             id: comment_id.clone(),
@@ -119,7 +120,7 @@ impl Contract {
             snapshot: CommentSnapshot {
                 timestamp: env::block_timestamp(),
                 body: CommentBody {
-                    description,
+                    description: description.clone(),
                     attachments,
                 },
             },
@@ -130,6 +131,13 @@ impl Contract {
         self.update_parent_comment(reply_to, comment_id);
         self.add_comment_to_post(&post_id, comment_id);
         self.update_author_comments(&author_id, comment_id);
+
+        // Notifications
+        notify::notify_mention("", &description, post_id.clone(), Some(comment_id.clone()));
+        notify::notify_post_comment(post_id.clone(), &post.snapshot.body.get_post_title(), post.author_id, comment_id.clone());
+        if reply_to.is_some() {
+            notify::notify_comment_reply(post_id.clone(), comment_id.clone(), author_id.clone());
+        }
 
         near_sdk::log!("COMMENT ADDED: {}", comment_id);
         comment_id

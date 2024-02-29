@@ -1,7 +1,10 @@
 #!/bin/bash
 
- ACCOUNT_ID=test-mdao.near
- CONTRACT=v1.test-mdao.near
+# ACCOUNT_ID=test-mdao.near
+# CONTRACT=v1.test-mdao.near
+
+ ACCOUNT_ID=test-dao.near
+ CONTRACT=test-dao.near
 
 ## Full redeploy - cleanup storage and remove account
  NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
@@ -86,3 +89,9 @@
 
 # Like comment
  NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID" --deposit 0.02
+
+
+
+ NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Notification DAO", "handle":"notify-dao", "account_id":"she-is-near.sputnik-dao.near", "description":"Empowers self-governed development and content creation. Supports new users education and onboarding.","logo_url":"https://ipfs.near.social/ipfs/bafkreia64hznuedqg5z4ywwp7ryhphuv6c4psuo753twnwlqbutvugrkxm", "banner_url":"https://ipfs.near.social/ipfs/bafkreifmvtok2tgebbyxi27bdcwetvnv3hwulxrvqmhp24tr2nzqehaska","is_congress":false}, "owners":["'$ACCOUNT_ID'", "vlodkow.near"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Notification - Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard! @vlodkow.near test mention @illli.near", "attachments":[], "requested_amount": 1200, "labels":["near-gaming", "zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"

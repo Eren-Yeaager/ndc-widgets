@@ -53,7 +53,7 @@ impl Contract {
         self.posts.insert(&id, &post.clone().into());
 
         // Like Post Notification
-        notify::notify_like(post.id.into(), post.author_id);
+        notify::notify_like(post.id.into(), post.author_id, None);
     }
 
     // Remove like from request/report
@@ -79,7 +79,7 @@ impl Contract {
         self.comments.insert(&id, &comment.clone().into());
 
         // Like Comment Notification
-        notify::notify_like(comment.id.into(), comment.author_id);
+        notify::notify_like(comment.post_id, comment.author_id, Some(comment.id));
     }
 
     // Remove like from comment

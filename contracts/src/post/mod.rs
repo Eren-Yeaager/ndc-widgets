@@ -97,12 +97,19 @@ pub enum PostBody {
 }
 
 impl PostBody {
-    // pub fn get_post_description(post: Post) -> String {
-    //     return match post.snapshot.body.clone() {
-    //         PostBody::Proposal(proposal) => proposal.latest_version().description,
-    //         PostBody::Report(report) => report.latest_version().description,
-    //     };
-    // }
+    pub fn get_post_title(&self) -> String {
+        return match self.clone() {
+            PostBody::Proposal(proposal) => proposal.latest_version().title,
+            PostBody::Report(report) => report.latest_version().title,
+        };
+    }
+
+    pub fn get_post_description(&self) -> String {
+        return match self.clone() {
+            PostBody::Proposal(proposal) => proposal.latest_version().description,
+            PostBody::Report(report) => report.latest_version().description,
+        };
+    }
 
     pub fn get_post_community_id(&self) -> Option<CommunityId> {
         return match self.clone() {
@@ -117,6 +124,13 @@ impl PostBody {
             PostBody::Report(report) => report.latest_version().vertical,
         };
     }
+
+     pub fn get_post_type(&self) -> PostType {
+         return match self.clone() {
+             PostBody::Proposal(_) => PostType::Proposal,
+             PostBody::Report(_) => PostType::Report,
+         };
+     }
 
     pub fn validate(&self) {
         return match self.clone() {
@@ -135,6 +149,7 @@ impl Contract {
     // Add new DAO request/report
     // Access Level: Public
     pub fn add_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
+        let dao = self.get_dao_by_id(&dao_id);
         self.validate_add_post(&dao_id, &body);
 
         self.total_posts += 1;
@@ -169,6 +184,10 @@ impl Contract {
 
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
+
+        // Notifications
+        notify::notify_mention(&body.get_post_title(), &body.get_post_description(), post_id.clone(), None);
+        notify::notify_owners_new_post(dao.latest_version().owners, post_id.clone(), &body.get_post_title(), body.get_post_type());
 
         near_sdk::log!("POST ADDED: {}", post_id);
         post_id
