@@ -4,6 +4,7 @@ const GridContainer = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-bottom: 5rem;
+  height: 100%;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr); // 1 columns
@@ -22,13 +23,14 @@ const Card = styled.div`
   border-radius: 0 0 8px 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  height: ${(p) => (p.height ? p.height + "%" : "auto")};
 `;
 
-const CardTitle = styled.h3`
+const CardTitle = styled.h4`
   color: white !important;
   font-weight: 600;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 10px 10px 0px 0px;
   background: #a4c2fd;
   margin-bottom: unset;
@@ -63,6 +65,11 @@ const CardContainer = styled.div`
   width: 370px;
 `;
 
+const CardBlockContainer = styled.div`
+  margin-top: 1rem;
+  height: ${(p) => (p.height ? "100%" : "auto")};
+`;
+
 function groupByCategoryList(daos) {
   const categoryMap = {};
 
@@ -84,30 +91,41 @@ function groupByCategoryList(daos) {
 
 const groupedByCategory = groupByCategoryList(props.daos);
 
+const CardBlock = ({ height, id }) => (
+  <CardBlockContainer height={height}>
+    <CardTitle>{groupedByCategory[id].title}</CardTitle>
+    <Card key={groupedByCategory[id].title} height={height}>
+      <LinkList>
+        {groupedByCategory[id].links.map((link) => (
+          <Link
+            href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
+          >
+            <ListItem key={link}>
+              <ItemText>{link.title}</ItemText>
+              <Arrow>
+                <i className="bi bi-chevron-right" />
+              </Arrow>
+            </ListItem>
+          </Link>
+        ))}
+      </LinkList>
+    </Card>
+  </CardBlockContainer>
+);
+
 return (
   <GridContainer>
-    {groupedByCategory
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .map((card) => (
-        <CardContainer>
-          <CardTitle>{card.title}</CardTitle>
-          <Card key={card.title}>
-            <LinkList>
-              {card.links.map((link) => (
-                <Link
-                  href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${link.id}`}
-                >
-                  <ListItem key={link}>
-                    <ItemText>{link.title}</ItemText>
-                    <Arrow>
-                      <i className="bi bi-chevron-right" />
-                    </Arrow>
-                  </ListItem>
-                </Link>
-              ))}
-            </LinkList>
-          </Card>
-        </CardContainer>
-      ))}
+    <CardContainer>
+      <CardBlock height={90} id={1} />
+    </CardContainer>
+    <CardContainer>
+      <CardBlock id={0} />
+      <CardBlock height={50} id={2} />
+    </CardContainer>
+    <CardContainer>
+      <CardBlock id={3} />
+      <CardBlock id={4} />
+      <CardBlock id={5} />
+    </CardContainer>
   </GridContainer>
 );

@@ -127,7 +127,7 @@ const [formEls, setFormEls] = useState({
 });
 
 const [errors, setErrors] = useState({});
-const [selectedDaoId, setSelectedDaoId] = useState(dao_id)
+const [selectedDaoId, setSelectedDaoId] = useState(dao_id);
 
 const handleChange = (el, value) => {
   const newFormEl = formEls;
@@ -139,14 +139,21 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
+let daos = null;
 
-const daos = Near.view(contractName, "get_dao_list").map((dao) => {
-  return { name: dao.title, id: dao.id }
-});
+daos = Near.view(contractName, "get_dao_list");
+
+if (daos) {
+  daos = daos.map((dao) => {
+    return { name: dao.title, id: dao.id };
+  });
+}
+
+if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
 const handleSelectDao = (e) => {
-  setSelectedDaoId(e.target.value)
-}
+  setSelectedDaoId(e.target.value);
+};
 
 const handleSave = () => {
   let body = {
@@ -188,7 +195,17 @@ return (
 
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Form"
-          props={{ form, formEls, setFormEls, handleChange, handleSave, handleSelectDao, daos, selectedDaoId, dao_id }}
+          props={{
+            form,
+            formEls,
+            setFormEls,
+            handleChange,
+            handleSave,
+            handleSelectDao,
+            daos,
+            selectedDaoId,
+            dao_id,
+          }}
         />
       </FormWrapper>
     </div>

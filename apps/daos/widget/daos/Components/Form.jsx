@@ -1,4 +1,14 @@
-const { form, formEls, setFormEls, handleChange, handleSave, handleSelectDao, daos, selectedDaoId, dao_id } = props;
+const {
+  form,
+  formEls,
+  setFormEls,
+  handleChange,
+  handleSave,
+  handleSelectDao,
+  daos,
+  selectedDaoId,
+  dao_id,
+} = props;
 
 const TypeSection = styled.div`
   border-radius: 50px;
@@ -43,12 +53,20 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-beetween;
   gap: 2rem;
+  padding-top: 2rem;
 
   @media screen and (max-width: 786px) {
     flex-direction: column;
     gap: 1rem;
+    padding-top: 1rem;
   }
 `;
+
+const MobileForm = styled.div`
+  @media screen and (max-width: 786px) {
+    padding-bottom: 2rem;
+  }
+`
 
 const [preview, setPreview] = useState(false);
 
@@ -78,7 +96,7 @@ const ProposalButton = () => (
 return (
   <>
     {preview ? (
-      <>
+      <MobileForm>
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Item"
           props={{
@@ -93,7 +111,7 @@ return (
           <PreviewButton />
           <ProposalButton />
         </ButtonContainer>
-      </>
+      </MobileForm>
     ) : (
       <Form className="d-flex flex-column gap-3">
         <div
@@ -112,12 +130,14 @@ return (
             </TypeSection>
           </div>
         </div>
-        <label>
-          Select Dao
-        </label>
-        <select className="form-control" value={selectedDaoId} onChange={handleSelectDao}>
+        <label>Select Dao</label>
+        <select
+          className="form-control"
+          value={selectedDaoId}
+          onChange={handleSelectDao}
+        >
           {daos.map((dao) => (
-             <option value={dao.id}>{dao.name}</option>
+            <option value={dao.id}>{dao.name}</option>
           ))}
         </select>
         {form[formEls.type].map((el) => (

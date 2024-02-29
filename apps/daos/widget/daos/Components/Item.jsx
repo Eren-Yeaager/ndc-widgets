@@ -1,7 +1,8 @@
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { item, index, showMoreDefault, showCommentsDefault, type, preview } = props;
+const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
+  props;
 
-if (!item) return <Widget src="flashui.near/widget/Loading" />;
+if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 assets = assets.home;
 const accountId = context.accountId;
@@ -208,7 +209,7 @@ const CardItem = ({ item, index }) => (
                 <i className="bi bi-calendar" />{" "}
                 {new Date(
                   item.snapshot_history[item.snapshot_history.length - 1]
-                    .timestamp / 1000000
+                    .timestamp / 1000000,
                 ).toLocaleDateString()}
               </span>
             </div>

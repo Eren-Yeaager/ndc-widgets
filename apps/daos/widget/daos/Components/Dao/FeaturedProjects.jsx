@@ -25,8 +25,8 @@ const ProjectContainer = styled.div`
 
     .image {
       border-radius: 20px;
-      width: 230px;
-      height: 230px;
+      width: 240px;
+      height: 240px;
     }
   }
 
@@ -48,13 +48,13 @@ const ProjectCard = ({ project }) => (
 
 return (
   <>
-    <h3>{section.projects.title}</h3>
-    <ProjectsContainer>
+    <h3 style={{ marginBottom: "2rem" }}>{section.projects.title}</h3>
+    <div className="d-flex flex-wrap justify-content-center gap-5">
       {projects
         .sort((a, b) => a.title.localeCompare(b.title))
         .map((project) => (
           <ProjectCard project={project} />
         ))}
-    </ProjectsContainer>
+    </div>
   </>
 );

@@ -6,6 +6,10 @@ const Wrapper = styled.div`
   z-index: 1;
   padding: 4rem;
 
+  @media screen and (max-width: 786px) {
+    padding: 2rem;
+  }
+
   div.content {
     position: relative;
     z-index: 3;
@@ -31,26 +35,13 @@ const Info = ({ card }) => (
   </div>
 );
 
-const TopContainer = styled.div`
-  width: 70%;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
 return (
   <Wrapper>
     <div className="content">
       <div>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Title`}
-          props={{ text: dao.title }}
-        />
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Description`}
-          props={{ text: dao.description }}
+          props={{ title: dao.title, description: dao.description }}
         />
       </div>
       <div className="d-flex flex-column">

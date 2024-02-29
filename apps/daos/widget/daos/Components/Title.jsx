@@ -1,10 +1,16 @@
-const { imgUrl, text } = props;
+const { imgUrl, title, description, subtitle, color } = props;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: ${(p) => (p.color ? p.color : "inherit")};
+`;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 2rem;
 
   img {
     width: 33px;
@@ -12,18 +18,29 @@ const Title = styled.div`
   }
 
   span {
-    color: #151718;
-    font-family: Montserrat;
     font-size: 32px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;
 
+const Description = styled.span`
+  font-size: 24px;
+  font-weight: 400;
+`;
+
+const SubTitle = styled.span`
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+`;
+
 return (
-  <Title>
-    {imgUrl && <img src={imgUrl}></img>}
-    <span style={{ ...props.style }}>{text}</span>
-  </Title>
+  <Container color={color}>
+    {subtitle && <SubTitle>{subtitle}</SubTitle>}
+    <Title>
+      {imgUrl && <img src={imgUrl}></img>}
+      <span>{title}</span>
+    </Title>
+    {description && <Description>{description}</Description>}
+  </Container>
 );
