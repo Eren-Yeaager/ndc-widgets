@@ -1,11 +1,10 @@
 const Item = styled.div`
   width: 350px;
-  height: 280px;
+  min-height: 280px;
   border-radius: 10px;
   border: none;
   border-radius: 10px;
   box-shadow: 0px 30px 80px 0px rgba(0, 0, 0, 0.1);
-
 
   h4 {
     color: #000
@@ -47,18 +46,26 @@ const Item = styled.div`
       height: 100%;
       background: #151718;
       border-radius: 10px;
+
       span {
         color: white;
       }
     }
   }
 
-
-
   .inner {
     height: 100%;
     background: white;
     border-radius: 10px;
+
+    span {
+      font-weight: 300;
+      color: white;
+    }
+
+    h4 {
+      font-weight: 700;
+    }
   }
 
   svg {
@@ -91,23 +98,6 @@ const Container = styled.div`
   h4,
   span {
     color: white;
-  }
-
-  .subTitle {
-    color: #fff;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-
-  .title {
-    width: 100%;
-    color: #fff;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
   }
 
   .topSection {
@@ -147,33 +137,33 @@ const { section, dao_id } = props;
 
 return (
   <Container>
-    <div className="d-flex flex-wrap gap-5 pt-3">
+    <div className="d-flex flex-wrap gap-5">
       <div className="topSection">
-        <h3 className="subTitle">{section.guidance.subTitle}</h3>
-        <h4 className="title">{section.guidance.title}</h4>
         <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Description`}
-          props={{ text: section.guidance.description }}
+          src={`/*__@replace:widgetPath__*/.Components.Title`}
+          props={{
+            subtitle: section.guidance.subTitle,
+            title: section.guidance.title,
+            description: section.guidance.description,
+            color: "#fff",
+          }}
         />
       </div>
       <div className="d-flex w-100 justify-content-center">
         <div className="d-flex flex-wrap gap-5">
           {section.guidance.cards.map((card) => (
             <Item className="dark">
-              <div className="inner d-flex flex-column justify-content-center gap-3 align-items-lefy">
-                <h4 className="bold color-text px-3 mt-1 text-left">
-                  {card.title}
-                </h4>
-                <span className="bold color-text px-3 mt-1 text-left">
-                  {card.description}
-                </span>
-                {card.button.link && (
-                   <div className="d-flex px-3">
-                   <a href={card.button.link}>{card.button.title}</a>
-                   <i className="bi bi-chevron-right" />
-                 </div>
-                )}
-               
+              <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
+                <h4 className="color-text">{card.title}</h4>
+                <div>
+                  <span>{card.description}</span>
+                  {card.button.link && (
+                    <div className="d-flex mt-3">
+                      <a href={card.button.link}>{card.button.title}</a>
+                      <i className="bi bi-chevron-right" />
+                    </div>
+                  )}
+                </div>
               </div>
             </Item>
           ))}

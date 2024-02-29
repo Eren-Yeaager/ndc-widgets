@@ -41,11 +41,7 @@ return (
       <div>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Title`}
-          props={{ text: dao.title }}
-        />
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Description`}
-          props={{ text: dao.description }}
+          props={{ title: dao.title, description: dao.description }}
         />
       </div>
       <div className="d-flex flex-column">

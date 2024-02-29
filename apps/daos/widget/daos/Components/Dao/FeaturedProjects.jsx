@@ -25,8 +25,8 @@ const ProjectContainer = styled.div`
 
     .image {
       border-radius: 20px;
-      width: 230px;
-      height: 230px;
+      width: 240px;
+      height: 240px;
     }
   }
 
@@ -36,10 +36,6 @@ const ProjectContainer = styled.div`
     font-weight: 400;
   }
 `;
-
-const ProjectsTitle = styled.h3`
-  margin-bottom: 1rem;
-`
 
 const ProjectCard = ({ project }) => (
   <ProjectContainer>
@@ -52,13 +48,13 @@ const ProjectCard = ({ project }) => (
 
 return (
   <>
-    <ProjectsTitle>{section.projects.title}</ProjectsTitle>
-    <ProjectsContainer>
+    <h3 style={{ marginBottom: "2rem" }}>{section.projects.title}</h3>
+    <div className="d-flex flex-wrap justify-content-center gap-5">
       {projects
         .sort((a, b) => a.title.localeCompare(b.title))
         .map((project) => (
           <ProjectCard project={project} />
         ))}
-    </ProjectsContainer>
+    </div>
   </>
 );

@@ -12,6 +12,7 @@ return {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    margin-top: 2rem;
 
     @media screen and (max-width: 1188px) {
       justify-content: center;

@@ -1,23 +1,19 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
 content = content.home;
 
 const Description = styled.div`
-  color: #1e1d22;
-  font-family: Montserrat;
   font-size: 20px;
-  font-style: normal;
   font-weight: 400;
   line-height: 2rem;
+  padding: 2rem 0 3rem 0;
 
   a {
-    text-decoration-line: underline;
+    text-decoration: underline;
   }
-
-  padding-bottom: 3rem;
 `;
 
 const Container = styled.div`
@@ -67,9 +63,8 @@ const Item = styled.div`
   .inner {
     height: 100%;
     padding: 0 2rem;
-    background: white;
+    background: #f9f6ff;
     border-radius: 10px;
-    background: #ffffff;
   }
 
   svg {
@@ -182,6 +177,10 @@ const CreateGrassrootContainer = styled.div`
       font-weight: 700;
       padding-top: 6rem;
       z-index: 3;
+
+      @media screen and (max-width: 786px) {
+        padding-top: 3rem;
+      }
     }
 
     .description {
@@ -230,17 +229,19 @@ const ParalaxImg = styled.div`
   background-size: cover;
 `;
 
-const SubmitProposal = styled.button`
-  background: linear-gradient(to right, #000000, #434343);
-  color: white;
-  border: 2px solid #efdcd1;
-  border-radius: 25px;
-  padding: 15px 25px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
+const SubmitProposal = styled.a`
+  font-size: 24px;
   transition: all 0.3s ease;
+  border-radius: 50px;
+  border: 3px solid #ffce26;
+  color: white !important;
+  padding: 15px 40px;
+  text-align: center;
+  margin-bottom: 2rem;
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const [loading, setLoading] = useState(false);
@@ -310,7 +311,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl: content.communityTreasury.image,
-          text: content.communityTreasury.title,
+          title: content.communityTreasury.title,
         }}
       />
 
@@ -331,7 +332,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl: content.whatIsNDC.image,
-          text: content.whatIsNDC.title,
+          title: content.whatIsNDC.title,
         }}
       />
       <Description>{content.whatIsNDC.text}</Description>
@@ -345,7 +346,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl: content.whatisGrassrootDAO.image,
-          text: content.whatisGrassrootDAO.title,
+          title: content.whatisGrassrootDAO.title,
         }}
       />
       <Description>{content.whatisGrassrootDAO.text}</Description>
@@ -397,10 +398,13 @@ return (
               <li>{content.createyourGrassrootDAO.items.second}</li>
               <li>{content.createyourGrassrootDAO.items.third}</li>
             </ul>
-            <a href={`//*__@replace:widgetPath__*/.App?page=create_proposal`}>
-              <SubmitProposal>Submit Proposal</SubmitProposal>
-            </a>
           </p>
+
+          <SubmitProposal
+            href={`//*__@replace:widgetPath__*/.App?page=create_proposal`}
+          >
+            Submit Proposal
+          </SubmitProposal>
         </div>
         <div className="circle" />
         <img src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe" />
@@ -411,7 +415,7 @@ return (
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
           imgUrl: content.GetFundingForYourProject.image,
-          text: content.GetFundingForYourProject.title,
+          title: content.GetFundingForYourProject.title,
         }}
       />
 

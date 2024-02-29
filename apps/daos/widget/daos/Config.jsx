@@ -59,20 +59,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -152,9 +149,11 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Just join our telegram.",
-                button: { title: "Learn more", link: "https://t.me/+QM6OtCRhcUdiYjhh" },
+                description: "Just join our telegram.",
+                button: {
+                  title: "Learn more",
+                  link: "https://t.me/+QM6OtCRhcUdiYjhh",
+                },
               },
               {
                 title: "Contribute",
@@ -239,20 +238,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -326,20 +322,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -420,12 +413,14 @@ return {
                 title: "Become a member",
                 description:
                   "Make sure to comply with requirements and submit the candidate form.",
-                button: { title: "Learn more", link: "https://forms.gle/wYueixnqGxvYUjTU6" },
+                button: {
+                  title: "Learn more",
+                  link: "https://forms.gle/wYueixnqGxvYUjTU6",
+                },
               },
               {
                 title: "Contribute",
-                description:
-                  `There are two ways to contribute to NDC Degens:
+                description: `There are two ways to contribute to NDC Degens:
                   1. Join the Main NDC Degens Team.
                   2. Participate in Public Degens.
                   `,
@@ -508,20 +503,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -695,20 +687,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon.",
+                description: "Coming soon.",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -891,14 +880,12 @@ return {
               },
               {
                 title: "Contribute",
-                description:
-                  "Coming soon",
+                description: "Coming soon",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon",
+                description: "Coming soon",
                 button: { title: "Learn more", link: "" },
               },
             ],
@@ -974,8 +961,7 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Join the Telegram community",
+                description: "Join the Telegram community",
                 button: { title: "Learn more", link: "" },
               },
               {
@@ -988,7 +974,10 @@ return {
                 title: "Funding",
                 description:
                   "Fill this application form all applications will be duely considered",
-                button: { title: "Learn more", link: "https://forms.gle/pL1Zk1fdKXkFQJAP8" },
+                button: {
+                  title: "Learn more",
+                  link: "https://forms.gle/pL1Zk1fdKXkFQJAP8",
+                },
               },
             ],
           },
@@ -1067,9 +1056,11 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  "Fill out our onboarding form",
-                button: { title: "Learn more", link: "https://docs.google.com/forms/d/1aOo-8Dd92RUBAV4sSnzPiVkI9gz1SxXT0CnFBTditp4/edit?ts=645a6286" },
+                description: "Fill out our onboarding form",
+                button: {
+                  title: "Learn more",
+                  link: "https://docs.google.com/forms/d/1aOo-8Dd92RUBAV4sSnzPiVkI9gz1SxXT0CnFBTditp4/edit?ts=645a6286",
+                },
               },
               {
                 title: "Contribute",
@@ -1079,8 +1070,7 @@ return {
               },
               {
                 title: "Funding",
-                description:
-                  "Coming soon",
+                description: "Coming soon",
                 button: { title: "Learn more", link: "" },
               },
             ],
