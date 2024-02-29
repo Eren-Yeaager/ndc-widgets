@@ -167,10 +167,13 @@ return (
                 <span className="bold color-text px-3 mt-1 text-left">
                   {card.description}
                 </span>
-                <div className="d-flex px-3">
-                  <a href={card.button.link}>{card.button.title}</a>
-                  <i className="bi bi-chevron-right" />
-                </div>
+                {card.button.link && (
+                   <div className="d-flex px-3">
+                   <a href={card.button.link}>{card.button.title}</a>
+                   <i className="bi bi-chevron-right" />
+                 </div>
+                )}
+               
               </div>
             </Item>
           ))}
