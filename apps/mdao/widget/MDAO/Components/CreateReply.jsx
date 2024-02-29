@@ -265,6 +265,14 @@ const Actions = styled.div`
       height: 40px !important;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    bottom: 1.5rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    bottom: 1.5rem;
+  }
 `;
 
 const PreviewWrapper = styled.div`
