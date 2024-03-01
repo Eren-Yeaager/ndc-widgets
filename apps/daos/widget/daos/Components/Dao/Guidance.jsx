@@ -150,20 +150,20 @@ return (
         />
       </div>
       <div className="d-flex w-100 justify-content-center">
-        <div className="d-flex flex-wrap gap-5">
+        <div className="d-flex flex-wrap justify-content-center gap-5">
           {section.guidance.cards.map((card) => (
             <Item className="dark">
               <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
-                <h4 className="color-text">{card.title}</h4>
                 <div>
+                  <h4 className="color-text">{card.title}</h4>
                   <span>{card.description}</span>
-                  {card.button.link && (
-                    <div className="d-flex mt-3">
-                      <a href={card.button.link}>{card.button.title}</a>
-                      <i className="bi bi-chevron-right" />
-                    </div>
-                  )}
                 </div>
+                {card.button.link && (
+                  <div className="d-flex mt-3">
+                    <a href={card.button.link}>{card.button.title}</a>
+                    <i className="bi bi-chevron-right" />
+                  </div>
+                )}
               </div>
             </Item>
           ))}
