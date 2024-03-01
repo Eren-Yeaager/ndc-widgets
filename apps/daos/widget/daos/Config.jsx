@@ -874,8 +874,7 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description:
-                  `Fill out the She is Near DAO invitation form.
+                description: `Fill out the She is Near DAO invitation form.
                   Request to join the DAO telegram chat by clicking on the telegram option on our contact section.
                   Reach out to any of the council members to add you to the DAO.                  
                   `,
@@ -966,7 +965,10 @@ return {
               {
                 title: "Become a member",
                 description: "Join the Telegram community",
-                button: { title: "Learn more", link: "https://t.me/+1DLTr03appplMmY0 " },
+                button: {
+                  title: "Learn more",
+                  link: "https://t.me/+1DLTr03appplMmY0 ",
+                },
               },
               {
                 title: "Contribute",

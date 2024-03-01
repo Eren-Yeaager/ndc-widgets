@@ -66,7 +66,7 @@ const MobileForm = styled.div`
   @media screen and (max-width: 786px) {
     padding-bottom: 2rem;
   }
-`
+`;
 
 const [preview, setPreview] = useState(false);
 
