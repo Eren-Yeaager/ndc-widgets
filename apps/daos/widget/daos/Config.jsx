@@ -875,12 +875,16 @@ return {
               {
                 title: "Become a member",
                 description:
-                  "Mint I-AM-HUMAN SBT token and apply through an application form ",
+                  `Fill out the She is Near DAO invitation form.
+                  Request to join the DAO telegram chat by clicking on the telegram option on our contact section.
+                  Reach out to any of the council members to add you to the DAO.                  
+                  `,
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description: "Coming soon",
+                description: `Roles are announced for every project before the proposal goes out. All you have to do is step forward for it, share your past experience that aligns with the role and ask the project lead to have you contribute to it.
+                `,
                 button: { title: "Learn more", link: "" },
               },
               {
