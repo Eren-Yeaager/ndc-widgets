@@ -181,7 +181,6 @@ impl Contract {
 
         // Proposals
         self.add_proposal_type_summary_internal(&body);
-
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
 
@@ -197,6 +196,13 @@ impl Contract {
     fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody) {
         body.validate();
         self.get_dao_by_id(&dao_id);
+
+        // Check proposal requested amount
+        if let PostBody::Proposal(proposal) = body {
+            assert!(proposal.clone().latest_version().requested_amount >= 0.0, "Wrong requested amount");
+        }
+
+        // Check if community is part of the DAO
         if let Some(community_id) = body.get_post_community_id() {
             let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");

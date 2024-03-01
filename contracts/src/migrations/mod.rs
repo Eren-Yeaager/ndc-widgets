@@ -76,14 +76,19 @@ impl Contract {
             self.dao_communities.remove(&dao_id);
         });
 
-        // use total_comments variable to map all comment and remove all comments
         for i in 1..=self.total_comments {
             self.comments.remove(&i);
         }
 
+        for i in 1..=self.total_posts {
+            self.posts.remove(&i);
+        }
+
+        for i in 1..=self.total_communities {
+            self.communities.remove(&i);
+        }
+
         self.dao.clear();
-        self.posts.clear();
-        self.communities.clear();
         self.label_to_posts.clear();
         self.vertical_posts.clear();
     }

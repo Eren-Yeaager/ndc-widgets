@@ -128,7 +128,7 @@ impl Contract {
         let community = Community {
             id: id.clone(),
             dao_list: vec![dao_id],
-            handle: community_input.handle,
+            handle: community_input.handle.clone(),
             title: community_input.title,
             description: community_input.description,
             verticals,
@@ -142,6 +142,8 @@ impl Contract {
         self.communities.insert(&id, &community.into());
 
         self.add_dao_communities_internal(&dao_id, id.clone());
+        self.add_community_handle_internal(&community_input.handle, &id);
+
         id
     }
 
@@ -150,9 +152,11 @@ impl Contract {
         let dao_communities = self.dao_communities.get(dao_id).unwrap_or(vec![]);
         dao_communities.iter().for_each(|c| {
             let dao_community: Community = self.get_community_by_id(c).into();
-            assert_ne!(dao_community.handle, community_input.handle, "Community handle already exists");
             assert_ne!(dao_community.title, community_input.title, "Community title already exists");
         });
+
+        // check if handle exists
+        assert!(!self.community_handles.contains_key(&community_input.handle), "Community handle already exists");
     }
 
     // Validate verticals in list of DAO verticals
@@ -168,6 +172,10 @@ impl Contract {
         let mut dao_communities = self.dao_communities.get(dao_id).unwrap_or(vec![]);
         dao_communities.push(community_id);
         self.dao_communities.insert(dao_id, &dao_communities);
+    }
+
+    fn add_community_handle_internal(&mut self, handle: &String, community_id: &CommunityId) {
+        self.community_handles.insert(handle, &community_id);
     }
 
     // Change community status

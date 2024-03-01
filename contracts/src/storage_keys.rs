@@ -10,6 +10,7 @@ pub enum StorageKey {
     Posts,
     Comments,
     Communities,
+    CommunityHandles,
     LabelToPosts,
     ProposalTypeSummary,
     VerticalPosts,

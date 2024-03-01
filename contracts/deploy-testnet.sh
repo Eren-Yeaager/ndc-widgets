@@ -4,7 +4,7 @@ ACCOUNT_ID=mdao-owner.testnet
 CONTRACT=v1.mdao-owner.testnet
 
 near delete "$CONTRACT" "$ACCOUNT_ID" --force
-near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 5
+near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 10
 
 near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
@@ -14,9 +14,12 @@ near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
  near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","is_congress":false}, "owners":["'$ACCOUNT_ID'","owner.testnet"], "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
 # Add DAO Proposal
- near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title #1", "description":"Proposal description 1...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 3000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
- near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title #2", "description":"Report description 2...", "attachments":["https://some_attachment.com", "https://some2_attachment.com"], "labels":["report-label", "gaming"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
- near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Proposal title #3", "description":"Proposal description 3...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 10000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+for i in {1..1000}
+do
+  near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title #1/'"$i"'", "description":"Proposal description 1 Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1Proposal description 1... @vlodkow.near @vlodkow1.near @vlodkow2.near @vlodkow3.near @vlodkow4.near @vlodkow5.near @vlodkow6.near @vlodkow7.near @vlodkow8.near @vlodkow9.near @vlodkow10.near", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 3000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+  near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title #2/'"$i"'", "description":"Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...Report description 2...", "attachments":["https://some_attachment.com", "https://some2_attachment.com"], "labels":["report-label", "gaming"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+  near call "$CONTRACT" add_post '{"dao_id":2, "body":{"title":"Proposal title #3/'"$i"'", "description":"Proposal description 3...", "attachments":[], "labels":[], "metrics":{}, "reports":[], "requested_amount": 10000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+done
 
 # Like Proposal/Report
  near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"

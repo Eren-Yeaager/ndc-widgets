@@ -88,10 +88,11 @@
  NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Agree, comment with 2 attachments!", "attachments":["https://public.bnbstatic.com/static/academy/uploads-original/e196996f8ae34464b849c4b6e0ea9112.png", "https://nearweek.com/uploads/embed,f_webp,w_320/placeholder_medium_1_b968e77065.jpg"]}' --accountId "$ACCOUNT_ID"
 
 # Like comment
- NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID" --deposit 0.02
-
-
-
- NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Notification DAO", "handle":"notify-dao", "account_id":"she-is-near.sputnik-dao.near", "description":"Empowers self-governed development and content creation. Supports new users education and onboarding.","logo_url":"https://ipfs.near.social/ipfs/bafkreia64hznuedqg5z4ywwp7ryhphuv6c4psuo753twnwlqbutvugrkxm", "banner_url":"https://ipfs.near.social/ipfs/bafkreifmvtok2tgebbyxi27bdcwetvnv3hwulxrvqmhp24tr2nzqehaska","is_congress":false}, "owners":["'$ACCOUNT_ID'", "vlodkow.near"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
- NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Notification - Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard! @vlodkow.near test mention @illli.near", "attachments":[], "requested_amount": 1200, "labels":["near-gaming", "zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
  NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
+
+
+
+#
+# NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Notification DAO", "handle":"notify-dao", "account_id":"she-is-near.sputnik-dao.near", "description":"Empowers self-governed development and content creation. Supports new users education and onboarding.","logo_url":"https://ipfs.near.social/ipfs/bafkreia64hznuedqg5z4ywwp7ryhphuv6c4psuo753twnwlqbutvugrkxm", "banner_url":"https://ipfs.near.social/ipfs/bafkreifmvtok2tgebbyxi27bdcwetvnv3hwulxrvqmhp24tr2nzqehaska","is_congress":false}, "owners":["'$ACCOUNT_ID'", "vlodkow.near"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Notification - Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard! @vlodkow.near test mention @illli.near", "attachments":[], "requested_amount": 1200, "labels":["near-gaming", "zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+# NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"

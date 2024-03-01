@@ -67,7 +67,6 @@ impl Contract {
 
     // Like comment
     // Access Level: Public
-    #[payable]
     pub fn comment_like(&mut self, id: CommentId) {
         let mut comment:Comment = self.get_comment_by_id(&id).into();
         let author_id = env::predecessor_account_id();

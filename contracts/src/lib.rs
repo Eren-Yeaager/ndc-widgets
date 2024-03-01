@@ -47,10 +47,10 @@ pub struct Contract {
     pub dao_communities: LookupMap<DaoId, Vec<CommunityId>>,
     // pub dao_handles: UnorderedMap<String, DaoId>,
 
-    pub posts: UnorderedMap<PostId, VersionedPost>,
+    pub posts: LookupMap<PostId, VersionedPost>,
     pub comments: LookupMap<CommentId, VersionedComment>,
-    pub communities: UnorderedMap<CommunityId, VersionedCommunity>,
-    // pub community_handles: UnorderedMap<String, CommunityId>,
+    pub communities: LookupMap<CommunityId, VersionedCommunity>,
+    pub community_handles: LookupMap<String, CommunityId>,
 
     pub proposal_type_summary: UnorderedMap<PostStatus, f64>,
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
@@ -58,8 +58,8 @@ pub struct Contract {
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
 
     pub post_status: LookupMap<PostStatus, Vec<PostId>>,
-    pub post_authors: UnorderedMap<AccountId, Vec<PostId>>,
-    pub comment_authors: UnorderedMap<AccountId, Vec<CommentId>>,
+    pub post_authors: LookupMap<AccountId, Vec<PostId>>,
+    pub comment_authors: LookupMap<AccountId, Vec<CommentId>>,
     pub user_follow: LookupMap<(FollowType, AccountId), Vec<u64>>,
     pub owner_access: LookupMap<AccountId, Vec<VersionedAccessMetadata>>,
 }
@@ -79,9 +79,10 @@ impl Contract {
             dao_posts: LookupMap::new(StorageKey::DaoPosts),
             dao_communities: LookupMap::new(StorageKey::DaoCommunities),
 
-            posts: UnorderedMap::new(StorageKey::Posts),
+            posts: LookupMap::new(StorageKey::Posts),
             comments: LookupMap::new(StorageKey::Comments),
-            communities: UnorderedMap::new(StorageKey::Communities),
+            communities: LookupMap::new(StorageKey::Communities),
+            community_handles: LookupMap::new(StorageKey::CommunityHandles),
 
             proposal_type_summary: UnorderedMap::new(StorageKey::ProposalTypeSummary),
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
@@ -89,8 +90,8 @@ impl Contract {
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
 
             post_status: LookupMap::new(StorageKey::PostStatus),
-            post_authors: UnorderedMap::new(StorageKey::PostAuthors),
-            comment_authors: UnorderedMap::new(StorageKey::CommentAuthors),
+            post_authors: LookupMap::new(StorageKey::PostAuthors),
+            comment_authors: LookupMap::new(StorageKey::CommentAuthors),
             user_follow: LookupMap::new(StorageKey::UserFollow),
             owner_access: LookupMap::new(StorageKey::OwnerAccess),
         };
@@ -121,7 +122,7 @@ impl Contract {
 
     // Post: Get all posts from all DAOs except InReview status
     pub fn get_all_posts(&self, page:u64, limit:u64) -> Vec<VersionedPost> {
-        let all_post_ids: HashSet<PostId> = self.posts.keys().collect();
+        let all_post_ids: HashSet<PostId> = (1..=self.total_posts).collect();
         let in_review_post_ids: HashSet<PostId> = self.post_status.get(&PostStatus::InReview).unwrap_or_default().iter().cloned().collect();
 
         let available_post_ids: Vec<PostId> = all_post_ids.difference(&in_review_post_ids)
@@ -199,8 +200,8 @@ impl Contract {
 
     // Communities: Get Community by handle
     pub fn get_community_by_handle(&self, handle: String) -> VersionedCommunity {
-        let community = self.communities.values().find(|community| community.clone().latest_version().handle == handle);
-        community.unwrap_or_else(|| panic!("Community with handle {} not found", handle))
+        let community = self.community_handles.get(&handle).and_then(|id| self.communities.get(&id));
+        community.unwrap_or_else(|| panic!("Community {} not found", handle))
     }
 
     // Communities: Get follow list for user

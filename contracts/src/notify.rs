@@ -1,5 +1,5 @@
 use crate::social_db::social_db_contract;
-use near_sdk::{env, AccountId};
+use near_sdk::{env, AccountId, NearToken};
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use crate::{CommentId, PostId};
@@ -7,6 +7,7 @@ use crate::post::PostType;
 use near_sdk::serde_json::{json, Value};
 
 const BASE_WIDGET_URL: &str = "ndcdev.near/widget/daos.App";
+const NOTIFICATION_DEPOSIT: NearToken = NearToken::from_millinear(7); // 0.007 NEAR
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
@@ -54,7 +55,7 @@ fn get_text_mentions(text: &str) -> Vec<String> {
 fn notify_one(recipient: AccountId, notify_value: Value) {
     social_db_contract()
         .with_static_gas(env::prepaid_gas().saturating_div(4))
-        .with_attached_deposit(env::attached_deposit())
+        .with_attached_deposit(NOTIFICATION_DEPOSIT.into())
         .set(json!({
             env::current_account_id() : {
             "index": {
@@ -81,7 +82,7 @@ fn notify_multiple(accounts: Vec<AccountId>, notify_value: Value) {
 
         social_db_contract()
             .with_static_gas(env::prepaid_gas().saturating_div(4))
-            .with_attached_deposit(env::attached_deposit())
+            .with_attached_deposit(NOTIFICATION_DEPOSIT.into())
             .set(json!({
             env::current_account_id() : {
                 "index": {
@@ -132,7 +133,7 @@ pub fn notify_mention(title: &str, text: &str, post_id: u64, comment_id: Option<
 
     let (message, params) = match comment_id {
         Some(cid) => (
-            format!("🔗 You've been mentioned: {} mentioned you in a comment.", account_id),
+            format!("🔗 You've been mentioned: {} mentioned you in a comment", account_id),
             json!({
                 "page": "comments",
                 "comment_id": cid,
