@@ -166,7 +166,7 @@ pub fn notify_owners_new_post(dao_owners: Vec<AccountId>, post_id: PostId, title
         PostType::Report => "report",
     };
 
-    let message = format!("🔔 New DAO {}: '{}' waiting for your review", post_type_str, title);
+    let message = format!("🔔 New DAO {}: '{}' awaits your review", post_type_str, title);
 
     let notify_value: Value = json!({
         "type": "custom",
