@@ -966,7 +966,7 @@ return {
               {
                 title: "Become a member",
                 description: "Join the Telegram community",
-                button: { title: "Learn more", link: "" },
+                button: { title: "Learn more", link: "https://t.me/+1DLTr03appplMmY0 " },
               },
               {
                 title: "Contribute",
