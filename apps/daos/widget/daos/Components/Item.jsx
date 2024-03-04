@@ -4,6 +4,7 @@ const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
+const metrics = item.metrics ?? item;
 assets = assets.home;
 const accountId = context.accountId;
 
@@ -209,7 +210,7 @@ const CardItem = ({ item, index }) => (
                 <i className="bi bi-calendar" />{" "}
                 {new Date(
                   item.snapshot_history[item.snapshot_history.length - 1]
-                    .timestamp / 1000000,
+                    .timestamp / 1000000
                 ).toLocaleDateString()}
               </span>
             </div>
@@ -250,11 +251,80 @@ const CardItem = ({ item, index }) => (
         </b>
       </a>
 
-      {showMore === index && (
-        <Widget
-          src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-          props={{ text: item.description }}
-        />
+      {showMore === index &&
+        item.description &&
+        item.post_type === "Proposal" && (
+          <Widget
+            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+            props={{ text: item.description }}
+          />
+        )}
+
+      {showMore === index && item.post_type === "Report" && (
+        <>
+          {metrics["audience"] && (
+            <>
+              <h5>
+                How many people did your project reach during this funding
+                period?
+              </h5>
+              <h3>
+                <b>{metrics["audience"]}</b>
+              </h3>
+            </>
+          )}
+          {metrics["growth"] && (
+            <>
+              <h5>
+                How does this month's audience reach compare to previous periods
+                (provide a %)
+              </h5>
+              <h3>
+                <b>{metrics["growth"]}</b>
+              </h3>
+            </>
+          )}
+          {metrics["average_engagement_rate"] && (
+            <>
+              <h5>
+                What is the average engagement rate on your project's primary
+                platform (choose one)? Use the formula (Total Likes, Shares &
+                Comments / Total Followers) X 100 = AER %
+              </h5>
+              <h3>
+                <b>{metrics["average_engagement_rate"]}</b>
+              </h3>
+            </>
+          )}
+          {metrics["performance_statement_1"] && (
+            <>
+              <h5>
+                What is the biggest win (most improved part of project) during
+                this funding period vs. the previous one (if applicable)?
+              </h5>
+              <Widget
+                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                props={{
+                  text: metrics["performance_statement_1"],
+                }}
+              />
+            </>
+          )}
+          {metrics["performance_statement_2"] && (
+            <>
+              <h5>
+                What is the biggest challenge your project is facing? What did
+                not improve during this funding period?
+              </h5>
+              <Widget
+                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                props={{
+                  text: metrics["performance_statement_2"],
+                }}
+              />
+            </>
+          )}
+        </>
       )}
 
       {item.labels?.length > 0 && (

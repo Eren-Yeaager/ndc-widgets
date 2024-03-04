@@ -1,17 +1,17 @@
 const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { hasNotifications, daoId } = props;
+const { hasNotifications, daoId, accountId } = props;
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
 
 const links = [
   {
     text: "Reports",
-    href: `//*__@replace:widgetPath__*/.App?page=reports`,
+    href: `//*__@replace:widgetPath__*/.App?page=reports&accountId=${accountId}`,
     icon: <i className="bi bi-clipboard-data-fill fs-5" />,
   },
   {
     text: "Proposals",
-    href: `//*__@replace:widgetPath__*/.App?page=proposals`,
+    href: `//*__@replace:widgetPath__*/.App?page=proposals&accountId=${accountId}`,
     icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
   },
   {

@@ -33,7 +33,7 @@ const Header = styled.div`
       margin-bottom: 1rem;
     }
   }
-`
+`;
 
 let items = null;
 let dao = null;
@@ -58,11 +58,9 @@ return (
     <>
       {dao_id ? (
         <>
-        <Header>
+          <Header>
             <img className="dao-img" src={dao.logo_url} />
-            <h1>
-              {dao.title}
-            </h1>
+            <h1>{dao.title}</h1>
           </Header>
 
           <div className="mt-4">
@@ -81,8 +79,9 @@ return (
           props={props}
         />
       ) : (
-        <h1>All Proposals</h1>
+        <h1>All {type}s</h1>
       )}
+
       <div className="d-flex flex-column gap-4 mt-4">
         {items?.length ? (
           items

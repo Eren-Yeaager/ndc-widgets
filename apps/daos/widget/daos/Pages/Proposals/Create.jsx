@@ -48,44 +48,44 @@ const form = {
       required: false,
     },
     {
-      name: "metric:audience",
+      name: "audience",
       label:
-        "Audience Metric: how many people did your project reach during this funding period?",
+        "How many people did your project reach during this funding period?",
       value: "",
       type: "number",
-      required: true,
+      required: false,
     },
     {
-      name: "metric:growth",
+      name: "growth",
       label:
-        "Growth Metric: how does this month's audience reach compare to previous periods (provide a %)",
+        "How does this month's audience reach compare to previous periods (provide a %)",
       value: "",
       type: "number",
-      required: true,
+      required: false,
     },
     {
-      name: "metric:average_engagement_rate",
+      name: "average_engagement_rate",
       label:
-        "Average Engagement Rate: what is the average engagement rate on your project's primary platform (choose one)? Use the formula (Total Likes, Shares & Comments / Total Followers) X 100 = AER %",
+        "What is the average engagement rate on your project's primary platform (choose one)? Use the formula (Total Likes, Shares & Comments / Total Followers) X 100 = AER %",
       value: "",
       type: "number",
-      required: true,
+      required: false,
     },
     {
-      name: "metric:performance_statement:answer_1",
+      name: "performance_statement_1",
       label:
-        "Performance Statement: What is the biggest win (most improved part of project) during this funding period vs. the previous one (if applicable)?",
+        "What is the biggest win (most improved part of project) during this funding period vs. the previous one (if applicable)?",
       value: "",
       type: "textarea",
-      required: true,
+      required: false,
     },
     {
-      name: "metric:performance_statement:answer_2",
+      name: "performance_statement_2",
       label:
-        "Performance statement: What is the biggest challenge your project is facing? What did not improve during this funding period?",
+        "What is the biggest challenge your project is facing? What did not improve during this funding period?",
       value: "",
       type: "textarea",
-      required: true,
+      required: false,
     },
   ],
   Proposal: [
@@ -121,7 +121,7 @@ const form = {
 
 const [formEls, setFormEls] = useState({
   accountId: context.accountId,
-  type: "Proposal",
+  post_type: "Proposal",
   id: new Date().getTime(),
   description: form.Proposal.find((el) => el.name === "description").value,
 });
@@ -158,17 +158,24 @@ const handleSelectDao = (e) => {
 const handleSave = () => {
   let body = {
     title: formEls.project_name,
-    description: formEls.description,
     labels: formEls.tags ?? [],
-    post_type: formEls.type,
+    post_type: formEls.post_type,
     requested_amount: parseInt(formEls.requested_amount ?? 0),
+    description: formEls.description,
     metrics: {},
     reports: [],
     attachments: [],
   };
 
-  if (formEls.type === "Report") {
-    body.proposal_id = formEls.proposal_id;
+  if (formEls.post_type === "Report") {
+    body.proposal_id = parseInt(formEls.proposal_id);
+    body.metrics = {
+      audience: formEls["audience"],
+      growth: formEls["growth"],
+      average_engagement_rate: formEls["average_engagement_rate"],
+      performance_statement_1: formEls["performance_statement_1"],
+      performance_statement_2: formEls["performance_statement_2"],
+    };
     body.report_version = "V1";
   } else {
     body.proposal_version = "V1";

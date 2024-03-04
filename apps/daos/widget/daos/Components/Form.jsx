@@ -85,7 +85,9 @@ const ProposalButton = () => (
   <button
     style={{ width: "max-content" }}
     className="btn btn-primary"
-    disabled={form[formEls.type].some((el) => el.required && !formEls[el.name])}
+    disabled={form[formEls.post_type].some(
+      (el) => el.required && !formEls[el.name]
+    )}
     onClick={handleSave}
   >
     Create proposal
@@ -102,7 +104,7 @@ return (
           props={{
             item: { ...formEls, dao_id },
             index: 0,
-            type: formEls.type,
+            post_type: formEls.post_type,
             showMoreDefault: 0,
             preview: true,
           }}
@@ -117,8 +119,8 @@ return (
         <div
           onClick={() => {
             const newFormEl = formEls;
-            newFormEl.type =
-              formEls.type === "Proposal" ? "Report" : "Proposal";
+            newFormEl.post_type =
+              formEls.post_type === "Proposal" ? "Report" : "Proposal";
             setFormEls(newFormEl);
           }}
         >
@@ -126,7 +128,7 @@ return (
           <div className="d-flex gap-3 align-items-center">
             <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
             <TypeSection>
-              <h4>{formEls.type}</h4>
+              <h4>{formEls.post_type}</h4>
             </TypeSection>
           </div>
         </div>
@@ -140,7 +142,7 @@ return (
             <option value={dao.id}>{dao.name}</option>
           ))}
         </select>
-        {form[formEls.type].map((el) => (
+        {form[formEls.post_type].map((el) => (
           <div className="form-element">
             <label for={el.name}>
               {el.label}
