@@ -1020,7 +1020,7 @@ return {
               {
                 title: "Vision",
                 icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
-                description: `The vision of  FDAO  revolves around the creation and amplification of on-chain value within the near ecosystem. Our focus is to establish Near as a robust and thriving blockchain platform where the execution of valuable contracts is a cornerstone of its utility`,
+                description: `The vision of  FDAO  revolves around the creation and amplification of on-chain value within the NEAR ecosystem. Our focus is to establish Near as a robust and thriving blockchain platform where the execution of valuable contracts is a cornerstone of its utility`,
                 button: { title: "Read more", link: "" },
               },
               {
