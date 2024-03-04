@@ -218,7 +218,11 @@ const CardItem = ({ item, index }) => (
             ""
           )}
           <div className="info">
-            <span style={{ width: "12rem" }}>Requested sponsor:</span>
+            <span style={{ width: "12rem" }}>
+              {em.post_type === "Proposal"
+                ? "Requested sponsor:"
+                : "Reported to:"}
+            </span>
             {dao && (
               <a
                 href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.id}`}
@@ -229,12 +233,14 @@ const CardItem = ({ item, index }) => (
               </a>
             )}
           </div>
-          <div className="info">
-            <span style={{ width: "12rem" }}>Requested amount:</span>
-            <span>
-              <b>${item.requested_amount ?? 0}</b>
-            </span>
-          </div>
+          {item.post_type === "Proposal" && (
+            <div className="info">
+              <span style={{ width: "12rem" }}>Requested amount:</span>
+              <span>
+                <b>${item.requested_amount ?? 0}</b>
+              </span>
+            </div>
+          )}
         </div>
       </div>
       <a
