@@ -96,7 +96,7 @@ return (
       </div>
       <div>
         <p>
-          100+ clevelopers building on NEAR Top Ecosystem Projects
+          100+ developers building on NEAR Top Ecosystem Projects
           <ul>
             <li>ShardDog</li>
             <li>Chill & Shill</li>
