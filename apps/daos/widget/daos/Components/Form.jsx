@@ -179,6 +179,7 @@ return (
                 class={`form-control ${error[el.name] && "error"}`}
                 type={el.type}
                 name={el.name}
+                min={el.min}
                 value={formEls[el.name] ?? ""}
                 onChange={(e) => handleChange(el, e.target.value)}
               />
