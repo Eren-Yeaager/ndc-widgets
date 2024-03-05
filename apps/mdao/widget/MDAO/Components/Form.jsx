@@ -131,6 +131,7 @@ return (
           <div className="form-element">
             <label for={el.name}>
               {el.label}
+              {el.min}
               {el.required && "*"}
             </label>
             {el.type === "file" ? (
