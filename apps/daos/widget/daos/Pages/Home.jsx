@@ -300,6 +300,9 @@ const sorted = (a, b) => {
   return 0;
 };
 
+// This is to be used if we want use other Links for landing pages.
+const prioriyLink = { 3: "https://near.org/ndcdev.near/widget/MDAO.App?page=home"}
+
 return (
   <Container>
     <Widget
@@ -364,7 +367,7 @@ return (
               </h4>
               <DaoDesc>{dao.description}</DaoDesc>
               <DaoLink
-                href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`}
+                href={prioriyLink[dao.id] ?? `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`}
                 className="btn btn-secondary d-flex justify-content-between"
               >
                 <i class="bi bi-plus-circle"></i>
