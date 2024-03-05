@@ -377,14 +377,14 @@ return {
 
                 The Main Degens Team consists of experienced and well-known users who undergo a rigorous selection process, including application, selection, interview, and trial month. We assess each candidate's social media presence, content quality, and teamwork skills to ensure they meet our high standards. Our members are the best in the industry and benefit from being part of a network of top-level performers.
                 
-                With a clear vision, well-built team, and a commitment to clear KPIs, Degens will act as a well-coordinated mechanism to provide a new audience to the Near Protocol ecosystem, leading to increased growth and attraction of new users.
+                With a clear vision, well-built team, and a commitment to clear KPIs, Degens will act as a well-coordinated mechanism to provide a new audience to the NEAR Protocol ecosystem, leading to increased growth and attraction of new users.
                 `,
                 button: { title: "Read more", link: "" },
               },
               {
                 title: "Mission",
                 icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
-                description: `Degens' mission is to disseminate information about the Near Protocol, Aurora, and NDC ecosystems to a wider audience, using the resources of experienced community members and their media channels. In addition to information distribution and content creation, Degens aims to support projects within the ecosystem, drawing attention to key announcements and news.`,
+                description: `Degens' mission is to disseminate information about the NEAR Protocol, Aurora, and NDC ecosystems to a wider audience, using the resources of experienced community members and their media channels. In addition to information distribution and content creation, Degens aims to support projects within the ecosystem, drawing attention to key announcements and news.`,
                 button: { title: "Read more", link: "" },
               },
               {
@@ -596,7 +596,7 @@ return {
             subTitle: "GUIDANCE",
             title: "Aurora Community DAO",
             description:
-              "Stands at the heart of the Aurora ecosystem, embodying collaboration, expanding user base, increasing transactions on Aurora  and Near networks",
+              "Stands at the heart of the Aurora ecosystem, embodying collaboration, expanding user base, increasing transactions on Aurora  and NEAR networks",
             cards: [
               {
                 title: "Become a member",
@@ -772,7 +772,7 @@ return {
             subTitle: "GUIDANCE",
             title: "NFT DAO",
             description:
-              "Aims to provide solutions and standards for NFTs on NEAR. Primary objective is to revitalize and expand the Near NFT ecosystem.",
+              "Aims to provide solutions and standards for NFTs on NEAR. Primary objective is to revitalize and expand the NEAR NFT ecosystem.",
             cards: [
               {
                 title: "Become a member",
@@ -830,7 +830,7 @@ return {
               {
                 title: "Vision",
                 icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
-                description: `Our vision is to create a space where women have equal opportunities and representation in all spheres of the Near Ecosystem.                                                         We envision a future where our DAO is a leading force in promoting gender equality, social justice, and professional sustainability
+                description: `Our vision is to create a space where women have equal opportunities and representation in all spheres of the NEAR Ecosystem.                                                         We envision a future where our DAO is a leading force in promoting gender equality, social justice, and professional sustainability
                 `,
                 button: { title: "Read more", link: "" },
               },
@@ -870,11 +870,11 @@ return {
             subTitle: "GUIDANCE",
             title: "SHE IS NEAR",
             description:
-              "Empowers women on Near and fortifies the NEAR Protocol with fresh female talent, spreading awareness about NEAR within the Women-in-web3 communities.",
+              "Empowers women on NEAR and fortifies the NEAR Protocol with fresh female talent, spreading awareness about NEAR within the Women-in-web3 communities.",
             cards: [
               {
                 title: "Become a member",
-                description: `Fill out the She is Near DAO invitation form.
+                description: `Fill out the She is NEAR DAO invitation form.
                   Request to join the DAO telegram chat by clicking on the telegram option on our contact section.
                   Reach out to any of the council members to add you to the DAO.                  
                   `,
@@ -1020,7 +1020,7 @@ return {
               {
                 title: "Vision",
                 icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
-                description: `The vision of  FDAO  revolves around the creation and amplification of on-chain value within the NEAR ecosystem. Our focus is to establish Near as a robust and thriving blockchain platform where the execution of valuable contracts is a cornerstone of its utility`,
+                description: `The vision of  FDAO  revolves around the creation and amplification of on-chain value within the NEAR ecosystem. Our focus is to establish NEAR as a robust and thriving blockchain platform where the execution of valuable contracts is a cornerstone of its utility`,
                 button: { title: "Read more", link: "" },
               },
               {
@@ -1035,7 +1035,7 @@ return {
                 description: `FDAO is building a framework for community members to participate in governance, decision making and Specifically an opened opportunity to promote the Ecosystem ourselves.
                 -To create a system where community members can earn and make good use of their skills for the growth of the ecosystem 
                 -To help the Ecosystem achieve the goal of mass adoption 
-                -Introducing new users to interact with Near DApps and engage actively in the Ecosystem
+                -Introducing new users to interact with NEAR DApps and engage actively in the Ecosystem
                 -Community Members building the Community
                 -Familiarity and educative concept for Engagers 
                 -Community Engagement and Awareness of NEAR Infrastructure and the resource they can offer.
@@ -1126,13 +1126,13 @@ return {
           "https://ipfs.near.social/ipfs/bafkreiax4vgaur7pxljajkbmdedx5ynb6en7clh2vcrkciju5atd6xumiq",
         text: (
           <>
-            <b>Near Digital Collective</b>
+            <b>NEAR Digital Collective</b>
             (aka <b>NDC</b>) is the governance
-            node of the Near blockchain ecosystem. NDC is the organisation that
+            node of the NEAR blockchain ecosystem. NDC is the organisation that
             manages funding requests and learn more about the processes, ongoing
             initiatives and key members who participate in governance. The NDC's
-            mission is to set up web3 governance on Near, restore grassroots
-            community funding, and reboot the Near community by enabling
+            mission is to set up web3 governance on NEAR, restore grassroots
+            community funding, and reboot the NEAR community by enabling
             community members to be rewarded for their contributions.
           </>
         ),
