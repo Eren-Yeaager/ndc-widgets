@@ -21,15 +21,34 @@ const comments = Near.view(contractName, "get_post_comments", {
   post_id: parseInt(post_id),
 });
 
+const post = Near.view(contractName, "get_post_by_id", {
+  id: parseInt(post_id),
+});
+
 return (
-  <Container>
-    <Widget
-      src="/*__@replace:widgetPath__*/.Components.Comments"
-      props={{
-        postId: post_id,
-        commentId: comment_id,
-        showCreate: true,
-      }}
-    />
-  </Container>
+  <div className="w-100 d-flex flex-column justify-content-start">
+    <h2>
+      Comments for {post.post_type}:{" "}
+      <a href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${post.id}`}>
+        {post.title}
+      </a>
+    </h2>
+    <Container>
+      <Widget
+        src="/*__@replace:widgetPath__*/.Components.Comments"
+        props={{
+          postId: post_id,
+          commentId: comment_id,
+          showCreate: true,
+        }}
+      />
+      <Widget
+        src="/*__@replace:widgetPath__*/.Components.CreateReply"
+        props={{
+          id: post_id,
+          commentId: comment_id,
+        }}
+      />
+    </Container>
+  </div>
 );

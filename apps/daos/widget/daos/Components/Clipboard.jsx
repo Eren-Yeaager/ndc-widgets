@@ -6,6 +6,7 @@ return (
     }
   >
     <span
+      role="button"
       onClick={() => {
         clipboard.writeText(props.text).then(() => {
           State.update({ copied: true });

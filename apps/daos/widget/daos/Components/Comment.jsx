@@ -37,8 +37,12 @@ const Content = styled.div`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   margin: -3px 0 10px 0;
+
+  a:hover {
+    text-decoration: none;
+  }
 `;
 
 const Post = styled.div`
@@ -77,6 +81,12 @@ return (
           <i className="bi bi-clock" />
           <small>{formatDate(comment.snapshot.timestamp)}</small>
         </div>
+        <Widget
+          src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+          props={{
+            text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
+          }}
+        />
       </div>
     </Header>
     <Post>
@@ -99,11 +109,7 @@ return (
 
         {!isPreview && (
           <Actions>
-            <div
-              role="button"
-              className="d-flex gap-2 align-items-center"
-              onClick={() => handleLike(comment.id)}
-            >
+            <div role="button" onClick={() => handleLike(comment.id)}>
               <small className="blue">{comment.likes.length}</small>
               <i
                 className={`bi blue ${
@@ -123,7 +129,8 @@ return (
             <Link
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
-              <i class={"bi blue bi-share"} />
+              <i className={"bi blue bi-reply fs-5"} />
+              <small className="blue">Reply</small>
             </Link>
           </Actions>
         )}

@@ -1,5 +1,5 @@
 let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { id, description } = props;
+const { id, commentId, description } = props;
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -25,11 +25,14 @@ const content = {
 };
 
 function composeData() {
-  Near.call(contractName, "add_comment", {
-    post_id: id,
+  const createParams = {
+    post_id: parseInt(id),
     description: state.text,
     attachments: state.attachments,
-  });
+  };
+  if (commentId) createParams.reply_to = parseInt(commentId);
+
+  Near.call(contractName, "add_comment", createParams);
 }
 
 function onCommit() {
