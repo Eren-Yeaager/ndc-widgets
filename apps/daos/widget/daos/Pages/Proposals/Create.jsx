@@ -108,6 +108,7 @@ const form = {
       label: "Requested Amount (USD)",
       value: "",
       type: "number",
+      min: "0",
       required: false,
     },
     {
@@ -126,10 +127,19 @@ const [formEls, setFormEls] = useState({
   description: form.Proposal.find((el) => el.name === "description").value,
 });
 
+let daos = null;
+daos = Near.view(contractName, "get_dao_list");
 const [errors, setErrors] = useState({});
-const [selectedDaoId, setSelectedDaoId] = useState(dao_id);
+const [selectedDaoId, setSelectedDaoId] = useState(0);
+
+useEffect(() => {
+  if (daos) {
+    setSelectedDaoId(dao_id || daos[0].id)
+  }
+},[daos])
 
 const handleChange = (el, value) => {
+  if (el.name === "requested_amount" && value.startsWith('-')) return
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;
@@ -139,9 +149,6 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-let daos = null;
-
-daos = Near.view(contractName, "get_dao_list");
 
 if (daos) {
   daos = daos.map((dao) => {
