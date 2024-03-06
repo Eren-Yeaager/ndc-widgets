@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -51,14 +51,10 @@ const Theme = styled.div`
     }
   }
 
-  .profile {
-    a {
-      color: inherit;
-      font-size: 14px;
-      margin-left: 5px;
-      font-weight: 500;
-      line-height: 1.2rem;
-    }
+  .profile-info {
+    color: inherit;
+    font-size: 16px;
+    margin-left: 5px;
   }
 
   h1,

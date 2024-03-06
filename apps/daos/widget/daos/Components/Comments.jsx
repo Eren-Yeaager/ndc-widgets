@@ -26,7 +26,7 @@ let comments = Near.view(contractName, "get_post_comments", {
 if (!comments) return <Widget src="flashui.near/widget/Loading" />;
 
 comments = comments.sort(
-  (a, b) => parseInt(b.snapshot.timestamp) - parseInt(a.snapshot.timestamp),
+  (a, b) => parseInt(b.snapshot.timestamp) - parseInt(a.snapshot.timestamp)
 );
 
 const isLikedByMe = (comment) =>
@@ -60,7 +60,7 @@ const CommentsList = ({ comments }) => (
           {comment.child_comments.length > 0 && (
             <CommentsList
               comments={comment.child_comments.map((childId) =>
-                commentById(childId),
+                commentById(childId)
               )}
             />
           )}
@@ -75,7 +75,7 @@ return (
     {!commentId && (
       <Widget
         src="/*__@replace:widgetPath__*/.Components.CreateReply"
-        props={{ id: postId }}
+        props={{ postId }}
       />
     )}
 
