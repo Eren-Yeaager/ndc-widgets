@@ -1,5 +1,8 @@
 const fileAccept = props.fileAccept || "*";
 const onChange = props.onChange;
+const children = props.children
+const styles = props.styles
+const classNames = props.classNames
 
 State.init({
   uploading: false,
@@ -10,7 +13,7 @@ State.init({
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
 return (
-  <div style={{ width: "max-content" }}>
+  <div style={ styles ?? { width: "max-content" }}>
     {/* {state.cid && (
       <a href={ipfsUrl(state.cid)} download>
         {state.filename}
@@ -21,12 +24,11 @@ return (
       accepts={["image/*", "video/*", ".pdf"]}
       minFileSize={1}
       clickable
-      className="d-flex justify-content-center align-items-center attachment-button"
+      className={classNames ?? "d-flex justify-content-center align-items-center attachment-button"}
       onChange={(files) => {
         if (!files || !files.length) return;
 
         const [body] = files;
-
         State.update({ uploading: true, cid: null });
         asyncFetch("https://ipfs.near.social/add", {
           method: "POST",
@@ -37,12 +39,12 @@ return (
           onChange(ipfsUrl(cid));
         });
       }}
-    >
-      {state.cid ? (
+    >  
+      {children ?? (state.cid ? (
         <i className="bi bi-arrow-clockwise" />
       ) : (
         <i className="bi bi-image" />
-      )}
+      ))}
     </Files>
   </div>
 );
