@@ -248,7 +248,7 @@ pub mod tests {
     use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::{testing_env, VMContext};
     use crate::{Contract, DaoId};
-    use crate::dao::DAOInput;
+    use crate::dao::{DAOInput, DAOType};
 
     pub fn get_context_with_signer(is_view: bool, signer: String) -> VMContext {
         VMContextBuilder::new()
@@ -273,8 +273,8 @@ pub mod tests {
                 description: "DAO Description".to_string(),
                 logo_url: "https://logo.com".to_string(),
                 banner_url: "https://banner.com".to_string(),
-                is_congress: false,
-                account_id: "some_acc.near".parse().unwrap(),
+                dao_type: DAOType::DAO,
+                account_id: Some("some_acc.near".parse().unwrap()),
             },
             vec![context.signer_account_id.clone()],
             vec!["gaming".to_string()],

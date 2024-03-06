@@ -55,10 +55,11 @@ CONTRACT=v1.test-mdao.near
 
 ### DAO
 
-- Add DAO
+- Add DAO/NDC (dao_type param)
 ```cmd
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
+dao_type options: NDC, DAO
 
 - Get list of all DAOs (view)
 ```cmd
@@ -118,7 +119,7 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
 NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
 ```
 
-- Get all DAO proposals/reports by status, for example "in_review" (view)
+- Get all DAO proposals/reports by status, for example "in_review" (view)\
 ```cmd
 NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview"}'
 ```

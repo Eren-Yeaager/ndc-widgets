@@ -1,13 +1,13 @@
 use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{AccountId, Timestamp, near_bindgen};
+use near_sdk::{AccountId, Timestamp, near_bindgen, NearSchema};
 use super::{PostId};
 use crate::{CommentId};
 use crate::post::like::Like;
 use crate::str_serializers::*;
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Comment {
@@ -72,17 +72,20 @@ impl From<Comment> for VersionedComment {
     }
 }
 
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct CommentSnapshot {
-    #[serde(with = "u64_dec_format")]
+    #[serde(
+        serialize_with = "u64_dec_format::serialize",
+        deserialize_with = "u64_dec_format::deserialize"
+    )]
     pub timestamp: Timestamp,
     #[serde(flatten)]
     pub body: CommentBody,
 }
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct CommentBody {

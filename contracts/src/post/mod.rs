@@ -6,7 +6,7 @@ pub mod comment;
 use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{AccountId, near_bindgen, Timestamp};
+use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema};
 use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
 use crate::post::proposal::VersionedProposal;
@@ -42,7 +42,7 @@ pub enum VersionedPost {
     // V2(PostV2),
 }
 
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Post {
@@ -75,13 +75,16 @@ impl From<Post> for VersionedPost {
 //     }
 // }
 
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct PostSnapshot {
     pub status: PostStatus,
     pub editor_id: AccountId,
-    #[serde(with = "u64_dec_format")]
+    #[serde(
+        serialize_with = "u64_dec_format::serialize",
+        deserialize_with = "u64_dec_format::deserialize"
+    )]
     pub timestamp: Timestamp,
     #[serde(flatten)]
     pub body: PostBody,

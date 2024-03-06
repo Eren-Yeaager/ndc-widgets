@@ -4,6 +4,14 @@ use near_sdk::{AccountId};
 use std::collections::{HashMap};
 use crate::{Vertical, DaoId, MetricLabel};
 
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
+#[serde(crate = "near_sdk::serde")]
+#[borsh(crate = "near_sdk::borsh")]
+pub enum DAOType {
+    NDC,
+    DAO,
+}
+
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
@@ -13,8 +21,8 @@ pub struct DAOInput {
     pub description: String,
     pub logo_url: String,
     pub banner_url: String,
-    pub is_congress: bool,
-    pub account_id: AccountId,
+    pub dao_type: DAOType,
+    pub account_id: Option<AccountId>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
@@ -27,8 +35,8 @@ pub struct DAO {
     pub description: String,
     pub logo_url: String,
     pub banner_url: String,
-    pub is_congress: bool,
-    pub account_id: AccountId,
+    pub dao_type: DAOType,
+    pub account_id: Option<AccountId>,
     pub owners: Vec<AccountId>,
     pub verticals: Vec<Vertical>,
     pub metrics: Vec<MetricLabel>,
@@ -114,7 +122,7 @@ impl Contract {
             description: body.description,
             logo_url: body.logo_url,
             banner_url: body.banner_url,
-            is_congress: body.is_congress,
+            dao_type: body.dao_type,
             owners: owners.clone(),
             account_id: body.account_id,
             verticals,
@@ -165,7 +173,7 @@ impl Contract {
         dao.description = body.description;
         dao.logo_url = body.logo_url;
         dao.banner_url = body.banner_url;
-        dao.is_congress = body.is_congress;
+        dao.dao_type = body.dao_type;
         dao.account_id = body.account_id;
         dao.verticals = verticals;
         dao.metrics = metrics;
@@ -175,6 +183,7 @@ impl Contract {
         self.dao.insert(&id, &dao.into());
     }
 
+    // User follow DAO
     pub fn user_follow_dao(&mut self, id: DaoId){
         let account_id = env::predecessor_account_id();
         self.get_dao_by_id(&id);
@@ -190,7 +199,7 @@ impl Contract {
 #[cfg(all(test, not(target_arch = "wasm32")))]
 mod tests {
     use std::collections::HashMap;
-    use super::{DAO, DAOInput};
+    use super::{DAO, DAOInput, DAOType};
     use crate::tests::{setup_contract, create_new_dao};
     use crate::user::FollowType;
 
@@ -222,8 +231,8 @@ mod tests {
                 description: "DAO Description updated".to_string(),
                 logo_url: "https://logo2.com".to_string(),
                 banner_url: "https://banner2.com".to_string(),
-                is_congress: false,
-                account_id: "some_account_id.near".parse().unwrap(),
+                dao_type: DAOType::DAO,
+                account_id: Some("some_account_id.near".parse().unwrap()),
             },
             vec!["Some vertical".to_string()],
             vec!["tx-count".to_string(), "volume".to_string()],
@@ -236,8 +245,8 @@ mod tests {
         assert_eq!(dao.description, "DAO Description updated".to_string());
         assert_eq!(dao.logo_url, "https://logo2.com".to_string());
         assert_eq!(dao.banner_url, "https://banner2.com".to_string());
-        assert_eq!(dao.account_id, "some_account_id.near".to_string());
-        assert_eq!(dao.is_congress, false);
+        assert_eq!(dao.account_id, Some("some_account_id.near".parse().unwrap()));
+        assert_eq!(dao.dao_type, DAOType::DAO);
         assert_eq!(dao.verticals.len(), 1);
         assert_eq!(dao.metrics.len(), 2);
         assert_eq!(dao.metadata.len(), 1);

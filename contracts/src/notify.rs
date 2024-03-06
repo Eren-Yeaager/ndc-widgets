@@ -7,7 +7,7 @@ use crate::post::PostType;
 use near_sdk::serde_json::{json, Value};
 
 const BASE_WIDGET_URL: &str = "ndcdev.near/widget/daos.App";
-const NOTIFICATION_DEPOSIT: NearToken = NearToken::from_millinear(7); // 0.007 NEAR
+const NOTIFICATION_DEPOSIT: NearToken = NearToken::from_yoctonear(7_000_000_000_000_000_000_000); // 0.007 NEAR
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
@@ -80,9 +80,10 @@ fn notify_multiple(accounts: Vec<AccountId>, notify_value: Value) {
             }));
         }
 
+        let deposit_amount: NearToken = NOTIFICATION_DEPOSIT.checked_mul(notify_values.len().try_into().unwrap()).unwrap();
         social_db_contract()
             .with_static_gas(env::prepaid_gas().saturating_div(4))
-            .with_attached_deposit(NOTIFICATION_DEPOSIT.into())
+            .with_attached_deposit(deposit_amount)
             .set(json!({
             env::current_account_id() : {
                 "index": {

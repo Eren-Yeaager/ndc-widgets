@@ -1,11 +1,11 @@
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use near_sdk::require;
+use near_sdk::{require, NearSchema};
 use super::{PostId};
 use crate::{Vertical, CommunityId, MetricLabel, PostLabel};
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Report {
