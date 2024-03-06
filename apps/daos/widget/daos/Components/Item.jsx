@@ -241,6 +241,15 @@ const CardItem = ({ item, index }) => (
               </span>
             </div>
           )}
+          { item.attachments.length > 0  && (
+            <div>
+            <span style={{ width: "12rem" }}>Attachment:</span>
+             <Widget
+             src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+             props={{ attachments: item.attachments }}
+           />
+           </div>
+          ) }
         </div>
       </div>
       <a

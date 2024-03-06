@@ -131,7 +131,9 @@ let daos = null;
 daos = Near.view(contractName, "get_dao_list");
 const [errors, setErrors] = useState({});
 const [selectedDaoId, setSelectedDaoId] = useState(0);
+const [attachments, setAttachments] = useState([])
 
+console.log(attachments)
 useEffect(() => {
   if (daos) {
     setSelectedDaoId(dao_id || daos[0].id)
@@ -158,9 +160,14 @@ if (daos) {
 
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
+
 const handleSelectDao = (e) => {
   setSelectedDaoId(e.target.value);
 };
+
+const handleAttachments = (file) => {
+  setAttachments([file])
+}
 
 const handleSave = () => {
   let body = {
@@ -171,7 +178,7 @@ const handleSave = () => {
     description: formEls.description,
     metrics: {},
     reports: [],
-    attachments: [],
+    attachments: attachments,
   };
 
   if (formEls.post_type === "Report") {
@@ -216,6 +223,8 @@ return (
             handleChange,
             handleSave,
             handleSelectDao,
+            handleAttachments,
+            attachments,
             daos,
             selectedDaoId,
             dao_id,
