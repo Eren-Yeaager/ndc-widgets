@@ -1,19 +1,28 @@
 let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { id, commentId, description } = props;
-
-if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
-
+const { postId, commentId, edit } = props;
+const Loading = () => <Widget src="flashui.near/widget/Loading" />;
 const accountId = context.accountId;
+let comment;
 
-if (!accountId) {
-  return <></>;
-}
+if (!contractName) return <Loading />;
 
 State.init({
   text: "",
   showPreview: false,
   attachments: [],
 });
+
+if (edit === "true" && commentId)
+  comment = Near.view(contractName, "get_comment_by_id", {
+    id: parseInt(commentId),
+  });
+
+useEffect(() => {
+  State.update({
+    text: comment.snapshot.description,
+    attachments: comment.snapshot.attachments,
+  });
+}, [comment]);
 
 const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
@@ -25,14 +34,21 @@ const content = {
 };
 
 function composeData() {
-  const createParams = {
-    post_id: parseInt(id),
+  const params = {
+    post_id: parseInt(postId),
     description: state.text,
     attachments: state.attachments,
   };
-  if (commentId) createParams.reply_to = parseInt(commentId);
+  if (commentId && !edit) params.reply_to = parseInt(commentId);
 
-  Near.call(contractName, "add_comment", createParams);
+  if (edit && comment)
+    params = {
+      comment_id: parseInt(comment.id),
+      description: state.text,
+      attachments: state.attachments,
+    };
+
+  Near.call(contractName, comment ? "edit_comment" : "add_comment", params);
 }
 
 function onCommit() {

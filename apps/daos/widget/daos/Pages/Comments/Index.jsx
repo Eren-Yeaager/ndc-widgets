@@ -2,7 +2,7 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
-let { post_id, comment_id } = props;
+let { post_id, comment_id, edit } = props;
 
 const Container = styled.div`
   width: 100%;
@@ -16,10 +16,6 @@ const Container = styled.div`
     padding: 1rem;
   }
 `;
-
-const comments = Near.view(contractName, "get_post_comments", {
-  post_id: parseInt(post_id),
-});
 
 const post = Near.view(contractName, "get_post_by_id", {
   id: parseInt(post_id),
@@ -45,8 +41,9 @@ return (
       <Widget
         src="/*__@replace:widgetPath__*/.Components.CreateReply"
         props={{
-          id: post_id,
+          postId: post_id,
           commentId: comment_id,
+          edit,
         }}
       />
     </Container>

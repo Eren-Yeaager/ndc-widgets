@@ -58,6 +58,10 @@ const Header = styled.div`
   margin-bottom: 0;
   display: inline-flex;
   width: 100%;
+
+  a:hover {
+    text-decoration: none;
+  }
 `;
 
 const formatDate = (timestamp) => {
@@ -69,7 +73,7 @@ const formatDate = (timestamp) => {
 return (
   <>
     <Header>
-      <div className="my-3 d-flex gap-3 align-items-center justify-content-between">
+      <div className="my-3 d-flex w-100 gap-3 align-items-center">
         <Widget
           src="near/widget/AccountProfile"
           props={{
@@ -77,9 +81,13 @@ return (
             hideAccountId: true,
           }}
         />
-        <div className="d-flex gap-2 align-items-center justify-content-between">
-          <i className="bi bi-clock" />
-          <small>{formatDate(comment.snapshot.timestamp)}</small>
+        <div className="d-flex gap-2 align-items-center justify-content-between text-secondary">
+          <small>
+            {comment.snapshot_history.length > 0
+              ? "Edited at: "
+              : "Created at: "}
+            {formatDate(comment.snapshot.timestamp)}
+          </small>
         </div>
         <Widget
           src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
@@ -87,6 +95,13 @@ return (
             text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
           }}
         />
+        {comment.author_id === context.accountId && (
+          <a
+            href={`https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}&edit=true`}
+          >
+            <i className="bi blue bi-pencil" />
+          </a>
+        )}
       </div>
     </Header>
     <Post>
