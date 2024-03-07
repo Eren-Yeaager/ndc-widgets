@@ -14,18 +14,18 @@ const links = [
     href: `//*__@replace:widgetPath__*/.App?page=proposals&accountId=${accountId}`,
     icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
   },
-  {
-    text: "Comments",
-    href: `//*__@replace:widgetPath__*/.App?page=comments`,
-    disabled: true,
-    icon: <i className="bi bi-chat-square-text-fill fs-5" />,
-  },
-  {
-    text: "Favourites",
-    href: `//*__@replace:widgetPath__*/.App?page=favourites`,
-    disabled: true,
-    icon: <i className="bi bi-star-fill fs-5" />,
-  },
+  // {
+  //   text: "Comments",
+  //   href: `//*__@replace:widgetPath__*/.App?page=comments`,
+  //   disabled: true,
+  //   icon: <i className="bi bi-chat-square-text-fill fs-5" />,
+  // },
+  // {
+  //   text: "Favourites",
+  //   href: `//*__@replace:widgetPath__*/.App?page=favourites`,
+  //   disabled: true,
+  //   icon: <i className="bi bi-star-fill fs-5" />,
+  // },
 ];
 
 const Navbar = styled.div`

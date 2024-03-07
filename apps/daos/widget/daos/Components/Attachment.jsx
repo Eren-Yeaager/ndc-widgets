@@ -10,7 +10,7 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 300px;
+    max-width: 300px;
 
     a {
       color: rgb(118 150 198);

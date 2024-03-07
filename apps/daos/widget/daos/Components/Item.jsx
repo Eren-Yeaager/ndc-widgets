@@ -61,10 +61,8 @@ const Card = styled.div`
   }
 
   .actions {
-    gap: 3rem;
-
     @media screen and (max-width: 786px) {
-      gap: 0;
+      width: 100%;
       justify-content: space-between;
     }
   }
@@ -119,6 +117,10 @@ const Button = styled.a`
   &:hover {
     text-decoration: none;
     border: 1px solid #a4c2fd;
+  }
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
   }
 `;
 
@@ -392,33 +394,36 @@ const CardItem = ({ item, index }) => (
       )}
 
       {!preview && (
-        <div className="actions d-flex align-items-center justify-content-between">
-          <div role="button" className="d-flex gap-2" onClick={handleLike}>
-            <span className="blue">{item.likes.length}</span>
-            <i
-              className={`bi blue ${
-                isLiked(item) ? "bi-heart-fill" : "bi-heart"
-              }`}
-            />
+        <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+          <div className="actions d-flex gap-3 align-items-center">
+            <div role="button" className="d-flex gap-2" onClick={handleLike}>
+              <span className="blue">{item.likes.length}</span>
+              <i
+                className={`bi blue ${
+                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                }`}
+              />
+            </div>
+
+            <div
+              role="button"
+              className="d-flex gap-2"
+              onClick={() => setShowComments(!showComments)}
+            >
+              <span className="blue">{item.comments.length}</span>
+              <i className="bi blue bi-chat" />
+            </div>
+
+            <div role="button" className="d-flex gap-2">
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                props={{
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
+                }}
+              />
+            </div>
           </div>
 
-          <div
-            role="button"
-            className="d-flex gap-2"
-            onClick={() => setShowComments(!showComments)}
-          >
-            <span className="blue">{item.comments.length}</span>
-            <i className="bi blue bi-chat" />
-          </div>
-
-          <div role="button" className="d-flex gap-2">
-            <Widget
-              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-              props={{
-                text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
-              }}
-            />
-          </div>
           <Button
             href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
           >
