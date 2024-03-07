@@ -1,5 +1,5 @@
 const { AppLayout } = VM.require(`/*__@replace:widgetPath__*/.Layouts.App`);
-const { page, ...passProps } = props;
+const { page } = props;
 
 if (!AppLayout) return <Widget src="flashui.near/widget/Loading" />;
 if (!page) page = "home";
@@ -10,7 +10,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Comments.Index`}
-          props={passProps}
+          props={props}
         />
       );
     }
@@ -18,31 +18,25 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Activity`}
-          props={passProps}
+          props={props}
         />
       );
     }
     case "home": {
       return (
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Home`}
-          props={passProps}
-        />
+        <Widget src={`/*__@replace:widgetPath__*/.Pages.Home`} props={props} />
       );
     }
     case "info": {
       return (
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Info`}
-          props={passProps}
-        />
+        <Widget src={`/*__@replace:widgetPath__*/.Pages.Info`} props={props} />
       );
     }
     case "councils": {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Councils`}
-          props={passProps}
+          props={props}
         />
       );
     }
@@ -50,7 +44,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Achievements`}
-          props={passProps}
+          props={props}
         />
       );
     }
@@ -58,7 +52,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Guidance`}
-          props={passProps}
+          props={props}
         />
       );
     }
@@ -66,7 +60,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
-          props={{ type: "Report", ...passProps }}
+          props={{ type: "Report", ...props }}
         />
       );
     }
@@ -74,23 +68,31 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.List`}
-          props={{ type: "Proposal", ...passProps }}
+          props={{ type: "Proposal", ...props }}
         />
       );
     }
     case "dao": {
-      return (
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Dao`}
-          props={{ ...passProps }}
-        />
-      );
+      if (props.id === "1")
+        return (
+          <Widget
+            src={`/*__@replace:widgetPath__*/.Pages.Home`}
+            props={props}
+          />
+        );
+      else
+        return (
+          <Widget
+            src={`/*__@replace:widgetPath__*/.Pages.Dao`}
+            props={{ ...props }}
+          />
+        );
     }
     case "proposal": {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.Index`}
-          props={{ ...passProps }}
+          props={{ ...props }}
         />
       );
     }
@@ -101,7 +103,7 @@ function Page() {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.Create`}
-          props={passProps}
+          props={props}
         />
       );
     }
