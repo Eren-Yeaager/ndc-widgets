@@ -246,7 +246,7 @@ const SubmitProposal = styled.a`
 
 const [loading, setLoading] = useState(false);
 
-const daos = Near.view(contractName, "get_dao_list");
+const daos = Near.view(contractName, "get_dao_list", { "dao_type": "DAO" });
 let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
@@ -301,7 +301,7 @@ const sorted = (a, b) => {
 };
 
 // This is to be used if we want use other Links for landing pages.
-const prioriyLink = { 3: "https://near.org/ndcdev.near/widget/MDAO.App?page=home"}
+const prioriyLink = { 4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home"}
 
 return (
   <Container>
