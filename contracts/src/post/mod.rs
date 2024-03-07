@@ -53,6 +53,8 @@ pub struct Post {
     pub comments: HashSet<CommentId>,
     #[serde(flatten)]
     pub snapshot: PostSnapshot,
+    #[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
     pub snapshot_history: Vec<PostSnapshot>,
 }
 
@@ -183,7 +185,7 @@ impl Contract {
         self.add_community_posts_internal(&body, post_id);
 
         // Proposals
-        self.add_proposal_type_summary_internal(&body);
+        // self.add_proposal_type_summary_internal(&body);
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
 
@@ -243,13 +245,13 @@ impl Contract {
     }
 
     // Update proposal_type_summary (only for proposals)
-    fn add_proposal_type_summary_internal(&mut self, body: &PostBody) {
-        if let PostBody::Proposal(post) = body {
-            let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0.0);
-            proposals_summary += post.clone().latest_version().requested_amount;
-            self.proposal_type_summary.insert(&PostStatus::InReview, &proposals_summary);
-        }
-    }
+    // fn add_proposal_type_summary_internal(&mut self, body: &PostBody) {
+    //     if let PostBody::Proposal(post) = body {
+    //         let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0.0);
+    //         proposals_summary += post.clone().latest_version().requested_amount;
+    //         self.proposal_type_summary.insert(&PostStatus::InReview, &proposals_summary);
+    //     }
+    // }
 
     fn assign_report_to_proposal(&mut self, body: &PostBody, post_id: PostId) {
         if let PostBody::Report(report) = body {
@@ -282,7 +284,7 @@ impl Contract {
         // Cleanup and update posts vertical and community
         self.update_vertical_posts_internal(&post, &body);
         self.update_community_posts_internal(&post, &body);
-        self.update_proposal_type_summary_internal(&post, &body);
+        // self.update_proposal_type_summary_internal(&post, &body);
 
         post.snapshot_history.push(post.snapshot.clone());
         post.snapshot = PostSnapshot {
@@ -309,20 +311,20 @@ impl Contract {
     }
 
     // Cleanup and update proposal_type_summary
-    fn update_proposal_type_summary_internal(&mut self, post: &Post, body: &PostBody) {
-        if let PostBody::Proposal(new_post) = body {
-            if let PostBody::Proposal(old_post) = &post.snapshot.body {
-                let old_amount = old_post.clone().latest_version().requested_amount;
-                let new_amount = new_post.clone().latest_version().requested_amount;
-
-                if old_amount != new_amount {
-                    let mut proposals_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
-                    proposals_summary = proposals_summary + new_amount - old_amount;
-                    self.proposal_type_summary.insert(&post.snapshot.status, &proposals_summary);
-                }
-            }
-        }
-    }
+    // fn update_proposal_type_summary_internal(&mut self, post: &Post, body: &PostBody) {
+    //     if let PostBody::Proposal(new_post) = body {
+    //         if let PostBody::Proposal(old_post) = &post.snapshot.body {
+    //             let old_amount = old_post.clone().latest_version().requested_amount;
+    //             let new_amount = new_post.clone().latest_version().requested_amount;
+    //
+    //             if old_amount != new_amount {
+    //                 let mut proposals_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
+    //                 proposals_summary = proposals_summary + new_amount - old_amount;
+    //                 self.proposal_type_summary.insert(&post.snapshot.status, &proposals_summary);
+    //             }
+    //         }
+    //     }
+    // }
 
     // Cleanup and update vertical_posts
     fn update_vertical_posts_internal(&mut self, post: &Post, body: &PostBody) {
@@ -390,7 +392,7 @@ impl Contract {
 
         // Cleanup old post_status and add to new one, also update proposal_type_summary
         self.update_post_status_internal(&post, &status);
-        self.move_proposal_type_summary_internal(&post, &status);
+        // self.move_proposal_type_summary_internal(&post, &status);
 
         // Update post
         post.snapshot_history.push(post.snapshot.clone());
@@ -418,17 +420,17 @@ impl Contract {
         self.post_status.insert(new_status, &post_by_new_status);
     }
 
-    fn move_proposal_type_summary_internal(&mut self, post: &Post,  new_status: &PostStatus) {
-        if let PostBody::Proposal(proposal) = &post.snapshot.body {
-            let mut status_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
-            status_summary -= proposal.clone().latest_version().requested_amount;
-            self.proposal_type_summary.insert(&post.snapshot.status, &status_summary);
-
-            let mut status_summary = self.proposal_type_summary.get(new_status).unwrap_or(0.0);
-            status_summary += proposal.clone().latest_version().requested_amount;
-            self.proposal_type_summary.insert(new_status, &status_summary);
-        }
-    }
+    // fn move_proposal_type_summary_internal(&mut self, post: &Post,  new_status: &PostStatus) {
+    //     if let PostBody::Proposal(proposal) = &post.snapshot.body {
+    //         let mut status_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
+    //         status_summary -= proposal.clone().latest_version().requested_amount;
+    //         self.proposal_type_summary.insert(&post.snapshot.status, &status_summary);
+    //
+    //         let mut status_summary = self.proposal_type_summary.get(new_status).unwrap_or(0.0);
+    //         status_summary += proposal.clone().latest_version().requested_amount;
+    //         self.proposal_type_summary.insert(new_status, &status_summary);
+    //     }
+    // }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]

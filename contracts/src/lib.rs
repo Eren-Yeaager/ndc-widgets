@@ -54,7 +54,7 @@ pub struct Contract {
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
 
-    pub proposal_type_summary: UnorderedMap<PostStatus, f64>,
+    // pub proposal_type_summary: UnorderedMap<PostStatus, f64>,
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
@@ -86,7 +86,7 @@ impl Contract {
             communities: LookupMap::new(StorageKey::Communities),
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
 
-            proposal_type_summary: UnorderedMap::new(StorageKey::ProposalTypeSummary),
+            // proposal_type_summary: UnorderedMap::new(StorageKey::ProposalTypeSummary),
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
@@ -162,9 +162,9 @@ impl Contract {
     }
 
     // Posts: Get total requested_amount  for posts by status
-    pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, f64)> {
-        self.proposal_type_summary.iter().collect()
-    }
+    // pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, f64)> {
+    //     self.proposal_type_summary.iter().collect()
+    // }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
     pub fn get_dao_posts(&self, dao_id: DaoId, status: Option<PostStatus>) -> Vec<VersionedPost> {
