@@ -231,9 +231,9 @@ const CardItem = ({ item, index }) => (
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center">
           <h3>{item.title}</h3>
-          {item.author_id === accountId && (
+          {dao.owners.includes(accountId) && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}&edit=true`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.id}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>

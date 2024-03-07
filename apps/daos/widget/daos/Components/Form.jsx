@@ -10,6 +10,7 @@ const {
   daos,
   selectedDaoId,
   dao_id,
+  id,
 } = props;
 
 const TypeSection = styled.div`
@@ -83,7 +84,7 @@ const [preview, setPreview] = useState(false);
 const PreviewButton = () => (
   <div
     style={{ width: "max-content" }}
-    className="btn-primary"
+    className="btn-outline-primary"
     onClick={() => setPreview(!preview)}
   >
     Preview
@@ -96,11 +97,11 @@ const ProposalButton = () => (
     style={{ width: "max-content" }}
     className="btn btn-primary"
     disabled={form[formEls.post_type].some(
-      (el) => el.required && !formEls[el.name],
+      (el) => el.required && !formEls[el.name]
     )}
     onClick={handleSave}
   >
-    Create proposal
+    {id ? "Edit" : "Create"} proposal
     <i className="bi bi-plus-lg" />
   </button>
 );
@@ -168,6 +169,7 @@ return (
               />
             ) : el.type === "textarea" ? (
               <div className="d-flex flex-wrap">
+                {console.log(formEls)}
                 <Widget
                   src={`/*__@replace:widgetPath__*/.Components.MarkdownEditor`}
                   props={{
@@ -206,7 +208,7 @@ return (
           props={{
             onChange: handleAttachments,
             children: (
-              <UploadFileButton className="btn-primary">
+              <UploadFileButton className="btn-outline-primary btn-sm">
                 Upload File
               </UploadFileButton>
             ),

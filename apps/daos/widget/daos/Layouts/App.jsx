@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -117,8 +117,7 @@ const Container = styled.div`
 
   .btn-outline-primary {
     border-radius: 10px;
-    border: 1px solid #a4c2fd;
-    color: #000 !important;
+    color: #151718 !important;
     text-decoration: none;
     display: flex;
     gap: 1rem;
@@ -127,8 +126,7 @@ const Container = styled.div`
 
     &:hover {
       text-decoration: none;
-      background: #151718;
-      color: white !important;
+      cursor: pointer;
     }
   }
 
