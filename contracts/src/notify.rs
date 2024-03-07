@@ -80,9 +80,10 @@ fn notify_multiple(accounts: Vec<AccountId>, notify_value: Value) {
             }));
         }
 
+        let deposit_amount: NearToken = NOTIFICATION_DEPOSIT.checked_mul(notify_values.len().try_into().unwrap()).unwrap();
         social_db_contract()
             .with_static_gas(env::prepaid_gas().saturating_div(4))
-            .with_attached_deposit(NOTIFICATION_DEPOSIT.into())
+            .with_attached_deposit(deposit_amount)
             .set(json!({
             env::current_account_id() : {
                 "index": {

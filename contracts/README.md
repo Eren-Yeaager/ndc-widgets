@@ -51,23 +51,35 @@ npm run contract:test
 To use the smart-contract methods, you need to set variables:
 
 ```bash
-ACCOUNT_ID=test-mdao.near
-CONTRACT=v1.test-mdao.near
+ACCOUNT_ID=test-dao.near
+CONTRACT=v1.test-dao.near
 ```
 
 ### DAO
 
-- Add DAO
-
+- Add DAO/NDC (dao_type param)
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","is_congress":false}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+```
+dao_type options: NDC, DAO
+
+- Edit DAO/NDC
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 
-- Get list of all DAOs (view)
+- Get list of all DAOs, NDC included (view)
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_dao_list ''
 ```
+
+- Get list of DAOs by type, "DAO" or "NDC" (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_list '{"dao_type":"DAO"}'
+```
+
 
 - Get DAO by ID (view)
 
@@ -80,6 +92,7 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_id '{"id":1}'
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}'
 ```
+
 
 ### Requests/reports
 
@@ -213,6 +226,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACC
 NEAR_ENV=mainnet near call "$CONTRACT" comment_unlike '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
 
+
 ### Communities
 
 - Add community
@@ -266,5 +280,4 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_account_access '{"account_id":"accoun
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_follow_list '{"follow_type":"DAO", dao_id":1}'
 ```
-
 follow_type options: DAO, Community

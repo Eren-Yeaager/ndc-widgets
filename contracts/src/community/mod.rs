@@ -1,12 +1,12 @@
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{AccountId, near_bindgen};
+use near_sdk::{AccountId, near_bindgen, NearSchema};
 use super::{Contract, DaoId};
 use crate::{Vertical, CommunityId};
 use std::collections::HashMap;
 use crate::dao::DAO;
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct CommunityInput {
@@ -33,7 +33,7 @@ pub enum CommunityStatus {
     Inactive,
 }
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Community {

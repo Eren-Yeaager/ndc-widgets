@@ -3,9 +3,9 @@ use near_sdk::serde::{Deserialize, Serialize};
 use super::{PostId};
 use crate::{Vertical, CommunityId, MetricLabel, PostLabel};
 use std::collections::HashMap;
-use near_sdk::{require};
+use near_sdk::{require, NearSchema};
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Proposal {
@@ -20,7 +20,10 @@ pub struct Proposal {
     // Specific fields
     pub reports: Vec<PostId>,
     pub requested_amount: f64,
-    // #[serde(with = "u64_dec_format")]
+    // #[serde(
+    //     serialize_with = "u64_dec_format::serialize",
+    //     deserialize_with = "u64_dec_format::deserialize"
+    // )],
     // pub due_timestamp: Option<Timestamp>,
 }
 

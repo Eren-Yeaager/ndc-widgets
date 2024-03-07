@@ -17,12 +17,14 @@ use post::*;
 // use near_sdk::serde_json::{json, Value};
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{LookupMap, UnorderedMap};
-use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env};
+use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env, NearToken};
+use serde_json::json;
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
-use crate::dao::{VersionedDAO};
+use crate::dao::{DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
+use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 
 type DaoId = u64;
@@ -96,6 +98,16 @@ impl Contract {
             owner_access: LookupMap::new(StorageKey::OwnerAccess),
         };
 
+        // Add initial storage deposit
+        social_db_contract()
+            .with_static_gas(env::prepaid_gas().saturating_div(4))
+            .with_attached_deposit(NearToken::from_millinear(50).into())
+            .set(json!({
+                env::current_account_id() : {
+                    "index": {}
+                }
+            }));
+
         contract
     }
 }
@@ -116,8 +128,13 @@ impl Contract {
     }
 
     // DAO: Get all DAOs
-    pub fn get_dao_list(&self) -> Vec<VersionedDAO> {
-        self.dao.values().collect()
+    pub fn get_dao_list(&self, dao_type: Option<DAOType>) -> Vec<VersionedDAO> {
+        if dao_type.is_some() {
+            let dao_type = dao_type.unwrap();
+            self.dao.values().filter(|dao| dao.clone().latest_version().dao_type == dao_type).collect()
+        } else {
+            self.dao.values().collect()
+        }
     }
 
     // Post: Get all posts from all DAOs except InReview status
@@ -248,7 +265,7 @@ pub mod tests {
     use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::{testing_env, VMContext};
     use crate::{Contract, DaoId};
-    use crate::dao::DAOInput;
+    use crate::dao::{DAOInput, DAOType};
 
     pub fn get_context_with_signer(is_view: bool, signer: String) -> VMContext {
         VMContextBuilder::new()
@@ -273,8 +290,8 @@ pub mod tests {
                 description: "DAO Description".to_string(),
                 logo_url: "https://logo.com".to_string(),
                 banner_url: "https://banner.com".to_string(),
-                is_congress: false,
-                account_id: "some_acc.near".parse().unwrap(),
+                dao_type: DAOType::DAO,
+                account_id: Some("some_acc.near".parse().unwrap()),
             },
             vec![context.signer_account_id.clone()],
             vec!["gaming".to_string()],

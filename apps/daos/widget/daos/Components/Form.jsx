@@ -5,6 +5,8 @@ const {
   handleChange,
   handleSave,
   handleSelectDao,
+  handleAttachments,
+  attachments,
   daos,
   selectedDaoId,
   dao_id,
@@ -68,6 +70,14 @@ const MobileForm = styled.div`
   }
 `;
 
+const UploadFileButton = styled.div`
+  width: 47%;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`
+
 const [preview, setPreview] = useState(false);
 
 const PreviewButton = () => (
@@ -102,11 +112,12 @@ return (
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Item"
           props={{
-            item: { ...formEls, dao_id },
+            item: { ...formEls, dao_id, attachments },
             index: 0,
             post_type: formEls.post_type,
             showMoreDefault: 0,
             preview: true,
+            attachments
           }}
         />
         <ButtonContainer>
@@ -186,6 +197,18 @@ return (
             )}
           </div>
         ))}
+           <Widget
+            src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+            props={{ attachments }}
+          />
+          <Widget
+            src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
+            props={{
+              onChange: handleAttachments,
+              children: <UploadFileButton className="btn-primary">Upload File</UploadFileButton>,
+              styles: { width: unset },
+              classNames: ""
+            }} />
         <ButtonContainer>
           <PreviewButton />
           <ProposalButton />
