@@ -1188,6 +1188,17 @@ return {
           onboard 1mil users)`,
       },
 
+      featuredProducts: {
+        title: "Featured products",
+        projects: [
+          "HERE Wallet",
+          "Meteor Wallet",
+          "Aurora Play",
+          "Zomland",
+          "Marma",
+        ],
+      },
+
       footerDesc:
         "Stay in the loop. Get the latest updates, announcements, opportunities, and insights from the ecosystem.",
     },

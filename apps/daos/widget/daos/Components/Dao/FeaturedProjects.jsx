@@ -1,12 +1,14 @@
-const { section, projects } = props;
+const { title, projects } = props;
 
 const ProjectsContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    text-align: center;
+  }
 `;
 
 const ProjectContainer = styled.div`
@@ -47,14 +49,12 @@ const ProjectCard = ({ project }) => (
 );
 
 return (
-  <>
-    <h3 style={{ marginBottom: "2rem" }}>{section.projects.title}</h3>
+  <ProjectsContainer>
+    <h3 style={{ marginBottom: "2rem" }}>{title}</h3>
     <div className="d-flex flex-wrap justify-content-center gap-5">
-      {projects
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .map((project) => (
-          <ProjectCard project={project} />
-        ))}
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
     </div>
-  </>
+  </ProjectsContainer>
 );

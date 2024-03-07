@@ -1,5 +1,5 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const { id } = props;
@@ -144,7 +144,7 @@ return (
       <Section>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
-          props={{ section, projects }}
+          props={{ title: section.projects.title, projects }}
         />
       </Section>
     ) : (

@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -227,6 +227,10 @@ const ParalaxImg = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  @media screen and (max-width: 786px) {
+    display: none;
+  }
 `;
 
 const SubmitProposal = styled.a`
@@ -246,7 +250,7 @@ const SubmitProposal = styled.a`
 
 const [loading, setLoading] = useState(false);
 
-const daos = Near.view(contractName, "get_dao_list", { "dao_type": "DAO" });
+const daos = Near.view(contractName, "get_dao_list", { dao_type: "DAO" });
 let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
@@ -301,7 +305,9 @@ const sorted = (a, b) => {
 };
 
 // This is to be used if we want use other Links for landing pages.
-const prioriyLink = { 4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home"}
+const priorityLink = {
+  4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
+};
 
 return (
   <Container>
@@ -367,7 +373,10 @@ return (
               </h4>
               <DaoDesc>{dao.description}</DaoDesc>
               <DaoLink
-                href={prioriyLink[dao.id] ?? `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`}
+                href={
+                  priorityLink[dao.id] ??
+                  `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`
+                }
                 className="btn btn-secondary d-flex justify-content-between"
               >
                 <i class="bi bi-plus-circle"></i>
@@ -379,16 +388,20 @@ return (
       </div>
     </Wrapper>
 
-    {projects?.length && (
+    {projects?.length > 0 ? (
       <Wrapper>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
           props={{
-            section: { projects: { title: "Featured Products" } },
-            projects,
+            title: content.featuredProducts.title,
+            projects: content.featuredProducts.projects.map((title) =>
+              projects.find((p) => p.title === title)
+            ),
           }}
         />
       </Wrapper>
+    ) : (
+      <></>
     )}
 
     <CreateGrassrootContainer>
