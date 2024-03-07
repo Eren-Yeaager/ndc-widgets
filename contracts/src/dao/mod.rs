@@ -160,7 +160,7 @@ impl Contract {
         &mut self,
         id: DaoId,
         body: DAOInput,
-        // owners: Vec<AccountId>,
+        owners: Vec<AccountId>,
         verticals: Vec<Vertical>,
         metrics: Vec<MetricLabel>,
         metadata: HashMap<String, String>
@@ -178,7 +178,7 @@ impl Contract {
         dao.verticals = verticals;
         dao.metrics = metrics;
         dao.metadata = metadata;
-        // dao.owners = owners;
+        dao.owners = owners;
 
         self.dao.insert(&id, &dao.into());
     }

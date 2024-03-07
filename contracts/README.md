@@ -51,8 +51,8 @@ npm run contract:test
 To use the smart-contract methods, you need to set variables:
 
 ```bash
-ACCOUNT_ID=test-mdao.near
-CONTRACT=v1.test-mdao.near
+ACCOUNT_ID=test-dao.near
+CONTRACT=v1.test-dao.near
 ```
 
 ### DAO
@@ -62,6 +62,11 @@ CONTRACT=v1.test-mdao.near
 NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 dao_type options: NDC, DAO
+
+- Edit DAO/NDC
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+```
 
 - Get list of all DAOs, NDC included (view)
 

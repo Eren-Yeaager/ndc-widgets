@@ -7,7 +7,7 @@ use crate::post::PostType;
 use near_sdk::serde_json::{json, Value};
 
 const BASE_WIDGET_URL: &str = "ndcdev.near/widget/daos.App";
-const NOTIFICATION_DEPOSIT: NearToken = NearToken::from_yoctonear(7_000_000_000_000_000_000_000); // 0.007 NEAR
+const NOTIFICATION_DEPOSIT: NearToken = NearToken::from_millinear(7); // 0.007 NEAR
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]

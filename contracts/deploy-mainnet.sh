@@ -1,24 +1,27 @@
 #!/bin/bash
 
- ACCOUNT_ID=test-mdao.near
- CONTRACT=v1.test-mdao.near
+## ---- Backup contract:
+# ACCOUNT_ID=backup-dao.near
+# CONTRACT=v1.backup-dao.near
+
+## ---- Main contract:
+ ACCOUNT_ID=test-dao.near
+ CONTRACT=v1.test-dao.near
 
  NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
- NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 5
-
-# ACCOUNT_ID=test-dao.near
-# CONTRACT=test-dao.near
+ NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 7
 
 ## Full redeploy - cleanup storage and remove account
  NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
 ## Update contract
 # NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
-.3
+
 ## -------- Data Seed --------
 ## Add DAOs
- NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"","logo_url":"", "banner_url":"","dao_type":"NDC"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+
+ NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"","logo_url":"https://ipfs.near.social/ipfs/bafkreifwiv2wn3xwht4j5b5incugly7r7andg3ehlp7dxh4jtbylcqrlha", "banner_url":"","dao_type":"NDC"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Build DAO", "handle":"build-dao", "account_id":"build.sputnik-dao.near", "description":"Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects.","logo_url":"https://ipfs.near.social/ipfs/bafkreih3tpybg4ke3qnjzy7kl62av2zjtn7etwfhkzppppyulse6lrsijq", "banner_url":"https://ipfs.near.social/ipfs/bafkreigalpr5v5cxw5slgyzw3voynhmx2s33w4wbjwlm6wzyp33l7wevoq","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Gaming DAO", "handle":"gaming-dao", "account_id":"gaming-dao.sputnik-dao.near", "description":"Focuses on the development of the NEAR gaming ecosystem, increasing the number of games and players on NEAR.","logo_url":"https://ipfs.near.social/ipfs/bafkreice2ucs37bdbsywljcg2is5eqtrihk26btyuxnqofv5xttbeqenhm", "banner_url":"https://ipfs.near.social/ipfs/bafkreibxm5mu7uau45park42ucxuaoalu5mi2sqmd3mtme64kbidhxao2i","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Projects Funding","Gaming"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Marketing DAO", "handle":"marketing-dao", "account_id":"marketing.sputnik-dao.near", "description":"Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem.","logo_url":"https://ipfs.near.social/ipfs/bafkreiakufnvhu6zmqn6h6mv25eoba7jihtikiumjpplwbnmqlcz5h4enu", "banner_url":"https://ipfs.near.social/ipfs/bafkreicfyo53etls6ob6hwkkll2w27xulkt33oq5ymt2kbkndnb77nvu2a","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Marketing"], "metrics":[], "metadata":{"website":"https://near.org/ndcdev.near/widget/MDAO.App?page=home"}}' --accountId "$CONTRACT"
@@ -91,8 +94,3 @@
 
 # Like comment
  NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
-
-#
-# NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Notification DAO", "handle":"notify-dao", "account_id":"she-is-near.sputnik-dao.near", "description":"Empowers self-governed development and content creation. Supports new users education and onboarding.","logo_url":"https://ipfs.near.social/ipfs/bafkreia64hznuedqg5z4ywwp7ryhphuv6c4psuo753twnwlqbutvugrkxm", "banner_url":"https://ipfs.near.social/ipfs/bafkreifmvtok2tgebbyxi27bdcwetvnv3hwulxrvqmhp24tr2nzqehaska","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'", "vlodkow.near"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
-# NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":3, "body":{"title":"Notification - Zombie Killer Event ended report", "description":"Zombie Killer Event ended with more than 13k Zombies killed! <br />💰The rewards have already been distributed to the 25 winners in their wallets according to the Leaderboard! @vlodkow.near test mention @illli.near", "attachments":[], "requested_amount": 1200, "labels":["near-gaming", "zomland"], "metrics":{}, "reports":[], "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
-# NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"

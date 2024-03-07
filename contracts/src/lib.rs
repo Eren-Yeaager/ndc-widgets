@@ -17,12 +17,14 @@ use post::*;
 // use near_sdk::serde_json::{json, Value};
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{LookupMap, UnorderedMap};
-use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env};
+use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env, NearToken};
+use serde_json::json;
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
 use crate::dao::{DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
+use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 
 type DaoId = u64;
@@ -95,6 +97,16 @@ impl Contract {
             user_follow: LookupMap::new(StorageKey::UserFollow),
             owner_access: LookupMap::new(StorageKey::OwnerAccess),
         };
+
+        // Add initial storage deposit
+        social_db_contract()
+            .with_static_gas(env::prepaid_gas().saturating_div(4))
+            .with_attached_deposit(NearToken::from_millinear(50).into())
+            .set(json!({
+                env::current_account_id() : {
+                    "index": {}
+                }
+            }));
 
         contract
     }
