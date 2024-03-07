@@ -21,7 +21,7 @@ use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env};
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
-use crate::dao::{VersionedDAO};
+use crate::dao::{DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
 use crate::user::{FollowType};
 
@@ -116,8 +116,13 @@ impl Contract {
     }
 
     // DAO: Get all DAOs
-    pub fn get_dao_list(&self) -> Vec<VersionedDAO> {
-        self.dao.values().collect()
+    pub fn get_dao_list(&self, dao_type: Option<DAOType>) -> Vec<VersionedDAO> {
+        if dao_type.is_some() {
+            let dao_type = dao_type.unwrap();
+            self.dao.values().filter(|dao| dao.clone().latest_version().dao_type == dao_type).collect()
+        } else {
+            self.dao.values().collect()
+        }
     }
 
     // Post: Get all posts from all DAOs except InReview status

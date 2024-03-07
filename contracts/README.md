@@ -58,16 +58,23 @@ CONTRACT=v1.test-mdao.near
 ### DAO
 
 - Add DAO/NDC (dao_type param)
-```cmd
+```bash
 NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 dao_type options: NDC, DAO
 
-- Get list of all DAOs (view)
+- Get list of all DAOs, NDC included (view)
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_dao_list ''
 ```
+
+- Get list of DAOs by type, "DAO" or "NDC" (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_list '{"dao_type":"DAO"}'
+```
+
 
 - Get DAO by ID (view)
 
