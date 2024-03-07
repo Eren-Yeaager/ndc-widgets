@@ -1,5 +1,4 @@
 return {
-  socialKey: "v3.ndc.mdao",
   contractName: "v1.test-dao.near",
   assets: {
     logoWhite:
@@ -17,6 +16,18 @@ return {
   content: {
     daos: {
       1: {
+        sections: {
+          info: {
+            title: "NDC",
+            description: "",
+            cards: [],
+          },
+          roadmap: {},
+          guidance: {},
+          office: {},
+        },
+      },
+      2: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -100,7 +111,7 @@ return {
           },
         },
       },
-      2: {
+      3: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -195,7 +206,7 @@ return {
           },
         },
       },
-      3: {
+      4: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -279,7 +290,7 @@ return {
           },
         },
       },
-      4: {
+      5: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -363,7 +374,7 @@ return {
           },
         },
       },
-      5: {
+      6: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -460,7 +471,7 @@ return {
           },
         },
       },
-      6: {
+      7: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -544,7 +555,7 @@ return {
           },
         },
       },
-      7: {
+      8: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -644,7 +655,7 @@ return {
           },
         },
       },
-      8: {
+      9: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -728,7 +739,7 @@ return {
           },
         },
       },
-      9: {
+      10: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -820,7 +831,7 @@ return {
           },
         },
       },
-      10: {
+      11: {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -919,7 +930,7 @@ return {
           },
         },
       },
-      11: {
+      12: {
         sections: {
           info: {
             cards: [
@@ -1013,7 +1024,7 @@ return {
           },
         },
       },
-      12: {
+      13: {
         sections: {
           info: {
             cards: [
@@ -1127,13 +1138,13 @@ return {
         text: (
           <>
             <b>NEAR Digital Collective</b>
-            (aka <b>NDC</b>) is the governance
-            node of the NEAR blockchain ecosystem. NDC is the organisation that
-            manages funding requests and learn more about the processes, ongoing
-            initiatives and key members who participate in governance. The NDC's
-            mission is to set up web3 governance on NEAR, restore grassroots
-            community funding, and reboot the NEAR community by enabling
-            community members to be rewarded for their contributions.
+            (aka <b>NDC</b>) is the governance node of the NEAR blockchain
+            ecosystem. NDC is the organisation that manages funding requests and
+            learn more about the processes, ongoing initiatives and key members
+            who participate in governance. The NDC's mission is to set up web3
+            governance on NEAR, restore grassroots community funding, and reboot
+            the NEAR community by enabling community members to be rewarded for
+            their contributions.
           </>
         ),
       },
@@ -1175,6 +1186,17 @@ return {
           Ambassador Programs, Create Degen content and receive rewards,
           Participate in content creation or implement your development Idea and
           onboard 1mil users)`,
+      },
+
+      featuredProducts: {
+        title: "Featured products",
+        projects: [
+          "HERE Wallet",
+          "Meteor Wallet",
+          "Aurora Play",
+          "Zomland",
+          "Marma",
+        ],
       },
 
       footerDesc:

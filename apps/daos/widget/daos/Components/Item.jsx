@@ -192,22 +192,21 @@ const CardItem = ({ item, index }) => (
         )}
       </div>
       <div className="d-flex flex-column gap-3">
-        <h3>{item.title}</h3>
+        <div className="d-flex gap-3 align-items-center">
+          <h3>{item.title}</h3>
+          {item.author_id === context.accountId && (
+            <a
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}&edit=true`}
+            >
+              <i className="bi blue bi-pencil-fill fs-5" />
+            </a>
+          )}
+        </div>
         <div className="d-flex flex-column gap-1">
-          <div className="info">
-            <span style={{ width: "12rem" }}>Created at:</span>
-            <span>
-              <i className="bi bi-calendar" />{" "}
-              {item.timestamp
-                ? new Date(item.timestamp / 1000000).toLocaleDateString()
-                : new Date().toLocaleDateString()}
-            </span>
-          </div>
           {item.snapshot_history.length > 1 ? (
             <div className="info">
-              <span style={{ width: "12rem" }}>Last Edited at:</span>
+              <span style={{ width: "12rem" }}>Edited at:</span>
               <span>
-                <i className="bi bi-calendar" />{" "}
                 {new Date(
                   item.snapshot_history[item.snapshot_history.length - 1]
                     .timestamp / 1000000
@@ -215,7 +214,14 @@ const CardItem = ({ item, index }) => (
               </span>
             </div>
           ) : (
-            ""
+            <div className="info">
+              <span style={{ width: "12rem" }}>Created at:</span>
+              <span>
+                {item.timestamp
+                  ? new Date(item.timestamp / 1000000).toLocaleDateString()
+                  : new Date().toLocaleDateString()}
+              </span>
+            </div>
           )}
           <div className="info">
             <span style={{ width: "12rem" }}>
