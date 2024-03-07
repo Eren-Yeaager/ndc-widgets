@@ -250,7 +250,7 @@ const SubmitProposal = styled.a`
 
 const [loading, setLoading] = useState(false);
 
-const daos = Near.view(contractName, "get_dao_list", { dao_type: "DAO" });
+const daos = Near.view(contractName, "get_dao_list");
 let proposals = Near.view(contractName, "get_all_posts", {
   page: 0,
   limit: 100,
@@ -308,7 +308,7 @@ const sorted = (a, b) => {
 const priorityLink = {
   4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
 };
-
+console.log(proposals);
 return (
   <Container>
     <Widget
@@ -361,30 +361,33 @@ return (
       <Description>{content.whatisGrassrootDAO.text}</Description>
 
       <div className="d-flex flex-wrap justify-content-center gap-3">
-        {daos.sort(sorted).map((dao) => (
-          <Item>
-            <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
-              <Widget
-                src={`/*__@replace:widgetPath__*/.Components.CommunityImage`}
-                props={{ image: dao.logo_url, index }}
-              />
-              <h4 className="bold color-text px-3 mt-1 text-center">
-                {dao.title}
-              </h4>
-              <DaoDesc>{dao.description}</DaoDesc>
-              <DaoLink
-                href={
-                  priorityLink[dao.id] ??
-                  `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`
-                }
-                className="btn btn-secondary d-flex justify-content-between"
-              >
-                <i class="bi bi-plus-circle"></i>
-                <span>Join DAO</span>
-              </DaoLink>
-            </div>
-          </Item>
-        ))}
+        {daos
+          .filter((dao) => dao.dao_type === "DAO")
+          .sort(sorted)
+          .map((dao) => (
+            <Item>
+              <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
+                <Widget
+                  src={`/*__@replace:widgetPath__*/.Components.CommunityImage`}
+                  props={{ image: dao.logo_url, index }}
+                />
+                <h4 className="bold color-text px-3 mt-1 text-center">
+                  {dao.title}
+                </h4>
+                <DaoDesc>{dao.description}</DaoDesc>
+                <DaoLink
+                  href={
+                    priorityLink[dao.id] ??
+                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`
+                  }
+                  className="btn btn-secondary d-flex justify-content-between"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                  <span>Join DAO</span>
+                </DaoLink>
+              </div>
+            </Item>
+          ))}
       </div>
     </Wrapper>
 

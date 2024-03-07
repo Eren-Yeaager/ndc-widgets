@@ -157,6 +157,23 @@ const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(item.dao_id),
 });
 
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+const statuses = [
+  { key: "InReview", value: "In Review" },
+  { key: "New", value: "New" },
+  { key: "Approved", value: "Approved" },
+  { key: "Rejected", value: "Rejected" },
+  { key: "Closed", value: "Closed" },
+];
+
+const changeStatus = async (item, status) => {
+  Near.call(contractName, "change_post_status", {
+    id: item.id,
+    status,
+  });
+};
+
 const colorMap = (status) => {
   switch (status) {
     case "New":
@@ -185,16 +202,34 @@ const CardItem = ({ item, index }) => (
             tooltip: true,
           }}
         />
+
         {item.status && (
-          <div className="d-flex gap-3 align-items-center justify-content-between">
-            <Status color={colorMap(item.status)}>{item.status}</Status>
-          </div>
+          <>
+            {dao.owners.includes(accountId) ? (
+              <div className="d-flex flex-column gap-1 align-items-center">
+                <small>Change status:</small>
+                <select
+                  className="form-control"
+                  value={item.status}
+                  onChange={(status) => changeStatus(item, status.target.value)}
+                >
+                  {statuses.map(({ key, value }) => (
+                    <option value={key}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="d-flex gap-3 align-items-center">
+                <Status color={colorMap(item.status)}>{item.status}</Status>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center">
           <h3>{item.title}</h3>
-          {item.author_id === context.accountId && (
+          {item.author_id === accountId && (
             <a
               href={`https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}&edit=true`}
             >
@@ -247,15 +282,15 @@ const CardItem = ({ item, index }) => (
               </span>
             </div>
           )}
-          { item.attachments.length > 0  && (
+          {item.attachments.length > 0 && (
             <div>
-            <span style={{ width: "12rem" }}>Attachment:</span>
-             <Widget
-             src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-             props={{ attachments: item.attachments }}
-           />
-           </div>
-          ) }
+              <span style={{ width: "12rem" }}>Attachment:</span>
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+                props={{ attachments: item.attachments }}
+              />
+            </div>
+          )}
         </div>
       </div>
       <a

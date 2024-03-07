@@ -131,17 +131,17 @@ let daos = null;
 daos = Near.view(contractName, "get_dao_list");
 const [errors, setErrors] = useState({});
 const [selectedDaoId, setSelectedDaoId] = useState(0);
-const [attachments, setAttachments] = useState([])
+const [attachments, setAttachments] = useState([]);
 
-console.log(attachments)
+console.log(attachments);
 useEffect(() => {
   if (daos) {
-    setSelectedDaoId(dao_id || daos[0].id)
+    setSelectedDaoId(dao_id || daos[0].id);
   }
-},[daos])
+}, [daos]);
 
 const handleChange = (el, value) => {
-  if (el.name === "requested_amount" && value.startsWith('-')) return
+  if (el.name === "requested_amount" && value.startsWith("-")) return;
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;
@@ -151,7 +151,6 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-
 if (daos) {
   daos = daos.map((dao) => {
     return { name: dao.title, id: dao.id };
@@ -160,14 +159,13 @@ if (daos) {
 
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
-
 const handleSelectDao = (e) => {
   setSelectedDaoId(e.target.value);
 };
 
 const handleAttachments = (file) => {
-  setAttachments([file])
-}
+  setAttachments([file]);
+};
 
 const handleSave = () => {
   let body = {

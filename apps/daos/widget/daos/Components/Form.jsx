@@ -76,7 +76,7 @@ const UploadFileButton = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
   }
-`
+`;
 
 const [preview, setPreview] = useState(false);
 
@@ -96,7 +96,7 @@ const ProposalButton = () => (
     style={{ width: "max-content" }}
     className="btn btn-primary"
     disabled={form[formEls.post_type].some(
-      (el) => el.required && !formEls[el.name]
+      (el) => el.required && !formEls[el.name],
     )}
     onClick={handleSave}
   >
@@ -117,7 +117,7 @@ return (
             post_type: formEls.post_type,
             showMoreDefault: 0,
             preview: true,
-            attachments
+            attachments,
           }}
         />
         <ButtonContainer>
@@ -197,18 +197,23 @@ return (
             )}
           </div>
         ))}
-           <Widget
-            src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-            props={{ attachments }}
-          />
-          <Widget
-            src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
-            props={{
-              onChange: handleAttachments,
-              children: <UploadFileButton className="btn-primary">Upload File</UploadFileButton>,
-              styles: { width: unset },
-              classNames: ""
-            }} />
+        <Widget
+          src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+          props={{ attachments }}
+        />
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
+          props={{
+            onChange: handleAttachments,
+            children: (
+              <UploadFileButton className="btn-primary">
+                Upload File
+              </UploadFileButton>
+            ),
+            styles: { width: unset },
+            classNames: "",
+          }}
+        />
         <ButtonContainer>
           <PreviewButton />
           <ProposalButton />
