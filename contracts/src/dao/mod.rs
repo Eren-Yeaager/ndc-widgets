@@ -234,6 +234,7 @@ mod tests {
                 dao_type: DAOType::DAO,
                 account_id: Some("some_account_id.near".parse().unwrap()),
             },
+            vec!["owner_account_id2.near".parse().unwrap()],
             vec!["Some vertical".to_string()],
             vec!["tx-count".to_string(), "volume".to_string()],
             metadata
@@ -250,6 +251,7 @@ mod tests {
         assert_eq!(dao.verticals.len(), 1);
         assert_eq!(dao.metrics.len(), 2);
         assert_eq!(dao.metadata.len(), 1);
+        assert_eq!(dao.owners.len(), 1);
     }
 
     #[test]

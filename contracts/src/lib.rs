@@ -1,3 +1,5 @@
+use strum_macros::EnumIter;
+
 mod storage_keys;
 pub mod access_control;
 pub mod dao;
@@ -13,19 +15,19 @@ use std::collections::HashSet;
 use storage_keys::*;
 use post::*;
 
-// use near_sdk::require;
-// use near_sdk::serde_json::{json, Value};
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{LookupMap, UnorderedMap};
 use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env, NearToken};
-use serde_json::json;
+use serde_json::{json, Value};
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
 use crate::community::VersionedCommunity;
 use crate::dao::{DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
+use crate::post::proposal::ProposalStates;
 use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
+use strum::IntoEnumIterator;
 
 type DaoId = u64;
 type PostId = u64;
@@ -54,7 +56,6 @@ pub struct Contract {
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
 
-    // pub proposal_type_summary: UnorderedMap<PostStatus, f64>,
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
@@ -86,7 +87,6 @@ impl Contract {
             communities: LookupMap::new(StorageKey::Communities),
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
 
-            // proposal_type_summary: UnorderedMap::new(StorageKey::ProposalTypeSummary),
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
             community_posts: LookupMap::new(StorageKey::CommunityPosts),
@@ -161,10 +161,22 @@ impl Contract {
         self.posts.get(id).unwrap_or_else(|| panic!("Post id {} not found", id))
     }
 
-    // Posts: Get total requested_amount  for posts by status
-    // pub fn get_proposal_type_summary(&self) -> Vec<(PostStatus, f64)> {
-    //     self.proposal_type_summary.iter().collect()
-    // }
+    // Posts: Get all statuses and proposal states
+    pub fn get_all_statuses(&self) -> (Vec<String>, Vec<String>) {
+        // Get all PostStatus variants
+        let post_statuses: Vec<String> = PostStatus::iter().map(|status| format!("{:?}", status)).collect();
+
+        // Serialize ProposalStates to get field names
+        let default_proposal_states = ProposalStates::default();
+        let serialized = serde_json::to_value(default_proposal_states).unwrap();
+        let proposal_states = if let Value::Object(map) = serialized {
+            map.into_iter().map(|(key, _)| key).collect::<Vec<String>>()
+        } else {
+            Vec::new()
+        };
+
+        (post_statuses, proposal_states)
+    }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
     pub fn get_dao_posts(&self, dao_id: DaoId, status: Option<PostStatus>) -> Vec<VersionedPost> {
@@ -270,7 +282,8 @@ pub mod tests {
     pub fn get_context_with_signer(is_view: bool, signer: String) -> VMContext {
         VMContextBuilder::new()
             .signer_account_id(signer.clone().try_into().unwrap())
-            .current_account_id(signer.try_into().unwrap())
+            .current_account_id(signer.clone().try_into().unwrap())
+            .predecessor_account_id(signer.parse().unwrap())
             .is_view(is_view)
             .build()
     }

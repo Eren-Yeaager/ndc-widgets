@@ -7,6 +7,8 @@ use crate::{CommentId};
 use crate::post::like::Like;
 use crate::str_serializers::*;
 
+const ADD_COMMENT_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
+
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
@@ -101,6 +103,7 @@ impl Contract {
 
     // Create comment
     // Access Level: Public
+    #[payable]
     pub fn add_comment(
         &mut self,
         post_id: PostId,
@@ -112,6 +115,9 @@ impl Contract {
         let comment_id = self.total_comments;
         let author_id = env::predecessor_account_id();
         let post:Post = self.get_post_by_id(&post_id).into();
+
+        // validate attached deposit
+        assert!(env::attached_deposit() >= ADD_COMMENT_DEPOSIT, "Insufficient deposit attached");
 
         let comment = Comment {
             id: comment_id.clone(),

@@ -1723,6 +1723,8 @@ dependencies = [
  "near-workspaces",
  "serde",
  "serde_json",
+ "strum 0.26.1",
+ "strum_macros 0.26.1",
  "tokio",
 ]
 

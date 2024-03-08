@@ -99,13 +99,13 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_by_handle '{"handle":"first-dao"}
 - Add Proposal
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "attachments":["some_url"], "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "requested_amount": 1000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Proposal title", "description":"Proposal description", "attachments":["some_url"], "labels":["label1","label2"], "metrics":{"metric-title":"metric-value"}, "reports":[], "requested_amount": 1000, "post_type": "Proposal", "proposal_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Add Report
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Proposal
@@ -176,18 +176,24 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_post_by_id '{"id":1}'
 NEAR_ENV=mainnet near view "$CONTRACT" get_post_history '{"id":1}'
 ```
 
+- Get all post statuses and all proposal states (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_statuses ''
+```
+
 ### Comments
 
 - Add Comment
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text", "attachments":["some_url"]}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "description":"Some comment text", "attachments":["some_url"]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Add reply to comment
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text", "attachments":[]}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, "description":"Reply comment text", "attachments":[]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Edit comment

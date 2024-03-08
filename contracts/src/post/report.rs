@@ -18,7 +18,7 @@ pub struct Report {
     pub vertical: Option<Vertical>,
 
     // Specific fields
-    pub proposal_id: PostId,
+    pub proposal_id: Option<PostId>,
 }
 
 // #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
@@ -39,23 +39,22 @@ pub enum VersionedReport {
 }
 
 impl VersionedReport {
-    pub fn latest_version(self) -> Report {
-        self.into()
+    pub fn latest_version(&self) -> &Report {
+        match self {
+            VersionedReport::V1(report) => report,
+            // Handle other versions as needed
+        }
     }
 
-    // pub fn latest_version(self) -> ReportV2 {
-    //     self.into()
-    // }
-
     pub fn validate(&self) {
-        return match self.clone() {
+        return match self {
             VersionedReport::V1(report) => {
                 require!(
                     matches!(report.title.chars().count(), 5..=500),
                     "Report title must contain 5 to 500 characters"
                 );
                 require!(
-                     report.description.len() > 0,
+                     !report.description.is_empty(),
                     "No description provided for report"
                 );
             },

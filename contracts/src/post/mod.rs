@@ -1,17 +1,19 @@
 mod like;
-mod proposal;
+pub(crate) mod proposal;
 mod report;
 pub mod comment;
 
 use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema};
+use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema, require};
 use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
 use crate::post::proposal::VersionedProposal;
 use crate::post::report::VersionedReport;
 use crate::str_serializers::*;
+
+const ADD_POST_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
 #[serde(crate = "near_sdk::serde")]
@@ -21,7 +23,7 @@ pub enum PostType {
     Report
 }
 
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, EnumIter, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub enum PostStatus {
@@ -103,42 +105,42 @@ pub enum PostBody {
 
 impl PostBody {
     pub fn get_post_title(&self) -> String {
-        return match self.clone() {
-            PostBody::Proposal(proposal) => proposal.latest_version().title,
-            PostBody::Report(report) => report.latest_version().title,
+        return match self {
+            PostBody::Proposal(proposal) => proposal.latest_version().title.clone(),
+            PostBody::Report(report) => report.latest_version().title.clone(),
         };
     }
 
     pub fn get_post_description(&self) -> String {
-        return match self.clone() {
-            PostBody::Proposal(proposal) => proposal.latest_version().description,
-            PostBody::Report(report) => report.latest_version().description,
+        return match self {
+            PostBody::Proposal(proposal) => proposal.latest_version().description.clone(),
+            PostBody::Report(report) => report.latest_version().description.clone(),
         };
     }
 
     pub fn get_post_community_id(&self) -> Option<CommunityId> {
-        return match self.clone() {
-            PostBody::Proposal(proposal) => proposal.latest_version().community_id,
-            PostBody::Report(report) => report.latest_version().community_id,
+        return match self {
+            PostBody::Proposal(proposal) => proposal.latest_version().community_id.clone(),
+            PostBody::Report(report) => report.latest_version().community_id.clone(),
         };
     }
 
     pub fn get_post_vertical(&self) -> Option<Vertical> {
-        return match self.clone() {
-            PostBody::Proposal(proposal) => proposal.latest_version().vertical,
-            PostBody::Report(report) => report.latest_version().vertical,
+        return match self {
+            PostBody::Proposal(proposal) => proposal.latest_version().vertical.clone(),
+            PostBody::Report(report) => report.latest_version().vertical.clone(),
         };
     }
 
      pub fn get_post_type(&self) -> PostType {
-         return match self.clone() {
+         return match self {
              PostBody::Proposal(_) => PostType::Proposal,
              PostBody::Report(_) => PostType::Report,
          };
      }
 
     pub fn validate(&self) {
-        return match self.clone() {
+        return match self {
             PostBody::Proposal(proposal) => proposal.validate(),
             PostBody::Report(report) => report.validate(),
         };
@@ -153,6 +155,7 @@ impl Contract {
 
     // Add new DAO request/report
     // Access Level: Public
+    #[payable]
     pub fn add_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
         let dao = self.get_dao_by_id(&dao_id);
         self.validate_add_post(&dao_id, &body);
@@ -184,8 +187,6 @@ impl Contract {
         self.add_vertical_posts_internal(&body, post_id);
         self.add_community_posts_internal(&body, post_id);
 
-        // Proposals
-        // self.add_proposal_type_summary_internal(&body);
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
 
@@ -200,16 +201,23 @@ impl Contract {
     // Validate post on create
     fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody) {
         body.validate();
+
+        // validate attached deposit
+        require!(env::attached_deposit() >= ADD_POST_DEPOSIT, "Insufficient deposit attached");
+
         self.get_dao_by_id(&dao_id);
 
         // Check proposal requested amount
         if let PostBody::Proposal(proposal) = body {
-            assert!(proposal.clone().latest_version().requested_amount >= 0.0, "Wrong requested amount");
+            require!(
+                proposal.latest_version().requested_amount >= 0.0,
+                "Wrong requested amount"
+            );
         }
 
         // Check if community is part of the DAO
         if let Some(community_id) = body.get_post_community_id() {
-            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
+            let dao_communities = self.dao_communities.get(&dao_id).unwrap_or_default();
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
         }
     }
@@ -244,23 +252,16 @@ impl Contract {
         }
     }
 
-    // Update proposal_type_summary (only for proposals)
-    // fn add_proposal_type_summary_internal(&mut self, body: &PostBody) {
-    //     if let PostBody::Proposal(post) = body {
-    //         let mut proposals_summary = self.proposal_type_summary.get(&PostStatus::InReview).unwrap_or(0.0);
-    //         proposals_summary += post.clone().latest_version().requested_amount;
-    //         self.proposal_type_summary.insert(&PostStatus::InReview, &proposals_summary);
-    //     }
-    // }
-
     fn assign_report_to_proposal(&mut self, body: &PostBody, post_id: PostId) {
         if let PostBody::Report(report) = body {
             let proposal_id = report.clone().latest_version().proposal_id;
-            let mut proposal_post: Post = self.get_post_by_id(&proposal_id).into();
+            if let Some(proposal_id) = proposal_id {
+                let mut proposal_post: Post = self.get_post_by_id(&proposal_id).into();
 
-            if let PostBody::Proposal(proposal) = &mut proposal_post.snapshot.body {
-                proposal.latest_version_mut().reports.push(post_id);
-                self.posts.insert(&proposal_id, &proposal_post.into());
+                if let PostBody::Proposal(proposal) = &mut proposal_post.snapshot.body {
+                    proposal.latest_version_mut().reports.push(post_id);
+                    self.posts.insert(&proposal_id, &proposal_post.into());
+                }
             }
         }
     }
@@ -284,7 +285,6 @@ impl Contract {
         // Cleanup and update posts vertical and community
         self.update_vertical_posts_internal(&post, &body);
         self.update_community_posts_internal(&post, &body);
-        // self.update_proposal_type_summary_internal(&post, &body);
 
         post.snapshot_history.push(post.snapshot.clone());
         post.snapshot = PostSnapshot {
@@ -309,22 +309,6 @@ impl Contract {
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
         }
     }
-
-    // Cleanup and update proposal_type_summary
-    // fn update_proposal_type_summary_internal(&mut self, post: &Post, body: &PostBody) {
-    //     if let PostBody::Proposal(new_post) = body {
-    //         if let PostBody::Proposal(old_post) = &post.snapshot.body {
-    //             let old_amount = old_post.clone().latest_version().requested_amount;
-    //             let new_amount = new_post.clone().latest_version().requested_amount;
-    //
-    //             if old_amount != new_amount {
-    //                 let mut proposals_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
-    //                 proposals_summary = proposals_summary + new_amount - old_amount;
-    //                 self.proposal_type_summary.insert(&post.snapshot.status, &proposals_summary);
-    //             }
-    //         }
-    //     }
-    // }
 
     // Cleanup and update vertical_posts
     fn update_vertical_posts_internal(&mut self, post: &Post, body: &PostBody) {
@@ -392,7 +376,6 @@ impl Contract {
 
         // Cleanup old post_status and add to new one, also update proposal_type_summary
         self.update_post_status_internal(&post, &status);
-        // self.move_proposal_type_summary_internal(&post, &status);
 
         // Update post
         post.snapshot_history.push(post.snapshot.clone());
@@ -419,18 +402,6 @@ impl Contract {
         post_by_new_status.push(post.id.clone());
         self.post_status.insert(new_status, &post_by_new_status);
     }
-
-    // fn move_proposal_type_summary_internal(&mut self, post: &Post,  new_status: &PostStatus) {
-    //     if let PostBody::Proposal(proposal) = &post.snapshot.body {
-    //         let mut status_summary = self.proposal_type_summary.get(&post.snapshot.status).unwrap_or(0.0);
-    //         status_summary -= proposal.clone().latest_version().requested_amount;
-    //         self.proposal_type_summary.insert(&post.snapshot.status, &status_summary);
-    //
-    //         let mut status_summary = self.proposal_type_summary.get(new_status).unwrap_or(0.0);
-    //         status_summary += proposal.clone().latest_version().requested_amount;
-    //         self.proposal_type_summary.insert(new_status, &status_summary);
-    //     }
-    // }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]
@@ -438,7 +409,7 @@ mod tests {
     use std::collections::HashMap;
     use crate::tests::{setup_contract, create_new_dao};
     use crate::post::{Post, PostBody, PostStatus, VersionedProposal};
-    use crate::post::proposal::Proposal;
+    use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
 
@@ -457,6 +428,7 @@ mod tests {
                         requested_amount: 1000.0,
                         community_id: None,
                         vertical: None,
+                        state: ProposalStates::default(),
                     }
                 )
             )
@@ -476,7 +448,7 @@ mod tests {
                         metrics: HashMap::new(),
                         community_id: None,
                         vertical: None,
-                        proposal_id,
+                        proposal_id: Some(proposal_id),
                     }
                 )
             )
@@ -528,6 +500,7 @@ mod tests {
                     requested_amount: 1000.0,
                     community_id: None,
                     vertical: None,
+                    state: ProposalStates::default(),
                 }
             )
         ));
@@ -564,7 +537,7 @@ mod tests {
 
         if let PostBody::Report(vp) = &post.snapshot.body {
             let VersionedReport::V1(report) = vp;
-            assert_eq!(report.proposal_id, proposal_id);
+            assert_eq!(report.proposal_id, Some(proposal_id));
             assert_eq!(report.title, "Report title".to_string());
             assert_eq!(report.description, "Report description".to_string());
             assert_eq!(report.labels, vec!["label1".to_string()]);
