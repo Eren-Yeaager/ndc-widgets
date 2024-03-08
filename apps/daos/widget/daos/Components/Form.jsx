@@ -10,6 +10,7 @@ const {
   daos,
   selectedDaoId,
   dao_id,
+  id,
 } = props;
 
 const TypeSection = styled.div`
@@ -76,14 +77,14 @@ const UploadFileButton = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
   }
-`
+`;
 
 const [preview, setPreview] = useState(false);
 
 const PreviewButton = () => (
   <div
     style={{ width: "max-content" }}
-    className="btn-primary"
+    className="btn-outline-primary"
     onClick={() => setPreview(!preview)}
   >
     Preview
@@ -100,7 +101,7 @@ const ProposalButton = () => (
     )}
     onClick={handleSave}
   >
-    Create proposal
+    {id ? "Edit" : "Create"} proposal
     <i className="bi bi-plus-lg" />
   </button>
 );
@@ -117,7 +118,7 @@ return (
             post_type: formEls.post_type,
             showMoreDefault: 0,
             preview: true,
-            attachments
+            attachments,
           }}
         />
         <ButtonContainer>
@@ -168,6 +169,7 @@ return (
               />
             ) : el.type === "textarea" ? (
               <div className="d-flex flex-wrap">
+                {console.log(formEls)}
                 <Widget
                   src={`/*__@replace:widgetPath__*/.Components.MarkdownEditor`}
                   props={{
@@ -197,18 +199,23 @@ return (
             )}
           </div>
         ))}
-           <Widget
-            src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-            props={{ attachments }}
-          />
-          <Widget
-            src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
-            props={{
-              onChange: handleAttachments,
-              children: <UploadFileButton className="btn-primary">Upload File</UploadFileButton>,
-              styles: { width: unset },
-              classNames: ""
-            }} />
+        <Widget
+          src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+          props={{ attachments }}
+        />
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.FileUploader`}
+          props={{
+            onChange: handleAttachments,
+            children: (
+              <UploadFileButton className="btn-outline-primary btn-sm">
+                Upload File
+              </UploadFileButton>
+            ),
+            styles: { width: unset },
+            classNames: "",
+          }}
+        />
         <ButtonContainer>
           <PreviewButton />
           <ProposalButton />

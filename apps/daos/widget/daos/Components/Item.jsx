@@ -61,10 +61,8 @@ const Card = styled.div`
   }
 
   .actions {
-    gap: 3rem;
-
     @media screen and (max-width: 786px) {
-      gap: 0;
+      width: 100%;
       justify-content: space-between;
     }
   }
@@ -120,6 +118,10 @@ const Button = styled.a`
     text-decoration: none;
     border: 1px solid #a4c2fd;
   }
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -157,6 +159,23 @@ const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(item.dao_id),
 });
 
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+const statuses = [
+  { key: "InReview", value: "In Review" },
+  { key: "New", value: "New" },
+  { key: "Approved", value: "Approved" },
+  { key: "Rejected", value: "Rejected" },
+  { key: "Closed", value: "Closed" },
+];
+
+const changeStatus = async (item, status) => {
+  Near.call(contractName, "change_post_status", {
+    id: item.id,
+    status,
+  });
+};
+
 const colorMap = (status) => {
   switch (status) {
     case "New":
@@ -185,18 +204,36 @@ const CardItem = ({ item, index }) => (
             tooltip: true,
           }}
         />
+
         {item.status && (
-          <div className="d-flex gap-3 align-items-center justify-content-between">
-            <Status color={colorMap(item.status)}>{item.status}</Status>
-          </div>
+          <>
+            {dao.owners.includes(accountId) ? (
+              <div className="d-flex flex-column gap-1 align-items-center">
+                <small>Change status:</small>
+                <select
+                  className="form-control"
+                  value={item.status}
+                  onChange={(status) => changeStatus(item, status.target.value)}
+                >
+                  {statuses.map(({ key, value }) => (
+                    <option value={key}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="d-flex gap-3 align-items-center">
+                <Status color={colorMap(item.status)}>{item.status}</Status>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center">
           <h3>{item.title}</h3>
-          {item.author_id === context.accountId && (
+          {dao.owners.includes(accountId) && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}&edit=true`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.id}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
@@ -247,15 +284,15 @@ const CardItem = ({ item, index }) => (
               </span>
             </div>
           )}
-          { item.attachments.length > 0  && (
+          {item.attachments.length > 0 && (
             <div>
-            <span style={{ width: "12rem" }}>Attachment:</span>
-             <Widget
-             src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-             props={{ attachments: item.attachments }}
-           />
-           </div>
-          ) }
+              <span style={{ width: "12rem" }}>Attachment:</span>
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Attachment"}
+                props={{ attachments: item.attachments }}
+              />
+            </div>
+          )}
         </div>
       </div>
       <a
@@ -357,33 +394,36 @@ const CardItem = ({ item, index }) => (
       )}
 
       {!preview && (
-        <div className="actions d-flex align-items-center justify-content-between">
-          <div role="button" className="d-flex gap-2" onClick={handleLike}>
-            <span className="blue">{item.likes.length}</span>
-            <i
-              className={`bi blue ${
-                isLiked(item) ? "bi-heart-fill" : "bi-heart"
-              }`}
-            />
+        <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+          <div className="actions d-flex gap-3 align-items-center">
+            <div role="button" className="d-flex gap-2" onClick={handleLike}>
+              <span className="blue">{item.likes.length}</span>
+              <i
+                className={`bi blue ${
+                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                }`}
+              />
+            </div>
+
+            <div
+              role="button"
+              className="d-flex gap-2"
+              onClick={() => setShowComments(!showComments)}
+            >
+              <span className="blue">{item.comments.length}</span>
+              <i className="bi blue bi-chat" />
+            </div>
+
+            <div role="button" className="d-flex gap-2">
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                props={{
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
+                }}
+              />
+            </div>
           </div>
 
-          <div
-            role="button"
-            className="d-flex gap-2"
-            onClick={() => setShowComments(!showComments)}
-          >
-            <span className="blue">{item.comments.length}</span>
-            <i className="bi blue bi-chat" />
-          </div>
-
-          <div role="button" className="d-flex gap-2">
-            <Widget
-              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-              props={{
-                text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
-              }}
-            />
-          </div>
           <Button
             href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
           >

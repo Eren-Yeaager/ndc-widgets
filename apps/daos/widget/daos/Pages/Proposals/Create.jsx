@@ -2,7 +2,7 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
-const { dao_id } = props;
+const { dao_id, id } = props;
 
 const Container = styled.div`
   position: relative;
@@ -34,8 +34,8 @@ const FormWrapper = styled.div`
 const form = {
   Report: [
     {
-      name: "project_name",
-      label: "Project Name",
+      name: "title",
+      label: "Title",
       value: "",
       type: "text",
       required: true,
@@ -90,8 +90,8 @@ const form = {
   ],
   Proposal: [
     {
-      name: "project_name",
-      label: "Project Name",
+      name: "title",
+      label: "Title",
       value: "",
       type: "text",
       required: true,
@@ -120,28 +120,44 @@ const form = {
   ],
 };
 
+const [post, setPost] = useState(null);
 const [formEls, setFormEls] = useState({
   accountId: context.accountId,
   post_type: "Proposal",
-  id: new Date().getTime(),
+  title: "",
   description: form.Proposal.find((el) => el.name === "description").value,
 });
+
+if (id) {
+  const post = Near.view(contractName, "get_post_by_id", { id: parseInt(id) });
+  setPost(post);
+}
+
+useEffect(() => {
+  if (post)
+    setFormEls({
+      ...formEls,
+      title: post.title,
+      description: post.description,
+      requested_amount: post.requested_amount ?? 0,
+      tags: post.labels ?? [],
+    });
+}, [post]);
 
 let daos = null;
 daos = Near.view(contractName, "get_dao_list");
 const [errors, setErrors] = useState({});
 const [selectedDaoId, setSelectedDaoId] = useState(0);
-const [attachments, setAttachments] = useState([])
+const [attachments, setAttachments] = useState([]);
 
-console.log(attachments)
 useEffect(() => {
   if (daos) {
-    setSelectedDaoId(dao_id || daos[0].id)
+    setSelectedDaoId(dao_id || daos[0].id);
   }
-},[daos])
+}, [daos]);
 
 const handleChange = (el, value) => {
-  if (el.name === "requested_amount" && value.startsWith('-')) return
+  if (el.name === "requested_amount" && value.startsWith("-")) return;
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;
@@ -151,7 +167,6 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-
 if (daos) {
   daos = daos.map((dao) => {
     return { name: dao.title, id: dao.id };
@@ -160,18 +175,17 @@ if (daos) {
 
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
-
 const handleSelectDao = (e) => {
   setSelectedDaoId(e.target.value);
 };
 
 const handleAttachments = (file) => {
-  setAttachments([file])
-}
+  setAttachments([file]);
+};
 
 const handleSave = () => {
   let body = {
-    title: formEls.project_name,
+    title: formEls.title,
     labels: formEls.tags ?? [],
     post_type: formEls.post_type,
     requested_amount: parseInt(formEls.requested_amount ?? 0),
@@ -195,10 +209,14 @@ const handleSave = () => {
     body.proposal_version = "V1";
   }
 
-  Near.call(contractName, "add_post", {
-    dao_id: parseInt(selectedDaoId),
-    body,
-  });
+  const postParams = id
+    ? { id: parseInt(id), body }
+    : {
+        dao_id: parseInt(selectedDaoId),
+        body,
+      };
+
+  Near.call(contractName, id ? "edit_post" : "add_post", postParams);
 };
 
 return (
@@ -228,6 +246,7 @@ return (
             daos,
             selectedDaoId,
             dao_id,
+            id,
           }}
         />
       </FormWrapper>

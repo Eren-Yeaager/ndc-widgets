@@ -13,6 +13,10 @@ const Body = styled.div`
 `;
 
 const Content = styled.div`
+  .datetime {
+    font-style: italic;
+    font-size: 12px;
+  }
 `;
 
 const Actions = styled.div`
@@ -54,7 +58,7 @@ const formatDate = (timestamp) => {
 return (
   <>
     <Header>
-      <div className="my-3 d-flex w-100 gap-3 align-items-center">
+      <div className="mt-3 d-flex w-100 gap-3 align-items-center">
         <Widget
           src="near/widget/AccountProfile"
           props={{
@@ -62,14 +66,6 @@ return (
             hideAccountId: true,
           }}
         />
-        <div className="d-flex gap-2 align-items-center justify-content-between text-secondary">
-          <small>
-            {comment.snapshot_history.length > 0
-              ? "Edited at: "
-              : "Created at: "}
-            {formatDate(comment.snapshot.timestamp)}
-          </small>
-        </div>
         <Widget
           src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
           props={{
@@ -88,11 +84,17 @@ return (
     <Post>
       <Body>
         <Content>
+          <div className="datetime d-flex gap-2 mb-2 mt-1 align-items-center justify-content-between text-secondary">
+            {comment.snapshot_history.length > 0
+              ? "Edited at: "
+              : "Created at: "}
+            {formatDate(comment.snapshot.timestamp)}
+          </div>
           <Widget
             src={"/*__@replace:widgetPath__*/.Components.MarkdownViewer"}
             props={{ text: comment.snapshot.description }}
           />
-           <Widget
+          <Widget
             src={"/*__@replace:widgetPath__*/.Components.Attachment"}
             props={{ attachments: comment.snapshot.attachments }}
           />

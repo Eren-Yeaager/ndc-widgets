@@ -300,19 +300,24 @@ return {
               {
                 title: "Vision",
                 icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
-                description: `Coming soon`,
+                description: `Our vision at the NEAR Research Collective is to create a thriving ecosystem that fosters innovation, encourages curiosity, and promotes continuous learning within the NEAR protocol and the wider blockchain sphere.`,
                 button: { title: "Read more", link: "" },
               },
               {
                 title: "Mission",
                 icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
-                description: `Coming soon`,
+                description: `The NEAR Research Collective's mission is to cultivate a vibrant research community, fostering innovation, continuous learning, and providing individuals interested in research with the necessary tools, guidance, and support. We conduct research aligned with community needs and interests, aiming to become a significant catalyst for growth in the NEAR ecosystem.`,
                 button: { title: "Read more", link: "" },
               },
               {
                 title: "Strategy",
                 icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
-                description: `Coming soon`,
+                description: <>To achieve our mission, we have set forth the following strategies:
+                <br />- Continual Publication of Research
+                <br />- Promotion of Decentralization
+                <br />- Empowerment of Researchers
+                <br />- Open Research and Unbiased Data
+                <br />- Resource Accessibility</>,
                 button: { title: "Read more", link: "" },
               },
             ],
@@ -333,17 +338,17 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description: "Coming soon.",
+                description: <>To join the NRC DAO;<br /> Visit the <a href="https://near.social/mob.near/widget/MyPage?accountId=research-collective.near"> NRC DAO page</a> & click “Ask to Join”. Then select the "researcher" role and propose to join. Also, join our <a href="https://t.me/ResearchWG">Telegram channel</a> Refer to our landing page to register for the NEAR Certified Researcher Course.</>,
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description: "Coming soon.",
+                description: "Be a student/guest lecturer of the NEAR Certified Researcher Course, attend workshops, submit proposals, and engage in NRC community.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description: "Coming soon.",
+                description: "Attend the NEAR Certified Researcher Course calls, graduate from the course, become an alumna/alumnus, propose to complete a mini research project, complete the research project, mint it as an NFT, and list it for a designated amount. Then, undergo KYC, and the NRC DAO council votes to collect the NFT and distribute funds.",
                 button: { title: "Learn more", link: "" },
               },
             ],

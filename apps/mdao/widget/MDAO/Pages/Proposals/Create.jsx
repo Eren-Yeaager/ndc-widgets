@@ -137,7 +137,7 @@ const [formEls, setFormEls] = useState({
 const [errors, setErrors] = useState({});
 
 const handleChange = (el, value) => {
-  if (el.name === "requested_amount" && value.startsWith('-')) return
+  if (el.name === "requested_amount" && value.startsWith("-")) return;
   const newFormEl = formEls;
   const newFormElErrors = errors;
   newFormEl[el.name] = value;

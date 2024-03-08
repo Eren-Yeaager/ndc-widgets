@@ -107,6 +107,14 @@ function Page() {
         />
       );
     }
+    case "edit_proposal": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Proposals.Create`}
+          props={props}
+        />
+      );
+    }
 
     default: {
       const NotFound = styled.div`
