@@ -43,6 +43,8 @@ const Navbar = styled.div`
 const LinksContainer = styled.div`
   color: #151718;
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
 
   a {
     padding: 2rem 1.5rem;
@@ -62,6 +64,12 @@ const LinksContainer = styled.div`
       color: #ccc;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    div.text { 
+      display: none;
+    }
+  }
 `;
 
 return (
@@ -72,7 +80,7 @@ return (
         <b>My Activity</b>
       </h4>
     </div>
-    <LinksContainer className="d-flex justify-content-between">
+    <LinksContainer >
       {links.map(({ icon, disabled, text, href }) => (
         <a
           className={`d-flex gap-2 align-items-center ${
@@ -81,7 +89,7 @@ return (
           href={href}
         >
           {icon}
-          <div>{text}</div>
+          <div className="text">{text}</div>
         </a>
       ))}
     </LinksContainer>
