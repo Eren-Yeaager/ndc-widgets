@@ -100,6 +100,7 @@ replies = repl ? repl.filter((repl) => repl.value.parentId === item.id) : [];
 setReplies(replies);
 
 const handleLike = () => {
+  if (liked) return;
   Social.set({
     index: {
       graph: JSON.stringify({
