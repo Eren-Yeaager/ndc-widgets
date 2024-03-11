@@ -444,7 +444,7 @@ impl Contract {
 mod tests {
     use std::collections::HashMap;
     use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
-    use crate::post::{ADD_POST_DEPOSIT, Post, PostBody, PostStatus, VersionedProposal};
+    use crate::post::{ADD_POST_DEPOSIT, Post, PostBody, PostStatus, PostType, VersionedProposal};
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
@@ -463,6 +463,7 @@ mod tests {
                         labels: vec!["label1".to_string(), "label2".to_string()],
                         metrics: HashMap::new(),
                         reports: vec![],
+                        is_spam: false,
                         requested_amount: 1000.0,
                         community_id: None,
                         vertical: None,
@@ -473,7 +474,7 @@ mod tests {
         )
     }
 
-    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: PostId) -> PostId {
+    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>) -> PostId {
         setup_contract_with_deposit(ADD_POST_DEPOSIT);
 
         contract.add_post(
@@ -486,9 +487,10 @@ mod tests {
                         attachments: vec![],
                         labels: vec!["label1".to_string()],
                         metrics: HashMap::new(),
+                        is_spam: false,
                         community_id: None,
                         vertical: None,
-                        proposal_id: Some(proposal_id),
+                        proposal_id,
                     }
                 )
             )
@@ -567,7 +569,7 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
         let proposal_id = create_proposal(&dao_id, &mut contract);
-        let report_id = create_report(dao_id, &mut contract, proposal_id);
+        let report_id = create_report(dao_id, &mut contract, Some(proposal_id));
 
         let post: Post = contract.get_post_by_id(&report_id).into();
         assert_eq!(post.snapshot.status, PostStatus::InReview);
@@ -588,6 +590,40 @@ mod tests {
     }
 
     #[test]
+    fn test_edit_report() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let report_id = create_report(dao_id, &mut contract, None);
+        let new_title = "New Report title".to_string();
+        let new_description = "New Report description".to_string();
+
+        contract.edit_post(report_id, PostBody::Report(
+            VersionedReport::V1(
+                Report {
+                    title: new_title.clone(),
+                    description: new_description.clone(),
+                    attachments: vec!["some_url".to_string()],
+                    labels: vec!["label1".to_string()],
+                    metrics: HashMap::new(),
+                    community_id: None,
+                    vertical: None,
+                    proposal_id: None,
+                }
+            )
+        ));
+
+        let post: Post = contract.get_post_by_id(&report_id).into();
+        assert_eq!(new_title, post.snapshot.body.get_post_title());
+        assert_eq!(new_description, post.snapshot.body.get_post_description());
+        assert_eq!(post.snapshot_history.len(), 1);
+        assert_eq!(post.snapshot.status, PostStatus::InReview);
+        assert_eq!(post.snapshot.body.get_post_vertical(), None);
+        assert_eq!(post.snapshot.body.get_post_community_id(), None);
+        assert_eq!(post.snapshot.body.get_post_type(), PostType::Report);
+    }
+
+    #[test]
     fn change_proposal_state() {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
@@ -595,21 +631,15 @@ mod tests {
 
         let mut new_states = ProposalStates::default();
         new_states.kyc_passed = true;
+        new_states.dao_council_approved = true;
         contract.change_proposal_state(post_id, new_states);
 
         let proposal:Post = contract.get_post_by_id(&post_id).into();
         if let PostBody::Proposal(vp) = &proposal.snapshot.body {
             let VersionedProposal::V1(p) = vp;
             assert!(p.state.kyc_passed);
+            assert!(p.state.dao_council_approved);
         }
-
-        // if let PostBody::Proposal(vp) = & {
-        //     match vp {
-        //         VersionedProposal::V1(p) => assert!(p.state.kyc_passed),
-        //         // Handle other versions as necessary
-        //     }
-        // } else {
-        //     panic!("PostBody is not a Proposal.");
-        // }
     }
+
 }
