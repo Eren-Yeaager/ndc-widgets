@@ -210,12 +210,14 @@ impl Contract {
 #[cfg(all(test, not(target_arch = "wasm32")))]
 mod tests {
     use crate::{CommentId, Contract, PostId};
-    use crate::tests::{setup_contract, create_new_dao};
+    use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
     use crate::post::{Post};
-    use crate::post::comment::Comment;
+    use crate::post::comment::{ADD_COMMENT_DEPOSIT, Comment};
     use crate::post::tests::create_proposal;
 
     pub fn create_comment(contract: &mut Contract, post_id: PostId, reply_id: Option<CommentId>) -> CommentId {
+        setup_contract_with_deposit(ADD_COMMENT_DEPOSIT);
+
         contract.add_comment(
             post_id,
             reply_id,

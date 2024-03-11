@@ -114,16 +114,16 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"R
 NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
-- Change post status:
-
-```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
-```
-
 - Edit Report
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+```
+
+- Change post status:
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
 ```
 
 - Like proposals/reports

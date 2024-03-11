@@ -275,23 +275,30 @@ impl Contract {
 pub mod tests {
     use std::collections::HashMap;
     use near_sdk::test_utils::VMContextBuilder;
-    use near_sdk::{testing_env, VMContext};
+    use near_sdk::{NearToken, testing_env, VMContext};
     use crate::{Contract, DaoId};
     use crate::dao::{DAOInput, DAOType};
 
-    pub fn get_context_with_signer(is_view: bool, signer: String) -> VMContext {
+    pub fn get_context_with_signer(is_view: bool, signer: String, deposit: NearToken) -> VMContext {
         VMContextBuilder::new()
             .signer_account_id(signer.clone().try_into().unwrap())
             .current_account_id(signer.clone().try_into().unwrap())
             .predecessor_account_id(signer.parse().unwrap())
             .is_view(is_view)
+            .attached_deposit(deposit)
+            // .prepaid_gas(Gas::from_tgas(200))
             .build()
     }
 
     pub fn setup_contract() -> (VMContext, Contract) {
-        let context = get_context_with_signer(false, String::from("bob.near"));
+        let context = get_context_with_signer(false, String::from("bob.near"), NearToken::from_yoctonear(0));
         testing_env!(context.clone());
         (context, Contract::new())
+    }
+
+    pub fn setup_contract_with_deposit(deposit: NearToken) {
+        let context = get_context_with_signer(false, String::from("bob.near"), deposit);
+        testing_env!(context.clone());
     }
 
     // Setup function to initialize the contract and add a DAO

@@ -9,13 +9,13 @@ use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema, require};
 use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
-use crate::post::proposal::VersionedProposal;
+use crate::post::proposal::{VersionedProposal};
 use crate::post::report::VersionedReport;
 use crate::str_serializers::*;
 
 const ADD_POST_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
 
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub enum PostType {
@@ -390,6 +390,42 @@ impl Contract {
         near_sdk::log!("POST STATUS CHANGED: {}", post.id);
     }
 
+    // Change proposal state
+    // Access Level: DAO owners
+    pub fn change_proposal_state(&mut self, id: PostId, state: ProposalStates) {
+        let mut post: Post = self.get_post_by_id(&id).into();
+
+        self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
+
+        env::log_str(&format!("Post type: {:?}", post.snapshot.body.get_post_type()));
+
+        require!(post.snapshot.body.get_post_type() == PostType::Proposal, "Only proposals have state");
+
+        let updated_body = match post.snapshot.body.clone() {
+            PostBody::Proposal(versioned_proposal) => {
+                match versioned_proposal {
+                    VersionedProposal::V1(mut proposal) => {
+                        proposal.state = state;
+                        PostBody::Proposal(VersionedProposal::V1(proposal))
+                    }
+                    // Handle other versions as needed
+                }
+            },
+            _ => panic!("Expected a proposal post, found a different post type."),
+        };
+
+        post.snapshot_history.push(post.snapshot.clone());
+        post.snapshot = PostSnapshot {
+            status: post.snapshot.status,
+            editor_id: env::predecessor_account_id(),
+            timestamp: env::block_timestamp(),
+            body: updated_body,
+        };
+        self.posts.insert(&post.id, &post.clone().into());
+
+        near_sdk::log!("PROPOSAL STATE CHANGED: {}", post.id);
+    }
+
     // Cleanup old post_status and add to new post_status
     fn update_post_status_internal(&mut self, post: &Post, new_status: &PostStatus) {
         // Cleanup old post_status
@@ -407,13 +443,15 @@ impl Contract {
 #[cfg(all(test, not(target_arch = "wasm32")))]
 mod tests {
     use std::collections::HashMap;
-    use crate::tests::{setup_contract, create_new_dao};
-    use crate::post::{Post, PostBody, PostStatus, VersionedProposal};
+    use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
+    use crate::post::{ADD_POST_DEPOSIT, Post, PostBody, PostStatus, VersionedProposal};
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
+        setup_contract_with_deposit(ADD_POST_DEPOSIT);
+
         contract.add_post(
             *dao_id,
             PostBody::Proposal(
@@ -436,6 +474,8 @@ mod tests {
     }
 
     pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: PostId) -> PostId {
+        setup_contract_with_deposit(ADD_POST_DEPOSIT);
+
         contract.add_post(
             dao_id,
             PostBody::Report(
@@ -545,5 +585,31 @@ mod tests {
             assert_eq!(report.community_id, None);
             assert_eq!(report.vertical, None);
         }
+    }
+
+    #[test]
+    fn change_proposal_state() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let post_id = create_proposal(&dao_id, &mut contract);
+
+        let mut new_states = ProposalStates::default();
+        new_states.kyc_passed = true;
+        contract.change_proposal_state(post_id, new_states);
+
+        let proposal:Post = contract.get_post_by_id(&post_id).into();
+        if let PostBody::Proposal(vp) = &proposal.snapshot.body {
+            let VersionedProposal::V1(p) = vp;
+            assert!(p.state.kyc_passed);
+        }
+
+        // if let PostBody::Proposal(vp) = & {
+        //     match vp {
+        //         VersionedProposal::V1(p) => assert!(p.state.kyc_passed),
+        //         // Handle other versions as necessary
+        //     }
+        // } else {
+        //     panic!("PostBody is not a Proposal.");
+        // }
     }
 }
