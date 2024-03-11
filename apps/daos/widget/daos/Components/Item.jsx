@@ -159,6 +159,10 @@ const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(item.dao_id),
 });
 
+const snapshot = Near.view(contractName, "get_post_history", {
+  id: item.id,
+});
+
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 const statuses = [
@@ -240,26 +244,14 @@ const CardItem = ({ item, index }) => (
           )}
         </div>
         <div className="d-flex flex-column gap-1">
-          {item.snapshot_history.length > 1 ? (
-            <div className="info">
-              <span style={{ width: "12rem" }}>Edited at:</span>
-              <span>
-                {new Date(
-                  item.snapshot_history[item.snapshot_history.length - 1]
-                    .timestamp / 1000000
-                ).toLocaleDateString()}
-              </span>
-            </div>
-          ) : (
-            <div className="info">
-              <span style={{ width: "12rem" }}>Created at:</span>
-              <span>
-                {item.timestamp
-                  ? new Date(item.timestamp / 1000000).toLocaleDateString()
-                  : new Date().toLocaleDateString()}
-              </span>
-            </div>
-          )}
+          <div className="info">
+            <span style={{ width: "12rem" }}>Updated at:</span>
+            <span>
+              {item.timestamp
+                ? new Date(item.timestamp / 1000000).toLocaleDateString()
+                : new Date().toLocaleDateString()}
+            </span>
+          </div>
           <div className="info">
             <span style={{ width: "12rem" }}>
               {em.post_type === "Proposal"
