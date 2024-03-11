@@ -3,8 +3,8 @@ const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
   props;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
-
-const metrics = item.metrics ?? item;
+const [itemState, setItemState] = useState(item);
+const metrics = itemState.metrics ?? itemState;
 assets = assets.home;
 const accountId = context.accountId;
 
@@ -157,27 +157,27 @@ const isLiked = (item) => {
 };
 
 const handleLike = () => {
-  Near.call(contractName, isLiked(item) ? "post_unlike" : "post_like", {
-    id: item.id,
+  Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
+    id: itemState.id,
   });
 };
 
 const handleSpam = () => {
   Near.call(contractName, "change_post_is_spam", {
-    id: item.id,
-    is_spam: !item.is_spam,
+    id: itemState.id,
+    is_spam: !itemState.is_spam,
   });
 };
 
 const dao = Near.view(contractName, "get_dao_by_id", {
-  id: parseInt(item.dao_id),
+  id: parseInt(itemState.dao_id),
 });
 
 let snapshot;
 
-if (item.id)
+if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
-    id: item.id,
+    id: itemState.id,
   });
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
@@ -195,6 +195,13 @@ const changeStatus = async (item, status) => {
     id: item.id,
     status,
   });
+};
+
+const changeHistory = (e) => {
+  const next = snapshot.find(
+    (i) => i.timestamp === e.target.value,
+  );
+  setItemState((prev) => ({ ...prev, ...next }));
 };
 
 const colorMap = (status) => {
@@ -249,7 +256,7 @@ const CardItem = ({ item, index }) => (
         )}
       </div>
       <div className="d-flex flex-column gap-3">
-        <div className="d-flex gap-3 align-items-center">
+        <div className="d-flex gap-3 align-items-center justify-content-between">
           <h3>{item.title}</h3>
           {dao.owners.includes(accountId) && (
             <a
@@ -258,7 +265,24 @@ const CardItem = ({ item, index }) => (
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
           )}
+          {(snapshot.length > 1 && showCommentsDefault) && (
+            <div className="d-flex flex-column gap-1 align-items-center">
+              <small>History</small>
+              <select
+                value={item.timestamp}
+                onChange={changeHistory}
+                className="form-control"
+              >
+                {snapshot.map((history) => (
+                  <option value={history.timestamp}>
+                    {new Date(history.timestamp / 1000000).toLocaleDateString()}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
+
         <div className="d-flex flex-column gap-1">
           <div className="info">
             <span style={{ width: "12rem" }}>Updated at:</span>
@@ -472,8 +496,8 @@ const CardItem = ({ item, index }) => (
 
 return (
   <>
-    {(!item.is_spam || dao.owners.includes(accountId)) && (
-      <CardItem item={item} index={index} />
+    {(!itemState.is_spam || dao.owners.includes(accountId)) && (
+      <CardItem item={itemState} index={index} />
     )}
   </>
 );
