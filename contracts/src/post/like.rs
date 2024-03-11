@@ -47,11 +47,17 @@ impl Contract {
     // Access Level: Public
     pub fn post_like(&mut self, id: PostId) {
         let mut post: Post = self.get_post_by_id(&id).into();
+        let author_id = env::predecessor_account_id();
+
+        if post.likes.iter().any(|l| l.author_id ==author_id) {
+            return;
+        }
 
         let like = Like {
-            author_id: env::predecessor_account_id(),
+            author_id,
             timestamp: env::block_timestamp(),
         };
+
         post.likes.insert(like);
         self.posts.insert(&id, &post.clone().into());
 
@@ -73,8 +79,13 @@ impl Contract {
     pub fn comment_like(&mut self, id: CommentId) {
         let mut comment:Comment = self.get_comment_by_id(&id).into();
         let author_id = env::predecessor_account_id();
+
+        if comment.likes.iter().any(|l| l.author_id == author_id) {
+            return;
+        }
+
         let like = Like {
-            author_id: author_id.clone(),
+            author_id,
             timestamp: env::block_timestamp(),
         };
         comment.likes.insert(like);

@@ -302,4 +302,16 @@ mod tests {
         assert_eq!(community.logo_url, "https://new.com/logo.png", "Community logo not updated");
         assert_eq!(community.banner_url, "https://new.com/banner.png", "Community banner not updated");
     }
+
+    #[test]
+    pub fn test_follow_community() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let community_id = add_community(&mut contract, &context, dao_id.clone());
+
+        contract.user_follow_community(community_id.clone());
+
+        let user_follow_list = contract.get_follow_community(context.signer_account_id.clone());
+        assert_eq!(user_follow_list.len(), 1);
+    }
 }

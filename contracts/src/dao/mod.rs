@@ -201,7 +201,6 @@ mod tests {
     use std::collections::HashMap;
     use super::{DAO, DAOInput, DAOType};
     use crate::tests::{setup_contract, create_new_dao};
-    use crate::user::FollowType;
 
     #[test]
     pub fn test_add_dao() {
@@ -259,9 +258,11 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
 
+        // Check follow 2 times, only 1 follow should be added
         contract.user_follow_dao(dao_id.clone());
-        let user_follow_list = contract.user_follow.get(&(FollowType::DAO, context.signer_account_id.clone())).unwrap();
+        contract.user_follow_dao(dao_id.clone());
+
+        let user_follow_list = contract.get_follow_dao(context.signer_account_id.clone());
         assert_eq!(user_follow_list.len(), 1);
-        assert_eq!(user_follow_list[0], dao_id);
     }
 }

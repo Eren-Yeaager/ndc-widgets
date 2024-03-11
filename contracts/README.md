@@ -305,14 +305,6 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_account_access '{"account_id":"accoun
 
 ### User
 
-- Get user follow list by type (view)
-
-```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_follow_list '{"follow_type":"DAO", "account_id":"'$ACCOUNT_ID'"}'
-```
-follow_type options: DAO, Community
-
-
 - User follow DAO
 
 ```bash
@@ -324,3 +316,16 @@ NEAR_ENV=mainnet near call "$CONTRACT" user_follow_dao '{"id":1}' --accountId "$
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" user_follow_community '{"id":1}' --accountId "$ACCOUNT_ID"
 ```
+
+- Get user follow DAO list
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_ID'"}'
+```
+
+- Get user follow Community list
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
+```
+

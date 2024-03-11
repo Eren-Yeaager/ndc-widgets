@@ -1,27 +1,27 @@
 #!/bin/bash
 
 ## ---- Backup contract:
-# ACCOUNT_ID=backup-dao.near
-# CONTRACT=v1.backup-dao.near
+ ACCOUNT_ID=backup-dao.near
+ CONTRACT=v1.backup-dao.near
 
 ## ---- Main contract:
- ACCOUNT_ID=test-dao.near
- CONTRACT=v1.test-dao.near
+# ACCOUNT_ID=test-dao.near
+# CONTRACT=v1.test-dao.near
 
- NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
- NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
- NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 7
-
-## Full redeploy - cleanup storage and remove account
- NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
-
-## Update contract
-# NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
-
-## -------- Data Seed --------
-## Add DAOs
-
- NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"","logo_url":"https://ipfs.near.social/ipfs/bafkreifwiv2wn3xwht4j5b5incugly7r7andg3ehlp7dxh4jtbylcqrlha", "banner_url":"","dao_type":"NDC"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+# NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
+# NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
+# NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 7
+#
+### Full redeploy - cleanup storage and remove account
+# NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
+#
+### Update contract
+## NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
+#
+### -------- Data Seed --------
+#
+### Add DAOs
+# NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"","logo_url":"https://ipfs.near.social/ipfs/bafkreifwiv2wn3xwht4j5b5incugly7r7andg3ehlp7dxh4jtbylcqrlha", "banner_url":"","dao_type":"NDC"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Build DAO", "handle":"build-dao", "account_id":"build.sputnik-dao.near", "description":"Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects.","logo_url":"https://ipfs.near.social/ipfs/bafkreih3tpybg4ke3qnjzy7kl62av2zjtn7etwfhkzppppyulse6lrsijq", "banner_url":"https://ipfs.near.social/ipfs/bafkreigalpr5v5cxw5slgyzw3voynhmx2s33w4wbjwlm6wzyp33l7wevoq","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Ecosystem Funding"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Gaming DAO", "handle":"gaming-dao", "account_id":"gaming-dao.sputnik-dao.near", "description":"Focuses on the development of the NEAR gaming ecosystem, increasing the number of games and players on NEAR.","logo_url":"https://ipfs.near.social/ipfs/bafkreice2ucs37bdbsywljcg2is5eqtrihk26btyuxnqofv5xttbeqenhm", "banner_url":"https://ipfs.near.social/ipfs/bafkreibxm5mu7uau45park42ucxuaoalu5mi2sqmd3mtme64kbidhxao2i","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Projects Funding","Gaming"], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
  NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"Marketing DAO", "handle":"marketing-dao", "account_id":"marketing.sputnik-dao.near", "description":"Empowers collaboration between Builders, Influencers, and Founders.Brings awareness and drive the growth of the NEAR Community and Ecosystem.","logo_url":"https://ipfs.near.social/ipfs/bafkreiakufnvhu6zmqn6h6mv25eoba7jihtikiumjpplwbnmqlcz5h4enu", "banner_url":"https://ipfs.near.social/ipfs/bafkreicfyo53etls6ob6hwkkll2w27xulkt33oq5ymt2kbkndnb77nvu2a","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Marketing"], "metrics":[], "metadata":{"website":"https://near.org/ndcdev.near/widget/MDAO.App?page=home"}}' --accountId "$CONTRACT"
@@ -93,4 +93,8 @@
  NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"post_id":1, "reply_to":5, "description":"Level 3 comment. Agree, comment with 2 attachments!", "attachments":["https://public.bnbstatic.com/static/academy/uploads-original/e196996f8ae34464b849c4b6e0ea9112.png", "https://nearweek.com/uploads/embed,f_webp,w_320/placeholder_medium_1_b968e77065.jpg"]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
 # Like comment
+ NEAR_ENV=mainnet near call "$CONTRACT" post_like '{"id":1}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" post_like '{"id":2}' --accountId "$ACCOUNT_ID"
+
  NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":1}' --accountId "$ACCOUNT_ID"
+ NEAR_ENV=mainnet near call "$CONTRACT" comment_like '{"id":3}' --accountId "$ACCOUNT_ID"

@@ -21,8 +21,8 @@ use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env, NearToken};
 use serde_json::{json, Value};
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
-use crate::community::VersionedCommunity;
-use crate::dao::{DAOType, VersionedDAO};
+use crate::community::{Community, VersionedCommunity};
+use crate::dao::{DAO, DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
 use crate::post::proposal::ProposalStates;
 use crate::social_db::social_db_contract;
@@ -270,8 +270,18 @@ impl Contract {
         comment.snapshot_history
     }
 
-    pub fn get_follow_list(&self, follow_type: FollowType, account_id: AccountId) -> Vec<u64> {
-        self.user_follow.get(&(follow_type, account_id)).unwrap_or_default()
+    pub fn get_follow_dao(&self, account_id: AccountId) -> Vec<DAO> {
+        self.user_follow.get(&(FollowType::DAO, account_id)).unwrap_or_default()
+            .iter()
+            .map(|dao_id| self.get_dao_by_id(dao_id).into())
+            .collect()
+    }
+
+    pub fn get_follow_community(&self, account_id: AccountId) -> Vec<Community> {
+        self.user_follow.get(&(FollowType::Community, account_id)).unwrap_or_default()
+            .iter()
+            .map(|community_id| self.get_community_by_id(community_id).into())
+            .collect()
     }
 }
 
