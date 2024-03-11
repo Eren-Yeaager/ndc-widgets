@@ -1,9 +1,11 @@
 const {
+  dao,
   comment,
   isLikedByMe,
   showReply,
   setShowReply,
   handleLike,
+  handleSpam,
   isPreview,
   postId,
 } = props;
@@ -22,11 +24,16 @@ const Content = styled.div`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   margin: -3px 0 10px 0;
 
   a:hover {
     text-decoration: none;
+  }
+
+  @media screen and (max-width: 786px) {
+    justify-content: space-between;
+    gap: 5px;
   }
 `;
 
@@ -85,10 +92,7 @@ return (
       <Body>
         <Content>
           <div className="datetime d-flex gap-2 mb-2 mt-1 align-items-center justify-content-between text-secondary">
-            {comment.snapshot_history.length > 0
-              ? "Edited at: "
-              : "Created at: "}
-            {formatDate(comment.snapshot.timestamp)}
+            Updated at: {formatDate(comment.snapshot.timestamp)}
           </div>
           <Widget
             src={"/*__@replace:widgetPath__*/.Components.MarkdownViewer"}
@@ -123,8 +127,18 @@ return (
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
               <i className={"bi blue bi-reply fs-5"} />
-              <small className="blue">Reply</small>
             </Link>
+            {dao.owners.includes(context.accountId) && (
+              <div role="button" onClick={() => handleSpam(comment)}>
+                <i
+                  className={
+                    comment.snapshot.is_spam
+                      ? "bi red bi-flag-fill"
+                      : "bi blue bi-flag"
+                  }
+                />
+              </div>
+            )}
           </Actions>
         )}
       </Body>

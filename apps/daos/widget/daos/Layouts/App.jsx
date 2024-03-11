@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -133,6 +133,10 @@ const Container = styled.div`
   .btn-sm {
     padding: 5px 10px 5px 20px;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  .red {
+    color: rgb(255 141 141);
   }
 
   .blue {

@@ -216,7 +216,13 @@ const handleSave = () => {
         body,
       };
 
-  Near.call(contractName, id ? "edit_post" : "add_post", postParams);
+  Near.call(
+    contractName,
+    id ? "edit_post" : "add_post",
+    postParams,
+    "200000000000000",
+    10000000000000000000000
+  );
 };
 
 return (
