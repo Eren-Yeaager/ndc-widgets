@@ -132,6 +132,12 @@ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"Ne
 NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_provided":true}}' --accountId "$ACCOUNT_ID"
 ```
 
+- Change post spam status:
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
+```
+
 - Like proposals/reports
 
 ```bash
@@ -206,6 +212,12 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, 
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --accountId "$ACCOUNT_ID"
+```
+
+- Change comment spam status:
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get all comments for post (view)
@@ -296,6 +308,19 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_account_access '{"account_id":"accoun
 - Get user follow list by type (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_follow_list '{"follow_type":"DAO", dao_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_follow_list '{"follow_type":"DAO", "account_id":"'$ACCOUNT_ID'"}'
 ```
 follow_type options: DAO, Community
+
+
+- User follow DAO
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" user_follow_dao '{"id":1}' --accountId "$ACCOUNT_ID"
+```
+
+- User follow Community
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" user_follow_community '{"id":1}' --accountId "$ACCOUNT_ID"
+```

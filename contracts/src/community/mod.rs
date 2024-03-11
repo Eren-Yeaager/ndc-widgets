@@ -224,6 +224,18 @@ impl Contract {
         });
         assert!(has_edit_permission, "Must be DAO owner to edit community");
     }
+
+    // User follow Community
+    pub fn user_follow_community(&mut self, id: CommunityId){
+        let account_id = env::predecessor_account_id();
+        self.get_community_by_id(&id);
+
+        let mut user_follow_list = self.user_follow.get(&(FollowType::Community, account_id.clone())).unwrap_or(vec![]);
+        if !user_follow_list.contains(&id) {
+            user_follow_list.push(id);
+            self.user_follow.insert(&(FollowType::Community, account_id), &user_follow_list);
+        }
+    }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]

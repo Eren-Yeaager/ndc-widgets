@@ -93,6 +93,8 @@ pub struct CommentSnapshot {
 pub struct CommentBody {
     pub description: String,
     pub attachments: Vec<String>,
+    #[serde(skip_deserializing)]
+    pub is_spam: bool,
 }
 
 use crate::*;
@@ -131,6 +133,7 @@ impl Contract {
                 body: CommentBody {
                     description: description.clone(),
                     attachments,
+                    is_spam: false,
                 },
             },
             snapshot_history: vec![],
@@ -194,6 +197,7 @@ impl Contract {
             body: CommentBody {
                 description,
                 attachments,
+                is_spam: comment.snapshot.body.is_spam,
             },
         };
         self.comments.insert(&comment_id, &comment.into());
@@ -204,6 +208,28 @@ impl Contract {
     fn validate_comment_author(&self, comment: &Comment) {
         let author_id = env::predecessor_account_id();
         assert_eq!(comment.author_id, author_id, "You are not the author of this comment");
+    }
+
+    // Change is_spam parameter for comment
+    // Access Level: DAO owners
+    pub fn change_comment_is_spam(&mut self, id: CommentId, is_spam: bool) {
+        let mut comment:Comment = self.get_comment_by_id(&id).into();
+        let post:Post = self.get_post_by_id(&comment.post_id).into();
+
+        self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
+
+        comment.snapshot_history.push(comment.snapshot.clone());
+        comment.snapshot = CommentSnapshot {
+            timestamp: env::block_timestamp(),
+            body: CommentBody {
+                description: comment.snapshot.body.description.clone(),
+                attachments: comment.snapshot.body.attachments.clone(),
+                is_spam,
+            },
+        };
+        self.comments.insert(&id, &comment.into());
+
+        near_sdk::log!("COMMENT IS SPAM: {}, {}", id, is_spam);
     }
 }
 
@@ -283,5 +309,17 @@ mod tests {
         // Check post
         let post: Post = contract.get_post_by_id(&proposal_id).into();
         assert_eq!(post.comments.len(), 2);
+    }
+
+    #[test]
+    pub fn test_comment_is_spam() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let proposal_id = create_proposal(&dao_id, &mut contract);
+        let comment_id = create_comment(&mut contract, proposal_id, None);
+
+        contract.change_comment_is_spam(comment_id, true);
+        let comment:Comment = contract.get_comment_by_id(&comment_id).into();
+        assert_eq!(comment.snapshot.body.is_spam, true);
     }
 }

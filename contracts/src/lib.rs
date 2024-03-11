@@ -269,6 +269,10 @@ impl Contract {
         let comment: Comment = self.get_comment_by_id(&id).into();
         comment.snapshot_history
     }
+
+    pub fn get_follow_list(&self, follow_type: FollowType, account_id: AccountId) -> Vec<u64> {
+        self.user_follow.get(&(follow_type, account_id)).unwrap_or_default()
+    }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]

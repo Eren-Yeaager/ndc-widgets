@@ -46,9 +46,9 @@ pub struct Proposal {
     pub reports: Vec<PostId>,
     pub requested_amount: f64,
     #[serde(skip_deserializing)]
-    pub is_spam: bool,
-    #[serde(skip_deserializing)]
     pub state: ProposalStates,
+    #[serde(skip_deserializing)]
+    pub is_spam: bool,
 }
 
 // #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]

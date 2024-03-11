@@ -396,9 +396,6 @@ impl Contract {
         let mut post: Post = self.get_post_by_id(&id).into();
 
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
-
-        env::log_str(&format!("Post type: {:?}", post.snapshot.body.get_post_type()));
-
         require!(post.snapshot.body.get_post_type() == PostType::Proposal, "Only proposals have state");
 
         let updated_body = match post.snapshot.body.clone() {
@@ -408,7 +405,6 @@ impl Contract {
                         proposal.state = state;
                         PostBody::Proposal(VersionedProposal::V1(proposal))
                     }
-                    // Handle other versions as needed
                 }
             },
             _ => panic!("Expected a proposal post, found a different post type."),
@@ -438,6 +434,44 @@ impl Contract {
         post_by_new_status.push(post.id.clone());
         self.post_status.insert(new_status, &post_by_new_status);
     }
+
+    // Change is_spam parameter for post
+    // Access Level: DAO owners
+    pub fn change_post_is_spam(&mut self, id: PostId, is_spam: bool) {
+        let mut post: Post = self.get_post_by_id(&id).into();
+        self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
+
+        post.snapshot_history.push(post.snapshot.clone());
+
+        let updated_body = match post.snapshot.body {
+            PostBody::Proposal(versioned_proposal) => {
+                match versioned_proposal {
+                    VersionedProposal::V1(mut proposal) => {
+                        proposal.is_spam = is_spam;
+                        PostBody::Proposal(VersionedProposal::V1(proposal))
+                    }
+                }
+            },
+            PostBody::Report(versioned_report) => {
+                match versioned_report {
+                    VersionedReport::V1(mut report) => {
+                        report.is_spam = is_spam;
+                        PostBody::Report(VersionedReport::V1(report))
+                    }
+                }
+            }
+        };
+
+        post.snapshot = PostSnapshot {
+            status: post.snapshot.status,
+            editor_id: env::predecessor_account_id(),
+            timestamp: env::block_timestamp(),
+            body: updated_body,
+        };
+        self.posts.insert(&post.id, &post.clone().into());
+
+        near_sdk::log!("POST IS SPAM: {}, {}", post.id, is_spam);
+    }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]
@@ -463,11 +497,11 @@ mod tests {
                         labels: vec!["label1".to_string(), "label2".to_string()],
                         metrics: HashMap::new(),
                         reports: vec![],
-                        is_spam: false,
                         requested_amount: 1000.0,
                         community_id: None,
                         vertical: None,
                         state: ProposalStates::default(),
+                        is_spam: false,
                     }
                 )
             )
@@ -487,10 +521,10 @@ mod tests {
                         attachments: vec![],
                         labels: vec!["label1".to_string()],
                         metrics: HashMap::new(),
-                        is_spam: false,
                         community_id: None,
                         vertical: None,
                         proposal_id,
+                        is_spam: false,
                     }
                 )
             )
@@ -518,6 +552,7 @@ mod tests {
             assert_eq!(proposal.metrics, HashMap::new());
             assert_eq!(proposal.community_id, None);
             assert_eq!(proposal.vertical, None);
+            assert_eq!(proposal.is_spam, false);
         }
     }
 
@@ -543,6 +578,7 @@ mod tests {
                     community_id: None,
                     vertical: None,
                     state: ProposalStates::default(),
+                    is_spam: false,
                 }
             )
         ));
@@ -609,6 +645,7 @@ mod tests {
                     community_id: None,
                     vertical: None,
                     proposal_id: None,
+                    is_spam: false,
                 }
             )
         ));
@@ -639,6 +676,29 @@ mod tests {
             let VersionedProposal::V1(p) = vp;
             assert!(p.state.kyc_passed);
             assert!(p.state.dao_council_approved);
+        }
+    }
+
+    #[test]
+    fn test_post_is_spam_change() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let post_id = create_proposal(&dao_id, &mut contract);
+
+        contract.change_post_is_spam(post_id, true);
+
+        let post: Post = contract.get_post_by_id(&post_id).into();
+        if let PostBody::Proposal(vp) = &post.snapshot.body {
+            let VersionedProposal::V1(p) = vp;
+            assert!(p.is_spam);
+        }
+
+        contract.change_post_is_spam(post_id, false);
+
+        let post: Post = contract.get_post_by_id(&post_id).into();
+        if let PostBody::Proposal(vp) = &post.snapshot.body {
+            let VersionedProposal::V1(p) = vp;
+            assert!(!p.is_spam);
         }
     }
 
