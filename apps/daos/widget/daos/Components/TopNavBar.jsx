@@ -66,7 +66,7 @@ const LinksContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    div.text { 
+    div.text {
       display: none;
     }
   }
@@ -80,7 +80,7 @@ return (
         <b>My Activity</b>
       </h4>
     </div>
-    <LinksContainer >
+    <LinksContainer>
       {links.map(({ icon, disabled, text, href }) => (
         <a
           className={`d-flex gap-2 align-items-center ${

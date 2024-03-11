@@ -312,12 +312,17 @@ return {
               {
                 title: "Strategy",
                 icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
-                description: <>To achieve our mission, we have set forth the following strategies:
-                <br />- Continual Publication of Research
-                <br />- Promotion of Decentralization
-                <br />- Empowerment of Researchers
-                <br />- Open Research and Unbiased Data
-                <br />- Resource Accessibility</>,
+                description: (
+                  <>
+                    To achieve our mission, we have set forth the following
+                    strategies:
+                    <br />- Continual Publication of Research
+                    <br />- Promotion of Decentralization
+                    <br />- Empowerment of Researchers
+                    <br />- Open Research and Unbiased Data
+                    <br />- Resource Accessibility
+                  </>
+                ),
                 button: { title: "Read more", link: "" },
               },
             ],
@@ -338,17 +343,33 @@ return {
             cards: [
               {
                 title: "Become a member",
-                description: <>To join the NRC DAO;<br /> Visit the <a href="https://near.social/mob.near/widget/MyPage?accountId=research-collective.near"> NRC DAO page</a> & click “Ask to Join”. Then select the "researcher" role and propose to join. Also, join our <a href="https://t.me/ResearchWG">Telegram channel</a> Refer to our landing page to register for the NEAR Certified Researcher Course.</>,
+                description: (
+                  <>
+                    To join the NRC DAO;
+                    <br /> Visit the{" "}
+                    <a href="https://near.social/mob.near/widget/MyPage?accountId=research-collective.near">
+                      {" "}
+                      NRC DAO page
+                    </a>{" "}
+                    & click “Ask to Join”. Then select the "researcher" role and
+                    propose to join. Also, join our{" "}
+                    <a href="https://t.me/ResearchWG">Telegram channel</a> Refer
+                    to our landing page to register for the NEAR Certified
+                    Researcher Course.
+                  </>
+                ),
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Contribute",
-                description: "Be a student/guest lecturer of the NEAR Certified Researcher Course, attend workshops, submit proposals, and engage in NRC community.",
+                description:
+                  "Be a student/guest lecturer of the NEAR Certified Researcher Course, attend workshops, submit proposals, and engage in NRC community.",
                 button: { title: "Learn more", link: "" },
               },
               {
                 title: "Funding",
-                description: "Attend the NEAR Certified Researcher Course calls, graduate from the course, become an alumna/alumnus, propose to complete a mini research project, complete the research project, mint it as an NFT, and list it for a designated amount. Then, undergo KYC, and the NRC DAO council votes to collect the NFT and distribute funds.",
+                description:
+                  "Attend the NEAR Certified Researcher Course calls, graduate from the course, become an alumna/alumnus, propose to complete a mini research project, complete the research project, mint it as an NFT, and list it for a designated amount. Then, undergo KYC, and the NRC DAO council votes to collect the NFT and distribute funds.",
                 button: { title: "Learn more", link: "" },
               },
             ],
