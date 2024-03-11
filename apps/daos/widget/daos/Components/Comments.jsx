@@ -46,7 +46,7 @@ const handleLike = (id) => {
 
 const handleSpam = (comment) => {
   Near.call(contractName, "change_comment_is_spam", {
-    id,
+    id: comment.id,
     is_spam: !comment.snapshot.is_spam,
   });
 };
