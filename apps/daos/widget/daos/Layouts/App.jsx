@@ -78,7 +78,7 @@ const Theme = styled.div`
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
