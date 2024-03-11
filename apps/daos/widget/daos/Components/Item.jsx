@@ -127,6 +127,7 @@ const Button = styled.a`
 const CardContainer = styled.div`
   width: 100%;
   padding: 3px;
+  margin-bottom: ${(p) => (p.marginBottom ? '30px': '')};
 
   &:hover {
     position: relative;
@@ -198,7 +199,7 @@ const colorMap = (status) => {
 };
 
 const CardItem = ({ item, index }) => (
-  <CardContainer>
+  <CardContainer marginBottom={showCommentsDefault}>
     <Card key={index} className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between">
         <Widget
