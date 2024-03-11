@@ -116,11 +116,11 @@ const CardBlock = ({ height, id }) => (
 return (
   <GridContainer>
     <CardContainer>
-      <CardBlock height={90} id={1} />
+      <CardBlock id={1} />
     </CardContainer>
     <CardContainer>
       <CardBlock id={0} />
-      <CardBlock height={50} id={2} />
+      <CardBlock id={2} />
     </CardContainer>
     <CardContainer>
       <CardBlock id={3} />
