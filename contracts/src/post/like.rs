@@ -133,6 +133,7 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
         let proposal_id = create_proposal(&dao_id, &mut contract);
+
         let comment_id = contract.add_comment(
             proposal_id,
             None,
@@ -152,6 +153,7 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
         let proposal_id = create_proposal(&dao_id, &mut contract);
+
         let comment_id = contract.add_comment(
             proposal_id,
             None,

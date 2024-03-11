@@ -114,16 +114,22 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"R
 NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
+- Edit Report
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+```
+
 - Change post status:
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
 ```
 
-- Edit Report
+- Change proposal state:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_provided":true}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Like proposals/reports
@@ -170,7 +176,7 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT
 NEAR_ENV=mainnet near view "$CONTRACT" get_post_by_id '{"id":1}'
 ```
 
-- Get post history (view)
+- Get post snapshot history (view)
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_post_history '{"id":1}'

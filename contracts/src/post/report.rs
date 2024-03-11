@@ -19,6 +19,8 @@ pub struct Report {
 
     // Specific fields
     pub proposal_id: Option<PostId>,
+    #[serde(skip_deserializing)]
+    pub is_spam: bool,
 }
 
 // #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
