@@ -51,11 +51,14 @@ let items = null;
 let dao = null;
 
 if (dao_id) {
-  items = Near.view(contractName, "get_dao_posts", {
-    dao_id: parseInt(dao_id),
+  dao = Near.view(contractName, "get_dao_by_handle", {
+    handle: dao_id,
   });
-  dao = Near.view(contractName, "get_dao_by_id", {
-    id: parseInt(dao_id),
+
+  if (!dao) <Widget src="flashui.near/widget/Loading" />;
+
+  items = Near.view(contractName, "get_dao_posts", {
+    dao_id: dao.id,
   });
 } else if (accountId)
   items = Near.view(contractName, "get_posts_by_author", {

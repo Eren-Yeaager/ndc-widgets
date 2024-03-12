@@ -133,7 +133,7 @@ const Button = styled.a`
 const CardContainer = styled.div`
   width: 100%;
   padding: 3px;
-  margin-bottom: ${(p) => (p.marginBottom ? '30px': '')};
+  margin-bottom: ${(p) => (p.marginBottom ? "30px" : "")};
 
   &:hover {
     position: relative;
@@ -253,7 +253,7 @@ const CardItem = ({ item, index }) => (
           <h3>{item.title}</h3>
           {dao.owners.includes(accountId) && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.id}`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.handle}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
@@ -276,7 +276,7 @@ const CardItem = ({ item, index }) => (
             </span>
             {dao && (
               <a
-                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.id}`}
+                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.handle}`}
                 className="d-flex align-items-center gap-1"
               >
                 <img className="dao-img" src={dao.logo_url} />
@@ -404,7 +404,11 @@ const CardItem = ({ item, index }) => (
       {!preview && (
         <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
           <div className="actions d-flex gap-5 align-items-center">
-            <div role="button" className="d-flex gap-2" onClick={handleLike}>
+            <div
+              role="button"
+              className="d-flex gap-2 align-items-center"
+              onClick={handleLike}
+            >
               <span className="blue">{item.likes.length}</span>
               <i
                 className={`bi blue ${
@@ -415,11 +419,11 @@ const CardItem = ({ item, index }) => (
 
             <div
               role="button"
-              className="d-flex gap-2"
+              className="d-flex gap-2 align-items-center"
               onClick={() => setShowComments(!showComments)}
             >
               <span className="blue">{item.comments.length}</span>
-              <i className="bi blue bi-chat" />
+              <i className="bi blue bi-reply fs-5" />
             </div>
 
             <div role="button" className="d-flex gap-2">

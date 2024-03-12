@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -378,7 +378,7 @@ return (
                 <DaoLink
                   href={
                     priorityLink[dao.id] ??
-                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`
+                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`
                   }
                   className="btn btn-secondary d-flex justify-content-between"
                 >
@@ -398,7 +398,7 @@ return (
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title),
+              projects.find((p) => p.title === title)
             ),
           }}
         />

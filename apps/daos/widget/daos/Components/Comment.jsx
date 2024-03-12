@@ -73,17 +73,11 @@ return (
             hideAccountId: true,
           }}
         />
-        <Widget
-          src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-          props={{
-            text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
-          }}
-        />
         {comment.author_id === context.accountId && (
           <a
             href={`https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}&edit=true`}
           >
-            <i className="bi blue bi-pencil" />
+            <i className="bi blue bi-pencil-fill" />
           </a>
         )}
       </div>
@@ -106,7 +100,11 @@ return (
 
         {!isPreview && (
           <Actions>
-            <div role="button" onClick={() => handleLike(comment.id)}>
+            <div
+              role="button"
+              className="d-flex gap-1 align-items-center"
+              onClick={() => handleLike(comment.id)}
+            >
               <small className="blue">{comment.likes.length}</small>
               <i
                 className={`bi blue ${
@@ -114,20 +112,20 @@ return (
                 }`}
               />
             </div>
-            <div
-              role="button"
-              onClick={() =>
-                setShowReply({ [comment.id]: !showReply[comment.id] })
-              }
-            >
-              <small className="blue">{comment.child_comments.length}</small>
-              <i className="bi blue bi-chat" />
-            </div>
             <Link
+              className="d-flex gap-1 align-items-center"
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
+              <small className="blue">{comment.child_comments.length}</small>
               <i className={"bi blue bi-reply fs-5"} />
             </Link>
+
+            <Widget
+              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              props={{
+                text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
+              }}
+            />
             {dao.owners.includes(context.accountId) && (
               <div role="button" onClick={() => handleSpam(comment)}>
                 <i

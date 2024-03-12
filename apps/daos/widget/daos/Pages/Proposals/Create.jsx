@@ -146,13 +146,14 @@ useEffect(() => {
 
 let daos = null;
 daos = Near.view(contractName, "get_dao_list");
+
 const [errors, setErrors] = useState({});
 const [selectedDaoId, setSelectedDaoId] = useState(0);
 const [attachments, setAttachments] = useState([]);
 
 useEffect(() => {
   if (daos) {
-    setSelectedDaoId(dao_id || daos[0].id);
+    setSelectedDaoId(daos.find((d) => d.handle === dao_id).id || daos[0].id);
   }
 }, [daos]);
 
@@ -251,7 +252,6 @@ return (
             attachments,
             daos,
             selectedDaoId,
-            dao_id,
             id,
           }}
         />
