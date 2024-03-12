@@ -79,7 +79,7 @@ function groupByCategoryList(daos) {
         categoryMap[category] = { title: category, links: [] };
       }
 
-      categoryMap[category].links.push({ title: dao.title, id: dao.id });
+      categoryMap[category].links.push({ title: dao.title, id: dao.handle });
     });
   });
 

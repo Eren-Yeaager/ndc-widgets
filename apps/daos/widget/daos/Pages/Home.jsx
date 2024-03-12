@@ -308,7 +308,7 @@ const sorted = (a, b) => {
 const priorityLink = {
   4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
 };
-console.log(proposals);
+
 return (
   <Container>
     <Widget
