@@ -1,5 +1,5 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const { id } = props;
@@ -108,8 +108,6 @@ const Section = styled.div`
   }
 `;
 
-const [loading, setLoading] = useState(false);
-
 if (!contractName || !content)
   return <Widget src="flashui.near/widget/Loading" />;
 
@@ -145,9 +143,21 @@ return (
     {projects?.length > 0 ? (
       <Section>
         <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
-          props={{ title: section.projects.title, projects }}
+          src={`/*__@replace:widgetPath__*/.Components.Dao.Communities`}
+          props={{
+            title: section.projects.title,
+            projects: projects.slice(0, 5),
+          }}
         />
+
+        <div className="d-flex gap-3 w-100 flex-wrap justify-content-center">
+          <a
+            className="dao-btn"
+            href={`//*__@replace:widgetPath__*/.App?page=communities&dao_id=${dao.handle}`}
+          >
+            Show All {section.projects.title}
+          </a>
+        </div>
       </Section>
     ) : (
       ""

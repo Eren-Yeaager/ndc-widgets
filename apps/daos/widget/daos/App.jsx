@@ -83,7 +83,7 @@ function Page() {
       else
         return (
           <Widget
-            src={`/*__@replace:widgetPath__*/.Pages.Dao`}
+            src={`/*__@replace:widgetPath__*/.Pages.Daos.Index`}
             props={{ ...props }}
           />
         );
@@ -97,7 +97,12 @@ function Page() {
       );
     }
     case "communities": {
-      return <Widget src={`/*__@replace:widgetPath__*/.Pages.Communities`} />;
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Daos.Communities`}
+          props={{ ...props }}
+        />
+      );
     }
     case "create_proposal": {
       return (

@@ -1,17 +1,21 @@
 const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { hasNotifications, daoId, accountId } = props;
+const { title, hasNotifications, daoId, accountId } = props;
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
 
 const links = [
   {
     text: "Reports",
-    href: `//*__@replace:widgetPath__*/.App?page=reports&accountId=${accountId}`,
+    href: `//*__@replace:widgetPath__*/.App?page=reports${
+      daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
+    }`,
     icon: <i className="bi bi-clipboard-data-fill fs-5" />,
   },
   {
     text: "Proposals",
-    href: `//*__@replace:widgetPath__*/.App?page=proposals&accountId=${accountId}`,
+    href: `//*__@replace:widgetPath__*/.App?page=proposals${
+      daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
+    }`,
     icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
   },
   // {
@@ -47,7 +51,10 @@ const LinksContainer = styled.div`
   justify-content: space-between;
 
   a {
+    width: 150px;
     padding: 2rem 1.5rem;
+    text-align: center;
+    justify-content: center;
     text-decoration: none;
 
     &.active:hover {
@@ -74,12 +81,7 @@ const LinksContainer = styled.div`
 
 return (
   <Navbar>
-    <div className="d-flex gap-3 items-center">
-      <i className="bi bi-person-circle fs-4" />
-      <h4>
-        <b>My Activity</b>
-      </h4>
-    </div>
+    <div className="d-flex gap-3 items-center">{title}</div>
     <LinksContainer>
       {links.map(({ icon, disabled, text, href }) => (
         <a

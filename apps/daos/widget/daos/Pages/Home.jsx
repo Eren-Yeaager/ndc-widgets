@@ -394,7 +394,7 @@ return (
     {projects?.length > 0 ? (
       <Wrapper>
         <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
+          src={`/*__@replace:widgetPath__*/.Components.Dao.Communities`}
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
