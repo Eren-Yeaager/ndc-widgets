@@ -78,7 +78,7 @@ const CommentsList = ({ comments }) => (
           {comment.child_comments.length > 0 && (
             <CommentsList
               comments={comment.child_comments.map((childId) =>
-                commentById(childId)
+                commentById(childId),
               )}
             />
           )}

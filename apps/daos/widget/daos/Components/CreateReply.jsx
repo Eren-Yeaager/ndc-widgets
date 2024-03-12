@@ -47,7 +47,7 @@ function composeData() {
     comment ? "edit_comment" : "add_comment",
     params,
     "200000000000000",
-    10000000000000000000000
+    10000000000000000000000,
   );
 }
 
