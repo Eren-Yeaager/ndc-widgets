@@ -20,6 +20,8 @@ pub struct Comment {
     pub parent_comment: Option<CommentId>,
     pub child_comments: HashSet<CommentId>,
     pub snapshot: CommentSnapshot,
+    #[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
     pub snapshot_history: Vec<CommentSnapshot>
 }
 

@@ -140,17 +140,27 @@ impl Contract {
     // Post: Get all posts from all DAOs except InReview status
     pub fn get_all_posts(&self, page:u64, limit:u64) -> Vec<VersionedPost> {
         let all_post_ids: HashSet<PostId> = (1..=self.total_posts).collect();
-        let in_review_post_ids: HashSet<PostId> = self.post_status.get(&PostStatus::InReview).unwrap_or_default().iter().cloned().collect();
+        let in_review_post_ids: HashSet<PostId> = self.post_status
+            .get(&PostStatus::InReview)
+            .unwrap_or_default()
+            .iter()
+            .cloned().collect();
 
-        let available_post_ids: Vec<PostId> = all_post_ids.difference(&in_review_post_ids)
+        let available_post_ids: Vec<PostId> = all_post_ids
+            .difference(&in_review_post_ids)
             .cloned()
             .collect();
 
         let total_available_posts = available_post_ids.len();
-        let start = page.saturating_mul(limit);
-        let end = std::cmp::min(start + limit, total_available_posts as u64);
+        let page = page.max(1);
+        let start = ((page - 1) * limit) as usize;
+        let end = std::cmp::min(start + limit as usize, total_available_posts);
 
-        available_post_ids[start as usize..end as usize]
+        if start >= total_available_posts {
+            return Vec::new();
+        }
+
+        available_post_ids[start..end]
             .iter()
             .filter_map(|post_id| self.posts.get(post_id))
             .collect()
@@ -179,33 +189,55 @@ impl Contract {
     }
 
     // Posts: Get all Proposals/Reports except "in_review" for DAO
-    pub fn get_dao_posts(&self, dao_id: DaoId, status: Option<PostStatus>) -> Vec<VersionedPost> {
-        self.dao_posts.get(&dao_id).unwrap_or_default()
+    pub fn get_dao_posts(&self, dao_id: DaoId, status: Option<PostStatus>, page: u64, limit: u64) -> Vec<VersionedPost> {
+        let all_posts = self.dao_posts.get(&dao_id).unwrap_or_default();
+
+        let filtered_posts: Vec<_> = all_posts
             .iter()
             .map(|post_id| self.get_post_by_id(post_id))
             .filter(|versioned_post| {
-                let post:Post = (*versioned_post).clone().into();
-                if status.is_some() {
-                    // Filter by status if provided
-                    post.snapshot.status == status.clone().unwrap()
+                let post: Post = (*versioned_post).clone().into();
+                if let Some(s) = status.clone() {
+                    post.snapshot.status == s
                 } else {
-                    // Default: Exclude "in_review" status
                     post.snapshot.status != PostStatus::InReview
                 }
             })
-            .collect()
+            .collect();
 
-        // TODO: add pagination
+        let total_posts = filtered_posts.len();
+        let page = page.max(1);
+        let start = ((page - 1) * limit) as usize;
+        let end = std::cmp::min(start + limit as usize, total_posts);
+
+        if start >= total_posts {
+            Vec::new()
+        } else {
+            filtered_posts[start..end].to_vec()
+        }
     }
 
     // Posts: Get Proposals/Reports by Author
-    pub fn get_posts_by_author(&self, author: AccountId) -> Vec<VersionedPost> {
-        self.post_authors.get(&author).unwrap_or_default()
-            .iter()
-            .map(|post_id| self.get_post_by_id(post_id))
-            .collect()
+    pub fn get_posts_by_author(&self, author: AccountId, page: u64, limit: u64) -> Vec<VersionedPost> {
+        let posts = self.post_authors.get(&author).unwrap_or_default();
 
-        // TODO: add pagination
+        // Total number of posts by the author
+        let total_posts = posts.len();
+
+        // Calculate start and end indices for pagination
+        let page = page.max(1);
+        let start = ((page - 1) * limit) as usize;
+        let end = std::cmp::min(start + limit as usize, total_posts);
+
+        // Check if the start index is within the bounds of available posts
+        if start >= total_posts {
+            Vec::new()
+        } else {
+            posts[start..end]
+                .iter()
+                .map(|post_id| self.get_post_by_id(post_id))
+                .collect()
+        }
     }
 
     // Posts: Get Proposals/Reports history
