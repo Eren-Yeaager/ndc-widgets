@@ -10,11 +10,14 @@ CONTRACT=v2.mdao-owner.testnet
  near deploy "$CONTRACT" ./res/mdao.wasm --initFunction new --initArgs '{}'
 
 ## -------- Data Seed --------
-# Add DAO
- near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":["'$ACCOUNT_ID'"], "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
- near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'","owner.testnet"], "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
- near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+DAO_OWNERS='["'"$ACCOUNT_ID"'","new_owner.testnet"]'
+
+# Add DAO
+ near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":'"$DAO_OWNERS"', "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+ near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+
+ near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
 
 
 # Add DAO Proposal
@@ -47,9 +50,6 @@ CONTRACT=v2.mdao-owner.testnet
 
  near call "$CONTRACT" change_community_status '{"id":1, "status":"Inactive"}' --accountId "$ACCOUNT_ID"
 
-# Change Community Status
- near call "$CONTRACT" change_community_status '{"id":1, "status":"Inactive"}' --accountId "$ACCOUNT_ID"
-
 # Edit proposal
  near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
 
@@ -77,9 +77,9 @@ CONTRACT=v2.mdao-owner.testnet
  near view "$CONTRACT" get_dao_by_handle '{"handle":"second-dao"}'
 
  near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
- near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
- near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview"}'
- near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'"}'
+ near view "$CONTRACT" get_dao_posts '{"dao_id":1,"page":1, "limit":100}'
+ near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview","page":1, "limit":100}'
+ near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'","page":1, "limit":100}'
  near view "$CONTRACT" get_post_by_id '{"id":1}'
  near view "$CONTRACT" get_post_history '{"id":1}'
  near view "$CONTRACT" get_all_statuses ''

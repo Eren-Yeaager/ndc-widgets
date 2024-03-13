@@ -159,13 +159,13 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
 - Get all proposals/reports for specific DAO EXCEPT "in_review" (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1, "page":1, "limit":100}'
 ```
 
 - Get all DAO proposals/reports by status, for example "in_review" (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview", "page":1, "limit":100}'
 ```
 
 Status list: InReview, New, Approved, Rejected, Closed
@@ -173,7 +173,7 @@ Status list: InReview, New, Approved, Rejected, Closed
 - Get proposals/reports by author (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'"}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'", "page":1, "limit":100}'
 ```
 
 - Get post by ID (view)
