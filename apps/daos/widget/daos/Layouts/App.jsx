@@ -17,7 +17,6 @@ const Theme = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   font-weight: 500;
   font-family: "Montserrat", sans-serif;
   ${fontCss};
