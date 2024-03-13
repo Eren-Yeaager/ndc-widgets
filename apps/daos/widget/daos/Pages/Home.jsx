@@ -308,7 +308,7 @@ const sorted = (a, b) => {
 const priorityLink = {
   4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
 };
-console.log(proposals);
+
 return (
   <Container>
     <Widget
@@ -378,7 +378,7 @@ return (
                 <DaoLink
                   href={
                     priorityLink[dao.id] ??
-                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.id}`
+                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`
                   }
                   className="btn btn-secondary d-flex justify-content-between"
                 >
@@ -394,7 +394,7 @@ return (
     {projects?.length > 0 ? (
       <Wrapper>
         <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
+          src={`/*__@replace:widgetPath__*/.Components.Dao.Communities`}
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>

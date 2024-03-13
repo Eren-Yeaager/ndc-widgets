@@ -14,6 +14,10 @@ const Container = styled.div`
     height: 50px;
   }
 
+  h4 {
+    margin-bottom: 0;
+  }
+
   @media screen and (max-width: 786px) {
     padding: 1rem;
     margin-bottom: 30px;
@@ -35,16 +39,30 @@ const Header = styled.div`
     }
   }
 `;
+const SubmitProposal = styled.a`
+  background: rgb(164, 194, 253);
+  color: #fff !important;
+  border-radius: 10px;
+  padding: 10px 25px;
+  text-align: center;
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
+  }
+`;
 
 let items = null;
 let dao = null;
 
 if (dao_id) {
-  items = Near.view(contractName, "get_dao_posts", {
-    dao_id: parseInt(dao_id),
+  dao = Near.view(contractName, "get_dao_by_handle", {
+    handle: dao_id,
   });
-  dao = Near.view(contractName, "get_dao_by_id", {
-    id: parseInt(dao_id),
+
+  if (!dao) <Widget src="flashui.near/widget/Loading" />;
+
+  items = Near.view(contractName, "get_dao_posts", {
+    dao_id: dao.id,
   });
 } else if (accountId)
   items = Near.view(contractName, "get_posts_by_author", {
@@ -57,31 +75,40 @@ if (!items) return <Widget src="flashui.near/widget/Loading" />;
 return (
   <Container>
     <>
-      {dao_id ? (
-        <>
-          <Header>
-            <img className="dao-img" src={dao.logo_url} />
-            <h1>{dao.title}</h1>
-          </Header>
-
-          <div className="mt-4">
-            <a
-              style={{ fontSize: "24px" }}
-              className="btn-primary text-uppercase"
-              href={`//*__@replace:widgetPath__*/.App?page=create_proposal&dao_id=${dao_id}`}
-            >
-              create {type}
-            </a>
-          </div>
-        </>
-      ) : accountId ? (
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
-          props={props}
-        />
-      ) : (
-        <h1>All {type}s</h1>
-      )}
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
+        props={{
+          ...props,
+          daoId: dao ? dao.handle : null,
+          accountId,
+          title: (
+            <div className="d-flex align-items-center gap-3">
+              {dao ? (
+                <img className="dao-img" src={dao.logo_url} />
+              ) : (
+                <i className="bi bi-person-circle fs-3" />
+              )}
+              <h4>
+                <b>
+                  {dao ? dao.title : accountId ? "My" : "All"}
+                  {type}s
+                </b>
+              </h4>
+            </div>
+          ),
+        }}
+      />
+      <div className="mt-4">
+        <a
+          style={{ fontSize: "24px" }}
+          className="btn-primary text-uppercase"
+          href={`//*__@replace:widgetPath__*/.App?page=create_proposal${
+            dao ? `&dao_id=${dao_id}` : ""
+          }`}
+        >
+          create {type}
+        </a>
+      </div>
 
       <div className="d-flex flex-column gap-4 mt-4">
         {items?.length ? (

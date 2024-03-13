@@ -15,7 +15,7 @@ return {
   },
   content: {
     daos: {
-      1: {
+      ndc: {
         sections: {
           info: {
             title: "NDC",
@@ -27,7 +27,7 @@ return {
           office: {},
         },
       },
-      2: {
+      "build-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -111,7 +111,7 @@ return {
           },
         },
       },
-      3: {
+      "gaming-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -206,7 +206,7 @@ return {
           },
         },
       },
-      4: {
+      "marketing-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -290,117 +290,7 @@ return {
           },
         },
       },
-      5: {
-        sections: {
-          info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
-            cards: [
-              {
-                title: "Vision",
-                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
-                description: `Our vision at the NEAR Research Collective is to create a thriving ecosystem that fosters innovation, encourages curiosity, and promotes continuous learning within the NEAR protocol and the wider blockchain sphere.`,
-                button: { title: "Read more", link: "" },
-              },
-              {
-                title: "Mission",
-                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
-                description: `The NEAR Research Collective's mission is to cultivate a vibrant research community, fostering innovation, continuous learning, and providing individuals interested in research with the necessary tools, guidance, and support. We conduct research aligned with community needs and interests, aiming to become a significant catalyst for growth in the NEAR ecosystem.`,
-                button: { title: "Read more", link: "" },
-              },
-              {
-                title: "Strategy",
-                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
-                description: (
-                  <>
-                    To achieve our mission, we have set forth the following
-                    strategies:
-                    <br />- Continual Publication of Research
-                    <br />- Promotion of Decentralization
-                    <br />- Empowerment of Researchers
-                    <br />- Open Research and Unbiased Data
-                    <br />- Resource Accessibility
-                  </>
-                ),
-                button: { title: "Read more", link: "" },
-              },
-            ],
-          },
-          roadmap: {
-            title: "Roadmap",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
-            button: { title: "Read more", link: "" },
-            image:
-              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
-          },
-          guidance: {
-            subTitle: "GUIDANCE",
-            title: "Near Research Collective",
-            description:
-              "Empowers and educates within the NEAR ecosystem, cultivating a new wave of experts in blockchain technology and its applications              .",
-            cards: [
-              {
-                title: "Become a member",
-                description: (
-                  <>
-                    To join the NRC DAO;
-                    <br /> Visit the{" "}
-                    <a href="https://near.social/mob.near/widget/MyPage?accountId=research-collective.near">
-                      {" "}
-                      NRC DAO page
-                    </a>{" "}
-                    & click “Ask to Join”. Then select the "researcher" role and
-                    propose to join. Also, join our{" "}
-                    <a href="https://t.me/ResearchWG">Telegram channel</a> Refer
-                    to our landing page to register for the NEAR Certified
-                    Researcher Course.
-                  </>
-                ),
-                button: { title: "Learn more", link: "" },
-              },
-              {
-                title: "Contribute",
-                description:
-                  "Be a student/guest lecturer of the NEAR Certified Researcher Course, attend workshops, submit proposals, and engage in NRC community.",
-                button: { title: "Learn more", link: "" },
-              },
-              {
-                title: "Funding",
-                description:
-                  "Attend the NEAR Certified Researcher Course calls, graduate from the course, become an alumna/alumnus, propose to complete a mini research project, complete the research project, mint it as an NFT, and list it for a designated amount. Then, undergo KYC, and the NRC DAO council votes to collect the NFT and distribute funds.",
-                button: { title: "Learn more", link: "" },
-              },
-            ],
-          },
-          office: {
-            title: "Office Hours",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
-            image:
-              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
-            buttons: {
-              book: {
-                text: "Book a Meeting",
-                link: "",
-              },
-              workshops: {
-                text: "Workshops",
-                link: "",
-              },
-              calendar: {
-                text: "Editorial Calendar",
-                link: "",
-              },
-            },
-          },
-          projects: {
-            title: "Featured Projects",
-          },
-        },
-      },
-      6: {
+      "degen-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -497,7 +387,7 @@ return {
           },
         },
       },
-      7: {
+      "onboard-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -581,7 +471,7 @@ return {
           },
         },
       },
-      8: {
+      "aurora-community-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -681,7 +571,7 @@ return {
           },
         },
       },
-      9: {
+      "near-globe-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -765,7 +655,7 @@ return {
           },
         },
       },
-      10: {
+      "nft-dao": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -857,7 +747,7 @@ return {
           },
         },
       },
-      11: {
+      "she-is-near": {
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -956,7 +846,7 @@ return {
           },
         },
       },
-      12: {
+      "africa-community-dao": {
         sections: {
           info: {
             cards: [
@@ -1050,7 +940,7 @@ return {
           },
         },
       },
-      13: {
+      "freelancer-dao": {
         sections: {
           info: {
             cards: [
@@ -1114,6 +1004,116 @@ return {
               {
                 title: "Funding",
                 description: "Coming soon",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {
+            title: "Office Hours",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            image:
+              "https://ipfs.near.social/ipfs/bafkreiclqb6hhpnqlozusgerlgwemacx22nskziarxvky6lqo3hcoabwq4",
+            buttons: {
+              book: {
+                text: "Book a Meeting",
+                link: "",
+              },
+              workshops: {
+                text: "Workshops",
+                link: "",
+              },
+              calendar: {
+                text: "Editorial Calendar",
+                link: "",
+              },
+            },
+          },
+          projects: {
+            title: "Featured Projects",
+          },
+        },
+      },
+      "near-research-collective": {
+        sections: {
+          info: {
+            title: "DEGENS DAO",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Our vision at the NEAR Research Collective is to create a thriving ecosystem that fosters innovation, encourages curiosity, and promotes continuous learning within the NEAR protocol and the wider blockchain sphere.`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `The NEAR Research Collective's mission is to cultivate a vibrant research community, fostering innovation, continuous learning, and providing individuals interested in research with the necessary tools, guidance, and support. We conduct research aligned with community needs and interests, aiming to become a significant catalyst for growth in the NEAR ecosystem.`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: (
+                  <>
+                    To achieve our mission, we have set forth the following
+                    strategies:
+                    <br />- Continual Publication of Research
+                    <br />- Promotion of Decentralization
+                    <br />- Empowerment of Researchers
+                    <br />- Open Research and Unbiased Data
+                    <br />- Resource Accessibility
+                  </>
+                ),
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Near Research Collective",
+            description:
+              "Empowers and educates within the NEAR ecosystem, cultivating a new wave of experts in blockchain technology and its applications              .",
+            cards: [
+              {
+                title: "Become a member",
+                description: (
+                  <>
+                    To join the NRC DAO;
+                    <br /> Visit the{" "}
+                    <a href="https://near.social/mob.near/widget/MyPage?accountId=research-collective.near">
+                      {" "}
+                      NRC DAO page
+                    </a>{" "}
+                    & click “Ask to Join”. Then select the "researcher" role and
+                    propose to join. Also, join our{" "}
+                    <a href="https://t.me/ResearchWG">Telegram channel</a> Refer
+                    to our landing page to register for the NEAR Certified
+                    Researcher Course.
+                  </>
+                ),
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description:
+                  "Be a student/guest lecturer of the NEAR Certified Researcher Course, attend workshops, submit proposals, and engage in NRC community.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description:
+                  "Attend the NEAR Certified Researcher Course calls, graduate from the course, become an alumna/alumnus, propose to complete a mini research project, complete the research project, mint it as an NFT, and list it for a designated amount. Then, undergo KYC, and the NRC DAO council votes to collect the NFT and distribute funds.",
                 button: { title: "Learn more", link: "" },
               },
             ],

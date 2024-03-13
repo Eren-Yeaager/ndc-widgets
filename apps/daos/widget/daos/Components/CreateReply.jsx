@@ -19,19 +19,13 @@ if (edit === "true" && commentId)
 
 useEffect(() => {
   State.update({
-    text: comment.snapshot.description,
-    attachments: comment.snapshot.attachments,
+    text: comment.snapshot.description ?? "",
+    attachments: comment.snapshot.attachments ?? [],
   });
 }, [comment]);
 
 const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
-
-const content = {
-  accountId,
-  text: state.text,
-  attachments: state.attachments,
-};
 
 function composeData() {
   const params = {
@@ -48,7 +42,13 @@ function composeData() {
       attachments: state.attachments,
     };
 
-  Near.call(contractName, comment ? "edit_comment" : "add_comment", params);
+  Near.call(
+    contractName,
+    comment ? "edit_comment" : "add_comment",
+    params,
+    "200000000000000",
+    10000000000000000000000,
+  );
 }
 
 function onCommit() {

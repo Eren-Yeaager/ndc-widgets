@@ -1,5 +1,5 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const { id } = props;
@@ -108,15 +108,17 @@ const Section = styled.div`
   }
 `;
 
-const [loading, setLoading] = useState(false);
-
-const dao = Near.view(contractName, "get_dao_by_id", { id: parseInt(id) });
-const projects = Near.view(contractName, "get_dao_communities", {
-  dao_id: parseInt(id),
-});
-
-if (!dao || !contractName || !content)
+if (!contractName || !content)
   return <Widget src="flashui.near/widget/Loading" />;
+
+const dao = Near.view(contractName, "get_dao_by_handle", { handle: id });
+const section = content.daos[id].sections;
+
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+const projects = Near.view(contractName, "get_dao_communities", {
+  dao_id: dao.id,
+});
 
 const ProjectCard = ({ project }) => (
   <ProjectContainer src={project.logo_url}>
@@ -126,8 +128,6 @@ const ProjectCard = ({ project }) => (
     <span className="title">{project.title}</span>
   </ProjectContainer>
 );
-
-const section = content.daos[id].sections;
 
 return (
   <Container>
@@ -143,9 +143,21 @@ return (
     {projects?.length > 0 ? (
       <Section>
         <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.FeaturedProjects`}
-          props={{ title: section.projects.title, projects }}
+          src={`/*__@replace:widgetPath__*/.Components.Dao.Communities`}
+          props={{
+            title: section.projects.title,
+            projects: projects.slice(0, 5),
+          }}
         />
+
+        <div className="d-flex gap-3 w-100 flex-wrap justify-content-center">
+          <a
+            className="dao-btn"
+            href={`//*__@replace:widgetPath__*/.App?page=communities&dao_id=${dao.handle}`}
+          >
+            Show All {section.projects.title}
+          </a>
+        </div>
       </Section>
     ) : (
       ""
@@ -154,7 +166,7 @@ return (
     <Section style={{ background: "black" }}>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Guidance`}
-        props={{ section: section, dao_id: id }}
+        props={{ section: section, dao }}
       />
     </Section>
 

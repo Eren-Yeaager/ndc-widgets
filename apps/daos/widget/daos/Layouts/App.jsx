@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -17,7 +17,6 @@ const Theme = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   font-weight: 500;
   font-family: "Montserrat", sans-serif;
   ${fontCss};
@@ -78,7 +77,7 @@ const Theme = styled.div`
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -135,6 +134,24 @@ const Container = styled.div`
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
   }
 
+  a.dao-btn {
+    font-size: 24px;
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    border: 3px solid black;
+    padding: 15px 40px;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .red {
+    color: rgb(255 141 141);
+  }
+
   .blue {
     color: rgb(146 168 210);
   }
@@ -166,7 +183,7 @@ function AppLayout({ page, props, children }) {
     <Theme>
       <Container>
         <Widget src={`/*__@replace:widgetPath__*/.Components.NavBar`} />
-        {["home", "dao"].includes(page) ? (
+        {["home", "dao", "communities"].includes(page) ? (
           children
         ) : (
           <Wrapper>{children}</Wrapper>

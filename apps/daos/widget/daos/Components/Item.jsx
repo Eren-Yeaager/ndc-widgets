@@ -101,6 +101,12 @@ const Comments = styled.div`
   padding-top: 1rem;
 `;
 
+const StatusSelect = styled.div`
+  @media screen and (max-width: 786px) {
+    width: 100%;
+  }
+`;
+
 const Button = styled.a`
   display: flex;
   justify-content: center;
@@ -127,6 +133,7 @@ const Button = styled.a`
 const CardContainer = styled.div`
   width: 100%;
   padding: 3px;
+  margin-bottom: ${(p) => (p.marginBottom ? "30px" : "")};
 
   &:hover {
     position: relative;
@@ -155,13 +162,23 @@ const handleLike = () => {
   });
 };
 
+const handleSpam = () => {
+  Near.call(contractName, "change_post_is_spam", {
+    id: item.id,
+    is_spam: !item.is_spam,
+  });
+};
+
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(item.dao_id),
 });
 
-const snapshot = Near.view(contractName, "get_post_history", {
-  id: item.id,
-});
+let snapshot;
+
+if (item.id)
+  snapshot = Near.view(contractName, "get_post_history", {
+    id: item.id,
+  });
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -198,9 +215,9 @@ const colorMap = (status) => {
 };
 
 const CardItem = ({ item, index }) => (
-  <CardContainer>
+  <CardContainer marginBottom={showCommentsDefault}>
     <Card key={index} className="d-flex flex-column gap-3">
-      <div className="d-flex justify-content-between">
+      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
         <Widget
           src="mob.near/widget/Profile"
           props={{
@@ -212,8 +229,7 @@ const CardItem = ({ item, index }) => (
         {item.status && (
           <>
             {dao.owners.includes(accountId) ? (
-              <div className="d-flex flex-column gap-1 align-items-center">
-                <small>Change status:</small>
+              <StatusSelect>
                 <select
                   className="form-control"
                   value={item.status}
@@ -223,7 +239,7 @@ const CardItem = ({ item, index }) => (
                     <option value={key}>{value}</option>
                   ))}
                 </select>
-              </div>
+              </StatusSelect>
             ) : (
               <div className="d-flex gap-3 align-items-center">
                 <Status color={colorMap(item.status)}>{item.status}</Status>
@@ -237,7 +253,7 @@ const CardItem = ({ item, index }) => (
           <h3>{item.title}</h3>
           {dao.owners.includes(accountId) && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.id}`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.handle}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
@@ -260,7 +276,7 @@ const CardItem = ({ item, index }) => (
             </span>
             {dao && (
               <a
-                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.id}`}
+                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.handle}`}
                 className="d-flex align-items-center gap-1"
               >
                 <img className="dao-img" src={dao.logo_url} />
@@ -387,8 +403,12 @@ const CardItem = ({ item, index }) => (
 
       {!preview && (
         <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
-          <div className="actions d-flex gap-3 align-items-center">
-            <div role="button" className="d-flex gap-2" onClick={handleLike}>
+          <div className="actions d-flex gap-5 align-items-center">
+            <div
+              role="button"
+              className="d-flex gap-2 align-items-center"
+              onClick={handleLike}
+            >
               <span className="blue">{item.likes.length}</span>
               <i
                 className={`bi blue ${
@@ -399,11 +419,11 @@ const CardItem = ({ item, index }) => (
 
             <div
               role="button"
-              className="d-flex gap-2"
+              className="d-flex gap-2 align-items-center"
               onClick={() => setShowComments(!showComments)}
             >
               <span className="blue">{item.comments.length}</span>
-              <i className="bi blue bi-chat" />
+              <i className="bi blue bi-reply fs-5" />
             </div>
 
             <div role="button" className="d-flex gap-2">
@@ -414,6 +434,16 @@ const CardItem = ({ item, index }) => (
                 }}
               />
             </div>
+
+            {dao.owners.includes(accountId) && (
+              <div role="button" onClick={handleSpam}>
+                <i
+                  className={
+                    item.is_spam ? "bi red bi-flag-fill" : "bi blue bi-flag"
+                  }
+                />
+              </div>
+            )}
           </div>
 
           <Button
@@ -440,4 +470,10 @@ const CardItem = ({ item, index }) => (
   </CardContainer>
 );
 
-return <CardItem item={item} index={index} />;
+return (
+  <>
+    {(!item.is_spam || dao.owners.includes(accountId)) && (
+      <CardItem item={item} index={index} />
+    )}
+  </>
+);

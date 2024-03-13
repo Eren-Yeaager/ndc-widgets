@@ -9,7 +9,6 @@ const {
   attachments,
   daos,
   selectedDaoId,
-  dao_id,
   id,
 } = props;
 
@@ -113,7 +112,7 @@ return (
         <Widget
           src="/*__@replace:widgetPath__*/.Components.Item"
           props={{
-            item: { ...formEls, dao_id, attachments },
+            item: { ...formEls, dao_id: selectedDaoId, attachments },
             index: 0,
             post_type: formEls.post_type,
             showMoreDefault: 0,

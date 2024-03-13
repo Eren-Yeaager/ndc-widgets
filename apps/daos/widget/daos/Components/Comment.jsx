@@ -1,9 +1,11 @@
 const {
+  dao,
   comment,
   isLikedByMe,
   showReply,
   setShowReply,
   handleLike,
+  handleSpam,
   isPreview,
   postId,
 } = props;
@@ -22,11 +24,16 @@ const Content = styled.div`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   margin: -3px 0 10px 0;
 
   a:hover {
     text-decoration: none;
+  }
+
+  @media screen and (max-width: 786px) {
+    justify-content: space-between;
+    gap: 5px;
   }
 `;
 
@@ -66,17 +73,11 @@ return (
             hideAccountId: true,
           }}
         />
-        <Widget
-          src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-          props={{
-            text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
-          }}
-        />
         {comment.author_id === context.accountId && (
           <a
             href={`https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}&edit=true`}
           >
-            <i className="bi blue bi-pencil" />
+            <i className="bi blue bi-pencil-fill" />
           </a>
         )}
       </div>
@@ -85,10 +86,7 @@ return (
       <Body>
         <Content>
           <div className="datetime d-flex gap-2 mb-2 mt-1 align-items-center justify-content-between text-secondary">
-            {comment.snapshot_history.length > 0
-              ? "Edited at: "
-              : "Created at: "}
-            {formatDate(comment.snapshot.timestamp)}
+            Updated at: {formatDate(comment.snapshot.timestamp)}
           </div>
           <Widget
             src={"/*__@replace:widgetPath__*/.Components.MarkdownViewer"}
@@ -102,7 +100,11 @@ return (
 
         {!isPreview && (
           <Actions>
-            <div role="button" onClick={() => handleLike(comment.id)}>
+            <div
+              role="button"
+              className="d-flex gap-1 align-items-center"
+              onClick={() => handleLike(comment.id)}
+            >
               <small className="blue">{comment.likes.length}</small>
               <i
                 className={`bi blue ${
@@ -110,21 +112,31 @@ return (
                 }`}
               />
             </div>
-            <div
-              role="button"
-              onClick={() =>
-                setShowReply({ [comment.id]: !showReply[comment.id] })
-              }
-            >
-              <small className="blue">{comment.child_comments.length}</small>
-              <i className="bi blue bi-chat" />
-            </div>
             <Link
+              className="d-flex gap-1 align-items-center"
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
+              <small className="blue">{comment.child_comments.length}</small>
               <i className={"bi blue bi-reply fs-5"} />
-              <small className="blue">Reply</small>
             </Link>
+
+            <Widget
+              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              props={{
+                text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
+              }}
+            />
+            {dao.owners.includes(context.accountId) && (
+              <div role="button" onClick={() => handleSpam(comment)}>
+                <i
+                  className={
+                    comment.snapshot.is_spam
+                      ? "bi red bi-flag-fill"
+                      : "bi blue bi-flag"
+                  }
+                />
+              </div>
+            )}
           </Actions>
         )}
       </Body>
