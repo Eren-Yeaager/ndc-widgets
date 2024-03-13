@@ -1,5 +1,5 @@
 return {
-  contractName: "v1.test-dao.near",
+  contractName: "v3.test-dao.near",
   assets: {
     logoWhite:
       "https://ipfs.near.social/ipfs/bafkreigycbheqwbwh73uqemyb4lt4r3dkmauubdkv5lio3nv3cdb6zguyq",

@@ -63,10 +63,14 @@ if (dao_id) {
 
   items = Near.view(contractName, "get_dao_posts", {
     dao_id: dao.id,
+    page: 0,
+    limit: 100,
   });
 } else if (accountId)
   items = Near.view(contractName, "get_posts_by_author", {
     author: accountId,
+    page: 0,
+    limit: 100,
   });
 else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
