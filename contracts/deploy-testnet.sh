@@ -76,7 +76,7 @@ DAO_OWNERS='["'"$ACCOUNT_ID"'","new_owner.testnet"]'
  near view "$CONTRACT" get_dao_by_id '{"id":1}'
  near view "$CONTRACT" get_dao_by_handle '{"handle":"second-dao"}'
 
- near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
+ near view "$CONTRACT" get_all_posts '{"page":1, "limit":100}'
  near view "$CONTRACT" get_dao_posts '{"dao_id":1,"page":1, "limit":100}'
  near view "$CONTRACT" get_dao_posts '{"dao_id":1, "status":"InReview","page":1, "limit":100}'
  near view "$CONTRACT" get_posts_by_author '{"author":"'$ACCOUNT_ID'","page":1, "limit":100}'

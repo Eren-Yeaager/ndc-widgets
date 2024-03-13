@@ -153,7 +153,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" post_unlike '{"id":1}' --accountId "$ACCO
 - Get all proposals/reports EXCEPT "in_review" for all DAO (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_all_posts '{"page":0, "limit":100}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_posts '{"page":1, "limit":100}'
 ```
 
 - Get all proposals/reports for specific DAO EXCEPT "in_review" (view)

@@ -152,14 +152,15 @@ impl Contract {
             .collect();
 
         let total_available_posts = available_post_ids.len();
-        let start = page.saturating_mul(limit);
-        let end = std::cmp::min(start + limit, total_available_posts as u64);
+        let page = page.max(1);
+        let start = ((page - 1) * limit) as usize;
+        let end = std::cmp::min(start + limit as usize, total_available_posts);
 
-        if start >= total_available_posts as u64 {
+        if start >= total_available_posts {
             return Vec::new();
         }
 
-        available_post_ids[start as usize..end as usize]
+        available_post_ids[start..end]
             .iter()
             .filter_map(|post_id| self.posts.get(post_id))
             .collect()
