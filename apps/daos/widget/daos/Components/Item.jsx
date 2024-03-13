@@ -157,12 +157,14 @@ const isLiked = (item) => {
 };
 
 const handleLike = () => {
+  if(!accountId) return
   Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
     id: itemState.id,
   });
 };
 
 const handleSpam = () => {
+  if(!accountId) return
   Near.call(contractName, "change_post_is_spam", {
     id: itemState.id,
     is_spam: !itemState.is_spam,
@@ -190,7 +192,12 @@ const statuses = [
   { key: "Closed", value: "Closed" },
 ];
 
+const handleShowComments = () => {
+  if(!accountId) return
+  setShowComments(!showComments)
+}
 const changeStatus = async (item, status) => {
+  if(!accountId) return
   Near.call(contractName, "change_post_status", {
     id: item.id,
     status,
@@ -444,7 +451,7 @@ const CardItem = ({ item, index }) => (
             <div
               role="button"
               className="d-flex gap-2 align-items-center"
-              onClick={() => setShowComments(!showComments)}
+              onClick={handleShowComments}
             >
               <span className="blue">{item.comments.length}</span>
               <i className="bi blue bi-reply fs-5" />

@@ -3,6 +3,7 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const { dao_id, id } = props;
+const accountId = context.accountId;
 
 const Container = styled.div`
   position: relative;
@@ -122,7 +123,7 @@ const form = {
 
 const [post, setPost] = useState(null);
 const [formEls, setFormEls] = useState({
-  accountId: context.accountId,
+  accountId: accountId,
   post_type: "Proposal",
   title: "",
   description: form.Proposal.find((el) => el.name === "description").value,
@@ -185,6 +186,7 @@ const handleAttachments = (file) => {
 };
 
 const handleSave = () => {
+  if(!accountId) return
   let body = {
     title: formEls.title,
     labels: formEls.tags ?? [],
