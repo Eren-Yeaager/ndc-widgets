@@ -7,7 +7,7 @@ let { dao_id, type, accountId } = props;
 const Container = styled.div`
   width: 100%;
   height: max-content;
-  padding: 3rem 0;
+  padding: 1rem 0 5rem 0;
 
   .dao-img {
     width: 50px;

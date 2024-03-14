@@ -10,6 +10,7 @@ const Container = styled.div`
   width: 100%;
   height: max-content;
   overflow: hidden;
+  padding: 1rem 0 5rem 0;
 
   h3 {
     font-size: 2rem;
@@ -24,7 +25,6 @@ const Container = styled.div`
 
 const FormWrapper = styled.div`
   width: 100%;
-  padding: 3rem;
 
   @media screen and (max-width: 786px) {
     width: 100%;

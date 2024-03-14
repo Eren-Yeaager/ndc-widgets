@@ -31,94 +31,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Item = styled.div`
-  width: 370px;
-  height: 400px;
-  border-radius: 10px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(270deg, #efdcd1 -1.69%, #e0c6f7 43.78%, #adc3fb 99.83%);
-  padding: 2px;
-  
-  span {
-    color: #ffffff;
-  }
-
-  .bi-plus-circle:hover {
-    color: rgb(164, 194, 253);
-    fill: rgb(164, 194, 253);
-  }
-
-  a.btn {
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  h4 {
-    color: #000
-    font-size: 24px;
-  }
-
-  .inner {
-    height: 100%;
-    padding: 0 2rem;
-    background: #f9f6ff;
-    border-radius: 10px;
-  }
-
-  svg {
-    margin: 7px;
-  }
-
-  i, svg {
-    color: ${darkTheme ? "#f0ddce" : "#A4C2FD"};
-    fill: ${darkTheme ? "#f0ddce" : "#A4C2FD"};
-
-    &:hover {
-      color: ${darkTheme ? "#fff" : "#151718"};
-      fill: ${darkTheme ? "#fff" : "#151718"};
-    }
-  }
-
-  p {
-    font-size: 16px;
-    font-weight: 300;
-    margin: 0;
-  }
-
-  @media screen and (max-width: 786px) {
-    width: 100%;
-  }
-`;
-
-const DaoDesc = styled.div`
-  color: #1e1d22;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 400;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const DaoLink = styled.a`
-  min-width: 200px;
-  box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
-  background: black;
-  i {
-    padding-left: 30px;
-  }
-  span {
-    padding-right: 35px;
-  }
-  :hover {
-    background: black;
-  }
-`;
-
 const CreateGrassrootContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -294,21 +206,6 @@ const typeOfProject = Array.from(types).map((item) => {
   };
 });
 
-const sorted = (a, b) => {
-  if (a.title < b.title) {
-    return -1;
-  }
-  if (a.title > b.title) {
-    return 1;
-  }
-  return 0;
-};
-
-// This is to be used if we want use other Links for landing pages.
-const priorityLink = {
-  4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
-};
-
 return (
   <Container>
     <Widget
@@ -360,33 +257,15 @@ return (
       />
       <Description>{content.whatisGrassrootDAO.text}</Description>
 
-      <div className="d-flex flex-wrap justify-content-center gap-3">
+      <div className="d-flex flex-wrap justify-content-center gap-4">
         {daos
           .filter((dao) => dao.dao_type === "DAO")
-          .sort(sorted)
+          .sort((a, b) => a.title < b.title)
           .map((dao) => (
-            <Item>
-              <div className="inner d-flex flex-column justify-content-center gap-3 align-items-center">
-                <Widget
-                  src={`/*__@replace:widgetPath__*/.Components.CommunityImage`}
-                  props={{ image: dao.logo_url, index }}
-                />
-                <h4 className="bold color-text px-3 mt-1 text-center">
-                  {dao.title}
-                </h4>
-                <DaoDesc>{dao.description}</DaoDesc>
-                <DaoLink
-                  href={
-                    priorityLink[dao.id] ??
-                    `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`
-                  }
-                  className="btn btn-secondary d-flex justify-content-between"
-                >
-                  <i class="bi bi-plus-circle"></i>
-                  <span>Join DAO</span>
-                </DaoLink>
-              </div>
-            </Item>
+            <Widget
+              src={`/*__@replace:widgetPath__*/.Components.Dao.Card`}
+              props={{ dao, index }}
+            />
           ))}
       </div>
     </Wrapper>
@@ -422,7 +301,7 @@ return (
           <SubmitProposal
             href={`//*__@replace:widgetPath__*/.App?page=create_proposal`}
           >
-            Submit Proposal
+            Create Proposal
           </SubmitProposal>
         </div>
         <div className="circle" />

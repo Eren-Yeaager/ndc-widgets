@@ -96,6 +96,14 @@ function Page() {
         />
       );
     }
+    case "daos": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Daos.List`}
+          props={{ ...props }}
+        />
+      );
+    }
     case "communities": {
       return (
         <Widget
