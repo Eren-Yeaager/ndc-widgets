@@ -325,7 +325,7 @@ return (
       />
 
       <Widget
-        src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.index`}
+        src={`/*__@replace:widgetPath__*/.Components.Metrics.index`}
         props={{
           daos,
           totalTreasury: 3893275,

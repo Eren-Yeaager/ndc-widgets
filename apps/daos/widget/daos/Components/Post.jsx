@@ -157,14 +157,14 @@ const isLiked = (item) => {
 };
 
 const handleLike = () => {
-  if(!accountId) return
+  if (!accountId) return;
   Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
     id: itemState.id,
   });
 };
 
 const handleSpam = () => {
-  if(!accountId) return
+  if (!accountId) return;
   Near.call(contractName, "change_post_is_spam", {
     id: itemState.id,
     is_spam: !itemState.is_spam,
@@ -193,11 +193,11 @@ const statuses = [
 ];
 
 const handleShowComments = () => {
-  if(!accountId) return
-  setShowComments(!showComments)
-}
+  if (!accountId) return;
+  setShowComments(!showComments);
+};
 const changeStatus = async (item, status) => {
-  if(!accountId) return
+  if (!accountId) return;
   Near.call(contractName, "change_post_status", {
     id: item.id,
     status,
@@ -205,9 +205,7 @@ const changeStatus = async (item, status) => {
 };
 
 const changeHistory = (e) => {
-  const next = snapshot.find(
-    (i) => i.timestamp === e.target.value,
-  );
+  const next = snapshot.find((i) => i.timestamp === e.target.value);
   setItemState((prev) => ({ ...prev, ...next }));
 };
 
@@ -265,14 +263,14 @@ const CardItem = ({ item, index }) => (
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center justify-content-between">
           <h3>{item.title}</h3>
-          {dao.owners.includes(accountId) && (
+          {item.author_id === accountId && item.status === "InReview" && (
             <a
               href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.handle}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
           )}
-          {(snapshot.length > 1 && showCommentsDefault) && (
+          {snapshot.length > 1 && showCommentsDefault && (
             <div className="d-flex flex-column gap-1 align-items-center">
               <small>History</small>
               <select

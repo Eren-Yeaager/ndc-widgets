@@ -10,7 +10,7 @@ const post = Near.view(contractName, "get_post_by_id", {
 
 return (
   <Widget
-    src="/*__@replace:widgetPath__*/.Components.Item"
+    src="/*__@replace:widgetPath__*/.Components.Post"
     props={{
       item: post,
       index: post.id,

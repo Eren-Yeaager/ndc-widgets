@@ -186,7 +186,7 @@ const handleAttachments = (file) => {
 };
 
 const handleSave = () => {
-  if(!accountId) return
+  if (!accountId) return;
   let body = {
     title: formEls.title,
     labels: formEls.tags ?? [],
@@ -212,20 +212,18 @@ const handleSave = () => {
     body.proposal_version = "V1";
   }
 
-  const postParams = id
-    ? { id: parseInt(id), body }
-    : {
+  if (id) Near.call(contractName, "edit_post", { id: parseInt(id), body });
+  else
+    Near.call(
+      contractName,
+      "add_post",
+      {
         dao_id: parseInt(selectedDaoId),
         body,
-      };
-
-  Near.call(
-    contractName,
-    id ? "edit_post" : "add_post",
-    postParams,
-    "200000000000000",
-    10000000000000000000000,
-  );
+      },
+      "200000000000000",
+      10000000000000000000000
+    );
 };
 
 return (

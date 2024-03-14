@@ -1,6 +1,6 @@
 const { daos, totalTreasury, deliverTreasury, typeOfProject } = props;
 const { Items } = VM.require(
-  `/*__@replace:widgetPath__*/.Components.MetricsDisplay.styled`,
+  `/*__@replace:widgetPath__*/.Components.Metrics.styled`
 );
 
 if (!Items || !daos) return <Widget src="flashui.near/widget/Loading" />;
@@ -49,18 +49,18 @@ const [loading, setLoading] = useState(false);
 return (
   <Items>
     <Widget
-      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      src={`/*__@replace:widgetPath__*/.Components.Metrics.Item`}
       props={{ value: totalTreasury, text: props.text.totalTreasury, loading }}
     />
     <Widget
-      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      src={`/*__@replace:widgetPath__*/.Components.Metrics.Item`}
       props={{
         value: deliverTreasury,
         text: props.text.deliverTreasury,
       }}
     />
     <Widget
-      src={`/*__@replace:widgetPath__*/.Components.MetricsDisplay.Item`}
+      src={`/*__@replace:widgetPath__*/.Components.Metrics.Item`}
       props={{
         value: typeOfProject,
         text: props.text.typeOfProject,

@@ -110,7 +110,7 @@ return (
     {preview ? (
       <MobileForm>
         <Widget
-          src="/*__@replace:widgetPath__*/.Components.Item"
+          src="/*__@replace:widgetPath__*/.Components.Post"
           props={{
             item: { ...formEls, dao_id: selectedDaoId, attachments },
             index: 0,

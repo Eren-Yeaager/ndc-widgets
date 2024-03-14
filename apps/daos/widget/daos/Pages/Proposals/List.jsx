@@ -120,7 +120,7 @@ return (
             .filter((i) => i.post_type === type)
             .map((item, index) => (
               <Widget
-                src="/*__@replace:widgetPath__*/.Components.Item"
+                src="/*__@replace:widgetPath__*/.Components.Post"
                 props={{ item, index, type, id: item.id }}
               />
             ))
