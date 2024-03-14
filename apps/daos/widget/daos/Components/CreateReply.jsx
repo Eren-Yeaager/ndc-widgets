@@ -28,7 +28,7 @@ const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
 
 function composeData() {
-  if(!accountId) return
+  if (!accountId) return;
   const params = {
     post_id: parseInt(postId),
     description: state.text,
@@ -43,13 +43,15 @@ function composeData() {
       attachments: state.attachments,
     };
 
-  Near.call(
-    contractName,
-    comment ? "edit_comment" : "add_comment",
-    params,
-    "200000000000000",
-    10000000000000000000000,
-  );
+  comment
+    ? Near.call(contractName, "edit_comment", params)
+    : Near.call(
+        contractName,
+        "add_comment",
+        params,
+        "200000000000000",
+        10000000000000000000000
+      );
 }
 
 function onCommit() {

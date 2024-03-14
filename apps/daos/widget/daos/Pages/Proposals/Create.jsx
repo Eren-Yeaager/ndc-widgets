@@ -212,18 +212,18 @@ const handleSave = () => {
     body.proposal_version = "V1";
   }
 
-  if (id) Near.call(contractName, "edit_post", { id: parseInt(id), body });
-  else
-    Near.call(
-      contractName,
-      "add_post",
-      {
-        dao_id: parseInt(selectedDaoId),
-        body,
-      },
-      "200000000000000",
-      10000000000000000000000
-    );
+  id
+    ? Near.call(contractName, "edit_post", { id: parseInt(id), body })
+    : Near.call(
+        contractName,
+        "add_post",
+        {
+          dao_id: parseInt(selectedDaoId),
+          body,
+        },
+        "200000000000000",
+        10000000000000000000000
+      );
 };
 
 return (
