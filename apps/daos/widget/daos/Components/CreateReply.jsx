@@ -28,6 +28,7 @@ const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
 
 function composeData() {
+  if(!accountId) return
   const params = {
     post_id: parseInt(postId),
     description: state.text,

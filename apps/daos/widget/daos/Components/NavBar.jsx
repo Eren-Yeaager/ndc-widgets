@@ -2,6 +2,7 @@ const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { hasNotifications } = props;
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
+const accountId = context.accountId;
 
 const Navbar = styled.div`
   padding: 1.5rem 3rem;
@@ -47,13 +48,15 @@ return (
       <img src={assets.logoWhite} />
     </a>
     <div className="d-flex gap-5 align-items-center">
-      <LinksContainer>
-        <a
-          href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
-        >
-          <i className="bi bi-person-circle fs-3" />
-        </a>
-      </LinksContainer>
+      {accountId &&
+        <LinksContainer>
+          <a
+            href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
+          >
+            <i className="bi bi-person-circle fs-3" />
+          </a>
+        </LinksContainer>
+      }
     </div>
   </Navbar>
 );
