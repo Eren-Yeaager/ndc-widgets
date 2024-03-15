@@ -11,7 +11,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 1rem 0 5rem 0;
 
   @media screen and (max-width: 786px) {
@@ -31,7 +30,7 @@ const Description = styled.div`
 
   @media screen and (max-width: 786px) {
     justify-content: center;
-    text-align: center;
+    text-align: left;
   }
 `;
 
