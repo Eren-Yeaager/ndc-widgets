@@ -83,7 +83,7 @@ const [preview, setPreview] = useState(false);
 const PreviewButton = () => (
   <div
     style={{ width: "max-content" }}
-    className="btn-outline-primary"
+    className="btn-primary"
     onClick={() => setPreview(!preview)}
   >
     Preview
@@ -168,7 +168,6 @@ return (
               />
             ) : el.type === "textarea" ? (
               <div className="d-flex flex-wrap">
-                {console.log(formEls)}
                 <Widget
                   src={`/*__@replace:widgetPath__*/.Components.MarkdownEditor`}
                   props={{
@@ -207,11 +206,11 @@ return (
           props={{
             onChange: handleAttachments,
             children: (
-              <UploadFileButton className="btn-outline-primary btn-sm">
+              <UploadFileButton className="btn-primary">
                 Upload File
               </UploadFileButton>
             ),
-            styles: { width: unset },
+            styles: { width: '90%' },
             classNames: "",
           }}
         />
