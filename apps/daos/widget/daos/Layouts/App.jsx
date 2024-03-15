@@ -24,6 +24,10 @@ const Theme = styled.div`
   font-style: normal;
   background: #f8f6ff;
 
+  select {
+    cursor: pointer;
+  }
+
   a {
     color: inherit;
     font-weight: 500;
