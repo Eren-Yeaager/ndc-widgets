@@ -534,7 +534,7 @@ return {
               {
                 title: "Contribute",
                 description:
-                  "Engage with communty through AC-DAO media channels and provide constructive feedback  on projects and initiatives. Look for opportunities to collaborate with other members, DAOs, and projects.",
+                  "Engage with community through AC-DAO media channels and provide constructive feedback  on projects and initiatives. Look for opportunities to collaborate with other members, DAOs, and projects.",
                 button: { title: "Learn more", link: "" },
               },
               {
