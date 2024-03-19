@@ -96,7 +96,7 @@ const ProposalButton = () => (
     style={{ width: "max-content" }}
     className="btn btn-primary"
     disabled={form[formEls.post_type].some(
-      (el) => el.required && !formEls[el.name],
+      (el) => el.required && !formEls[el.name]
     )}
     onClick={handleSave}
   >
@@ -143,16 +143,19 @@ return (
             </TypeSection>
           </div>
         </div>
-        <label>Select Dao</label>
-        <select
-          className="form-control"
-          value={selectedDaoId}
-          onChange={handleSelectDao}
-        >
-          {daos.map((dao) => (
-            <option value={dao.id}>{dao.name}</option>
-          ))}
-        </select>
+        <div className="form-element">
+          <label>Select Dao</label>
+          <select
+            className="form-control"
+            value={selectedDaoId}
+            onChange={handleSelectDao}
+            disabled={!!id}
+          >
+            {daos.map((dao) => (
+              <option value={dao.id}>{dao.name}</option>
+            ))}
+          </select>
+        </div>
         {form[formEls.post_type].map((el) => (
           <div className="form-element">
             <label for={el.name}>
