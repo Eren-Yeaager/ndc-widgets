@@ -11,6 +11,10 @@ const GridContainer = styled.div`
     gap: 1rem;
   }
 
+  @media screen and (min-width: 1024px) {
+    flex-wrap: nowrap;
+  }
+
   a {
     &:hover {
       text-decoration: none;
