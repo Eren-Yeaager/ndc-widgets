@@ -1,6 +1,6 @@
 const { daos, totalTreasury, deliverTreasury, typeOfProject } = props;
 const { Items } = VM.require(
-  `/*__@replace:widgetPath__*/.Components.Metrics.styled`
+  `/*__@replace:widgetPath__*/.Components.Metrics.styled`,
 );
 
 if (!Items || !daos) return <Widget src="flashui.near/widget/Loading" />;

@@ -1,6 +1,6 @@
 const { value, text, loading, type } = props;
 const { Circle } = VM.require(
-  `/*__@replace:widgetPath__*/.Components.Metrics.styled`
+  `/*__@replace:widgetPath__*/.Components.Metrics.styled`,
 );
 
 const Loading = () => <Widget src="flashui.near/widget/Loading" />;

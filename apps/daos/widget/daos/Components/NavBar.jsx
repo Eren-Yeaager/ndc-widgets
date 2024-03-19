@@ -3,7 +3,7 @@ const { hasNotifications } = props;
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
 const accountId = context.accountId;
-
+const [admin, _widget, _name] = `/*__@replace:widgetPath__*/.Config`.split("/");
 const [showNav, setShowNav] = useState(false);
 
 const Container = styled.div`
@@ -109,6 +109,11 @@ return (
                 onClick={() => setShowNav(!showNav)}
               />
             </a>
+            {context.accountId === admin && (
+              <a href={`//*__@replace:widgetPath__*/.App?page=config`}>
+                <i className="bi bi-gear-fill fs-3" />
+              </a>
+            )}
             <a
               href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
             >

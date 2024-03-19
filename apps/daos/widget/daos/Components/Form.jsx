@@ -210,7 +210,7 @@ return (
                 Upload File
               </UploadFileButton>
             ),
-            styles: { width: '90%' },
+            styles: { width: "90%" },
             classNames: "",
           }}
         />
