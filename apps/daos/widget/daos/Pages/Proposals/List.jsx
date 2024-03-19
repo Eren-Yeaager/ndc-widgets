@@ -106,11 +106,11 @@ return (
         <a
           style={{ fontSize: "24px" }}
           className="btn-primary text-uppercase"
-          href={`//*__@replace:widgetPath__*/.App?page=create_proposal${
+          href={`//*__@replace:widgetPath__*/.App?page=create_post${
             dao ? `&dao_id=${dao_id}` : ""
           }`}
         >
-          create {type}
+          create post
         </a>
       </div>
 

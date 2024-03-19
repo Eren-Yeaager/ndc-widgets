@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -277,7 +277,7 @@ return (
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title),
+              projects.find((p) => p.title === title)
             ),
           }}
         />
@@ -299,9 +299,9 @@ return (
           </p>
 
           <SubmitProposal
-            href={`//*__@replace:widgetPath__*/.App?page=create_proposal`}
+            href={`//*__@replace:widgetPath__*/.App?page=create_post`}
           >
-            Create Proposal
+            Submit Proposal
           </SubmitProposal>
         </div>
         <div className="circle" />

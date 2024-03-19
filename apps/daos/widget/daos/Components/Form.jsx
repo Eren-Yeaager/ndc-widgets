@@ -135,7 +135,7 @@ return (
             setFormEls(newFormEl);
           }}
         >
-          <p className="mb-2">Form type</p>
+          <p className="mb-2">Post type</p>
           <div className="d-flex gap-3 align-items-center">
             <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
             <TypeSection>

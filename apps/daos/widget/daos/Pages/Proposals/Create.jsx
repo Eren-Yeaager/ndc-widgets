@@ -234,7 +234,7 @@ return (
     <div className="d-flex justify-content-center">
       <FormWrapper className="mt-3 mb-5 d-flex flex-column gap-3">
         <div className="title d-flex flex-column align-items-center text-center mb-4">
-          <h1>DAO Proposal / Report Form</h1>
+          <h1>DAO Post creation Form</h1>
           <div className="mt-3 text-center">
             <p>
               <b>Please use this form to report key performance metrics.</b>

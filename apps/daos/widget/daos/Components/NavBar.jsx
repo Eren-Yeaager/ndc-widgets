@@ -85,8 +85,8 @@ const NavigationLinks = () => (
   <>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=create_proposal`}>
-      Create Proposal
+    <a href={`//*__@replace:widgetPath__*/.App?page=create_post`}>
+      Create Post
     </a>
   </>
 );
