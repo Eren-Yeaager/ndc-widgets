@@ -41,12 +41,12 @@ const isLikedByMe = (comment) =>
     : false;
 
 const handleLike = (id) => {
-  if(!accountId) return
+  if (!accountId) return;
   Near.call(contractName, "comment_like", { id });
 };
 
 const handleSpam = (comment) => {
-  if(!accountId) return
+  if (!accountId) return;
   Near.call(contractName, "change_comment_is_spam", {
     id: comment.id,
     is_spam: !comment.snapshot.is_spam,

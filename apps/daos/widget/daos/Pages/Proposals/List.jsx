@@ -7,7 +7,7 @@ let { dao_id, type, accountId } = props;
 const Container = styled.div`
   width: 100%;
   height: max-content;
-  padding: 3rem 0;
+  padding: 1rem 0 5rem 0;
 
   .dao-img {
     width: 50px;
@@ -106,11 +106,11 @@ return (
         <a
           style={{ fontSize: "24px" }}
           className="btn-primary text-uppercase"
-          href={`//*__@replace:widgetPath__*/.App?page=create_proposal${
+          href={`//*__@replace:widgetPath__*/.App?page=create_post${
             dao ? `&dao_id=${dao_id}` : ""
           }`}
         >
-          create {type}
+          create post
         </a>
       </div>
 
@@ -120,7 +120,7 @@ return (
             .filter((i) => i.post_type === type)
             .map((item, index) => (
               <Widget
-                src="/*__@replace:widgetPath__*/.Components.Item"
+                src="/*__@replace:widgetPath__*/.Components.Post"
                 props={{ item, index, type, id: item.id }}
               />
             ))

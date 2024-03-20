@@ -6,6 +6,14 @@ if (!page) page = "home";
 
 function Page() {
   switch (page) {
+    case "config": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Config`}
+          props={props}
+        />
+      );
+    }
     case "comments": {
       return (
         <Widget
@@ -96,6 +104,14 @@ function Page() {
         />
       );
     }
+    case "daos": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Daos.List`}
+          props={{ ...props }}
+        />
+      );
+    }
     case "communities": {
       return (
         <Widget
@@ -104,7 +120,7 @@ function Page() {
         />
       );
     }
-    case "create_proposal": {
+    case "create_post": {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.Create`}
@@ -112,7 +128,7 @@ function Page() {
         />
       );
     }
-    case "edit_proposal": {
+    case "edit_post": {
       return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Pages.Proposals.Create`}

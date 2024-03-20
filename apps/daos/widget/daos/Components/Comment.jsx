@@ -12,6 +12,9 @@ const {
 
 const Body = styled.div`
   padding: 0rem 1rem;
+  @media screen and (max-width: 786px) {
+    padding-bottom: 50px;
+  }
 `;
 
 const Content = styled.div`

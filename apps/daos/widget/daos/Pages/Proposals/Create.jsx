@@ -10,6 +10,7 @@ const Container = styled.div`
   width: 100%;
   height: max-content;
   overflow: hidden;
+  padding: 1rem 0 5rem 0;
 
   h3 {
     font-size: 2rem;
@@ -24,7 +25,6 @@ const Container = styled.div`
 
 const FormWrapper = styled.div`
   width: 100%;
-  padding: 3rem;
 
   @media screen and (max-width: 786px) {
     width: 100%;
@@ -134,8 +134,15 @@ if (id) {
   setPost(post);
 }
 
+let daos = null;
+daos = Near.view(contractName, "get_dao_list");
+
+const [errors, setErrors] = useState({});
+const [selectedDaoId, setSelectedDaoId] = useState(0);
+const [attachments, setAttachments] = useState([]);
+
 useEffect(() => {
-  if (post)
+  if (post) {
     setFormEls({
       ...formEls,
       title: post.title,
@@ -143,14 +150,9 @@ useEffect(() => {
       requested_amount: post.requested_amount ?? 0,
       tags: post.labels ?? [],
     });
+    setAttachments(post.attachments);
+  }
 }, [post]);
-
-let daos = null;
-daos = Near.view(contractName, "get_dao_list");
-
-const [errors, setErrors] = useState({});
-const [selectedDaoId, setSelectedDaoId] = useState(0);
-const [attachments, setAttachments] = useState([]);
 
 useEffect(() => {
   if (daos) {
@@ -186,7 +188,8 @@ const handleAttachments = (file) => {
 };
 
 const handleSave = () => {
-  if(!accountId) return
+  if (!accountId) return;
+
   let body = {
     title: formEls.title,
     labels: formEls.tags ?? [],
@@ -195,7 +198,7 @@ const handleSave = () => {
     description: formEls.description,
     metrics: {},
     reports: [],
-    attachments: attachments,
+    attachments,
   };
 
   if (formEls.post_type === "Report") {
@@ -212,20 +215,18 @@ const handleSave = () => {
     body.proposal_version = "V1";
   }
 
-  const postParams = id
-    ? { id: parseInt(id), body }
-    : {
-        dao_id: parseInt(selectedDaoId),
-        body,
-      };
-
-  Near.call(
-    contractName,
-    id ? "edit_post" : "add_post",
-    postParams,
-    "200000000000000",
-    10000000000000000000000,
-  );
+  id
+    ? Near.call(contractName, "edit_post", { id: parseInt(id), body })
+    : Near.call(
+        contractName,
+        "add_post",
+        {
+          dao_id: parseInt(selectedDaoId),
+          body,
+        },
+        "200000000000000",
+        10000000000000000000000
+      );
 };
 
 return (
@@ -233,7 +234,7 @@ return (
     <div className="d-flex justify-content-center">
       <FormWrapper className="mt-3 mb-5 d-flex flex-column gap-3">
         <div className="title d-flex flex-column align-items-center text-center mb-4">
-          <h1>DAO Proposal / Report Form</h1>
+          <h1>DAO Post creation Form</h1>
           <div className="mt-3 text-center">
             <p>
               <b>Please use this form to report key performance metrics.</b>

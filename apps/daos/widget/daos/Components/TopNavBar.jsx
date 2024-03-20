@@ -34,7 +34,6 @@ const links = [
 
 const Navbar = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: 0 3rem;
   gap: 3rem;
@@ -42,6 +41,14 @@ const Navbar = styled.div`
   border-radius: 20px;
   background: white;
   width: 100%;
+
+  @media screen and (max-width: 1020px) {
+    gap: 0rem;
+    flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const LinksContainer = styled.div`
@@ -69,12 +76,6 @@ const LinksContainer = styled.div`
     &.disabled {
       cursor: not-allowed;
       color: #ccc;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    div.text {
-      display: none;
     }
   }
 `;

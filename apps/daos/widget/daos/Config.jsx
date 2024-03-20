@@ -1,5 +1,6 @@
 return {
   contractName: "v3.test-dao.near",
+  prodContractName: "v3.test-dao.near",
   assets: {
     logoWhite:
       "https://ipfs.near.social/ipfs/bafkreigycbheqwbwh73uqemyb4lt4r3dkmauubdkv5lio3nv3cdb6zguyq",
@@ -534,7 +535,7 @@ return {
               {
                 title: "Contribute",
                 description:
-                  "Engage with communty through AC-DAO media channels and provide constructive feedback  on projects and initiatives. Look for opportunities to collaborate with other members, DAOs, and projects.",
+                  "Engage with community through AC-DAO media channels and provide constructive feedback  on projects and initiatives. Look for opportunities to collaborate with other members, DAOs, and projects.",
                 button: { title: "Learn more", link: "" },
               },
               {

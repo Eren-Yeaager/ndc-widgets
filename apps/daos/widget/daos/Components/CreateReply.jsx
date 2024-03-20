@@ -28,7 +28,7 @@ const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
 
 function composeData() {
-  if(!accountId) return
+  if (!accountId) return;
   const params = {
     post_id: parseInt(postId),
     description: state.text,
@@ -43,13 +43,15 @@ function composeData() {
       attachments: state.attachments,
     };
 
-  Near.call(
-    contractName,
-    comment ? "edit_comment" : "add_comment",
-    params,
-    "200000000000000",
-    10000000000000000000000,
-  );
+  comment
+    ? Near.call(contractName, "edit_comment", params)
+    : Near.call(
+        contractName,
+        "add_comment",
+        params,
+        "200000000000000",
+        10000000000000000000000,
+      );
 }
 
 function onCommit() {
@@ -68,6 +70,11 @@ function autoCompleteAccountId(id) {
   let text = state.text.replace(/[\s]{0,1}@[^\s]*$/, "");
   text = `${text} @${id}`.trim() + " ";
   State.update({ text, showAccountAutocomplete: false });
+}
+
+const handlePreview = () => {
+  if (!accountId) return;
+  State.update({ showPreview: !state.showPreview });
 }
 
 const Wrapper = styled.div`
@@ -383,7 +390,7 @@ return (
         disabled={!state.text}
         className="preview-post-button"
         title={state.showPreview ? "Edit Post" : "Preview Post"}
-        onClick={() => State.update({ showPreview: !state.showPreview })}
+        onClick={handlePreview}
       >
         {state.showPreview ? (
           <i className="bi bi-pencil" />

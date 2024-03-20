@@ -83,7 +83,7 @@ const [preview, setPreview] = useState(false);
 const PreviewButton = () => (
   <div
     style={{ width: "max-content" }}
-    className="btn-outline-primary"
+    className="btn-primary"
     onClick={() => setPreview(!preview)}
   >
     Preview
@@ -96,7 +96,7 @@ const ProposalButton = () => (
     style={{ width: "max-content" }}
     className="btn btn-primary"
     disabled={form[formEls.post_type].some(
-      (el) => el.required && !formEls[el.name],
+      (el) => el.required && !formEls[el.name]
     )}
     onClick={handleSave}
   >
@@ -110,7 +110,7 @@ return (
     {preview ? (
       <MobileForm>
         <Widget
-          src="/*__@replace:widgetPath__*/.Components.Item"
+          src="/*__@replace:widgetPath__*/.Components.Post"
           props={{
             item: { ...formEls, dao_id: selectedDaoId, attachments },
             index: 0,
@@ -135,7 +135,7 @@ return (
             setFormEls(newFormEl);
           }}
         >
-          <p className="mb-2">Form type</p>
+          <p className="mb-2">Post type</p>
           <div className="d-flex gap-3 align-items-center">
             <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
             <TypeSection>
@@ -143,16 +143,19 @@ return (
             </TypeSection>
           </div>
         </div>
-        <label>Select Dao</label>
-        <select
-          className="form-control"
-          value={selectedDaoId}
-          onChange={handleSelectDao}
-        >
-          {daos.map((dao) => (
-            <option value={dao.id}>{dao.name}</option>
-          ))}
-        </select>
+        <div className="form-element">
+          <label>Select DAO</label>
+          <select
+            className="form-control"
+            value={selectedDaoId}
+            onChange={handleSelectDao}
+            disabled={!!id}
+          >
+            {daos.map((dao) => (
+              <option value={dao.id}>{dao.name}</option>
+            ))}
+          </select>
+        </div>
         {form[formEls.post_type].map((el) => (
           <div className="form-element">
             <label for={el.name}>
@@ -168,7 +171,6 @@ return (
               />
             ) : el.type === "textarea" ? (
               <div className="d-flex flex-wrap">
-                {console.log(formEls)}
                 <Widget
                   src={`/*__@replace:widgetPath__*/.Components.MarkdownEditor`}
                   props={{
@@ -207,11 +209,11 @@ return (
           props={{
             onChange: handleAttachments,
             children: (
-              <UploadFileButton className="btn-outline-primary btn-sm">
+              <UploadFileButton className="btn-primary">
                 Upload File
               </UploadFileButton>
             ),
-            styles: { width: unset },
+            styles: { width: "90%" },
             classNames: "",
           }}
         />
