@@ -6,10 +6,10 @@
 
 ## ---- Main contract:
  ACCOUNT_ID=test-dao.near
- CONTRACT=v1.test-dao.near
+ CONTRACT=v3.test-dao.near
 
- NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
- NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
+# NEAR_ENV=mainnet near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
+# NEAR_ENV=mainnet near delete "$CONTRACT" "$ACCOUNT_ID" --force
  NEAR_ENV=mainnet near create-account "$CONTRACT" --masterAccount "$ACCOUNT_ID" --initialBalance 7
 
 ## Full redeploy - cleanup storage and remove account
@@ -19,7 +19,6 @@
 # NEAR_ENV=mainnet near deploy "$CONTRACT" ./res/mdao.wasm
 
 ## -------- Data Seed --------
-
 
 DAO_OWNERS='["'"$ACCOUNT_ID"'", "ndcops.near", "saswat_m.near"]'
 

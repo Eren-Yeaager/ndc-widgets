@@ -129,7 +129,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"Ne
 - Change proposal state:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_provided":true}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Change post spam status:

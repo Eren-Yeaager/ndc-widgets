@@ -667,15 +667,15 @@ mod tests {
         let post_id = create_proposal(&dao_id, &mut contract);
 
         let mut new_states = ProposalStates::default();
-        new_states.kyc_passed = true;
-        new_states.dao_council_approved = true;
+        new_states.kyc_passed = Some(true);
+        new_states.dao_council_approved = Some(true);
         contract.change_proposal_state(post_id, new_states);
 
         let proposal:Post = contract.get_post_by_id(&post_id).into();
         if let PostBody::Proposal(vp) = &proposal.snapshot.body {
             let VersionedProposal::V1(p) = vp;
-            assert!(p.state.kyc_passed);
-            assert!(p.state.dao_council_approved);
+            assert!(Some(p.state.kyc_passed));
+            assert!(Some(p.state.dao_council_approved));
         }
     }
 

@@ -9,23 +9,21 @@ use near_sdk::{require, NearSchema};
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub struct ProposalStates {
-    pub dao_council_approved: bool,
-    pub hom_approved: bool,
-    pub coa_approved: bool,
-    pub kyc_passed: bool,
-    pub payment_executed: bool,
-    pub report_provided: bool,
+    pub dao_council_approved: Option<bool>,
+    pub hom_approved: Option<bool>,
+    pub coa_approved: Option<bool>,
+    pub kyc_passed: Option<bool>,
+    pub payment_executed: Option<bool>,
 }
 
 impl Default for ProposalStates {
     fn default() -> Self {
         Self {
-            dao_council_approved: false,
-            hom_approved: false,
-            coa_approved: false,
-            kyc_passed: false,
-            payment_executed: false,
-            report_provided: false,
+            dao_council_approved: None,
+            hom_approved: None,
+            coa_approved: None,
+            kyc_passed: None,
+            payment_executed: None,
         }
     }
 }
