@@ -184,7 +184,7 @@ let snapshot;
 if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
     id: itemState.id,
-  });
+  }).filter((i) => !i.is_spam);
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
