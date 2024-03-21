@@ -160,6 +160,7 @@ const isLiked = (item) => {
 };
 
 const handleLike = () => {
+  if (isLiked(itemState)) return;
   if (!accountId) return;
   Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
     id: itemState.id,
