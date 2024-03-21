@@ -172,6 +172,7 @@ let projects = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
 });
 
+
 if (!daos || !contractName || !content || !assets || !proposals || !projects)
   return <Widget src="flashui.near/widget/Loading" />;
 
@@ -259,7 +260,6 @@ return (
 
       <div className="d-flex flex-wrap justify-content-center gap-4">
         {daos
-          .filter((dao) => dao.dao_type === "DAO")
           .sort((a, b) => a.title < b.title)
           .map((dao) => (
             <Widget

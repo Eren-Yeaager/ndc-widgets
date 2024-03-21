@@ -21,10 +21,238 @@ return {
           info: {
             title: "NDC",
             description: "",
-            cards: [],
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
           },
-          roadmap: {},
-          guidance: {},
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Ops Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+        },
+      },
+      'ops-team': {
+        sections: {
+          info: {
+            title: "Ops Team",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Ops Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+        },
+      },
+      'smm-team': {
+        sections: {
+          info: {
+            title: "SMM Team",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "SMM Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+        },
+      },
+      'service-dao': {
+        sections: {
+          info: {
+            title: "Service DAO",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Service DAO",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
           office: {},
         },
       },
@@ -105,7 +333,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -197,7 +425,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -281,7 +509,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -375,7 +603,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -456,7 +684,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -553,7 +781,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -634,7 +862,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -723,7 +951,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -819,7 +1047,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -1007,7 +1235,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -1462,7 +1690,7 @@ return {
       },
 
       featuredProducts: {
-        title: "Featured products",
+        title: "Supported Projects",
         projects: [
           "HERE Wallet",
           "Meteor Wallet",
