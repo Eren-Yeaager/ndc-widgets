@@ -108,7 +108,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -203,7 +203,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -287,7 +287,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -384,7 +384,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -468,7 +468,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -568,7 +568,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -652,7 +652,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -744,7 +744,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -843,7 +843,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -1031,7 +1031,7 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
           },
         },
       },
@@ -1216,7 +1216,7 @@ return {
       },
 
       featuredProducts: {
-        title: "Featured products",
+        title: "Supported Projects",
         projects: [
           "HERE Wallet",
           "Meteor Wallet",
