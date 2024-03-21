@@ -101,7 +101,7 @@ const Comments = styled.div`
   padding-top: 1rem;
   @media screen and (max-width: 786px) {
     overflow: auto;
-   }
+  }
 `;
 
 const StatusSelect = styled.div`
@@ -268,7 +268,7 @@ const CardItem = ({ item, index }) => (
           <h3>{item.title}</h3>
           {item.author_id === accountId && item.status === "InReview" && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.handle}`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${item.id}&dao_id=${dao.handle}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
