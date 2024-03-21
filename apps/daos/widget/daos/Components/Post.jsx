@@ -101,7 +101,7 @@ const Comments = styled.div`
   padding-top: 1rem;
   @media screen and (max-width: 786px) {
     overflow: auto;
-   }
+  }
 `;
 
 const StatusSelect = styled.div`
@@ -184,7 +184,7 @@ let snapshot;
 if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
     id: itemState.id,
-  });
+  }).filter((i) => !i.is_spam);
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -269,7 +269,7 @@ const CardItem = ({ item, index }) => (
           <h3>{item.title}</h3>
           {item.author_id === accountId && item.status === "InReview" && (
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_proposal&id=${item.id}&dao_id=${dao.handle}`}
+              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${item.id}&dao_id=${dao.handle}`}
             >
               <i className="bi blue bi-pencil-fill fs-5" />
             </a>
