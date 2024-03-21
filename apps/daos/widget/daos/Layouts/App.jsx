@@ -1,15 +1,3 @@
-let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
-);
-
-if (!fontCss) {
-  function AppLayout({ page, children }) {
-    return <></>;
-  }
-  return { AppLayout };
-}
-fontCss = fontCss.body;
-
 const Theme = styled.div`
   position: fixed;
   inset: 73px 0px 0px;
@@ -17,12 +5,7 @@ const Theme = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-weight: 500;
-  font-family: "Montserrat", sans-serif;
-  ${fontCss};
-
   font-style: normal;
-  background: #f8f6ff;
 
   select {
     cursor: pointer;
@@ -76,6 +59,85 @@ const Theme = styled.div`
   img {
     width: 100%;
   }
+
+  .btn-primary,
+  .btn-secondary {
+    background: #59e692;
+    color: #000;
+    border-radius: 40px;
+    height: 40px;
+    padding: 0 35px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    transition:
+      background 200ms,
+      opacity 200ms;
+
+    &:hover,
+    &:focus {
+      background: rgb(112 242 164);
+      outline: none;
+      text-decoration: none;
+      color: #000;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    &.outlined {
+      color: #11181c;
+      background: #fbfcfd;
+      border: 1px solid #d7dbdf;
+
+      i {
+        color: #7e868c;
+      }
+
+      &:hover,
+      &:focus {
+        background: #ecedee;
+      }
+    }
+
+    &.invresed {
+      color: #ffff;
+      background: #000;
+      border: 1px solid #000;
+
+      i {
+        color: #fff;
+      }
+
+      &:hover,
+      &:focus {
+        background: #fff;
+        color: #000;
+
+        i {
+          color: #000;
+        }
+      }
+    }
+  }
+
+  .btn-secondary {
+    color: #11181c;
+    background: #f1f3f5;
+
+    &:hover,
+    &:focus {
+      background: #d7dbde;
+      outline: none;
+    }
+  }
 `;
 
 const Container = styled.div`
@@ -87,50 +149,6 @@ const Container = styled.div`
   align-items: center;
   @media screen and (max-width: 768px) {
     overflow-x: hidden;
-  }
-
-  .btn {
-    &:disabled {
-      box-shadow: none;
-      border: 1px solid darkgray;
-      background: #eee;
-      color: #353333 !important;
-    }
-  }
-
-  .btn-primary {
-    border-radius: 10px;
-    background: #a4c2fd;
-    border: 1px solid #a4c2fd;
-    color: white !important;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.15);
-    padding: 10px 40px 10px 25px;
-
-    &:hover {
-      text-decoration: none;
-      cursor: pointer;
-      border: 1px solid #a4c2fd;
-    }
-  }
-
-  .btn-outline-primary {
-    border-radius: 10px;
-    color: #151718 !important;
-    text-decoration: none;
-    display: flex;
-    gap: 1rem;
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.15);
-    padding: 10px 40px 10px 25px;
-
-    &:hover {
-      text-decoration: none;
-      cursor: pointer;
-    }
   }
 
   .btn-sm {
@@ -174,8 +192,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75%;
-  margin: 3rem 0;
+  margin: 2rem 0 3rem 0;
 
   @media screen and (max-width: 786px) {
     width: 100%;
@@ -190,7 +207,7 @@ function AppLayout({ page, props, children }) {
         {["home", "dao", "communities"].includes(page) ? (
           children
         ) : (
-          <Wrapper>{children}</Wrapper>
+          <Wrapper className="container-xl">{children}</Wrapper>
         )}
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Footer`}

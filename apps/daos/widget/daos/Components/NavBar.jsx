@@ -7,25 +7,23 @@ const [admin, _widget, _name] = `/*__@replace:widgetPath__*/.Config`.split("/");
 const [showNav, setShowNav] = useState(false);
 
 const Container = styled.div`
-  padding: 1.5rem 3rem;
+  position: relative;
+  padding: 1rem;
   width: 100%;
-  background: #151718;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.03);
 
   .navigation {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    margin-top: 1rem;
-    color: white;
+    padding: 1rem 0;
     display: none;
 
     @media screen and (max-width: 768px) {
       display: flex;
     }
-  }
-
-  @media screen and (max-width: 768px) {
-    padding: 1.5rem 2rem;
   }
 `;
 
@@ -40,19 +38,7 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3rem;
-  color: white;
-
-  @media screen and (max-width: 768px) {
-    gap: 1rem;
-  }
-
-  a {
-    &:hover {
-      text-decoration: none;
-      color: #a4c2fd;
-    }
-  }
+  gap: 2rem;
 
   .circle {
     position: absolute;
@@ -66,6 +52,7 @@ const LinksContainer = styled.div`
 
   .links {
     display: flex;
+    align-items: center;
 
     @media screen and (max-width: 768px) {
       display: none;
@@ -85,19 +72,23 @@ const NavigationLinks = () => (
   <>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=create_post`}>
+    <a
+      className="btn-primary"
+      href={`//*__@replace:widgetPath__*/.App?page=create_post`}
+    >
+      <i className="bi bi-plus-lg" />
       Create Post
     </a>
   </>
 );
 
 return (
-  <Container className="position-relative">
-    <Navbar>
+  <Container>
+    <Navbar className="container-xl">
       <a href={`//*__@replace:widgetPath__*/.App`}>
         <img src={assets.logoWhite} />
       </a>
-      <div className="d-flex gap-5 align-items-center">
+      <div className="d-flex align-items-center">
         {accountId && (
           <LinksContainer>
             <div className="links gap-5">

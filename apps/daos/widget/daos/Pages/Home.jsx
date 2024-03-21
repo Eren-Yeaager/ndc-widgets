@@ -298,11 +298,13 @@ return (
             </ul>
           </p>
 
-          <SubmitProposal
+          <a
+            className="btn-primary"
             href={`//*__@replace:widgetPath__*/.App?page=create_post`}
           >
+            <i className="bi bi-check-lg" />
             Submit Proposal
-          </SubmitProposal>
+          </a>
         </div>
         <div className="circle" />
         <img src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe" />

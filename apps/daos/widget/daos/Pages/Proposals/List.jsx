@@ -7,7 +7,7 @@ let { dao_id, type, accountId } = props;
 const Container = styled.div`
   width: 100%;
   height: max-content;
-  padding: 1rem 0 5rem 0;
+  padding: 0 0 5rem 0;
 
   .dao-img {
     width: 50px;
@@ -87,11 +87,7 @@ return (
           accountId,
           title: (
             <div className="d-flex align-items-center gap-3">
-              {dao ? (
-                <img className="dao-img" src={dao.logo_url} />
-              ) : (
-                <i className="bi bi-person-circle fs-3" />
-              )}
+              {dao ? <img className="dao-img" src={dao.logo_url} /> : <></>}
               <h4>
                 <b>
                   {dao ? dao.title : accountId ? "My" : "All"}
@@ -102,17 +98,6 @@ return (
           ),
         }}
       />
-      <div className="mt-4">
-        <a
-          style={{ fontSize: "24px" }}
-          className="btn-primary text-uppercase"
-          href={`//*__@replace:widgetPath__*/.App?page=create_post${
-            dao ? `&dao_id=${dao_id}` : ""
-          }`}
-        >
-          create post
-        </a>
-      </div>
 
       <div className="d-flex flex-column gap-4 mt-4">
         {items?.length ? (

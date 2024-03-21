@@ -4,20 +4,9 @@ const DaoCard = styled.div`
   width: 330px;
   height: 400px;
   border-radius: 10px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(322deg, rgb(239, 220, 209) -1.69%, rgb(224, 198, 247) 43.78%, rgb(173, 195, 251) 99.83%);
-  padding: 2px;
-  
-  span {
-    color: #ffffff;
-  }
-
-  a.btn {
-    &:hover {
-      text-decoration: none;
-    }
-  }
+  color: #11181c;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
 
   h4 {
     color: #000
@@ -27,8 +16,6 @@ const DaoCard = styled.div`
   .inner {
     height: 100%;
     padding: 2rem;
-    background: rgb(249 246 255 / 80%);
-    border-radius: 10px;
   }
 
   p {
@@ -54,20 +41,6 @@ const DaoDesc = styled.div`
   text-overflow: ellipsis;
 `;
 
-const DaoLink = styled.a`
-  min-width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
-  background: black;
-  padding: 10px 35px;
-
-  i {
-    color: white;
-  }
-`;
-
 // This is to be used if we want use other Links for landing pages.
 const priorityLink = {
   4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
@@ -84,18 +57,16 @@ return (
         <h4 className="bold color-text px-3 mt-1 text-center">{dao.title}</h4>
         <DaoDesc>{dao.description}</DaoDesc>
       </div>
-      <DaoLink
+      <a
         href={
           priorityLink[dao.id] ??
           `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`
         }
-        className="btn btn-secondary d-flex justify-content-between"
+        className="btn-primary"
       >
-        <div className="d-flex gap-2 justify-content-center w-100">
-          <i class="bi bi-plus-circle"></i>
-          <span>Join DAO</span>
-        </div>
-      </DaoLink>
+        <i class="bi bi-plus-circle"></i>
+        Join DAO
+      </a>
     </div>
   </DaoCard>
 );

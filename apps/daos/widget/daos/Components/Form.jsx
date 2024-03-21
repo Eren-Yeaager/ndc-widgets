@@ -54,13 +54,11 @@ const Form = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-beetween;
-  gap: 2rem;
-  padding-top: 2rem;
+  gap: 1rem;
+  padding-top: 1rem;
 
   @media screen and (max-width: 786px) {
     flex-direction: column;
-    gap: 1rem;
-    padding-top: 1rem;
   }
 `;
 
@@ -71,8 +69,6 @@ const MobileForm = styled.div`
 `;
 
 const UploadFileButton = styled.div`
-  width: 47%;
-
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -81,27 +77,22 @@ const UploadFileButton = styled.div`
 const [preview, setPreview] = useState(false);
 
 const PreviewButton = () => (
-  <div
-    style={{ width: "max-content" }}
-    className="btn-primary"
-    onClick={() => setPreview(!preview)}
-  >
-    Preview
+  <div className="btn-secondary" onClick={() => setPreview(!preview)}>
     <i className="bi bi-eye" />
+    Preview
   </div>
 );
 
 const ProposalButton = () => (
   <button
-    style={{ width: "max-content" }}
-    className="btn btn-primary"
+    className="btn-primary"
     disabled={form[formEls.post_type].some(
       (el) => el.required && !formEls[el.name]
     )}
     onClick={handleSave}
   >
-    {id ? "Edit" : "Create"} proposal
     <i className="bi bi-plus-lg" />
+    {id ? "Edit" : "Create"} post
   </button>
 );
 
@@ -209,7 +200,8 @@ return (
           props={{
             onChange: handleAttachments,
             children: (
-              <UploadFileButton className="btn-primary">
+              <UploadFileButton className="btn-primary outlined">
+                <i className="bi bi-upload" />
                 Upload File
               </UploadFileButton>
             ),
