@@ -109,11 +109,11 @@ return (
                 onClick={() => setShowNav(!showNav)}
               />
             </a>
-            {context.accountId === admin && (
-              <a href={`//*__@replace:widgetPath__*/.App?page=config`}>
-                <i className="bi bi-gear-fill fs-3" />
-              </a>
-            )}
+
+            <a href={`//*__@replace:widgetPath__*/.App?page=config`}>
+              <i className="bi bi-gear-fill fs-3" />
+            </a>
+
             <a
               href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
             >

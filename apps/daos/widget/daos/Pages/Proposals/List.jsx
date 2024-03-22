@@ -115,7 +115,7 @@ return (
       </div>
 
       <div className="d-flex flex-column gap-4 mt-4">
-        {items?.length ? (
+        {items && items.length > 0 ? (
           items
             .filter((i) => i.post_type === type)
             .map((item, index) => (

@@ -1,5 +1,5 @@
 let fontCss = fetch(
-  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
 );
 
 if (!fontCss) {
@@ -115,21 +115,6 @@ const Container = styled.div`
       text-decoration: none;
       cursor: pointer;
       border: 1px solid #a4c2fd;
-    }
-  }
-
-  .btn-outline-primary {
-    border-radius: 10px;
-    color: #151718 !important;
-    text-decoration: none;
-    display: flex;
-    gap: 1rem;
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.15);
-    padding: 10px 40px 10px 25px;
-
-    &:hover {
-      text-decoration: none;
-      cursor: pointer;
     }
   }
 
