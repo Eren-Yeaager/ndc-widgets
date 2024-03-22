@@ -4,35 +4,6 @@ if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 let { dao_id, type, accountId } = props;
 
-const Container = styled.div`
-  width: 100%;
-
-  .dao-img {
-    width: 50px;
-    height: 50px;
-  }
-
-  h4 {
-    margin-bottom: 0;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: left;
-  img {
-    margin-right: 1rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    align-items: center;
-    flex-direction: column;
-    img {
-      margin-bottom: 1rem;
-    }
-  }
-`;
-
 let items = null;
 let dao = null;
 
@@ -58,47 +29,54 @@ else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;
 
-return (
-  <Container>
-    <>
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
-        props={{
-          ...props,
-          daoId: dao ? dao.handle : null,
-          accountId,
-          title: (
-            <Widget
-              src="/*__@replace:widgetPath__*/.Components.PageTitle"
-              props={{
-                text: (
-                  <>
-                    {dao ? dao.title : accountId ? "My" : "All"}
-                    {type}s
-                  </>
-                ),
-              }}
-            />
-          ),
-        }}
-      />
+const Table = styled.div`
+  width: 120%;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  margin-bottom: 50px;
 
-      <div className="d-flex flex-column gap-4 mt-4">
-        {items && items.length > 0 ? (
-          items
-            .filter((i) => i.post_type === type)
-            .map((item, index) => (
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.Post"
-                props={{ item, index, type, id: item.id }}
-              />
-            ))
-        ) : (
-          <div className="w-100 my-5 d-flex justify-content-center align-tems-center">
-            <h1>No active {type}s</h1>
-          </div>
-        )}
-      </div>
-    </>
-  </Container>
+  .created {
+    color: #5C656A;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+   .account-link{
+    color: #4855FC;
+  }
+`;
+
+const TableHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #F8F8F8;
+  padding: 10px 16px;
+  jusify-content: flex-start;
+`;
+
+const TableHeaderCell = styled.div`
+  padding:  0 0 0 10px;
+  display: flex;
+  flex: ${props => props.flex || 1};
+`;
+
+return (
+  <Table>
+    <TableHeader>
+      <TableHeaderCell flex={0.6}>Status</TableHeaderCell>
+      <TableHeaderCell flex={2.3}>DAO</TableHeaderCell>
+      <TableHeaderCell > Modified </TableHeaderCell>
+      <TableHeaderCell  flex={3}>Proposals states</TableHeaderCell>
+      <TableHeaderCell ></TableHeaderCell>
+    </TableHeader>
+    {items.map((row, index) => (
+      <Widget
+        src="/*__@replace:widgetPath__*/.Components.Post"
+        props={{ item: row, index, type, id: row.id }}
+      />
+    ))}
+  </Table>
 );

@@ -1,512 +1,326 @@
-let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
   props;
 
-if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 const [itemState, setItemState] = useState(item);
-const metrics = itemState.metrics ?? itemState;
-assets = assets.home;
-const accountId = context.accountId;
-
-const Container = styled.div`
-  width: 100%;
-  height: max-content;
-  padding: 3rem;
-
-  @media screen and (max-width: 786px) {
-    padding: 1rem;
-  }
-`;
-
-const Card = styled.div`
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0px 30px 80px 0px rgba(0, 0, 0, 0.1);
-  padding: 2rem 3rem;
-
-  h3 {
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    margin: 10px 0;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  .dao-img {
-    width: 20px;
-    height: 20px;
-  }
-
-  .metric {
-    border-radius: 10px;
-    height: 80px;
-    width: 120px;
-    background: linear-gradient(
-      258deg,
-      rgba(162, 195, 254, 0.5) 0%,
-      rgba(225, 197, 252, 0.5) 28.72%,
-      rgba(241, 220, 210, 0.5) 100%
-    );
-    @media screen and (max-width: 786px) {
-      width: 100%;
-    }
-  }
-
-  .info {
-    display: flex;
-    align-items: center;
-  }
-
-  .actions {
-    @media screen and (max-width: 786px) {
-      width: 100%;
-      justify-content: space-between;
-    }
-  }
-
-  .tag {
-    border-radius: 50px;
-    background: #a4c2fd;
-    width: max-content;
-    padding: 4px 15px;
-    font-size: 14px;
-    text-align: center;
-    color: white;
-  }
-
-  @media screen and (max-width: 786px) {
-    padding: 1.5rem;
-  }
-
-  :hover {
-    background: #ffffff;
-  }
-`;
-
-const Status = styled.div`
-  border-radius: 50px;
-  border: 1px solid ${(props) => props.color};
-  width: max-content;
-  padding: 4px 15px;
-  font-size: 14px;
-  text-align: center;
-  color: ${(props) => props.color};
-`;
-
-const Comments = styled.div`
-  border-top: 1px solid #efefef;
-  padding-top: 1rem;
-  @media screen and (max-width: 786px) {
-    overflow: auto;
-  }
-`;
-
-const StatusSelect = styled.div`
-  @media screen and (max-width: 786px) {
-    width: 100%;
-  }
-`;
-
-const Button = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-left: auto;
-  height: 40px;
-  padding: 10px 20px;
-  background: #a4c2fd1a;
-  border-radius: 18px;
-  color: #686467;
-  border: 1px solid #a4c2fd1a;
-
-  &:hover {
-    text-decoration: none;
-    border: 1px solid #a4c2fd;
-  }
-
-  @media screen and (max-width: 786px) {
-    width: 100%;
-  }
-`;
-
-const CardContainer = styled.div`
-  width: 100%;
-  padding: 3px;
-  margin-bottom: ${(p) => (p.marginBottom ? "30px" : "")};
-
-  &:hover {
-    position: relative;
-    border-radius: 10px;
-    background: linear-gradient(
-      270deg,
-      #efdcd1 -1.69%,
-      #e0c6f7 43.78%,
-      #adc3fb 99.83%
-    );
-  }
-`;
-
-const [showMore, setShowMore] = useState(showMoreDefault);
-const [showComments, setShowComments] = useState(showCommentsDefault);
-const [copiedShareUrl, setCopiedShareUrl] = useState(false);
-const pageName = type === "Report" ? "reports" : "proposals";
-
-const isLiked = (item) => {
-  return item.likes && item.likes.find((item) => item.author_id === accountId);
-};
-
-const handleLike = () => {
-  if (isLiked(itemState)) return;
-  if (!accountId) return;
-  Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
-    id: itemState.id,
-  });
-};
-
-const handleSpam = () => {
-  if (!accountId) return;
-  Near.call(contractName, "change_post_is_spam", {
-    id: itemState.id,
-    is_spam: !itemState.is_spam,
-  });
-};
+const [showMore, setShowMore] = useState(null);
 
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
 
-let snapshot;
-
-if (itemState.id)
-  snapshot = Near.view(contractName, "get_post_history", {
-    id: itemState.id,
-  })
-
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
-const statuses = [
-  { key: "InReview", value: "In Review" },
-  { key: "New", value: "New" },
-  { key: "Approved", value: "Approved" },
-  { key: "Rejected", value: "Rejected" },
-  { key: "Closed", value: "Closed" },
-];
-
-const handleShowComments = () => {
-  if (!accountId) return;
-  setShowComments(!showComments);
-};
-const changeStatus = async (item, status) => {
-  if (!accountId) return;
-  Near.call(contractName, "change_post_status", {
-    id: item.id,
-    status,
-  });
-};
-
-const changeHistory = (e) => {
-  const next = snapshot.find((i) => i.timestamp === e.target.value);
-  setItemState((prev) => ({ ...prev, ...next }));
-};
-
-const colorMap = (status) => {
-  switch (status) {
-    case "New":
-      return "rgb(146 168 210)";
-    case "Closed":
-      return "rgb(196 196 196)";
-    case "InReview":
-      return "rgb(223 193 73)";
-    case "Approved":
-      return "rgb(99 222 100)";
-    case "Rejected":
-      return "rgb(214 113 113)";
-    default:
-      break;
+const TableRow = styled.div`
+  display: flex;
+  &:not(:last-child) {
+    border-bottom: 1px solid #e1e1e1;
   }
+  :hover {
+    border-bottom: 1px solid #E3E3E0;
+    background: #FFF;
+    box-shadow: 0px 97px 27px 0px rgba(0, 0, 0, 0.00), 0px 62px 25px 0px rgba(0, 0, 0, 0.00), 0px 35px 21px 0px rgba(0, 0, 0, 0.02), 0px 16px 16px 0px rgba(0, 0, 0, 0.03), 0px 4px 9px 0px rgba(0, 0, 0, 0.03);
+  }
+`;
+
+const TableCell = styled.div`
+  padding: 16px;
+  display: flex;
+  gap: 10px;
+  flex: ${props => props.flex || 1};
+`;
+
+const StatusBadge = styled.span`
+  display: flex;
+  width: 86px;
+  height: 30px;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: ${props => props.background};
+  color: ${props => props.color};
+  border: 1px solid ${props => props.border};
+`;
+
+const OpenReportButton = styled.a`
+  display: flex;
+  width: 150px;
+  height: 40px;
+  padding: 1px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 100px;
+  border: 1px solid #E3E3E0;
+  background: var(--NEAR-Primary-Colors-White, #FFF);
+  :hover {
+    text-decoration: none;
+  }
+`;
+
+const statusColors = {
+  'New': { background: '#8A92F9', color: 'white', border: '#8A92F9' },
+  'Approved': { background: '#2CE691', color: 'white', border: '#2CE691' },
+  'Closed': { background: '#CCC', color: 'white', border: '#CCC' },
+  'In Review': { background: '#F6B86A', color: 'white', border: '#F6B86A' },
+  'Rejected': { background: '#FC6F60', color: 'white', border: '#FC6F60' }
 };
 
-const CardItem = ({ item, index }) => (
-  <CardContainer marginBottom={showCommentsDefault}>
-    <Card key={index} className="d-flex flex-column gap-3">
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-        <Widget
-          src="mob.near/widget/Profile"
-          props={{
-            accountId: item.author_id,
-            tooltip: true,
-          }}
-        />
+const ProposalsState = styled.div`
+  display: flex;
+  height: 30px;
+  padding: 2px 6px 2px 4px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  border: 1px solid #E0F2EA;
+  background: #FFF;
+  font-size: 12px;
+  color: ${props => props.approve ? '#2CE691' : '#FC6F60'};
+  i.ph {
+    font-size: 18px
+  }
+`;
 
-        {item.status && (
-          <>
-            {dao.owners.includes(accountId) ? (
-              <StatusSelect>
-                <select
-                  className="form-control"
-                  value={item.status}
-                  onChange={(status) => changeStatus(item, status.target.value)}
-                >
-                  {statuses.map(({ key, value }) => (
-                    <option value={key}>{value}</option>
-                  ))}
-                </select>
-              </StatusSelect>
-            ) : (
-              <div className="d-flex gap-3 align-items-center">
-                <Status color={colorMap(item.status)}>{item.status}</Status>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <div className="d-flex flex-column gap-3">
-        <div className="d-flex gap-3 align-items-center justify-content-between">
-          <h3>{item.title}</h3>
-          {item.author_id === accountId && item.status === "InReview" && (
-            <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${item.id}&dao_id=${dao.handle}`}
-            >
-              <i className="blue ph ph-pencil-simple fs-5" />
-            </a>
-          )}
-          {snapshot.length > 1 && showCommentsDefault && (
-            <div className="d-flex flex-column gap-1 align-items-center">
-              <small>History</small>
-              <select
-                value={item.timestamp}
-                onChange={changeHistory}
-                className="form-control"
-              >
-                {snapshot.filter((i) => !i.is_spam).map((history) => (
-                  <option value={history.timestamp}>
-                    {new Date(history.timestamp / 1000000).toLocaleString()}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
+const ExpandCollapseIcon = styled.div`
+  padding-left: 30px;
+  height: 24px;
+  cursor: pointer;
+`;
 
-        <div className="d-flex flex-column gap-1">
-          <div className="info">
-            <span style={{ width: "12rem" }}>Updated at:</span>
-            <span>
-              {item.timestamp
-                ? new Date(item.timestamp / 1000000).toLocaleString()
-                : new Date().toLocaleDateString()}
-            </span>
+const Conatiner = styled.div`
+  display: flex;
+  gap: 10px;
+  .dao-img {
+    width: 32px;
+    height: 32px;
+  }
+  .created {
+    color: #5C656A;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .date { 
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+`
+const ProposalCardWarpper = styled.div`
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+`
+
+const ProposalCard = styled.div`
+  display: flex;
+`;
+
+const ProposalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: 20px;
+`;
+
+const ProposalHeader = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const ProposalInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #666;
+`;
+
+const ProposalInfoItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+`;
+
+const Description = styled.div`
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+`;
+
+const Tag = styled.span`
+  background: #e1e1e1;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+`;
+
+const Button = styled.button`
+  background: #007aff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background: #0056b3;
+  }
+`;
+
+
+const Divider = styled.div`
+  width: 100%;
+  display: flex;
+  margin:  10px 0;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-bottom: 1px solid var(--NEAR-Primary-Colors-Off-White-Variation-1, #F0EFE7);
+`;
+
+console.log(itemState);
+return (
+  <>
+    <TableRow key={index}>
+      <TableCell flex={0.5}>
+        <StatusBadge {...statusColors[itemState.status]}>
+          {itemState.status}
+        </StatusBadge>
+      </TableCell>
+      <TableCell flex={2.5}>
+        <Conatiner>
+          <div>
+            <img className="dao-img" src={dao.logo_url} />
           </div>
-          <div className="info">
-            <span style={{ width: "12rem" }}>
-              {em.post_type === "Proposal"
-                ? "Requested sponsor:"
-                : "Reported to:"}
-            </span>
-            {dao && (
-              <a
-                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.handle}`}
-                className="d-flex align-items-center gap-1"
-              >
-                <img className="dao-img" src={dao.logo_url} />
-                <span>{dao.title}</span>
-              </a>
-            )}
+          <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+
+            <div>{itemState.title}</div>
+            <div><span className="created">Created at:</span> <span className="date">{new Date(itemState.timestamp / 1000000).toDateString()}</span></div>
           </div>
-          {item.post_type === "Proposal" && (
-            <div className="info">
-              <span style={{ width: "12rem" }}>Requested amount:</span>
-              <span>
-                <b>${item.requested_amount ?? 0}</b>
-              </span>
-            </div>
-          )}
-          {item.attachments.length > 0 && (
-            <div>
-              <span style={{ width: "12rem" }}>Attachment:</span>
-              <Widget
-                src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-                props={{ attachments: item.attachments }}
-              />
-            </div>
-          )}
+
+        </Conatiner>
+      </TableCell>
+      <TableCell >
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="created"> Modified by</div>
+          <div>
+          </div>
+          <a className="account-link" href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}>{itemState.author_id}</a>
         </div>
-      </div>
-      <a
-        role="button"
-        onClick={() => setShowMore(showMore === index ? null : index)}
-      >
-        <b>
-          See More
-          <i
-            className={`blue ph ${
-              showMore === index ? "ph-eye" : "ph-eye-slash"
-            }`}
-          />
-        </b>
-      </a>
+      </TableCell>
+      <TableCell flex={3}>
+        {/* <ProposalsState approve={itemState.dao} ><span>{itemState.dao ? <i class="ph ph-check-circle"></i> */}
+        <ProposalsState approve={true} ><div>{true ? <i class="ph ph-check-circle"></i>
 
-      {showMore === index &&
-        item.description &&
-        item.post_type === "Proposal" && (
-          <Widget
-            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-            props={{ text: item.description }}
-          />
-        )}
+          : <i class="ph ph-x-circle"></i>
 
-      {showMore === index && item.post_type === "Report" && (
-        <>
-          {metrics["audience"] && (
-            <>
-              <h5>
-                How many people did your project reach during this funding
-                period?
-              </h5>
-              <h3>
-                <b>{metrics["audience"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["growth"] && (
-            <>
-              <h5>
-                How does this month's audience reach compare to previous periods
-                (provide a %)
-              </h5>
-              <h3>
-                <b>{metrics["growth"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["average_engagement_rate"] && (
-            <>
-              <h5>
-                What is the average engagement rate on your project's primary
-                platform (choose one)? Use the formula (Total Likes, Shares &
-                Comments / Total Followers) X 100 = AER %
-              </h5>
-              <h3>
-                <b>{metrics["average_engagement_rate"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["performance_statement_1"] && (
-            <>
-              <h5>
-                What is the biggest win (most improved part of project) during
-                this funding period vs. the previous one (if applicable)?
-              </h5>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{
-                  text: metrics["performance_statement_1"],
-                }}
-              />
-            </>
-          )}
-          {metrics["performance_statement_2"] && (
-            <>
-              <h5>
-                What is the biggest challenge your project is facing? What did
-                not improve during this funding period?
-              </h5>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{
-                  text: metrics["performance_statement_2"],
-                }}
-              />
-            </>
-          )}
-        </>
-      )}
+        }</div> DAO Approved</ProposalsState>
 
-      {item.labels?.length > 0 && (
-        <div className="d-flex flex-wrap gap-2">
-          {item.labels?.map((tag) => (
-            <div className="tag"># {tag}</div>
-          ))}
-        </div>
-      )}
+        <ProposalsState approve={itemState.kyc} > <span>{itemState.dao ? <i class="ph ph-check-circle"></i>
 
-      {!preview && (
-        <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
-          <div className="actions d-flex gap-5 align-items-center">
-            <div
-              role="button"
-              className="d-flex gap-2 align-items-center"
-              onClick={handleLike}
-            >
-              <i
-                className={`blue ph-heart fs-5 ${
-                  isLiked(item) ? "ph-fill" : "ph"
-                }`}
-              />
-              <span className="blue">{item.likes.length}</span>
-            </div>
+          : <i class="ph ph-x-circle"></i>
 
-            <div
-              role="button"
-              className="d-flex gap-2 align-items-center"
-              onClick={handleShowComments}
-            >
-              <i className="blue ph ph-chat-circle fs-5" />
-              <span className="blue">{item.comments.length}</span>
-            </div>
+        }</span>  KYC Approved</ProposalsState>
 
-            <div role="button" className="d-flex gap-2">
+        <ProposalsState approve={itemState.report} > <span>{itemState.dao ? <i class="ph ph-check-circle"></i>
+
+          : <i class="ph ph-x-circle"></i>
+
+        }</span>  Report Rejected</ProposalsState>
+      </TableCell>
+      <TableCell>
+        <OpenReportButton
+          href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+        >
+          Report
+          <i class="ph ph-arrow-square-out"></i>
+        </OpenReportButton>
+        <ExpandCollapseIcon>
+          <i class={`ph ph-caret-${showMore === index ? 'up' : 'down'}`} onClick={() => setShowMore(showMore === index ? null : index)}></i>
+        </ExpandCollapseIcon>
+      </TableCell>
+
+    </TableRow>
+    {showMore === index && (
+      <ProposalCardWarpper>
+        <ProposalCard>
+          <ProposalContent>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <ProposalHeader>{itemState.title}</ProposalHeader>
               <Widget
                 src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
                 props={{
-                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
                 }}
               />
             </div>
-
-            {dao.owners.includes(accountId) && (
-              <div role="button" onClick={handleSpam}>
-                <i
-                  className={`fs-5 ph-flag ${
-                    item.is_spam ? "red ph-fill" : "blue ph"
-                  }`}
-                />
-              </div>
-            )}
-          </div>
-
-          <Button
-            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
+            <ProposalInfo>
+              <ProposalInfoItem>
+                <div style={{ width: "12rem" }}>Updated at:</div>
+                <div>
+                  {itemState.timestamp
+                    ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                    : new Date().toLocaleDateString()}
+                </div>
+              </ProposalInfoItem>
+              <ProposalInfoItem>
+                <Divider />
+              </ProposalInfoItem>
+              <ProposalInfoItem>
+                <div style={{ width: "12rem" }}>Requested amount:</div>
+                <div>
+                  <b>${itemState.requested_amount ?? 0}</b>
+                </div>
+              </ProposalInfoItem>
+            </ProposalInfo>
+          </ProposalContent>
+          <ProposalContent>
+            <Tags>
+              {itemState.labels?.map((tag) => (
+                <Tag>#{tag}</Tag>
+              ))}
+            </Tags>
+            <Description>
+              <Widget
+                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                props={{ text: itemState.description }}
+              />
+            </Description>
+          </ProposalContent>
+        </ProposalCard>
+        <div>
+          <OpenReportButton
+            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
           >
-            {`Open ${item.post_type}`}
-            <i className={"blue ph ph-arrow-square-out fs-5"} />
-          </Button>
+            Open
+            <i class="ph ph-arrow-square-out"></i>
+          </OpenReportButton>
         </div>
-      )}
-
-      {showComments && (
-        <Comments>
-          <Widget
-            src="/*__@replace:widgetPath__*/.Components.Comments"
-            props={{
-              postId: item.id,
-              showCreate: true,
-            }}
-          />
-        </Comments>
-      )}
-    </Card>
-  </CardContainer>
-);
-
-return (
-  <>
-    {(!itemState.is_spam || dao.owners.includes(accountId)) && (
-      <CardItem item={itemState} index={index} />
+      </ProposalCardWarpper>
     )}
   </>
-);
+
+)
