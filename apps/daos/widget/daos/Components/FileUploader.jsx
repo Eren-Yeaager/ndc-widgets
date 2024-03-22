@@ -45,9 +45,9 @@ return (
     >
       {children ??
         (state.cid ? (
-          <i className="bi bi-arrow-clockwise" />
+          <i className="ph ph-arrows-clockwise" />
         ) : (
-          <i className="bi bi-image" />
+          <i className="ph ph-image fs-5" />
         ))}
     </Files>
   </div>

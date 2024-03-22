@@ -271,7 +271,7 @@ const CardItem = ({ item, index }) => (
             <a
               href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${item.id}&dao_id=${dao.handle}`}
             >
-              <i className="bi blue bi-pencil-fill fs-5" />
+              <i className="blue ph ph-pencil-simple fs-5" />
             </a>
           )}
           {snapshot.length > 1 && showCommentsDefault && (
@@ -343,8 +343,8 @@ const CardItem = ({ item, index }) => (
         <b>
           See More
           <i
-            className={`bi blue ${
-              showMore === index ? "bi-eye" : "bi-eye-slash"
+            className={`blue ph ${
+              showMore === index ? "ph-eye" : "ph-eye-slash"
             }`}
           />
         </b>
@@ -442,12 +442,12 @@ const CardItem = ({ item, index }) => (
               className="d-flex gap-2 align-items-center"
               onClick={handleLike}
             >
-              <span className="blue">{item.likes.length}</span>
               <i
-                className={`bi blue ${
-                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                className={`blue ph-heart fs-5 ${
+                  isLiked(item) ? "ph-fill" : "ph"
                 }`}
               />
+              <span className="blue">{item.likes.length}</span>
             </div>
 
             <div
@@ -455,8 +455,8 @@ const CardItem = ({ item, index }) => (
               className="d-flex gap-2 align-items-center"
               onClick={handleShowComments}
             >
+              <i className="blue ph ph-chat-circle fs-5" />
               <span className="blue">{item.comments.length}</span>
-              <i className="bi blue bi-reply fs-5" />
             </div>
 
             <div role="button" className="d-flex gap-2">
@@ -471,9 +471,9 @@ const CardItem = ({ item, index }) => (
             {dao.owners.includes(accountId) && (
               <div role="button" onClick={handleSpam}>
                 <i
-                  className={
-                    item.is_spam ? "bi red bi-flag-fill" : "bi blue bi-flag"
-                  }
+                  className={`fs-5 ph-flag ${
+                    item.is_spam ? "red ph-fill" : "blue ph"
+                  }`}
                 />
               </div>
             )}
@@ -483,7 +483,7 @@ const CardItem = ({ item, index }) => (
             href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
           >
             {`Open ${item.post_type}`}
-            <i className={"bi blue bi-box-arrow-up-right"} />
+            <i className={"blue ph ph-arrow-square-out fs-5"} />
           </Button>
         </div>
       )}

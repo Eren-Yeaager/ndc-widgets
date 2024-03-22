@@ -78,7 +78,7 @@ const [preview, setPreview] = useState(false);
 
 const PreviewButton = () => (
   <div className="btn-secondary" onClick={() => setPreview(!preview)}>
-    <i className="bi bi-eye" />
+    <i className="ph ph-eye fs-6" />
     Preview
   </div>
 );
@@ -91,8 +91,18 @@ const ProposalButton = () => (
     )}
     onClick={handleSave}
   >
-    <i className="bi bi-plus-lg" />
-    {id ? "Edit" : "Create"} post
+    {id ? (
+      <>
+        <i className="ph ph-pencil-simple fs-6" />
+        Edit
+      </>
+    ) : (
+      <>
+        <i className="ph ph-plus fs-6" />
+        Create
+      </>
+    )}
+    post
   </button>
 );
 
@@ -201,7 +211,7 @@ return (
             onChange: handleAttachments,
             children: (
               <UploadFileButton className="btn-primary outlined">
-                <i className="bi bi-upload" />
+                <i className="ph ph-upload-simple fs-6" />
                 Upload File
               </UploadFileButton>
             ),
@@ -219,7 +229,7 @@ return (
           href="https://docs.google.com/document/d/110CqEddPa-99JwM8iCl_kKJxdXLH6IlVePwubO5A55o/edit#heading=h.qya6e5j9ka46"
         >
           <span>Near Digital Collective application form GUIDE</span>
-          <i className="bi bi-box-arrow-up-right" />
+          <i className="ph ph-arrow-square-out fs-5" />
         </a>
       </Form>
     )}

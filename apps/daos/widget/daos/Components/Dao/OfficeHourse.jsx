@@ -92,7 +92,7 @@ return (
       >
         <div>
           {section.office.buttons.book.text}
-          <i className="bi bi-chevron-right" />
+          <i className="ph ph-arrow-right fs-6" />
         </div>
       </PrimaryButton>
       <ButtonGroup>
@@ -102,7 +102,7 @@ return (
         >
           <div>
             {section.office.buttons.workshops.text}
-            <i className="bi bi-chevron-right" />
+            <i className="ph ph-arrow-right fs-6" />
           </div>
         </SecondaryButton>
         <SecondaryButton
@@ -111,7 +111,7 @@ return (
         >
           <div>
             {section.office.buttons.calendar.text}
-            <i className="bi bi-chevron-right" />
+            <i className="ph ph-arrow-right fs-6" />
           </div>
         </SecondaryButton>
       </ButtonGroup>

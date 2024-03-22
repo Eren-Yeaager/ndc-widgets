@@ -107,7 +107,7 @@ const CardBlock = ({ height, id }) => (
             <ListItem key={link}>
               <ItemText>{link.title}</ItemText>
               <Arrow>
-                <i className="bi bi-chevron-right" />
+                <i className="ph ph-chevron-right" />
               </Arrow>
             </ListItem>
           </Link>

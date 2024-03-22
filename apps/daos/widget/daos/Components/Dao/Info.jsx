@@ -20,7 +20,7 @@ const ReadMore = ({ title, href }) => (
   <a href="" className="text-center btn-primary d-flex justify-content-end">
     <div className="d-flex justify-content-between">
       <a href={href}>{title}</a>
-      <i className="bi bi-chevron-right" />
+      <i className="ph ph-caret-right fs-6" />
     </div>
   </a>
 );

@@ -161,7 +161,7 @@ return (
                 {card.button.link && (
                   <div className="d-flex mt-3">
                     <a href={card.button.link}>{card.button.title}</a>
-                    <i className="bi bi-chevron-right" />
+                    <i className="ph ph-caret-right fs-6" />
                   </div>
                 )}
               </div>
@@ -175,7 +175,7 @@ return (
           href={`//*__@replace:widgetPath__*/.App?page=create_post&dao_id=${dao.handle}`}
         >
           Submit Proposal
-          <i className="bi bi-chevron-right" />
+          <i className="ph ph-caret-right fs-6" />
         </SubmitProposal>
         <SubmitProposal
           href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.handle}`}

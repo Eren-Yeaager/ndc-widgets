@@ -5,7 +5,8 @@ return (
       <Tooltip>{state.copied ? "Copied!" : "Copy to clipboard"}</Tooltip>
     }
   >
-    <span
+    <div
+      className="d-flex justify-content-center align-itetms-center"
       role="button"
       onClick={() => {
         clipboard.writeText(props.text).then(() => {
@@ -18,15 +19,15 @@ return (
     >
       {state.copied ? (
         <>
-          {props.copiedIcon ?? <i className="bi blue bi-check-lg" />}
+          {props.copiedIcon ?? <i className="blue ph ph-check fs-5" />}
           {props.copiedLabel ?? props.label}
         </>
       ) : (
         <>
-          {props.clipboardIcon ?? <i className="bi blue bi-share" />}{" "}
+          {props.clipboardIcon ?? <i className="blue ph ph-share-fat fs-5" />}{" "}
           {props.label}
         </>
       )}
-    </span>
+    </div>
   </OverlayTrigger>
 );

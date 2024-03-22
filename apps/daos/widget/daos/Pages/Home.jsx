@@ -302,7 +302,7 @@ return (
             className="btn-primary"
             href={`//*__@replace:widgetPath__*/.App?page=create_post`}
           >
-            <i className="bi bi-check-lg" />
+            <i className="ph ph-check fs-5" />
             Submit Proposal
           </a>
         </div>

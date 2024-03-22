@@ -32,6 +32,14 @@ const Navbar = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  .account {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 1px solid #f0efe7;
+    padding: 8px 24px;
+  }
 `;
 
 const LinksContainer = styled.div`
@@ -68,6 +76,12 @@ const LinksContainer = styled.div`
   }
 `;
 
+const Title = styled.span`
+  color: #000;
+  font-size: 20.16px;
+  font-weight: 750;
+`;
+
 const NavigationLinks = () => (
   <>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
@@ -76,7 +90,7 @@ const NavigationLinks = () => (
       className="btn-primary"
       href={`//*__@replace:widgetPath__*/.App?page=create_post`}
     >
-      <i className="bi bi-plus-lg" />
+      <i className="ph ph-plus fs-6" />
       Create Post
     </a>
   </>
@@ -85,8 +99,12 @@ const NavigationLinks = () => (
 return (
   <Container>
     <Navbar className="container-xl">
-      <a href={`//*__@replace:widgetPath__*/.App`}>
+      <a
+        className="d-flex gap-2 align-items-center"
+        href={`//*__@replace:widgetPath__*/.App`}
+      >
         <img src={assets.logoWhite} />
+        <Title>NDC</Title>
       </a>
       <div className="d-flex align-items-center">
         {accountId && (
@@ -96,20 +114,43 @@ return (
             </div>
             <a href="#">
               <i
-                className="menu-icon bi bi-list fs-1"
+                className="menu-icon ph ph-list fs-5"
                 onClick={() => setShowNav(!showNav)}
               />
             </a>
-            {context.accountId === admin && (
-              <a href={`//*__@replace:widgetPath__*/.App?page=config`}>
-                <i className="bi bi-gear-fill fs-3" />
-              </a>
-            )}
-            <a
-              href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
-            >
-              <i className="bi bi-person-circle fs-3" />
-            </a>
+            <div className="account">
+              <Widget
+                src="near/widget/DIG.DropdownMenu"
+                props={{
+                  trigger: (
+                    <div className="d-flex gap-3 align-items-center">
+                      <div className="d-flex gap-2 align-items-center">
+                        <i className="ph ph-user" />
+                        <span>{context.accountId}</span>
+                      </div>
+                      <i className="ph ph-caret-down" />
+                    </div>
+                  ),
+                  items: [
+                    {
+                      name: "My Proposals",
+                      iconLeft: "ph ph-clipboard-text fs-6",
+                      href: `//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`,
+                    },
+                    {
+                      name: "My Reports",
+                      iconLeft: "ph ph-presentation-chart fs-6",
+                      href: `//*__@replace:widgetPath__*/.App?page=reports&accountId=${context.accountId}`,
+                    },
+                    {
+                      name: "Settings",
+                      iconLeft: "ph ph-gear-six fs-6",
+                      href: `//*__@replace:widgetPath__*/.App?page=config`,
+                    },
+                  ],
+                }}
+              />
+            </div>
           </LinksContainer>
         )}
       </div>

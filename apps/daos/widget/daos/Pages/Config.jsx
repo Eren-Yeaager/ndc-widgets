@@ -45,7 +45,7 @@ return (
 
       {user !== context.accountId && (
         <small>
-          <i className="bi bi-info-circle" />
+          <i className="ph ph-info fs-5" />
           <i>
             Config editing available only for Admin account (<b>{user}</b>)
           </i>
@@ -65,7 +65,7 @@ return (
         disabled={user !== context.accountId}
       >
         Edit Config
-        <i className="bi bi-pencil" />
+        <i className="ph ph-pencil-simple fs-5" />
       </button>
     </Wrapper>
   </Container>

@@ -10,7 +10,7 @@ const links = [
       daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
     }`,
     style: "outlined",
-    icon: <i className="bi bi-clipboard-data-fill" />,
+    icon: <i className="ph ph-presentation-chart fs-5" />,
   },
   {
     text: "Proposals",
@@ -18,7 +18,7 @@ const links = [
       daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
     }`,
     style: "invresed",
-    icon: <i className="bi bi-file-earmark-text-fill" />,
+    icon: <i className="ph ph-clipboard-text fs-5" />,
   },
   // {
   //   text: "Comments",
