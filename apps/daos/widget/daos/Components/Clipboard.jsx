@@ -24,7 +24,9 @@ return (
         </>
       ) : (
         <>
-          {props.clipboardIcon ?? <i className="blue ph ph-share-fat fs-5" />}{" "}
+          {props.clipboardIcon ?? (
+            <i className="blue ph ph-share-network fs-5" />
+          )}{" "}
           {props.label}
         </>
       )}
