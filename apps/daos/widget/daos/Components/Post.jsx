@@ -184,7 +184,7 @@ let snapshot;
 if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
     id: itemState.id,
-  }).filter((i) => !i.is_spam);
+  })
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -282,7 +282,7 @@ const CardItem = ({ item, index }) => (
                 onChange={changeHistory}
                 className="form-control"
               >
-                {snapshot.map((history) => (
+                {snapshot.filter((i) => !i.is_spam).map((history) => (
                   <option value={history.timestamp}>
                     {new Date(history.timestamp / 1000000).toLocaleString()}
                   </option>
