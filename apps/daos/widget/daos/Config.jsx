@@ -74,6 +74,11 @@ return {
             ],
           },
           office: {},
+          contacts: {
+            admin: "ndcdev.near",
+            poc: [],
+            tg: "",
+          },
         },
       },
       "ops-team": {
