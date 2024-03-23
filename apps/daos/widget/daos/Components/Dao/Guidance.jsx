@@ -171,17 +171,17 @@ return (
       </div>
 
       <div className="d-flex gap-3 w-100 flex-wrap justify-content-center">
-        <SubmitProposal
+        <a className="post-btn"
           href={`//*__@replace:widgetPath__*/.App?page=create_post&dao_id=${dao.handle}`}
         >
           Submit Proposal
           <i className="bi bi-chevron-right" />
-        </SubmitProposal>
-        <SubmitProposal
+        </a>
+        <a className="post-btn"
           href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.handle}`}
         >
           Show Proposals
-        </SubmitProposal>
+        </a>
       </div>
     </div>
   </Container>

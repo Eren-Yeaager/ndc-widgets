@@ -137,6 +137,18 @@ const Container = styled.div`
     }
   }
 
+  a.post-btn {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 10px 25px;
+    text-align: center;
+    color: #fff;
+
+    @media screen and (max-width: 786px) {
+      width: 100%;
+    }
+  }
+
   .red {
     color: rgb(255 141 141);
   }

@@ -82,13 +82,17 @@ const LinksContainer = styled.div`
 `;
 
 const NavigationLinks = () => (
-  <>
+  <div className="d-flex align-items-center gap-5">
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=create_post`}>
+    <a
+      className="post-btn d-flex align-items-center gap-2"
+      href={`//*__@replace:widgetPath__*/.App?page=create_post`}
+    >
+      <i className="ph ph-plus fs-5" />
       Create Post
     </a>
-  </>
+  </div>
 );
 
 return (
