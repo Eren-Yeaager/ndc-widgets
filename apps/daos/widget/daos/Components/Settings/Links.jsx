@@ -3,32 +3,6 @@ if (!content) return <Widget src="flashui.near/widget/Loading" />;
 
 const { selectedDao } = props;
 
-const Form = styled.div`
-  border-radius: 20px;
-  background: white;
-  padding: 3rem;
-
-  label {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-
-  .form-control.error {
-    border: 1px solid red;
-  }
-
-  .title {
-    b {
-      font-weight: 600;
-    }
-    font-weight: 300;
-
-    a {
-      text-decoration: underline;
-    }
-  }
-`;
-
 const [daoContactsName, setDaoContactsName] = useState("");
 const [daoContactsTg, setDaoContactsTg] = useState("");
 const [daoWebsite, setDaoWebsite] = useState("");
@@ -51,7 +25,7 @@ const handleAddPOC = () => {
       },
     ],
   ];
-  console.log(content);
+
   daoContacts.poc = poc;
   setDaoContacts(daoContacts);
 };
@@ -59,7 +33,7 @@ const handleAddPOC = () => {
 const handleSave = () => {};
 
 return (
-  <Form className="d-flex flex-column gap-3">
+  <div className="d-flex flex-column gap-3">
     <div className="form-element">
       <label className="form-label">Web Site</label>
       <input
@@ -106,11 +80,11 @@ return (
             <div className="d-flex gap-3">
               {name}
               <a
-                className="d-flex gap-1"
+                className="d-flex gap-1 align-items-center"
                 href={`https://t.me/${tg.replace("@", "")}`}
               >
-                (<i className="bi bi-telegram" />
-                {tg.replace("@", "")})
+                <i className="ph ph-telegram-logo" />
+                {tg.replace("@", "")}
               </a>
             </div>
           ))}
@@ -140,8 +114,8 @@ return (
           />
         </div>
         <div className="d-flex align-items-end">
-          <button className="btn btn-primary" onClick={handleAddPOC}>
-            <i className="bi bi-plus-lg" />
+          <button className="btn btn-secondary" onClick={handleAddPOC}>
+            <i className="ph ph-plus fs-6" />
             Add new POC
           </button>
         </div>
@@ -149,8 +123,8 @@ return (
     </div>
 
     <button className="btn btn-primary" onClick={handleSave}>
-      <i className="bi bi-pencil" />
+      <i className="ph ph-pencil-simple fs-6" />
       Save
     </button>
-  </Form>
+  </div>
 );

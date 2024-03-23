@@ -4,7 +4,7 @@ const { dao, index } = props;
 if (!content) return <Widget src="flashui.near/widget/Loading" />;
 
 const DaoCard = styled.div`
-  width: 400px;
+  width: 420px;
   height: 400px;
   border-radius: 10px;
   color: #11181c;
@@ -74,25 +74,25 @@ return (
       </div>
 
       <div className="d-flex gap-2 justify-content-between">
-        <DaoLink
+        <a
           href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`}
-          className="btn btn-secondary d-flex justify-content-center"
+          className="btn btn-primary d-flex justify-content-center"
         >
           <div className="d-flex gap-2 justify-content-center w-100">
-            <i class="bi bi-plus-circle"></i>
+            <i class="ph ph-plus fs-5"></i>
             Join DAO
           </div>
-        </DaoLink>
+        </a>
         {content.daos[dao.handle].customUrl && (
-          <DaoLink
+          <a
             href={content.daos[dao.handle].customUrl}
-            className="btn secondary"
+            className="btn btn-secondary"
           >
             <div className="d-flex gap-2 justify-content-center w-100">
-              <i class="bi bi-box-arrow-up-right"></i>
+              <i class="ph ph-arrow-square-out fs-5"></i>
               Visit Website
             </div>
-          </DaoLink>
+          </a>
         )}
       </div>
     </div>

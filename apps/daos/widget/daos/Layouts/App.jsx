@@ -164,9 +164,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 2rem 0 3rem 0;
+  padding: 0 7rem;
 
   @media screen and (max-width: 786px) {
     width: 100%;
+    padding: 0 2rem;
   }
 `;
 

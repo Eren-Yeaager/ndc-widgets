@@ -3,32 +3,6 @@ if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const { selectedDao } = props;
 
-const Form = styled.div`
-  border-radius: 20px;
-  background: white;
-  padding: 3rem;
-
-  label {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-
-  .form-control.error {
-    border: 1px solid red;
-  }
-
-  .title {
-    b {
-      font-weight: 600;
-    }
-    font-weight: 300;
-
-    a {
-      text-decoration: underline;
-    }
-  }
-`;
-
 const AutoComplete = styled.div`
   margin: 5px 0;
 `;
@@ -92,7 +66,7 @@ const handleSave = () => {
 };
 
 return (
-  <Form className="d-flex flex-column gap-3">
+  <div className="d-flex flex-column gap-3">
     <div className="form-element">
       <label className="form-label">Account ID</label>
       <input
@@ -167,7 +141,7 @@ return (
             />
             <i
               role="button"
-              className="bi bi-x-lg"
+              className="ph ph-x fs-5"
               onClick={() =>
                 setDaoMembers(daoMembers.filter((m) => m !== member))
               }
@@ -199,8 +173,8 @@ return (
     </div>
 
     <button className="btn btn-primary" onClick={handleSave}>
-      <i className="bi bi-pencil" />
+      <i className="ph ph-pencil-simple fs-6" />
       Save
     </button>
-  </Form>
+  </div>
 );

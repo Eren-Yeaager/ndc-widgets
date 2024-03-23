@@ -145,21 +145,6 @@ const ParalaxImg = styled.div`
   }
 `;
 
-const SubmitProposal = styled.a`
-  font-size: 24px;
-  transition: all 0.3s ease;
-  border-radius: 50px;
-  border: 3px solid #ffce26;
-  color: white !important;
-  padding: 15px 40px;
-  text-align: center;
-  margin-bottom: 2rem;
-
-  &:hover {
-    text-decoration: none;
-  }
-`;
-
 const [loading, setLoading] = useState(false);
 
 const daos = Near.view(contractName, "get_dao_list");
@@ -171,7 +156,6 @@ let proposals = Near.view(contractName, "get_all_posts", {
 let projects = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
 });
-
 
 if (!daos || !contractName || !content || !assets || !proposals || !projects)
   return <Widget src="flashui.near/widget/Loading" />;
@@ -294,17 +278,25 @@ return (
             <ul>
               <li>{content.createyourGrassrootDAO.items.first}</li>
               <li>{content.createyourGrassrootDAO.items.second}</li>
-              <li>{content.createyourGrassrootDAO.items.third}</li>
             </ul>
           </p>
 
-          <a
-            className="btn-primary"
-            href={`//*__@replace:widgetPath__*/.App?page=create_post`}
-          >
-            <i className="ph ph-check fs-5" />
-            Submit Proposal
-          </a>
+          <div className="d-flex flex-wrap gap-3">
+            <a
+              className="btn-primary"
+              href={`//*__@replace:widgetPath__*/.App?page=create_post`}
+            >
+              <i className="ph ph-check fs-5" />
+              Submit Proposal
+            </a>
+            <a
+              className="btn-secondary"
+              href={`//*__@replace:widgetPath__*/.App?page=proposals`}
+            >
+              <i className="ph ph-arrow-square-out fs-5" />
+              See Examples
+            </a>
+          </div>
         </div>
         <div className="circle" />
         <img src="https://ipfs.near.social/ipfs/bafybeig2zwkn3lsogyekukxg3bvx5jxz6hsakfbc4zokzopexwksqo7xoe" />

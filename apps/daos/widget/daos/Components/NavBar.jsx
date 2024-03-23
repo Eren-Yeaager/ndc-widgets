@@ -25,6 +25,13 @@ const Container = styled.div`
       display: flex;
     }
   }
+
+  a {
+    font-weight: 600;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 `;
 
 const Navbar = styled.div`
@@ -46,7 +53,7 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 
   .circle {
     position: absolute;
@@ -78,7 +85,7 @@ const LinksContainer = styled.div`
 
 const Title = styled.span`
   color: #000;
-  font-size: 20.16px;
+  font-size: 27px;
   font-weight: 750;
 `;
 
@@ -109,7 +116,7 @@ return (
       <div className="d-flex align-items-center">
         {accountId && (
           <LinksContainer>
-            <div className="links gap-5">
+            <div className="links">
               <NavigationLinks />
             </div>
             <a href="#">

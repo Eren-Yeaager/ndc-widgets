@@ -3,7 +3,7 @@ return {
   prodContractName: "v3.test-dao.near",
   assets: {
     logoWhite:
-      "https://ipfs.near.social/ipfs/bafkreigyapiunl76ovvffedn26zv2s3nbotseh2t6lnbvgefoxkyivhdpy",
+      "https://ipfs.near.social/ipfs/bafkreia3unvzppqzsqxmet622a7yobxhq7mnfpz7yuesvapdu2zhxmiwbm",
     logoColor:
       "https://ipfs.near.social/ipfs/bafkreieit24q3nlzzemyjblesy274gtlhjzbhmpfgpwfdfhjgntkhfc4fi",
     home: {
@@ -1561,11 +1561,6 @@ return {
           first:
             "Create your KPIs, process, prepare the team, create a presentation, and submit your proposal!",
           second: "Timelines: 13-19th of each month",
-          third: (
-            <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
-              Examples
-            </a>
-          ),
         },
       },
 
@@ -1595,7 +1590,7 @@ return {
     },
   },
   socials: {
-    "twitter-x": "https://x.com/neardc",
-    telegram: "https://t.me/neardigitalcollective",
+    "twitter-logo": "https://x.com/neardc",
+    "telegram-logo": "https://t.me/neardigitalcollective",
   },
 };

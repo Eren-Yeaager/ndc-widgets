@@ -20,18 +20,6 @@ const links = [
     style: "invresed",
     icon: <i className="ph ph-clipboard-text fs-5" />,
   },
-  // {
-  //   text: "Comments",
-  //   href: `//*__@replace:widgetPath__*/.App?page=comments`,
-  //   disabled: true,
-  //   icon: <i className="bi bi-chat-square-text-fill" />,
-  // },
-  // {
-  //   text: "Favourites",
-  //   href: `//*__@replace:widgetPath__*/.App?page=favourites`,
-  //   disabled: true,
-  //   icon: <i className="bi bi-star-fill" />,
-  // },
 ];
 
 const Navbar = styled.div`
