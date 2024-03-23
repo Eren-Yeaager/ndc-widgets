@@ -191,7 +191,7 @@ return (
               />
             ) : (
               <input
-                class={`form-control ${error[el.name] && "error"}`}
+                className={`form-control ${error[el.name] && "error"}`}
                 type={el.type}
                 name={el.name}
                 min={el.min}

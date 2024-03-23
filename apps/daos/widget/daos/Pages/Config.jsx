@@ -1,8 +1,7 @@
-const config = Social.get(`/*__@replace:widgetPath__*/.Config`);
-
-if (!config) return <Widget src="flashui.near/widget/Loading" />;
-const [user, widget, name] = `/*__@replace:widgetPath__*/.Config`.split("/");
-const [value, setValue] = useState(config);
+let { contractName, content } = VM.require(
+  `/*__@replace:widgetPath__*/.Config`
+);
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const Container = styled.div`
   width: 100%;
@@ -13,12 +12,10 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 65vh;
   margin-bottom: 5rem;
   display: flex;
   gap: 1rem;
   flex-direction: column;
-  justify-content: space-between;
 
   textarea {
     font-family: monospace;
@@ -26,47 +23,86 @@ const Wrapper = styled.div`
   }
 `;
 
-const handleSave = () => {
-  if (user !== context.accountId) return;
+const daos = Near.view(contractName, "get_dao_list", {});
 
-  Social.set({
-    [widget]: {
-      [name]: {
-        "": value,
-      },
-    },
-  });
-};
+if (!daos) return <Widget src="flashui.near/widget/Loading" />;
+
+const myDAOs = daos.filter((dao) => dao.owners.includes(context.accountId));
+
+if (myDAOs.length === 0)
+  return (
+    <Container>
+      <Wrapper>
+        <h2>You're not allowed to make DAOs changes</h2>
+      </Wrapper>
+    </Container>
+  );
+
+const [selectedDao, setSelectedDao] = useState(myDAOs[0]);
+
+const handleSelectDao = (e) =>
+  setSelectedDao(myDAOs.find((dao) => dao.id === parseInt(e.target.value)));
 
 return (
   <Container>
     <Wrapper>
-      <h2>Global DAOs Config File</h2>
+      <h2>Settings</h2>
 
-      {user !== context.accountId && (
-        <small>
-          <i className="ph ph-info fs-5" />
-          <i>
-            Config editing available only for Admin account (<b>{user}</b>)
-          </i>
-        </small>
-      )}
+      <div className="form-element">
+        <label className="form-label">Select DAO</label>
+        <select
+          className="form-control"
+          value={selectedDao.id}
+          onChange={handleSelectDao}
+        >
+          {myDAOs.map((dao) => (
+            <option value={dao.id}>{dao.title}</option>
+          ))}
+        </select>
+      </div>
 
-      <textarea
-        className="w-100 h-100"
-        defaultValue={config}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      ></textarea>
-
-      <button
-        className="btn btn-primary"
-        onClick={handleSave}
-        disabled={user !== context.accountId}
-      >
-        Edit Config
-        <i className="ph ph-pencil-simple fs-5" />
-      </button>
+      <Widget
+        src="near/widget/DIG.Tabs"
+        props={{
+          variant: "line",
+          size: "default",
+          items: [
+            {
+              name: "General",
+              value: "1",
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.General"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-gear",
+            },
+            {
+              name: "Content",
+              value: "2",
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Content"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-clipboard-text",
+            },
+            {
+              name: "Links",
+              value: "3",
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Links"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-link",
+            },
+          ],
+        }}
+      />
     </Wrapper>
   </Container>
 );

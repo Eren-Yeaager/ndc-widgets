@@ -39,17 +39,6 @@ const Header = styled.div`
     }
   }
 `;
-const SubmitProposal = styled.a`
-  background: rgb(164, 194, 253);
-  color: #fff !important;
-  border-radius: 10px;
-  padding: 10px 25px;
-  text-align: center;
-
-  @media screen and (max-width: 786px) {
-    width: 100%;
-  }
-`;
 
 let items = null;
 let dao = null;
@@ -100,7 +89,7 @@ return (
       />
 
       <div className="d-flex flex-column gap-4 mt-4">
-        {items?.length ? (
+        {items && items.length > 0 ? (
           items
             .filter((i) => i.post_type === type)
             .map((item, index) => (

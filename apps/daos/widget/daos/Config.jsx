@@ -21,19 +21,280 @@ return {
           info: {
             title: "NDC",
             description: "",
-            cards: [],
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
           },
-          roadmap: {},
-          guidance: {},
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Ops Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
           office: {},
+          contacts: {
+            admin: "ndcdev.near",
+            poc: [],
+            tg: "",
+          },
+        },
+      },
+      "ops-team": {
+        sections: {
+          info: {
+            title: "Ops Team",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Ops Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+          contacts: {
+            admin: "",
+            poc: [
+              {
+                name: "",
+                tg: "",
+              },
+            ],
+            tg: "",
+          },
+        },
+      },
+      "smm-team": {
+        sections: {
+          info: {
+            title: "SMM Team",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "SMM Team",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+          contacts: {
+            admin: "devochka.near",
+            poc: [
+              {
+                name: "",
+                tg: "",
+              },
+            ],
+            tg: "",
+          },
+        },
+      },
+      "service-dao": {
+        sections: {
+          info: {
+            title: "Service DAO",
+            description: "",
+            cards: [
+              {
+                title: "Vision",
+                icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Mission",
+                icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+              {
+                title: "Strategy",
+                icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+                description: `Coming soon`,
+                button: { title: "Read more", link: "" },
+              },
+            ],
+          },
+          roadmap: {
+            title: "Roadmap",
+            description:
+              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
+            button: { title: "Read more", link: "" },
+            image:
+              "https://ipfs.near.social/ipfs/bafkreicyxm3je2reytiefhxrtq3z2ne2dg5ko2szxnfsw2jpuhfwxn2ub4",
+          },
+          guidance: {
+            subTitle: "GUIDANCE",
+            title: "Service DAO",
+            description:
+              "Supports projects with open-source infrastructure & web applications, trains a growing community of Builders and Projects",
+            cards: [
+              {
+                title: "Become a member",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Contribute",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+              {
+                title: "Funding",
+                description: "Coming soon.",
+                button: { title: "Learn more", link: "" },
+              },
+            ],
+          },
+          office: {},
+          contacts: {
+            admin: "davletuner.near",
+            poc: [
+              {
+                name: "",
+                tg: "",
+              },
+            ],
+            tg: "",
+          },
         },
       },
       "build-dao": {
+        customUrl: "https://www.nearbuilders.com/",
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -108,16 +369,23 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "james.near",
+            poc: [
+              {
+                name: "James",
+                tg: "@jwaup",
+              },
+            ],
+            tg: "https://t.me/+0yT1bqsQHxkzMDkx",
           },
         },
       },
       "gaming-dao": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -203,11 +471,22 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "haenko.near",
+            poc: [
+              {
+                name: "Evgenyi",
+                tg: "@evg3nykh",
+              },
+            ],
+            tg: "https://t.me/NearGamesChat",
           },
         },
       },
       "marketing-dao": {
+        customUrl: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
         sections: {
           info: {
             title: "DEGENS DAO",
@@ -287,16 +566,23 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "",
+            poc: [
+              {
+                name: "Elliot",
+                tg: "",
+              },
+            ],
+            tg: "https://t.me/ndc_marketing",
           },
         },
       },
       "degen-dao": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -384,16 +670,24 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "lolson.near",
+            poc: [
+              {
+                name: "Lol Son",
+                tg: "@LolSon_tg",
+              },
+            ],
+            tg: "https://t.me/+abtJVxy6v6tiMzU5",
           },
         },
       },
       "onboard-dao": {
+        customUrl: "https://www.onboarddao.org/",
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -468,16 +762,23 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "yuensid.near",
+            poc: [
+              {
+                name: "Yuen",
+                tg: "@Yuensid",
+              },
+            ],
+            tg: "https://onboarddao.org/telegram",
           },
         },
       },
       "aurora-community-dao": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -568,16 +869,23 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "luchito1.near",
+            poc: [
+              {
+                name: "Luchito",
+                tg: "@SuperLuchito",
+              },
+            ],
+            tg: "https://t.me/ac_dao",
           },
         },
       },
       "near-globe-dao": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -652,16 +960,23 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "iamanansari.near",
+            poc: [
+              {
+                name: "Iaman",
+                tg: "@iaman38",
+              },
+            ],
+            tg: "https://t.me/nearglobedao/1",
           },
         },
       },
       "nft-dao": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -744,16 +1059,27 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "nearversedao.near",
+            poc: [
+              {
+                name: "Tej",
+                tg: "@punter_nearverselabs",
+              },
+              {
+                name: "Krik",
+                tg: "@krikkraktrak",
+              },
+            ],
+            tg: "https://t.me/+i3GC2WYx5b5hMThh",
           },
         },
       },
       "she-is-near": {
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -843,7 +1169,17 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "blessedchidi.near",
+            poc: [
+              {
+                name: "Blessed",
+                tg: "@BlessedEbube",
+              },
+            ],
+            tg: "https://t.me/+chCr04QKtPQ0NDQy",
           },
         },
       },
@@ -939,6 +1275,16 @@ return {
           projects: {
             title: "Featured Projects",
           },
+          contacts: {
+            admin: "igboze_builder.near",
+            poc: [
+              {
+                name: "Igboze",
+                tg: "@israel_igboze",
+              },
+            ],
+            tg: "https://t.me/NearAfricaDao/1",
+          },
         },
       },
       "freelancer-dao": {
@@ -1031,16 +1377,24 @@ return {
             },
           },
           projects: {
-            title: "Featured Projects",
+            title: "Supported Projects",
+          },
+          contacts: {
+            admin: "psalm.near",
+            poc: [
+              {
+                name: "Psalm",
+                tg: "@psalmy69",
+              },
+            ],
+            tg: "https://t.me/+amyuPhYNlHI0MmFk",
           },
         },
       },
       "near-research-collective": {
+        customUrl: "https://marmaj.org/ncr/",
         sections: {
           info: {
-            title: "DEGENS DAO",
-            description:
-              "The Decentralized Developer Relations Program allows individuals and projects to build developer communities around NEAR Protocol by focusing on local or specialized needs. By letting these groups design strategies for specific regions or technical areas like ZK or AI",
             cards: [
               {
                 title: "Vision",
@@ -1143,6 +1497,16 @@ return {
           projects: {
             title: "Featured Projects",
           },
+          contacts: {
+            admin: "hannah17.near",
+            poc: [
+              {
+                name: "Hannah",
+                tg: "@Hannahh17",
+              },
+            ],
+            tg: "https://t.me/ResearchWG",
+          },
         },
       },
     },
@@ -1216,7 +1580,7 @@ return {
       },
 
       featuredProducts: {
-        title: "Featured products",
+        title: "Supported Projects",
         projects: [
           "HERE Wallet",
           "Meteor Wallet",

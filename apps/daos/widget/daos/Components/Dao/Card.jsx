@@ -1,7 +1,10 @@
+let { content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { dao, index } = props;
 
+if (!content) return <Widget src="flashui.near/widget/Loading" />;
+
 const DaoCard = styled.div`
-  width: 330px;
+  width: 400px;
   height: 400px;
   border-radius: 10px;
   color: #11181c;
@@ -41,10 +44,22 @@ const DaoDesc = styled.div`
   text-overflow: ellipsis;
 `;
 
-// This is to be used if we want use other Links for landing pages.
-const priorityLink = {
-  4: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
-};
+const DaoLink = styled.a`
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+  background: black;
+  padding: 10px 25px;
+  color: white !important;
+
+  &.secondary {
+    background: transparent;
+    border: 1px solid black;
+    color: black !important;
+  }
+`;
 
 return (
   <DaoCard>
@@ -57,16 +72,29 @@ return (
         <h4 className="bold color-text px-3 mt-1 text-center">{dao.title}</h4>
         <DaoDesc>{dao.description}</DaoDesc>
       </div>
-      <a
-        href={
-          priorityLink[dao.id] ??
-          `//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`
-        }
-        className="btn-primary"
-      >
-        <i class="ph ph-plus fs-5"></i>
-        Join DAO
-      </a>
+
+      <div className="d-flex gap-2 justify-content-between">
+        <DaoLink
+          href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`}
+          className="btn btn-secondary d-flex justify-content-center"
+        >
+          <div className="d-flex gap-2 justify-content-center w-100">
+            <i class="bi bi-plus-circle"></i>
+            Join DAO
+          </div>
+        </DaoLink>
+        {content.daos[dao.handle].customUrl && (
+          <DaoLink
+            href={content.daos[dao.handle].customUrl}
+            className="btn secondary"
+          >
+            <div className="d-flex gap-2 justify-content-center w-100">
+              <i class="bi bi-box-arrow-up-right"></i>
+              Visit Website
+            </div>
+          </DaoLink>
+        )}
+      </div>
     </div>
   </DaoCard>
 );

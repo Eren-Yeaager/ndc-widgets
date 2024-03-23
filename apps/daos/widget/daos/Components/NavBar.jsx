@@ -83,7 +83,7 @@ const Title = styled.span`
 `;
 
 const NavigationLinks = () => (
-  <>
+  <div className="d-flex align-items-center gap-5">
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <a
@@ -93,7 +93,7 @@ const NavigationLinks = () => (
       <i className="ph ph-plus fs-6" />
       Create Post
     </a>
-  </>
+  </div>
 );
 
 return (
