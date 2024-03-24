@@ -97,11 +97,18 @@ const Theme = styled.div`
       outline: none;
     }
   }
+
+  .btn-icon {
+    @media screen and (max-width: 768px) {
+      padding: 10px;
+    }
+  }
 `;
 
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
+  padding-bottom: 4rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -168,7 +175,7 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 786px) {
     width: 100%;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
   }
 `;
 

@@ -6,8 +6,6 @@ let { dao_id, type, accountId } = props;
 
 const Container = styled.div`
   width: 100%;
-  height: max-content;
-  padding: 0 0 5rem 0;
 
   .dao-img {
     width: 50px;
@@ -16,11 +14,6 @@ const Container = styled.div`
 
   h4 {
     margin-bottom: 0;
-  }
-
-  @media screen and (max-width: 786px) {
-    padding: 1rem;
-    margin-bottom: 30px;
   }
 `;
 
@@ -75,15 +68,17 @@ return (
           daoId: dao ? dao.handle : null,
           accountId,
           title: (
-            <div className="d-flex align-items-center gap-3">
-              {dao ? <img className="dao-img" src={dao.logo_url} /> : <></>}
-              <h4>
-                <b>
-                  {dao ? dao.title : accountId ? "My" : "All"}
-                  {type}s
-                </b>
-              </h4>
-            </div>
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.PageTitle"
+              props={{
+                text: (
+                  <>
+                    {dao ? dao.title : accountId ? "My" : "All"}
+                    {type}s
+                  </>
+                ),
+              }}
+            />
           ),
         }}
       />

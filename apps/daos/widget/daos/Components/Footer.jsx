@@ -22,7 +22,7 @@ const Footer = styled.div`
   position; absolute;
   bottom: 0;
   background: #151718;
-  padding: 4rem 0 7rem 0;
+  padding: 3rem 0;
 `;
 
 const Description = styled.p`

@@ -6,10 +6,10 @@ if (!page) page = "home";
 
 function Page() {
   switch (page) {
-    case "config": {
+    case "settings": {
       return (
         <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.Config`}
+          src={`/*__@replace:widgetPath__*/.Pages.Settings`}
           props={props}
         />
       );

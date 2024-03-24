@@ -28,13 +28,6 @@ const Navbar = styled.div`
   gap: 3rem;
   align-items: center;
   width: 100%;
-
-  @media screen and (max-width: 1020px) {
-    gap: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
 `;
 
 const LinksContainer = styled.div`
@@ -43,10 +36,16 @@ const LinksContainer = styled.div`
   justify-content: space-between;
 
   a {
-    width: 150px;
     text-align: center;
     justify-content: center;
     text-decoration: none;
+  }
+
+  .text {
+    display: flex;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
@@ -56,7 +55,7 @@ return (
     <LinksContainer>
       {links.map(({ icon, style, disabled, text, href }) => (
         <a
-          className={`btn-secondary ${style} ${
+          className={`btn-secondary btn-icon ${style} ${
             disabled ? "disabled" : "active"
           }`}
           href={href}

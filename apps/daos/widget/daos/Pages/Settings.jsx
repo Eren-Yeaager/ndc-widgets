@@ -46,7 +46,10 @@ const handleSelectDao = (e) =>
 return (
   <Container>
     <Wrapper>
-      <h2>Settings</h2>
+      <Widget
+        src="/*__@replace:widgetPath__*/.Components.PageTitle"
+        props={{ text: "Settings" }}
+      />
 
       <div className="form-element">
         <label className="form-label">Select DAO</label>

@@ -1,5 +1,5 @@
 let { contractName, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 if (!contractName || !content)
@@ -41,13 +41,9 @@ if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 return (
   <Container>
     <Widget
-      src={`/*__@replace:widgetPath__*/.Components.Title`}
-      props={{
-        imgUrl: content.whatisGrassrootDAO.image,
-        title: content.whatisGrassrootDAO.title,
-      }}
+      src="/*__@replace:widgetPath__*/.Components.PageTitle"
+      props={{ text: "DAOs" }}
     />
-    <Description>{content.whatisGrassrootDAO.text}</Description>
 
     <div className="d-flex flex-wrap justify-content-center gap-4">
       {daos
