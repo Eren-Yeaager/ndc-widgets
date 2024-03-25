@@ -17,8 +17,8 @@
  near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":'"$DAO_OWNERS"', "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
  near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
- near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
- near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'", "new_owner.testnet"]}' --accountId "$CONTRACT"
+ near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":[], "metrics":[], "metadata":{}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'", "new_owner.testnet"]}' --accountId "$ACCOUNT_ID"
 
 # Add DAO Proposal
 #for i in {1..2}
@@ -45,6 +45,7 @@
 
 # Add Community
  near call "$CONTRACT" add_community '{"dao_id":1, "community_input":{"handle":"community-handle", "title":"Community title", "description":"Some description", "logo_url":"logo url", "banner_url":"banner url", "accounts":[]}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" add_community '{"dao_id":2, "community_input":{"handle":"community-handle-2", "title":"Community title 2", "description":"Some description", "logo_url":"logo url 2", "banner_url":"banner url 2", "accounts":["smart-contract.testnet", "smart-contract2.testnet"]}, "owners":["'$ACCOUNT_ID'"], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
 
  near call "$CONTRACT" edit_community '{"id":1, "description":"Some description upd...","logo_url":"logo url upd", "banner_url":"banner url upd","owners":["'$ACCOUNT_ID'"], "accounts":[], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
 
@@ -95,3 +96,4 @@ near view "$CONTRACT" get_community_by_handle '{"handle":"community-handle"}'
 near view "$CONTRACT" get_account_access '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
+near view "$CONTRACT" get_community_accounts '{"dao_id":[1,2]}'

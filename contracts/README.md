@@ -65,12 +65,12 @@ dao_type options: NDC, DAO
 
 - Edit DAO/NDC
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Council Members
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'"]}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'"]}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get list of all DAOs, NDC included (view)
@@ -298,6 +298,12 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"id":1}'
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-community"}'
+```
+
+- Get DAOs community smart-contracts list (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_id":[2,3,4]}'
 ```
 
 ### Access Control

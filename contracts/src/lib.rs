@@ -11,7 +11,7 @@ mod user;
 mod notify;
 mod social_db;
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use storage_keys::*;
 use post::*;
 
@@ -263,6 +263,18 @@ impl Contract {
     pub fn get_community_by_handle(&self, handle: String) -> VersionedCommunity {
         let community = self.community_handles.get(&handle).and_then(|id| self.communities.get(&id));
         community.unwrap_or_else(|| panic!("Community {} not found", handle))
+    }
+
+    // Communities: Get all community smart-contracts for DAO list
+    pub fn get_community_accounts(&self, dao_id: Vec<DaoId>) -> HashMap<DaoId, Vec<AccountId>> {
+        dao_id.iter().map(|id| {
+            let community_ids = self.dao_communities.get(&id).unwrap_or_default();
+            let accounts: Vec<AccountId> = community_ids.iter()
+                .map(|community_id| self.get_community_by_id(community_id).latest_version().accounts.clone())
+                .flatten()
+                .collect();
+            (*id, accounts)
+        }).collect()
     }
 
     // Communities: Get follow list for user
