@@ -14,6 +14,7 @@ pub struct ProposalStates {
     pub coa_approved: Option<bool>,
     pub kyc_passed: Option<bool>,
     pub payment_executed: Option<bool>,
+    pub report_accepted: Option<bool>,
 }
 
 impl Default for ProposalStates {
@@ -24,6 +25,7 @@ impl Default for ProposalStates {
             coa_approved: None,
             kyc_passed: None,
             payment_executed: None,
+            report_accepted: None,
         }
     }
 }
