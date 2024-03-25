@@ -32,6 +32,21 @@ const Theme = styled.div`
     color: inherit;
     font-weight: 500;
 
+    &.logo {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      img {
+        width: 50px;
+      }
+      span {
+        font-weight: bold;
+        color: white;
+        font-size: 30px;
+      }
+    }
+
     &.color-text {
       background: linear-gradient(
         270deg,

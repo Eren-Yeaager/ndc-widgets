@@ -3,7 +3,7 @@ return {
   prodContractName: "v3.test-dao.near",
   assets: {
     logoWhite:
-      "https://ipfs.near.social/ipfs/bafkreigycbheqwbwh73uqemyb4lt4r3dkmauubdkv5lio3nv3cdb6zguyq",
+      "https://ipfs.near.social/ipfs/bafkreifchjezqjp5y56bomtmtdzkdg3ulq4az24z3g7oorro3wwy6nxtte",
     logoColor:
       "https://ipfs.near.social/ipfs/bafkreieit24q3nlzzemyjblesy274gtlhjzbhmpfgpwfdfhjgntkhfc4fi",
     home: {

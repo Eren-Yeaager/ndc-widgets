@@ -21,6 +21,7 @@ const Container = styled.div`
 
     @media screen and (max-width: 768px) {
       display: flex;
+      flex-direction: column;
     }
   }
 
@@ -44,7 +45,7 @@ const LinksContainer = styled.div`
   color: white;
 
   @media screen and (max-width: 768px) {
-    gap: 1rem;
+    gap: 2rem;
   }
 
   a {
@@ -66,6 +67,7 @@ const LinksContainer = styled.div`
 
   .links {
     display: flex;
+    align-items: center;
 
     @media screen and (max-width: 768px) {
       display: none;
@@ -82,24 +84,25 @@ const LinksContainer = styled.div`
 `;
 
 const NavigationLinks = () => (
-  <div className="d-flex align-items-center gap-5">
+  <>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <a
-      className="post-btn d-flex align-items-center gap-2"
+      className="post-btn d-flex align-items-center justify-content-center gap-2"
       href={`//*__@replace:widgetPath__*/.App?page=create_post`}
     >
       <i className="ph ph-plus fs-5" />
       Create Post
     </a>
-  </div>
+  </>
 );
 
 return (
   <Container className="position-relative">
     <Navbar>
-      <a href={`//*__@replace:widgetPath__*/.App`}>
+      <a className="logo" href={`//*__@replace:widgetPath__*/.App`}>
         <img src={assets.logoWhite} />
+        <span>NDC</span>
       </a>
       <div className="d-flex gap-5 align-items-center">
         {accountId && (
