@@ -32,8 +32,8 @@ near contract deploy mdao-owner.testnet use-file ./res/mdao.wasm with-init-call 
 ```bash
 cd contracts
 
-ACCOUNT_ID=mdao-owner.testnet
-CONTRACT=v1.mdao-owner.testnet
+ ACCOUNT_ID=test-dao.near
+ CONTRACT=v3.test-dao.near
 
 near call "$CONTRACT" unsafe_self_upgrade "$(base64 < res/mdao.wasm)" --base64 --accountId $ACCOUNT_ID --gas 300000000000000
 ```
@@ -65,7 +65,12 @@ dao_type options: NDC, DAO
 
 - Edit DAO/NDC
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+```
+
+- Edit Council Members
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'"]}' --accountId "$CONTRACT"
 ```
 
 - Get list of all DAOs, NDC included (view)

@@ -155,17 +155,15 @@ impl Contract {
     }
 
     // Edit DAO
-    // Access Level: Only self-call
+    // Access Level: Only DAO owners
     pub fn edit_dao(
         &mut self,
         id: DaoId,
         body: DAOInput,
-        owners: Vec<AccountId>,
         verticals: Vec<Vertical>,
         metrics: Vec<MetricLabel>,
         metadata: HashMap<String, String>
     ) {
-        // allow only dao owners to edit
         self.validate_dao_ownership(&env::predecessor_account_id(), &id);
         near_sdk::log!("EDIT DAO: {}", id);
 
@@ -179,8 +177,18 @@ impl Contract {
         dao.verticals = verticals;
         dao.metrics = metrics;
         dao.metadata = metadata;
-        dao.owners = owners;
 
+        self.dao.insert(&id, &dao.into());
+    }
+
+    // Edit DAO owners
+    // Access Level: Only DAO owners
+    pub fn edit_dao_owners(&mut self, id: DaoId, owners: Vec<AccountId>) {
+        self.validate_dao_ownership(&env::predecessor_account_id(), &id);
+        near_sdk::log!("EDIT DAO OWNERS: {}", id);
+
+        let mut dao: DAO = self.get_dao_by_id(&id).into();
+        dao.owners = owners;
         self.dao.insert(&id, &dao.into());
     }
 

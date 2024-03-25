@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ACCOUNT_ID=mdao-owner.testnet
-CONTRACT=v2.mdao-owner.testnet
+ ACCOUNT_ID=mdao-owner.testnet
+ CONTRACT=v2.mdao-owner.testnet
 
  near call "$CONTRACT" unsafe_self_state_cleanup '' --accountId "$CONTRACT"
  near delete "$CONTRACT" "$ACCOUNT_ID" --force
@@ -11,14 +11,14 @@ CONTRACT=v2.mdao-owner.testnet
 
 ## -------- Data Seed --------
 
-DAO_OWNERS='["'"$ACCOUNT_ID"'","new_owner.testnet"]'
+ DAO_OWNERS='["'"$ACCOUNT_ID"'","new_owner.testnet"]'
 
 # Add DAO
  near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":'"$DAO_OWNERS"', "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
  near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
- near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
-
+ near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":[], "metrics":[], "metadata":{}}' --accountId "$CONTRACT"
+ near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'", "new_owner.testnet"]}' --accountId "$CONTRACT"
 
 # Add DAO Proposal
 #for i in {1..2}
