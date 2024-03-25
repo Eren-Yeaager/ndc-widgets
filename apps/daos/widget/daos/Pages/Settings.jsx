@@ -79,15 +79,15 @@ return (
               icon: "ph ph-gear",
             },
             {
-              name: "Content",
+              name: "Members",
               value: "2",
               content: (
                 <Widget
-                  src="/*__@replace:widgetPath__*/.Components.Settings.Content"
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Members"
                   props={{ selectedDao }}
                 />
               ),
-              icon: "ph ph-clipboard-text",
+              icon: "ph ph-users",
             },
             {
               name: "Links",
@@ -99,6 +99,17 @@ return (
                 />
               ),
               icon: "ph ph-link",
+            },
+            {
+              name: "Content",
+              value: "4",
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Content"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-clipboard-text",
             },
           ],
         }}

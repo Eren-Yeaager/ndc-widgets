@@ -114,7 +114,7 @@ return (
               />
             </a>
 
-            <a href={`//*__@replace:widgetPath__*/.App?page=config`}>
+            <a href={`//*__@replace:widgetPath__*/.App?page=settings`}>
               <i className="bi bi-gear-fill fs-3" />
             </a>
 

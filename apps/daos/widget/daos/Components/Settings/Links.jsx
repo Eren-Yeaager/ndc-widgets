@@ -109,7 +109,7 @@ return (
                 className="d-flex gap-1"
                 href={`https://t.me/${tg.replace("@", "")}`}
               >
-                (<i className="bi bi-telegram" />
+                (<i className="ph ph-telegram-logo" />
                 {tg.replace("@", "")})
               </a>
             </div>
@@ -141,7 +141,7 @@ return (
         </div>
         <div className="d-flex align-items-end">
           <button className="btn btn-primary" onClick={handleAddPOC}>
-            <i className="bi bi-plus-lg" />
+            <i className="ph ph-plus fs-5" />
             Add new POC
           </button>
         </div>
@@ -149,7 +149,7 @@ return (
     </div>
 
     <button className="btn btn-primary" onClick={handleSave}>
-      <i className="bi bi-pencil" />
+      <i className="ph ph-pencil-simple fs-5" />
       Save
     </button>
   </Form>
