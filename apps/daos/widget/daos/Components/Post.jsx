@@ -201,7 +201,6 @@ const Divider = styled.div`
   border-bottom: 1px solid var(--NEAR-Primary-Colors-Off-White-Variation-1, #F0EFE7);
 `;
 
-console.log(itemState);
 return (
   <>
     <TableRow key={index}>
@@ -232,24 +231,23 @@ return (
         </div>
       </TableCell>
       <TableCell flex={3}>
-        {/* <ProposalsState approve={itemState.dao} ><span>{itemState.dao ? <i class="ph ph-check-circle"></i> */}
-        <ProposalsState approve={true} ><div>{true ? <i class="ph ph-check-circle"></i>
-
+        <ProposalsState approve={itemState.state.dao_council_approved} ><span>{itemState.state.kyc_passed ? <i class="ph ph-check-circle"></i>
+        
           : <i class="ph ph-x-circle"></i>
 
-        }</div> DAO Approved</ProposalsState>
+        }</span> DAO Approved</ProposalsState>
 
-        <ProposalsState approve={itemState.kyc} > <span>{itemState.dao ? <i class="ph ph-check-circle"></i>
+        <ProposalsState approve={itemState.state.kyc_passed} > <span>{itemState.state.kyc_passed ? <i class="ph ph-check-circle"></i>
 
           : <i class="ph ph-x-circle"></i>
 
         }</span>  KYC Approved</ProposalsState>
 
-        <ProposalsState approve={itemState.report} > <span>{itemState.dao ? <i class="ph ph-check-circle"></i>
+        <ProposalsState approve={itemState.state.report_accepted} > <span>{itemState.state.report_accepted ? <i class="ph ph-check-circle"></i>
 
           : <i class="ph ph-x-circle"></i>
 
-        }</span>  Report Rejected</ProposalsState>
+        }</span>  Report Approved</ProposalsState>
       </TableCell>
       <TableCell>
         <OpenReportButton
