@@ -47,6 +47,10 @@ const Table = styled.div`
    .account-link{
     color: #4855FC;
   }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const TableHeader = styled.div`
@@ -63,7 +67,14 @@ const TableHeaderCell = styled.div`
   flex: ${props => props.flex || 1};
 `;
 
+const Mobile = styled.div`
+@media screen and (min-width: 768px) {
+  display: none;
+}
+`;
+
 return (
+  <>
   <Table>
     <TableHeader>
       <TableHeaderCell flex={0.6}>Status</TableHeaderCell>
@@ -79,4 +90,13 @@ return (
       />
     ))}
   </Table>
+  <Mobile>
+  {items.map((row, index) => (
+      <Widget
+        src="/*__@replace:widgetPath__*/.Components.Post"
+        props={{ item: row, index, type, id: row.id, isMobile: true }}
+      />
+    ))}
+  </Mobile>
+  </>
 );

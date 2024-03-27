@@ -1,6 +1,6 @@
 const CopyButton = styled.div`
   display: flex;
-  height: 24px;
+  height: 30px;
   padding: 6px 14px 6px 12px;
   justify-content: center;
   align-items: center;
