@@ -8,11 +8,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: 786px) {
+    padding: 1rem;
+  }
 `;
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-bottom: 5rem;
   display: flex;
   gap: 1rem;
   flex-direction: column;
@@ -20,6 +24,15 @@ const Wrapper = styled.div`
   textarea {
     font-family: monospace;
     font-size: 12px;
+  }
+
+  div[role="tablist"] {
+    width: 100%;
+    overflow-x: scroll;
+
+    button {
+      text-wrap: nowrap;
+    }
   }
 `;
 
@@ -33,7 +46,10 @@ if (myDAOs.length === 0)
   return (
     <Container>
       <Wrapper>
-        <h2>You're not allowed to make DAOs changes</h2>
+        <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+          <h2>You're not allowed for DAO settings</h2>
+          <p>Ask DAO member to add you through settings</p>
+        </div>
       </Wrapper>
     </Container>
   );
@@ -72,7 +88,7 @@ return (
           items: [
             {
               name: "General",
-              value: "1",
+              value: 1,
               content: (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Settings.General"
@@ -82,8 +98,30 @@ return (
               icon: "ph ph-gear",
             },
             {
+              name: "Members",
+              value: 2,
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Members"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-users",
+            },
+            {
+              name: "Contacts",
+              value: 3,
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Contacts"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-link",
+            },
+            {
               name: "Content",
-              value: "2",
+              value: 4,
               content: (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Settings.Content"
@@ -91,17 +129,6 @@ return (
                 />
               ),
               icon: "ph ph-clipboard-text",
-            },
-            {
-              name: "Links",
-              value: "3",
-              content: (
-                <Widget
-                  src="/*__@replace:widgetPath__*/.Components.Settings.Links"
-                  props={{ selectedDao }}
-                />
-              ),
-              icon: "ph ph-link",
             },
           ],
         }}

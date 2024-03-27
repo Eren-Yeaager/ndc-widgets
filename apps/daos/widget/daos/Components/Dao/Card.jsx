@@ -3,6 +3,8 @@ const { dao, index } = props;
 
 if (!content) return <Widget src="flashui.near/widget/Loading" />;
 
+const daoContent = JSON.parse(dao.metadata.contacts);
+
 const DaoCard = styled.div`
   width: 420px;
   height: 400px;
@@ -83,11 +85,8 @@ return (
             Join DAO
           </div>
         </a>
-        {content.daos[dao.handle].customUrl && (
-          <a
-            href={content.daos[dao.handle].customUrl}
-            className="btn btn-secondary"
-          >
+        {daoContent.website && (
+          <a href={daoContent.website} className="btn btn-secondary">
             <div className="d-flex gap-2 justify-content-center w-100">
               <i class="ph ph-arrow-square-out fs-5"></i>
               Visit Website

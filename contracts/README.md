@@ -32,8 +32,8 @@ near contract deploy mdao-owner.testnet use-file ./res/mdao.wasm with-init-call 
 ```bash
 cd contracts
 
-ACCOUNT_ID=mdao-owner.testnet
-CONTRACT=v1.mdao-owner.testnet
+ ACCOUNT_ID=test-dao.near
+ CONTRACT=v3.test-dao.near
 
 near call "$CONTRACT" unsafe_self_upgrade "$(base64 < res/mdao.wasm)" --base64 --accountId $ACCOUNT_ID --gas 300000000000000
 ```
@@ -65,7 +65,12 @@ dao_type options: NDC, DAO
 
 - Edit DAO/NDC
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"First DAO updated", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
+```
+
+- Edit Council Members
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'"]}' --accountId "$ACCOUNT_ID"
 ```
 
 - Get list of all DAOs, NDC included (view)
@@ -129,7 +134,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"Ne
 - Change proposal state:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_accepted":true}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Change post spam status:
@@ -293,6 +298,12 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"id":1}'
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-community"}'
+```
+
+- Get DAOs community smart-contracts list (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_id":[2,3,4]}'
 ```
 
 ### Access Control

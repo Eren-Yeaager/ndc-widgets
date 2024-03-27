@@ -79,7 +79,23 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+<<<<<<< HEAD
   gap: 1rem;
+=======
+  gap: 3rem;
+  color: white;
+
+  @media screen and (max-width: 768px) {
+    gap: 2rem;
+  }
+
+  a {
+    &:hover {
+      text-decoration: none;
+      color: #a4c2fd;
+    }
+  }
+>>>>>>> main
 
   .circle {
     position: absolute;
@@ -101,6 +117,7 @@ const LinksContainer = styled.div`
   }
 `;
 
+<<<<<<< HEAD
 const Title = styled.span`
   color: #000;
   font-size: 27px;
@@ -123,15 +140,24 @@ const Navigation = () => (
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <a
       className="btn-primary"
+=======
+const NavigationLinks = () => (
+  <>
+    <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
+    <a
+      className="post-btn d-flex align-items-center justify-content-center gap-2"
+>>>>>>> main
       href={`//*__@replace:widgetPath__*/.App?page=create_post`}
     >
       <i className="ph ph-plus fs-6" />
       Create Post
     </a>
-  </div>
+  </>
 );
 
 return (
+<<<<<<< HEAD
   <Container>
     <Navbar className="container-xl">
       <a
@@ -140,6 +166,13 @@ return (
       >
         <img src={assets.logoWhite} />
         <Title>NDC</Title>
+=======
+  <Container className="position-relative">
+    <Navbar>
+      <a className="logo" href={`//*__@replace:widgetPath__*/.App`}>
+        <img src={assets.logoWhite} />
+        <span>NDC</span>
+>>>>>>> main
       </a>
       <div className="d-flex align-items-center">
         {accountId && (
@@ -166,6 +199,7 @@ return (
               </div>
             </div>
 
+<<<<<<< HEAD
             <div className="mobile">
               <div className="d-flex gap-3">
                 <a
@@ -183,6 +217,17 @@ return (
                 </a>
               </div>
             </div>
+=======
+            <a href={`//*__@replace:widgetPath__*/.App?page=settings`}>
+              <i className="bi bi-gear-fill fs-3" />
+            </a>
+
+            <a
+              href={`//*__@replace:widgetPath__*/.App?page=proposals&accountId=${context.accountId}`}
+            >
+              <i className="bi bi-person-circle fs-3" />
+            </a>
+>>>>>>> main
           </LinksContainer>
         )}
       </div>
