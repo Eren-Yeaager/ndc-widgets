@@ -6,6 +6,7 @@ const Theme = styled.div`
   display: flex;
   flex-direction: column;
   font-style: normal;
+  line-height: normal;
 
   select {
     cursor: pointer;
@@ -171,7 +172,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 2rem 0 3rem 0;
-  padding: 0 7rem;
+  width: 100%;
 
   @media screen and (max-width: 786px) {
     width: 100%;
