@@ -15,6 +15,48 @@ return {
     },
   },
   content: {
+    info: {
+      cards: [
+        {
+          title: "Vision",
+          icon: "https://ipfs.near.social/ipfs/bafkreierklwtww7ug22mcfswvcen7mht55o5puysmdgskn5blbeuq7mktq",
+          button: { title: "Read more" },
+        },
+        {
+          title: "Mission",
+          icon: "https://ipfs.near.social/ipfs/bafkreiefquepwuqvjdpbjhadd72fwixtun2hpj6ksb7ipykxg2crmps7gq",
+          button: { title: "Read more" },
+        },
+        {
+          title: "Strategy",
+          icon: "https://ipfs.near.social/ipfs/bafkreiawzurfeqfululz52bgx3sj7z5e7d7da263u277kbx7k5yofwwene",
+          button: { title: "Read more" },
+        },
+      ],
+    },
+    guidance: {
+      cards: [
+        {
+          title: "Become a member",
+          icon: "ph ph-identification-card fs-5",
+          button: { title: "Read more" },
+        },
+        {
+          title: "Contribute",
+          icon: "ph ph-wrench fs-5",
+          button: { title: "Read more" },
+        },
+        {
+          title: "Funding",
+          icon: "ph ph-money fs-5",
+          button: { title: "Read more" },
+        },
+      ],
+    },
+    office: {
+      title: "Office",
+      icon: "ph ph-calendar-check",
+    },
     daos: {
       ndc: {
         sections: {

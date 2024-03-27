@@ -27,6 +27,10 @@ const Form = styled.div`
       text-decoration: underline;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const AutoComplete = styled.div`
@@ -38,7 +42,6 @@ const [handler, setHandler] = useState(null);
 const [mentionInput, setMentionInput] = useState("");
 const [mentionsArray, setMentionsArray] = useState([]);
 const [showAccountAutocomplete, setShowAccountAutocomplete] = useState(false);
-
 const [daoMembers, setDaoMembers] = useState([]);
 
 useEffect(() => {
