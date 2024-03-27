@@ -201,38 +201,54 @@ const Divider = styled.div`
   border-bottom: 1px solid var(--NEAR-Primary-Colors-Off-White-Variation-1, #F0EFE7);
 `;
 
+const MobileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #e1e1e1;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const DesktopVersion = styled.div`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
 return (
   <>
-    <TableRow key={index}>
-      <TableCell flex={0.5}>
-        <StatusBadge {...statusColors[itemState.status]}>
-          {itemState.status}
-        </StatusBadge>
-      </TableCell>
-      <TableCell flex={2.5}>
+    <MobileContainer>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Conatiner>
           <div>
             <img className="dao-img" src={dao.logo_url} />
           </div>
           <div style={{ display: 'flex', 'flex-direction': 'column' }}>
-
             <div>{itemState.title}</div>
             <div><span className="created">Created at:</span> <span className="date">{new Date(itemState.timestamp / 1000000).toDateString()}</span></div>
           </div>
 
         </Conatiner>
-      </TableCell>
-      <TableCell >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div className="created"> Modified by</div>
-          <div>
-          </div>
-          <a className="account-link" href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}>{itemState.author_id}</a>
-        </div>
-      </TableCell>
-      <TableCell flex={3}>
+        <StatusBadge {...statusColors[itemState.status]}>
+          {itemState.status}
+        </StatusBadge>
+      </div>
+      <ProposalHeader>{itemState.title}</ProposalHeader>
+      <div style={{ display: 'flex',  flexWrap: 'wrap',
+    gap: '5px'}}>
+        <Widget
+          src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+          props={{
+            text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+          }}
+        />
         <ProposalsState approve={itemState.state.dao_council_approved} ><span>{itemState.state.kyc_passed ? <i class="ph ph-check-circle"></i>
-        
+
           : <i class="ph ph-x-circle"></i>
 
         }</span> DAO Approved</ProposalsState>
@@ -248,68 +264,28 @@ return (
           : <i class="ph ph-x-circle"></i>
 
         }</span>  Report Approved</ProposalsState>
-      </TableCell>
-      <TableCell>
-        <OpenReportButton
-          href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
-        >
-          Report
-          <i class="ph ph-arrow-square-out"></i>
-        </OpenReportButton>
-        <ExpandCollapseIcon>
-          <i class={`ph ph-caret-${showMore === index ? 'up' : 'down'}`} onClick={() => setShowMore(showMore === index ? null : index)}></i>
-        </ExpandCollapseIcon>
-      </TableCell>
-
-    </TableRow>
-    {showMore === index && (
-      <ProposalCardWarpper>
-        <ProposalCard>
-          <ProposalContent>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ProposalHeader>{itemState.title}</ProposalHeader>
-              <Widget
-                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-                props={{
-                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
-                }}
-              />
-            </div>
-            <ProposalInfo>
-              <ProposalInfoItem>
-                <div style={{ width: "12rem" }}>Updated at:</div>
-                <div>
-                  {itemState.timestamp
-                    ? new Date(itemState.timestamp / 1000000).toLocaleString()
-                    : new Date().toLocaleDateString()}
-                </div>
-              </ProposalInfoItem>
-              <ProposalInfoItem>
-                <Divider />
-              </ProposalInfoItem>
-              <ProposalInfoItem>
-                <div style={{ width: "12rem" }}>Requested amount:</div>
-                <div>
-                  <b>${itemState.requested_amount ?? 0}</b>
-                </div>
-              </ProposalInfoItem>
-            </ProposalInfo>
-          </ProposalContent>
-          <ProposalContent>
-            <Tags>
-              {itemState.labels?.map((tag) => (
-                <Tag>#{tag}</Tag>
-              ))}
-            </Tags>
-            <Description>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{ text: itemState.description }}
-              />
-            </Description>
-          </ProposalContent>
-        </ProposalCard>
-        <div>
+      </div>
+      <ProposalInfo>
+        <ProposalInfoItem>
+          <div style={{ width: "12rem" }}>Updated at:</div>
+          <div>
+            {itemState.timestamp
+              ? new Date(itemState.timestamp / 1000000).toLocaleString()
+              : new Date().toLocaleDateString()}
+          </div>
+        </ProposalInfoItem>
+        <ProposalInfoItem>
+          <Divider />
+        </ProposalInfoItem>
+        <ProposalInfoItem>
+          <div style={{ width: "12rem" }}>Requested amount:</div>
+          <div>
+            <b>${itemState.requested_amount ?? 0}</b>
+          </div>
+        </ProposalInfoItem>
+      </ProposalInfo>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <OpenReportButton
             href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
           >
@@ -317,8 +293,126 @@ return (
             <i class="ph ph-arrow-square-out"></i>
           </OpenReportButton>
         </div>
-      </ProposalCardWarpper>
-    )}
+      </div>
+    </MobileContainer>
+    <DesktopVersion>
+      <TableRow key={index}>
+        <TableCell flex={0.5}>
+          <StatusBadge {...statusColors[itemState.status]}>
+            {itemState.status}
+          </StatusBadge>
+        </TableCell>
+        <TableCell flex={2.5}>
+          <Conatiner>
+            <div>
+              <img className="dao-img" src={dao.logo_url} />
+            </div>
+            <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+
+              <div>{itemState.title}</div>
+              <div><span className="created">Created at:</span> <span className="date">{new Date(itemState.timestamp / 1000000).toDateString()}</span></div>
+            </div>
+
+          </Conatiner>
+        </TableCell>
+        <TableCell >
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="created"> Modified by</div>
+            <div>
+            </div>
+            <a className="account-link" href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}>{itemState.author_id}</a>
+          </div>
+        </TableCell>
+        <TableCell flex={3}>
+          <ProposalsState approve={itemState.state.dao_council_approved} ><span>{itemState.state.kyc_passed ? <i class="ph ph-check-circle"></i>
+
+            : <i class="ph ph-x-circle"></i>
+
+          }</span> DAO Approved</ProposalsState>
+
+          <ProposalsState approve={itemState.state.kyc_passed} > <span>{itemState.state.kyc_passed ? <i class="ph ph-check-circle"></i>
+
+            : <i class="ph ph-x-circle"></i>
+
+          }</span>  KYC Approved</ProposalsState>
+
+          <ProposalsState approve={itemState.state.report_accepted} > <span>{itemState.state.report_accepted ? <i class="ph ph-check-circle"></i>
+
+            : <i class="ph ph-x-circle"></i>
+
+          }</span>  Report Approved</ProposalsState>
+        </TableCell>
+        <TableCell>
+          <OpenReportButton
+            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+          >
+            Report
+            <i class="ph ph-arrow-square-out"></i>
+          </OpenReportButton>
+          <ExpandCollapseIcon>
+            <i class={`ph ph-caret-${showMore === index ? 'up' : 'down'}`} onClick={() => setShowMore(showMore === index ? null : index)}></i>
+          </ExpandCollapseIcon>
+        </TableCell>
+
+      </TableRow>
+      {showMore === index && (
+        <ProposalCardWarpper>
+          <ProposalCard>
+            <ProposalContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <ProposalHeader>{itemState.title}</ProposalHeader>
+                <Widget
+                  src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                  props={{
+                    text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                  }}
+                />
+              </div>
+              <ProposalInfo>
+                <ProposalInfoItem>
+                  <div style={{ width: "12rem" }}>Updated at:</div>
+                  <div>
+                    {itemState.timestamp
+                      ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                      : new Date().toLocaleDateString()}
+                  </div>
+                </ProposalInfoItem>
+                <ProposalInfoItem>
+                  <Divider />
+                </ProposalInfoItem>
+                <ProposalInfoItem>
+                  <div style={{ width: "12rem" }}>Requested amount:</div>
+                  <div>
+                    <b>${itemState.requested_amount ?? 0}</b>
+                  </div>
+                </ProposalInfoItem>
+              </ProposalInfo>
+            </ProposalContent>
+            <ProposalContent>
+              <Tags>
+                {itemState.labels?.map((tag) => (
+                  <Tag>#{tag}</Tag>
+                ))}
+              </Tags>
+              <Description>
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                  props={{ text: itemState.description }}
+                />
+              </Description>
+            </ProposalContent>
+          </ProposalCard>
+          <div>
+            <OpenReportButton
+              href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+            >
+              Open
+              <i class="ph ph-arrow-square-out"></i>
+            </OpenReportButton>
+          </div>
+        </ProposalCardWarpper>
+      )}
+    </DesktopVersion>
   </>
 
 )
