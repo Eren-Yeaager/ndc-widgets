@@ -257,9 +257,9 @@ return (
         <ProposalsState approve={itemState.state.dao_council_approved}>
           <span>
             {itemState.state.kyc_passed ? (
-              <i class="ph ph-check-circle"></i>
+              <i class="ph-fill fs-6 ph-check-circle"></i>
             ) : (
-              <i class="ph ph-x-circle"></i>
+              <i class="ph-fill fs-6 ph-x-circle"></i>
             )}
           </span>{" "}
           DAO Approved
@@ -269,9 +269,9 @@ return (
           {" "}
           <span>
             {itemState.state.kyc_passed ? (
-              <i class="ph ph-check-circle"></i>
+              <i class="ph-fill fs-6 ph-check-circle"></i>
             ) : (
-              <i class="ph ph-x-circle"></i>
+              <i class="ph-fill fs-6 ph-x-circle"></i>
             )}
           </span>{" "}
           KYC Approved
@@ -281,9 +281,9 @@ return (
           {" "}
           <span>
             {itemState.state.report_accepted ? (
-              <i class="ph ph-check-circle"></i>
+              <i class="ph-fill fs-6 ph-check-circle"></i>
             ) : (
-              <i class="ph ph-x-circle"></i>
+              <i class="ph-fill fs-6 ph-x-circle"></i>
             )}
           </span>{" "}
           Report Approved
@@ -359,9 +359,9 @@ return (
           <ProposalsState approve={itemState.state.dao_council_approved}>
             <span>
               {itemState.state.kyc_passed ? (
-                <i class="ph ph-check-circle"></i>
+                <i class="ph-fill fs-6 ph-check-circle"></i>
               ) : (
-                <i class="ph ph-x-circle"></i>
+                <i class="ph-fill fs-6 ph-x-circle"></i>
               )}
             </span>{" "}
             DAO Approved
@@ -371,9 +371,9 @@ return (
             {" "}
             <span>
               {itemState.state.kyc_passed ? (
-                <i class="ph ph-check-circle"></i>
+                <i class="ph-fill fs-6 ph-check-circle"></i>
               ) : (
-                <i class="ph ph-x-circle"></i>
+                <i class="ph-fill fs-6 ph-x-circle"></i>
               )}
             </span>{" "}
             KYC Approved
@@ -383,9 +383,9 @@ return (
             {" "}
             <span>
               {itemState.state.report_accepted ? (
-                <i class="ph ph-check-circle"></i>
+                <i class="ph-fill fs-6 ph-check-circle"></i>
               ) : (
-                <i class="ph ph-x-circle"></i>
+                <i class="ph-fill fs-6 ph-x-circle"></i>
               )}
             </span>{" "}
             Report Approved
