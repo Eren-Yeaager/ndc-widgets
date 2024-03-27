@@ -1,4 +1,5 @@
 let { content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+if (!content) return <Widget src="flashui.near/widget/Loading" />;
 
 const { dao, section } = props;
 
@@ -20,14 +21,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const ReadMore = ({ href }) => (
-  <a href="" className="text-center btn-primary d-flex justify-content-end">
-    <div className="d-flex justify-content-between">
-      <a href={href}>Read More</a>
-      <i className="bi bi-chevron-right" />
-    </div>
-  </a>
-);
 const Info = ({ card }) => (
   <div className="item d-flex mt-5 flex-column gap-3">
     <div className="header d-flex gap-3 text-center">
@@ -43,7 +36,10 @@ const Info = ({ card }) => (
       />
     </p>
     {daoContent.info[card.title].href && (
-      <ReadMore href={daoContent.info[card.title].href} />
+      <div className="d-flex justify-content-between">
+        <a href={daoContent.info[card.title].href}>Read More</a>
+        <i className="bi bi-chevron-right" />
+      </div>
     )}
   </div>
 );

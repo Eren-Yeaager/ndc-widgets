@@ -1,3 +1,6 @@
+let { content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+if (!content) return <Widget src="flashui.near/widget/Loading" />;
+
 const Item = styled.div`
   width: 350px;
   min-height: 280px;
@@ -135,6 +138,32 @@ const SubmitProposal = styled.a`
 
 const { section, dao } = props;
 
+const daoContent = JSON.parse(dao.metadata.content);
+
+const Info = ({ card }) => (
+  <Item className="dark">
+    <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
+      <div>
+        <h4 className="color-text">{card.title}</h4>
+        <span>
+          <Widget
+            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+            props={{
+              text: daoContent.guidance[card.title].description,
+            }}
+          />
+        </span>
+      </div>
+      {daoContent.guidance[card.title].href && (
+        <div className="d-flex justify-content-between">
+          <a href={daoContent.guidance[card.title].href}>Read More</a>
+          <i className="bi bi-chevron-right" />
+        </div>
+      )}
+    </div>
+  </Item>
+);
+
 return (
   <Container>
     <div className="d-flex flex-wrap gap-5">
@@ -142,42 +171,30 @@ return (
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Title`}
           props={{
-            subtitle: section.guidance.subTitle,
-            title: section.guidance.title,
-            description: section.guidance.description,
+            subtitle: content.guidance.title,
+            title: dao.title,
             color: "#fff",
           }}
         />
       </div>
       <div className="d-flex w-100 justify-content-center">
         <div className="d-flex flex-wrap justify-content-center gap-5">
-          {section.guidance.cards.map((card) => (
-            <Item className="dark">
-              <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
-                <div>
-                  <h4 className="color-text">{card.title}</h4>
-                  <span>{card.description}</span>
-                </div>
-                {card.button.link && (
-                  <div className="d-flex mt-3">
-                    <a href={card.button.link}>{card.button.title}</a>
-                    <i className="bi bi-chevron-right" />
-                  </div>
-                )}
-              </div>
-            </Item>
+          {content.guidance.cards.map((card) => (
+            <Info card={card} />
           ))}
         </div>
       </div>
 
       <div className="d-flex gap-3 w-100 flex-wrap justify-content-center">
-        <a className="post-btn"
+        <a
+          className="post-btn"
           href={`//*__@replace:widgetPath__*/.App?page=create_post&dao_id=${dao.handle}`}
         >
           Submit Proposal
           <i className="bi bi-chevron-right" />
         </a>
-        <a className="post-btn"
+        <a
+          className="post-btn"
           href={`//*__@replace:widgetPath__*/.App?page=proposals&dao_id=${dao.handle}`}
         >
           Show Proposals
