@@ -29,7 +29,7 @@ return (
         <div className="d-flex justify-content-end mb-4">
           <a
             className="btn-primary"
-            href="//*__@replace:widgetPath__*/.App?page=createProposal"
+            href="https://near.org/ndcdev.near/widget/daos.App?page=create_post&dao_id=marketing-dao"
           >
             <i className="bi bi-plus-circle" />
             Post
