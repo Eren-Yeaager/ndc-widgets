@@ -65,6 +65,8 @@ useEffect(() => {
 }, [selectedDao]);
 
 const handleAddPOC = () => {
+  if (daoContactsName === "" && daoContactsTg === "") return;
+
   const poc = [
     ...(daoContacts.poc ?? []),
     ...[
@@ -77,6 +79,8 @@ const handleAddPOC = () => {
 
   daoContacts.poc = poc;
   setDaoContacts(daoContacts);
+  setDaoContactsTg("");
+  setDaoContactsName("");
 };
 
 const handleSave = () => {
@@ -165,15 +169,17 @@ return (
             <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex gap-3 align-items-center">
                 {poc.name}
-                <small>
-                  <a
-                    className="d-flex gap-1 align-items-center bg-light p-2 rounded"
-                    href={`https://t.me/${poc.tg.replace("@", "")}`}
-                  >
-                    <i className="ph ph-telegram-logo" />
-                    {poc.tg.replace("@", "")}
-                  </a>
-                </small>
+                {poc.tg && (
+                  <small>
+                    <a
+                      className="d-flex gap-1 align-items-center bg-light p-2 rounded"
+                      href={`https://t.me/${poc.tg.replace("@", "")}`}
+                    >
+                      <i className="ph ph-telegram-logo" />
+                      {poc.tg.replace("@", "")}
+                    </a>
+                  </small>
+                )}
               </div>
               <i
                 role="button"
@@ -213,7 +219,11 @@ return (
         </div>
       </div>
       <div className="form-element d-flex align-items-end">
-        <button className="btn btn-secondary" onClick={handleAddPOC}>
+        <button
+          className="btn btn-secondary"
+          disabled={daoContactsName === "" && daoContactsTg === ""}
+          onClick={handleAddPOC}
+        >
           <i className="ph ph-plus fs-5" />
           Add POC
         </button>
