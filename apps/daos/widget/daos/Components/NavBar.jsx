@@ -87,13 +87,22 @@ const NavigationLinks = () => (
   <>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <a
-      className="post-btn d-flex align-items-center justify-content-center gap-2"
-      href={`//*__@replace:widgetPath__*/.App?page=create_post`}
-    >
-      <i className="ph ph-plus fs-5" />
-      Create Post
-    </a>
+    <div className="d-flex flex-wrap gap-3">
+      <a
+        className="post-btn d-flex align-items-center justify-content-center gap-2"
+        href={`//*__@replace:widgetPath__*/.App?page=create_post`}
+      >
+        <i className="ph ph-plus fs-5" />
+        Submit Proposal
+      </a>
+      <a
+        className="post-btn d-flex align-items-center justify-content-center gap-2"
+        href="https://kyc.neardc.org/"
+      >
+        <i className="ph ph-identification-card fs-5" />
+        KYC
+      </a>
+    </div>
   </>
 );
 
@@ -104,15 +113,15 @@ return (
         <img src={assets.logoWhite} />
         <span>NDC</span>
       </a>
-      <div className="d-flex gap-5 align-items-center">
+      <div>
         {accountId && (
           <LinksContainer>
             <div className="links gap-5">
               <NavigationLinks />
             </div>
-            <a href="#">
+            <a className="menu-icon" href="#">
               <i
-                className="menu-icon bi bi-list fs-1"
+                className="bi bi-list fs-1"
                 onClick={() => setShowNav(!showNav)}
               />
             </a>
