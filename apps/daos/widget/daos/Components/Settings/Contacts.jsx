@@ -107,7 +107,7 @@ const handleSave = () => {
 return (
   <Form className="d-flex flex-column gap-3">
     <div className="form-element">
-      <label className="form-label">Web Site</label>
+      <label className="form-label">Website</label>
       <input
         className="form-control"
         type="text"
@@ -133,7 +133,7 @@ return (
     </div>
 
     <div className="form-element">
-      <label className="form-label">Dao Telegram</label>
+      <label className="form-label">DAO Telegram</label>
       <input
         className="form-control"
         type="text"
@@ -146,7 +146,7 @@ return (
     </div>
 
     <div className="form-element">
-      <label className="form-label">Dao X (Twitter)</label>
+      <label className="form-label">DAO X (Twitter)</label>
       <input
         className="form-control"
         type="text"

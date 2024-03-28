@@ -19,7 +19,7 @@ return (
       />
     </div>
     <div className="form-element">
-      <label className="form-label">Referrence Link</label>
+      <label className="form-label">Reference Link</label>
       <input
         className="form-control"
         type="text"

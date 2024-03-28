@@ -105,7 +105,7 @@ return (
     </div>
 
     <div className="form-element">
-      <label className="form-label">Logo URL</label>
+      <label className="form-label">Logo Image</label>
       {daoLogoUrl && (
         <div className="mb-2 w-25">
           <img className="w-25 object-fit-contain" src={daoLogoUrl} />
@@ -125,7 +125,7 @@ return (
     </div>
 
     <div className="form-element">
-      <label className="form-label">Banner URL</label>
+      <label className="form-label">Banner Image</label>
       {daoBannerUrl && (
         <div className="mb-2 w-100">
           <img className="object-fit-contain" src={daoBannerUrl} />
