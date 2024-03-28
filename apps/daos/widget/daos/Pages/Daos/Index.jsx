@@ -1,5 +1,5 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const { id } = props;
@@ -170,13 +170,11 @@ return (
       />
     </Section>
 
-    {false && (
-      <Section className="d-flex flex-column gap-5">
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
-          props={{ section }}
-        />
-      </Section>
-    )}
+    <Section className="d-flex flex-column gap-5">
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
+        props={{ dao }}
+      />
+    </Section>
   </Container>
 );

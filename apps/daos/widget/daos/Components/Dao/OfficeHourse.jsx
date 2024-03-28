@@ -1,3 +1,10 @@
+let { content } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+if (!content) return <Widget src="flashui.near/widget/Loading" />;
+
+const { dao } = props;
+
+const daoContent = JSON.parse(dao.metadata.contacts);
+
 const Wrapper = styled.div`
   display: flex;
   border-radius: 10px;
@@ -74,50 +81,50 @@ const Image = styled.img`
   width: 100%;
 `;
 
-const { section } = props;
-
 return (
   <Wrapper>
     <ContentArea>
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          title: section.office.title,
-          description: section.office.description,
+          title: "Contacts",
         }}
       />
-      <PrimaryButton
-        className="btn-primary d-flex"
-        href={section.office.buttons.book.link}
-      >
-        <div>
-          {section.office.buttons.book.text}
-          <i className="bi bi-chevron-right" />
-        </div>
-      </PrimaryButton>
-      <ButtonGroup>
-        <SecondaryButton
-          className="btn-primary d-flex"
-          href={section.office.buttons.workshops.link}
-        >
-          <div>
-            {section.office.buttons.workshops.text}
-            <i className="bi bi-chevron-right" />
-          </div>
-        </SecondaryButton>
-        <SecondaryButton
-          className="btn-primary d-flex"
-          href={section.office.buttons.book.calendar.link}
-        >
-          <div>
-            {section.office.buttons.calendar.text}
-            <i className="bi bi-chevron-right" />
-          </div>
-        </SecondaryButton>
-      </ButtonGroup>
+      <p className="mt-5">
+        <b>DAO admin account</b>: {daoContent.admin}
+      </p>
+      <p>
+        <b>Point of Contacts</b>:
+      </p>
+      <ul>
+        {daoContent.poc.map((poc) => (
+          <li>
+            <div className="d-flex gap-3 align-items-center">
+              {poc.name}
+              <small>
+                <a
+                  className="d-flex gap-1 align-items-center bg-light p-2 rounded"
+                  href={`https://t.me/${poc.tg.replace("@", "")}`}
+                >
+                  <i className="ph ph-telegram-logo" />
+                  {poc.tg.replace("@", "")}
+                </a>
+              </small>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <b>Socials</b>:{" "}
+      {daoContent.tg && (
+        <a href={daoContent.tg}>
+          <i className="ph ph-telegram-logo fs-3" />
+        </a>
+      )}
+      {daoContent.twitter && (
+        <a href={daoContent.twitter}>
+          <i className="ph ph-twitter-logo fs-3" />
+        </a>
+      )}
     </ContentArea>
-    <div>
-      <Image src={section.office.image} alt="Office" />
-    </div>
   </Wrapper>
 );
