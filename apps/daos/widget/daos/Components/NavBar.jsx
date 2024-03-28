@@ -85,6 +85,7 @@ const LinksContainer = styled.div`
 
 const NavigationLinks = () => (
   <>
+    <a href={`//*__@replace:widgetPath__*/.App?page=supported_projects`}>Supported Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <div className="d-flex flex-wrap gap-3">
