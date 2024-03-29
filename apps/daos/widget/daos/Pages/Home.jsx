@@ -186,7 +186,7 @@ let projectsDaoId3 = Near.view(contractName, "get_dao_communities", {
 
 
 
-if (!daos || !contractName || !content || !assets || !proposals || !projects)
+if (!daos || !contractName || !content || !assets || !proposals || !projects || !projectsDaoId2 || !projectsDaoId4 || !projectsDaoId3)
   return <Widget src="flashui.near/widget/Loading" />;
 
 projects = [...projectsDaoId2, ...projectsDaoId4, ...projectsDaoId3]  
