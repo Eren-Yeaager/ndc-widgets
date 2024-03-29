@@ -4,19 +4,33 @@ let { assets, content, contractName } = VM.require(
 
 content = content.home;
 
-const projects = Near.view(contractName, "get_dao_communities", {
+let projects = []
+
+let projectsDaoId2 = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
 });
 
-if (!contractName || !content || !projects)
+// Marketing DAO
+let projectsDaoId4 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(4),
+});
+
+// Gaming DAO
+let projectsDaoId3 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(3),
+});
+
+if (!contractName || !content || !projects || !projectsDaoId2 || !projectsDaoId4 || !projectsDaoId3)
   return <Widget src="flashui.near/widget/Loading" />;
 
+projects = [...projectsDaoId2, ...projectsDaoId4, ...projectsDaoId3] 
 
 const Wrapper = styled.div`
   width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 50px;
 `;
 
 return (
