@@ -130,7 +130,7 @@ return {
           "Meteor Wallet",
           "Aurora Play",
           "Zomland",
-          "Marma",
+          "Marma J Gaming",
           "PipeFlare",
           "Shard Dog",
           "Calimero network",
