@@ -274,11 +274,23 @@ impl Contract {
         };
 
         list_dao_id.iter().map(|id| {
+            let dao = self.get_dao_by_id(id);
             let community_ids = self.dao_communities.get(&id).unwrap_or_default();
+
             let accounts: Vec<AccountId> = community_ids.iter()
                 .map(|community_id| self.get_community_by_id(community_id).latest_version().accounts.clone())
                 .flatten()
                 .collect();
+
+            let checkin_account_id = dao.latest_version().checkin_account_id.clone();
+            let accounts = if let Some(checkin_account_id) = checkin_account_id {
+                let mut accounts = accounts.clone();
+                accounts.push(checkin_account_id);
+                accounts
+            } else {
+                accounts
+            };
+
             (*id, accounts)
         }).collect()
     }
