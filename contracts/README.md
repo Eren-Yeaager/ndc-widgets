@@ -303,7 +303,7 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-
 - Get DAOs community smart-contracts list (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_id":[2,3,4]}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_list":[2,3,4]}'
 ```
 
 ### Access Control

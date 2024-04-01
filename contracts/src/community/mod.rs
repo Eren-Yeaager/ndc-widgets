@@ -108,7 +108,7 @@ use crate::*;
 #[near_bindgen]
 impl Contract {
     // Add new DAO community
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn add_community(
         &mut self,
         dao_id: DaoId,
@@ -179,7 +179,7 @@ impl Contract {
     }
 
     // Change community status
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_community_status(&mut self, id: CommunityId, status: CommunityStatus) {
         let mut community: Community = self.get_community_by_id(&id).into();
         self.validate_community_edit_access(&community);
@@ -189,7 +189,7 @@ impl Contract {
     }
 
     // Edit DAO community
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn edit_community(
         &mut self,
         id: CommunityId,

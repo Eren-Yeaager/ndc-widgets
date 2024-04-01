@@ -155,7 +155,7 @@ impl Contract {
     }
 
     // Edit DAO
-    // Access Level: Only DAO owners
+    // Access Level: Only DAO council
     pub fn edit_dao(
         &mut self,
         id: DaoId,
@@ -181,11 +181,11 @@ impl Contract {
         self.dao.insert(&id, &dao.into());
     }
 
-    // Edit DAO owners
-    // Access Level: Only DAO owners
+    // Edit DAO council
+    // Access Level: Only DAO council
     pub fn edit_dao_owners(&mut self, id: DaoId, owners: Vec<AccountId>) {
         self.validate_dao_ownership(&env::predecessor_account_id(), &id);
-        near_sdk::log!("EDIT DAO OWNERS: {}", id);
+        near_sdk::log!("EDIT DAO COUNCIL: {}", id);
 
         let mut dao: DAO = self.get_dao_by_id(&id).into();
         dao.owners = owners;

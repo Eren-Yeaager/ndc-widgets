@@ -213,7 +213,7 @@ impl Contract {
     }
 
     // Change is_spam parameter for comment
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_comment_is_spam(&mut self, id: CommentId, is_spam: bool) {
         let mut comment:Comment = self.get_comment_by_id(&id).into();
         let post:Post = self.get_post_by_id(&comment.post_id).into();
