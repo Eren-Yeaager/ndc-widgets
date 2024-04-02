@@ -127,6 +127,7 @@ return (
       </MobileForm>
     ) : (
       <Form className="d-flex flex-column gap-3">
+        {!id && (
         <div
           onClick={() => {
             const newFormEl = formEls;
@@ -143,6 +144,7 @@ return (
             </TypeSection>
           </div>
         </div>
+        )}
         <div className="form-element">
           <label>Select DAO</label>
           <select

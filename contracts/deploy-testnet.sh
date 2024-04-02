@@ -15,7 +15,7 @@
 
 # Add DAO
  near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":'"$DAO_OWNERS"', "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
- near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+ near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "checkin_account_id":"test.dao-check.near", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
  near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":[], "metrics":[], "metadata":{}}' --accountId "$ACCOUNT_ID"
  near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'", "new_owner.testnet"]}' --accountId "$ACCOUNT_ID"
@@ -96,4 +96,4 @@ near view "$CONTRACT" get_community_by_handle '{"handle":"community-handle"}'
 near view "$CONTRACT" get_account_access '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
-near view "$CONTRACT" get_community_accounts '{"dao_id":[1,2]}'
+near view "$CONTRACT" get_community_accounts '{"dao_list":[1,2]}'

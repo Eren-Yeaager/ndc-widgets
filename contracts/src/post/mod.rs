@@ -365,7 +365,7 @@ impl Contract {
     }
 
     // Change request/report status
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_post_status(&mut self, id: PostId, status: PostStatus) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
@@ -391,7 +391,7 @@ impl Contract {
     }
 
     // Change proposal state
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_proposal_state(&mut self, id: PostId, state: ProposalStates) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
@@ -436,7 +436,7 @@ impl Contract {
     }
 
     // Change is_spam parameter for post
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_post_is_spam(&mut self, id: PostId, is_spam: bool) {
         let mut post: Post = self.get_post_by_id(&id).into();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);

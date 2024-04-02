@@ -23,6 +23,7 @@ pub struct DAOInput {
     pub banner_url: String,
     pub dao_type: DAOType,
     pub account_id: Option<AccountId>,
+    pub checkin_account_id: Option<AccountId>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
@@ -37,6 +38,7 @@ pub struct DAO {
     pub banner_url: String,
     pub dao_type: DAOType,
     pub account_id: Option<AccountId>,
+    pub checkin_account_id: Option<AccountId>,
     pub owners: Vec<AccountId>,
     pub verticals: Vec<Vertical>,
     pub metrics: Vec<MetricLabel>,
@@ -125,6 +127,7 @@ impl Contract {
             dao_type: body.dao_type,
             owners: owners.clone(),
             account_id: body.account_id,
+            checkin_account_id: body.checkin_account_id,
             verticals,
             metrics,
             metadata,
@@ -155,7 +158,7 @@ impl Contract {
     }
 
     // Edit DAO
-    // Access Level: Only DAO owners
+    // Access Level: Only DAO council
     pub fn edit_dao(
         &mut self,
         id: DaoId,
@@ -174,6 +177,7 @@ impl Contract {
         dao.banner_url = body.banner_url;
         dao.dao_type = body.dao_type;
         dao.account_id = body.account_id;
+        dao.checkin_account_id = body.checkin_account_id;
         dao.verticals = verticals;
         dao.metrics = metrics;
         dao.metadata = metadata;
@@ -181,11 +185,11 @@ impl Contract {
         self.dao.insert(&id, &dao.into());
     }
 
-    // Edit DAO owners
-    // Access Level: Only DAO owners
+    // Edit DAO council
+    // Access Level: Only DAO council
     pub fn edit_dao_owners(&mut self, id: DaoId, owners: Vec<AccountId>) {
         self.validate_dao_ownership(&env::predecessor_account_id(), &id);
-        near_sdk::log!("EDIT DAO OWNERS: {}", id);
+        near_sdk::log!("EDIT DAO COUNCIL: {}", id);
 
         let mut dao: DAO = self.get_dao_by_id(&id).into();
         dao.owners = owners;
@@ -241,6 +245,7 @@ mod tests {
                 banner_url: "https://banner2.com".to_string(),
                 dao_type: DAOType::DAO,
                 account_id: Some("some_account_id.near".parse().unwrap()),
+                checkin_account_id: Some("checkin_account_id.near".parse().unwrap()),
             },
             vec!["owner_account_id2.near".parse().unwrap()],
             vec!["Some vertical".to_string()],
@@ -255,6 +260,7 @@ mod tests {
         assert_eq!(dao.logo_url, "https://logo2.com".to_string());
         assert_eq!(dao.banner_url, "https://banner2.com".to_string());
         assert_eq!(dao.account_id, Some("some_account_id.near".parse().unwrap()));
+        assert_eq!(dao.checkin_account_id, Some("checkin_account_id.near".parse().unwrap()));
         assert_eq!(dao.dao_type, DAOType::DAO);
         assert_eq!(dao.verticals.len(), 1);
         assert_eq!(dao.metrics.len(), 2);

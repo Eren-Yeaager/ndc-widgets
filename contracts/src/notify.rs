@@ -160,7 +160,7 @@ pub fn notify_mention(title: &str, text: &str, post_id: u64, comment_id: Option<
     notify_multiple(mentions, notify_value)
 }
 
-// New Report or Proposal in DAO in Which I am a Council (DAO owners)
+// New Report or Proposal in DAO in Which I am a Council (DAO council)
 pub fn notify_owners_new_post(dao_owners: Vec<AccountId>, post_id: PostId, title: &str, post_type: PostType) {
     let post_type_str = match post_type {
         PostType::Proposal => "proposal",
