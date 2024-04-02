@@ -97,30 +97,31 @@ return (
         <b>Point of Contacts</b>:
       </p>
       <ul>
-        {daoContent.poc.map((poc) => (
-          <li>
-            <div className="d-flex gap-3 align-items-center">
-              {poc.name}
-              <small>
-                <a
-                  className="d-flex gap-1 align-items-center bg-light p-2 rounded"
-                  href={`https://t.me/${poc.tg.replace("@", "")}`}
-                >
-                  <i className="ph ph-telegram-logo" />
-                  {poc.tg.replace("@", "")}
-                </a>
-              </small>
-            </div>
-          </li>
-        ))}
+        {daoContent?.poc &&
+          daoContent?.poc?.map((poc) => (
+            <li>
+              <div className="d-flex gap-3 align-items-center">
+                {poc.name}
+                <small>
+                  <a
+                    className="d-flex gap-1 align-items-center bg-light p-2 rounded"
+                    href={`https://t.me/${poc.tg.replace("@", "")}`}
+                  >
+                    <i className="ph ph-telegram-logo" />
+                    {poc.tg.replace("@", "")}
+                  </a>
+                </small>
+              </div>
+            </li>
+          ))}
       </ul>
       <b>Socials</b>:{" "}
-      {daoContent.tg && (
+      {daoContent?.tg && (
         <a href={daoContent.tg}>
           <i className="ph ph-telegram-logo fs-3" />
         </a>
       )}
-      {daoContent.twitter && (
+      {daoContent?.twitter && (
         <a href={daoContent.twitter}>
           <i className="ph ph-twitter-logo fs-3" />
         </a>

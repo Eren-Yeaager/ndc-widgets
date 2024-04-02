@@ -172,7 +172,7 @@ return (
 
     <Section className="d-flex flex-column gap-5">
       <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
+        src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHours`}
         props={{ dao }}
       />
     </Section>
