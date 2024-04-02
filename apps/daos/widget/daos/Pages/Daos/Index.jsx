@@ -163,23 +163,44 @@ const ProjectCard = ({ project }) => (
   </ProjectContainer>
 );
 
-
 const handelOnFollow = () => {
-  if (!accountId) return;
-  Near.call("aurora.dao-check.near", 'check_in');
+  if (dao.checkin_account_id) {
+    const UserFollowDao_Payload = {
+      contractName: contractName,
+      methodName: "user_follow_dao",
+      args: {
+        id: dao.id
+      },
+      deposit: 0
+    };
+
+    const CheckIn_Payload = {
+      contractName: dao.checkin_account_id,
+      methodName: "check_in",
+      args: {},
+      deposit: 0
+    };
+
+
+    Near.call([UserFollowDao_Payload, CheckIn_Payload]).then(() => {
+      console.log('Transactions completed');
+    }).catch(error => {
+      console.error('Error in sending transactions:', error);
+    });
+  } else {
+    Near.call(contractName, 'user_follow_dao', { id: dao.id });
+  }
 };
 
 return (
   <Container>
-
-    {id === 'aurora-community-dao' ?
+    {accountId ?
       <div className="image-container">
         <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
         <a className="overlay-button btn" onClick={handelOnFollow}>Follow</a>
       </div>
       : <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
     }
-
     <Section className="with-circles">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Info`}
@@ -216,12 +237,13 @@ return (
         props={{ section: section, dao }}
       />
     </Section>
-
+    {dao.metadata.contacts && 
     <Section className="d-flex flex-column gap-5">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
         props={{ dao }}
       />
     </Section>
+    }
   </Container>
 );
