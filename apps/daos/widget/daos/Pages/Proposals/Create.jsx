@@ -145,10 +145,12 @@ useEffect(() => {
   if (post) {
     setFormEls({
       ...formEls,
+      ...post.metrics,
       title: post.title,
       description: post.description,
       requested_amount: post.requested_amount ?? 0,
       tags: post.labels ?? [],
+      post_type: post.post_type,
     });
     setAttachments(post.attachments);
   }
