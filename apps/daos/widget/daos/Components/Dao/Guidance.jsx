@@ -92,7 +92,7 @@ const Item = styled.div`
   }
 
   @media screen and (max-width: 786px) {
-    width: 100%;
+    max-width: 85%;
   }
 `;
 
