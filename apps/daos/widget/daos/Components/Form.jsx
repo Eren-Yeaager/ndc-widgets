@@ -100,7 +100,7 @@ const ProposalButton = () => (
     )}
     onClick={handleSave}
   >
-    {id ? "Edit" : "Create"} proposal
+    {id ? "Edit" : "Create"} {formEls.post_type}
     <i className="bi bi-plus-lg" />
   </button>
 );

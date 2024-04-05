@@ -117,7 +117,7 @@ return (
       </ul>
       <b>Socials</b>:{" "}
       {daoContent?.tg && (
-        <a href={daoContent.tg}>
+        <a href={`https://${daoContent.tg}`}>
           <i className="ph ph-telegram-logo fs-3" />
         </a>
       )}
