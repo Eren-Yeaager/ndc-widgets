@@ -54,27 +54,24 @@ if (myDAOs.length === 0)
     </Container>
   );
 
-const [selectedDao, setSelectedDao] = useState(myDAOs[0]);
-
-const handleSelectDao = (e) =>
-  setSelectedDao(myDAOs.find((dao) => dao.id === parseInt(e.target.value)));
+const [selectedDao, setSelectedDao] = useState(
+  props.dao ? myDAOs.find((dao) => dao.handle === props.dao) : myDAOs[0]
+);
 
 return (
   <Container>
     <Wrapper>
-      <h2>Settings</h2>
+      <h2>{selectedDao.title} Settings</h2>
 
       <div className="form-element">
         <label className="form-label">Select DAO</label>
-        <select
-          className="form-control"
-          value={selectedDao.id}
-          onChange={handleSelectDao}
-        >
-          {myDAOs.map((dao) => (
-            <option value={dao.id}>{dao.title}</option>
-          ))}
-        </select>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Select`}
+          props={{
+            options: myDAOs.map((dao) => [dao.handle, dao.title]),
+            value: selectedDao.title,
+          }}
+        />
       </div>
 
       <Widget
