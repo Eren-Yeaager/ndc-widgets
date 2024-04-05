@@ -99,6 +99,7 @@ const NavigationLinks = () => (
       <a
         className="post-btn d-flex align-items-center justify-content-center gap-2"
         href="https://kyc.neardc.org/"
+        target="_blank"
       >
         <i className="ph ph-identification-card fs-5" />
         KYC
