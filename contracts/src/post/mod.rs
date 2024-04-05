@@ -674,8 +674,8 @@ mod tests {
         let proposal:Post = contract.get_post_by_id(&post_id).into();
         if let PostBody::Proposal(vp) = &proposal.snapshot.body {
             let VersionedProposal::V1(p) = vp;
-            assert!(Some(p.state.kyc_passed));
-            assert!(Some(p.state.dao_council_approved));
+            assert_eq!(p.state.kyc_passed, Some(true));
+            assert_eq!(p.state.dao_council_approved, Some(true));
         }
     }
 

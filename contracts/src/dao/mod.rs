@@ -247,7 +247,6 @@ mod tests {
                 account_id: Some("some_account_id.near".parse().unwrap()),
                 checkin_account_id: Some("checkin_account_id.near".parse().unwrap()),
             },
-            vec!["owner_account_id2.near".parse().unwrap()],
             vec!["Some vertical".to_string()],
             vec!["tx-count".to_string(), "volume".to_string()],
             metadata
@@ -266,6 +265,18 @@ mod tests {
         assert_eq!(dao.metrics.len(), 2);
         assert_eq!(dao.metadata.len(), 1);
         assert_eq!(dao.owners.len(), 1);
+    }
+
+    #[test]
+    pub fn test_edit_dao_owners() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        contract.edit_dao_owners(dao_id, vec!["new_owner.near".parse().unwrap()]);
+
+        let dao:DAO = contract.get_dao_by_id(&dao_id).into();
+        assert_eq!(dao.owners.len(), 1);
+        assert!(dao.owners.contains(&"new_owner.near".parse().unwrap()));
     }
 
     #[test]

@@ -10,6 +10,7 @@ pub mod str_serializers;
 mod user;
 mod notify;
 mod social_db;
+mod event;
 
 use std::collections::{HashMap, HashSet};
 use storage_keys::*;
@@ -28,11 +29,13 @@ use crate::post::proposal::ProposalStates;
 use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 use strum::IntoEnumIterator;
+use crate::event::{Event, EventStatus};
 
 type DaoId = u64;
 type PostId = u64;
 type CommentId = u64;
 type CommunityId = u64;
+type EventId = u64;
 type PostLabel = String;
 type Vertical = String;
 type MetricLabel = String;
@@ -45,16 +48,18 @@ pub struct Contract {
     pub total_posts: u64,
     pub total_comments: u64,
     pub total_communities: u64,
+    pub total_events: u64,
 
     pub dao: UnorderedMap<DaoId, VersionedDAO>,
     pub dao_posts: LookupMap<DaoId, Vec<PostId>>,
     pub dao_communities: LookupMap<DaoId, Vec<CommunityId>>,
-    // pub dao_handles: UnorderedMap<String, DaoId>,
+    pub dao_events: LookupMap<DaoId, Vec<EventId>>,
 
     pub posts: LookupMap<PostId, VersionedPost>,
     pub comments: LookupMap<CommentId, VersionedComment>,
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
+    pub events: LookupMap<EventId, Event>,
 
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
@@ -77,15 +82,18 @@ impl Contract {
             total_posts: 0,
             total_comments: 0,
             total_communities: 0,
+            total_events: 0,
 
             dao: UnorderedMap::new(StorageKey::DAO),
             dao_posts: LookupMap::new(StorageKey::DaoPosts),
             dao_communities: LookupMap::new(StorageKey::DaoCommunities),
+            dao_events: LookupMap::new(StorageKey::DaoEvents),
 
             posts: LookupMap::new(StorageKey::Posts),
             comments: LookupMap::new(StorageKey::Comments),
             communities: LookupMap::new(StorageKey::Communities),
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
+            events: LookupMap::new(StorageKey::Events),
 
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
@@ -345,6 +353,48 @@ impl Contract {
             .map(|community_id| self.get_community_by_id(community_id).into())
             .collect()
     }
+
+    // Events: Get all events
+    pub fn get_all_events(&self, page: u64, limit: u64, event_status: Option<EventStatus>, dao_id: Option<DaoId>) -> Vec<Event> {
+        let event_ids: Vec<EventId> = if let Some(dao) = dao_id {
+            self.dao_events.get(&dao).unwrap_or_default()
+        } else {
+            (1..=self.total_events).collect()
+        };
+
+        let events: Vec<Event> = event_ids.iter()
+            .filter_map(|event_id| {
+                let event = self.get_event_by_id(&event_id);
+                match &event_status {
+                    Some(status) => {
+                        if event.status == *status {
+                            Some(event)
+                        } else {
+                            None
+                        }
+                    },
+                    None => Some(event),
+                }
+            })
+            .collect();
+
+        // events.sort_by(|a, b| a.start_timestamp.cmp(&b.start_timestamp));
+
+        let total_events = events.len();
+        let page = page.max(1);
+        let start = ((page - 1) * limit) as usize;
+        let end = std::cmp::min(start + limit as usize, total_events);
+
+        events[start..end].to_vec()
+    }
+
+    // Events: Get event by ID
+    pub fn get_event_by_id(&self, id: &EventId) -> Event {
+        self.events.get(id).unwrap_or_else(|| panic!("Event {} not found", id))
+    }
+
+    // Events: Get all Active events for a DAO
+
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]
@@ -388,6 +438,7 @@ pub mod tests {
                 banner_url: "https://banner.com".to_string(),
                 dao_type: DAOType::DAO,
                 account_id: Some("some_acc.near".parse().unwrap()),
+                checkin_account_id: Some("checkin_acc.near".parse().unwrap()),
             },
             vec![context.signer_account_id.clone()],
             vec!["gaming".to_string()],
