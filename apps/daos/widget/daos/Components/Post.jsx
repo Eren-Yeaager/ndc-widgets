@@ -1,5 +1,5 @@
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
+const { item, index, showMoreDefault, showCommentsDefault, type, preview, disabeleOpenReportLInk } =
   props;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
@@ -343,9 +343,8 @@ const CardItem = ({ item, index }) => (
         <b>
           See More
           <i
-            className={`bi blue ${
-              showMore === index ? "bi-eye" : "bi-eye-slash"
-            }`}
+            className={`bi blue ${showMore === index ? "bi-eye" : "bi-eye-slash"
+              }`}
           />
         </b>
       </a>
@@ -444,9 +443,8 @@ const CardItem = ({ item, index }) => (
             >
               <span className="blue">{item.likes.length}</span>
               <i
-                className={`bi blue ${
-                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
-                }`}
+                className={`bi blue ${isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                  }`}
               />
             </div>
 
@@ -478,13 +476,14 @@ const CardItem = ({ item, index }) => (
               </div>
             )}
           </div>
-
-          <Button
-            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
-          >
-            {`Open ${item.post_type}`}
-            <i className={"bi blue bi-box-arrow-up-right"} />
-          </Button>
+          {!disabeleOpenReportLInk && (
+            <Button
+              href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
+            >
+              {`Open ${item.post_type}`}
+              <i className={"bi blue bi-box-arrow-up-right"} />
+            </Button>
+          )}
         </div>
       )}
 

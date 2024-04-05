@@ -18,6 +18,7 @@ return (
       id: post.id,
       showMoreDefault: post.id,
       showCommentsDefault: true,
+      disabeleOpenReportLInk: true,
     }}
   />
 );
