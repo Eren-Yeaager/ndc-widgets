@@ -2,14 +2,14 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const { item, index, showMoreDefault, showCommentsDefault, type, preview } =
   props;
 
+if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;  
+
 const [itemState, setItemState] = useState(item);
 const [showMore, setShowMore] = useState(null);
 
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
-
-if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 const TableRow = styled.div`
   display: flex;
@@ -409,7 +409,7 @@ return (
       {showMore === index && (
         <ProposalCardWarpper>
           <ProposalCard>
-            <ProposalContent>
+            <ProposalContent style={{'max-width': '350px'}}>
               <div className="d-flex justify-content-between gap-3">
                 <ProposalHeader>{itemState.title}</ProposalHeader>
                 <Widget
@@ -436,13 +436,13 @@ return (
                 </ProposalInfoItem>
               </ProposalInfo>
             </ProposalContent>
-            <ProposalContent>
+            <ProposalContent style={{'max-width': '850px'}}>
               <Tags>
                 {itemState.labels?.map((tag) => (
                   <Tag>#{tag}</Tag>
                 ))}
               </Tags>
-              <Description>
+              <Description >
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                   props={{ text: itemState.description }}
