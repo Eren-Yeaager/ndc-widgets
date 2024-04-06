@@ -96,7 +96,7 @@ return (
           {items.map((row, index) => (
             <Widget
               src="/*__@replace:widgetPath__*/.Components.Post"
-              props={{ item: row, index, type, id: row.id }}
+              props={{ item: row, index, type, rowId: row.id }}
             />
           ))}
         </Table>
@@ -104,7 +104,7 @@ return (
           {items.map((row, index) => (
             <Widget
               src="/*__@replace:widgetPath__*/.Components.Post"
-              props={{ item: row, index, type, id: row.id, isMobile: true }}
+              props={{ item: row, index, type, rowId: row.id, isMobile: true }}
             />
           ))}
         </Mobile>
