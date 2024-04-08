@@ -148,7 +148,15 @@ if (!contractName || !content)
 const dao = Near.view(contractName, "get_dao_by_handle", { handle: id });
 const section = content.daos[id].sections;
 
-if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+const followedDaos = Near.view(contractName, "get_follow_dao", {
+  account_id: accountId,
+});
+
+
+if (!dao || !followedDaos) return <Widget src="flashui.near/widget/Loading" />;
+
+
+const isFollowed = followedDaos.find((d) => d.handle === dao.handle);
 
 const projects = Near.view(contractName, "get_dao_communities", {
   dao_id: dao.id,
@@ -197,7 +205,7 @@ return (
     {accountId ?
       <div className="image-container">
         <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
-        <a className="overlay-button btn" onClick={handelOnFollow}>Follow</a>
+        <a className="overlay-button btn" onClick={handelOnFollow}>{isFollowed ? "Following": "Follow"}</a>
       </div>
       : <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
     }
