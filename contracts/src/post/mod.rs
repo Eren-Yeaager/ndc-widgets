@@ -50,6 +50,7 @@ pub enum VersionedPost {
 pub struct Post {
     pub id: PostId,
     pub author_id: AccountId,
+    pub created_at: Timestamp,
     pub dao_id: DaoId,
     pub likes: HashSet<Like>,
     pub comments: HashSet<CommentId>,
@@ -167,6 +168,7 @@ impl Contract {
         let post = Post {
             id: post_id.clone(),
             author_id: author_id.clone(),
+            created_at: env::block_timestamp(),
             likes: Default::default(),
             comments: Default::default(),
             dao_id,
