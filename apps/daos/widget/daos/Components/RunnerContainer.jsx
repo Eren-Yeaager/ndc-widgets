@@ -9,7 +9,7 @@ const Container = styled.div`
 
   .scroll {
     display: flex;
-    animation: scroll 30s linear infinite;
+    animation: scroll 360s linear infinite;
   }
 
   &:hover {
