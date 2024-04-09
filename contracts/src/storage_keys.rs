@@ -19,4 +19,6 @@ pub enum StorageKey {
     CommentAuthors,
     UserFollow,
     OwnerAccess,
+    Events,
+    DaoEvents,
 }

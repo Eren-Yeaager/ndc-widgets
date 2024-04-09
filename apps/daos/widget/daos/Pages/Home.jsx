@@ -246,7 +246,7 @@ return (
         props={{
           daos,
           totalTreasury: 3893275,
-          deliverTreasury: 292189,
+          deliverTreasury: 362253,
           typeOfProject,
           loading,
           text: content.communityTreasury.metrics,

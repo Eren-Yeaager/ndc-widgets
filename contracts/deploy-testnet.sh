@@ -71,6 +71,11 @@
 
  near call "$CONTRACT" user_follow_community '{"id":1}' --accountId "$ACCOUNT_ID"
 
+ near call "$CONTRACT" add_event '{"dao_id":2, "event_input":{"title":"Event title", "description": "Event description", "image_url":"", "event_type":"Online", "start_timestamp":1710000000, "end_timestamp":1720000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+
+ near call "$CONTRACT" edit_event '{"id":1, "event_input":{"title":"Event title upd", "description": "Event description upd", "image_url":"https"//im.com/test.jpg", "event_type":"Online", "start_timestamp":1800000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+
+
 # Check views
  near view "$CONTRACT" get_dao_list ''
  near view "$CONTRACT" get_dao_list '{"dao_type":"DAO"}'
@@ -97,3 +102,6 @@ near view "$CONTRACT" get_account_access '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_community_accounts '{"dao_list":[1,2]}'
+
+near view "$CONTRACT" get_all_events '{"page":1, "limit":100}'
+near view "$CONTRACT" get_all_events '{"page":1, "limit":100, "event_status":"Active", "dao_id":1}'
