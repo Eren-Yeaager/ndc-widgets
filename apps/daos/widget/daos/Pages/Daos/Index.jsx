@@ -172,6 +172,7 @@ const ProjectCard = ({ project }) => (
 );
 
 const handelOnFollow = () => {
+  if (isFollowed) return;
   if (dao.checkin_account_id) {
     const UserFollowDao_Payload = {
       contractName: contractName,
@@ -205,7 +206,7 @@ return (
     {accountId ?
       <div className="image-container">
         <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
-        <a className="overlay-button btn" onClick={handelOnFollow}>{isFollowed ? "Following": "Follow"}</a>
+        <a className="overlay-button btn" style={{cursor: isFollowed ? 'default': 'pointer'}} onClick={handelOnFollow}>{isFollowed ? "Following": "Follow"}</a>
       </div>
       : <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
     }
