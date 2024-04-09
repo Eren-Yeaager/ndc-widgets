@@ -19,13 +19,13 @@ const Container = styled.div`
     color: white;
     display: none;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: flex;
       flex-direction: column;
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1120px) {
     padding: 1.5rem 2rem;
   }
 `;
@@ -44,7 +44,7 @@ const LinksContainer = styled.div`
   gap: 3rem;
   color: white;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1120px) {
     gap: 2rem;
   }
 
@@ -69,7 +69,7 @@ const LinksContainer = styled.div`
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: none;
     }
   }
@@ -77,7 +77,7 @@ const LinksContainer = styled.div`
   .menu-icon {
     display: none;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: flex;
     }
   }
@@ -85,10 +85,11 @@ const LinksContainer = styled.div`
 
 const NavigationLinks = () => (
   <>
-    <a href={`//*__@replace:widgetPath__*/.App?page=supported_projects`}>Supported Projects</a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <div className="d-flex flex-wrap gap-3">
+    <div className="d-flex gap-3">
       <a
         className="post-btn d-flex align-items-center justify-content-center gap-2"
         href={`//*__@replace:widgetPath__*/.App?page=create_post`}

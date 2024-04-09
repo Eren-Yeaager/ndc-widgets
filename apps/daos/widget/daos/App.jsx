@@ -6,6 +6,14 @@ if (!page) page = "home";
 
 function Page() {
   switch (page) {
+    case "dashboard": {
+      return (
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Pages.Dashboard`}
+          props={props}
+        />
+      );
+    }
     case "settings": {
       return (
         <Widget
@@ -136,10 +144,10 @@ function Page() {
         />
       );
     }
-    case "supported_projects": {
+    case "projects": {
       return (
         <Widget
-          src={`/*__@replace:widgetPath__*/.Pages.SupportedProjects`}
+          src={`/*__@replace:widgetPath__*/.Pages.Projects`}
           props={props}
         />
       );
