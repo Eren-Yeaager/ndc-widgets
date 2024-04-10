@@ -28,10 +28,10 @@ if (dao_id) {
 
   if (items.length === 0) {
     items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
-    accountId = null
+    accountId = null;
   }
-}
-else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
+} else
+  items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -89,7 +89,7 @@ return (
       <div className="w-100 my-5 d-flex justify-content-center align-tems-center">
         <h1>No active Reports</h1>
       </div>
-    ) :
+    ) : (
       <>
         <Table>
           <TableHeader>
@@ -115,6 +115,6 @@ return (
           ))}
         </Mobile>
       </>
-    }
+    )}
   </>
 );

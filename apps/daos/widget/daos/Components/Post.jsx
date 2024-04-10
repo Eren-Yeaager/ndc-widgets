@@ -23,8 +23,9 @@ const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
 
-
-{/* This is to be used with Table  */ }
+{
+  /* This is to be used with Table  */
+}
 const TableRow = styled.div`
   display: flex;
   border-bottom: ${(props) => (props.showMore ? "0" : "1px solid #e3e3e0")};
@@ -147,7 +148,6 @@ const Container = styled.div`
   }
 `;
 
-
 const ProposalCard = styled.div`
   width: 100%;
   display: flex;
@@ -267,20 +267,22 @@ const DesktopVersion = styled.div`
   }
 `;
 
-
-{/* This is to be used with single report  */ }
+{
+  /* This is to be used with single report  */
+}
 
 const Breadcrumb = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  border-bottom: 1px solid var(--NEAR-Primary-Colors-Off-White-Variation-1, #F0EFE7);
+  border-bottom: 1px solid
+    var(--NEAR-Primary-Colors-Off-White-Variation-1, #f0efe7);
   padding-bottom: 14px;
   margin-bottom: 30px;
 
   .all-link {
-    color: #7E7D7E;
-   }
+    color: #7e7d7e;
+  }
 `;
 const InfoContainer = styled.div`
   display: flex;
@@ -299,7 +301,7 @@ const InfoContainer = styled.div`
 const Left = styled.div`
   width: 60%;
   .author {
-    margin-left: 10px
+    margin-left: 10px;
   }
 `;
 const Right = styled.div`
@@ -320,7 +322,7 @@ const DescriptionContainer = styled.div`
 const Social = styled.div`
   width: 100%;
   padding: 12px;
-  border-top: 1px solid #F0EFE7;
+  border-top: 1px solid #f0efe7;
   display: flex;
   gap: 20px;
 `;
@@ -334,7 +336,6 @@ const Comments = styled.div`
   }
 `;
 
-
 const HistoryContainer = styled.div`
   min-height: 50px;
   max-height: 200px;
@@ -344,8 +345,8 @@ const HistoryContainer = styled.div`
 
 const HistoryEntry = styled.div`
   padding: 10px;
-  background-color: ${(props) => (props.selected ? '#F5F6FE;' : 'white')};
-  border-left: ${(props) => (props.selected ? '2px solid #626AD1' : 'none')};
+  background-color: ${(props) => (props.selected ? "#F5F6FE;" : "white")};
+  border-left: ${(props) => (props.selected ? "2px solid #626AD1" : "none")};
   cursor: pointer;
 
   .text {
@@ -359,12 +360,12 @@ const HistoryEntry = styled.div`
 
 const ProposalsStateContainer = styled.div`
   display: flex;
-  gap: 10px; 
-  padding-top: 10px
-`
+  gap: 10px;
+  padding-top: 10px;
+`;
 
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
-console.log(snapshot)
+console.log(snapshot);
 
 const changeHistory = (id) => {
   console.log(id);
@@ -381,7 +382,7 @@ if (itemState.id)
     id: itemState.id,
   });
 
-snapshot = snapshot && snapshot.filter((i) => !i.is_spam)
+snapshot = snapshot && snapshot.filter((i) => !i.is_spam);
 
 const isLiked = (item) => {
   return item.likes && item.likes.find((item) => item.author_id === accountId);
@@ -427,13 +428,17 @@ const statuses = [
 return (
   <>
     {/* This is to be used with single report  */}
-    {id ?
+    {id ? (
       <>
         <Breadcrumb>
           <div>
-            <a className="all-link" href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
-              All {itemState.post_type === "Proposal" ? "Proposals" : "Reports"}</a> /
-            {itemState.title}
+            <a
+              className="all-link"
+              href={`//*__@replace:widgetPath__*/.App?page=proposals`}
+            >
+              All {itemState.post_type === "Proposal" ? "Proposals" : "Reports"}
+            </a>{" "}
+            /{itemState.title}
           </div>
         </Breadcrumb>
         <InfoContainer>
@@ -442,10 +447,12 @@ return (
               <div className="d-flex">
                 <i class="ph ph-users"></i>
                 <div>
-                  <a 
+                  <a
                     className="account-link author"
                     href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-                  >{itemState.author_id}</a>
+                  >
+                    {itemState.author_id}
+                  </a>
                 </div>
               </div>
               <div>
@@ -454,7 +461,9 @@ return (
                     <select
                       className="form-control"
                       value={itemState.status}
-                      onChange={(status) => changeStatus(item, status.target.value)}
+                      onChange={(status) =>
+                        changeStatus(item, status.target.value)
+                      }
                     >
                       {statuses.map(({ key, value }) => (
                         <option value={key}>{value}</option>
@@ -466,7 +475,6 @@ return (
                     {itemState.status}
                   </StatusBadge>
                 )}
-
               </div>
             </div>
             <div>
@@ -516,7 +524,7 @@ return (
             </div>
             <ProposalInfo>
               <ProposalInfoItem>
-                <div >Updated at:</div>
+                <div>Updated at:</div>
                 <div>
                   {itemState.timestamp
                     ? new Date(itemState.timestamp / 1000000).toLocaleString()
@@ -532,7 +540,6 @@ return (
             </ProposalInfo>
           </Left>
           <Right>
-
             <div>
               <i class="ph ph-clock-counter-clockwise"></i>
               <span>Version History</span>
@@ -547,28 +554,28 @@ return (
                       onClick={() => changeHistory(index)}
                     >
                       <>
-                      <div ><span className="text">Updated at:</span>
-                      
-                        {itemState.timestamp
-                          ? new Date(itemState.timestamp / 1000000).toLocaleString()
-                          : new Date().toLocaleDateString()}
-                      </div>
-                      <div>
-                        <span  className="text">by</span> {itemState.author_id}
-                      </div>
+                        <div>
+                          <span className="text">Updated at:</span>
+
+                          {itemState.timestamp
+                            ? new Date(
+                                itemState.timestamp / 1000000,
+                              ).toLocaleString()
+                            : new Date().toLocaleDateString()}
+                        </div>
+                        <div>
+                          <span className="text">by</span> {itemState.author_id}
+                        </div>
                       </>
                     </HistoryEntry>
                   ))}
                 </HistoryContainer>
               )}
             </div>
-
           </Right>
         </InfoContainer>
         <DescriptionContainer>
-          <ProposalHeader>
-            Description
-          </ProposalHeader>
+          <ProposalHeader>Description</ProposalHeader>
 
           <Tags>
             {itemState.labels?.map((tag) => (
@@ -576,7 +583,7 @@ return (
             ))}
           </Tags>
 
-          <Description >
+          <Description>
             <Widget
               src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
               props={{ text: itemState.description }}
@@ -588,12 +595,12 @@ return (
               className="d-flex gap-2 align-items-center"
               onClick={handleLike}
             >
-
               <i
-                className={` ph-heart fs-5 ${isLiked(itemState) ? "ph-fill" : "ph"
-                  }`}
+                className={` ph-heart fs-5 ${
+                  isLiked(itemState) ? "ph-fill" : "ph"
+                }`}
               />
-              <span >{itemState.likes.length}</span>
+              <span>{itemState.likes.length}</span>
             </div>
 
             <div
@@ -602,7 +609,7 @@ return (
               onClick={handleShowComments}
             >
               <i className="ph ph-chat-circle fs-5" />
-              <span >{itemState.comments.length}</span>
+              <span>{itemState.comments.length}</span>
             </div>
             <div role="button">
               <Widget
@@ -613,10 +620,15 @@ return (
               />
             </div>
             {dao.owners.includes(accountId) && (
-              <div role="button" className="d-flex gap-2 align-items-center" onClick={handleSpam}>
+              <div
+                role="button"
+                className="d-flex gap-2 align-items-center"
+                onClick={handleSpam}
+              >
                 <i
-                  className={`ph ph-flag ${itemState.is_spam ? "red ph-fill" : "ph"
-                    }`}
+                  className={`ph ph-flag ${
+                    itemState.is_spam ? "red ph-fill" : "ph"
+                  }`}
                 />
               </div>
             )}
@@ -634,8 +646,7 @@ return (
           </Comments>
         )}
       </>
-      :
-
+    ) : (
       <>
         {/* This is to be used with Table  */}
         <MobileContainer>
@@ -649,7 +660,9 @@ return (
                 <div>
                   <span className="created">Updated at:</span>{" "}
                   <span className="date">
-                    {new Date(itemState.timestamp / 1000000).toLocaleDateString()}
+                    {new Date(
+                      itemState.timestamp / 1000000,
+                    ).toLocaleDateString()}
                   </span>
                 </div>
               </div>
@@ -708,12 +721,13 @@ return (
                 <a
                   className="account-link"
                   href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-                >{itemState.author_id}</a>
-
+                >
+                  {itemState.author_id}
+                </a>
               </div>
             </ProposalInfoItem>
             <ProposalInfoItem>
-              <div >Requested amount:</div>
+              <div>Requested amount:</div>
               <div>
                 <b>${itemState.requested_amount ?? 0}</b>
               </div>
@@ -721,7 +735,7 @@ return (
           </ProposalInfo>
           {!id && (
             <div className="d-flex justify-content-between align-items-center gap-3">
-              {itemState.post_type === "Proposal" ?
+              {itemState.post_type === "Proposal" ? (
                 <div className="d-flex justify-content-end w-100">
                   <a
                     className="btn btn-secondary w-100 text-nowrap"
@@ -731,8 +745,7 @@ return (
                     <i class="ph ph-arrow-square-out fs-6"></i>
                   </a>
                 </div>
-
-                :
+              ) : (
                 <div className="d-flex justify-content-start w-100">
                   <a
                     className="btn btn-secondary outlined w-100 text-nowrap"
@@ -741,7 +754,7 @@ return (
                     Report
                   </a>
                 </div>
-              }
+              )}
             </div>
           )}
         </MobileContainer>
@@ -824,7 +837,9 @@ return (
               </a>
               <ExpandCollapseIcon>
                 <i
-                  class={`ph ph-caret-${showMore === index ? "up" : "down"} fs-5`}
+                  class={`ph ph-caret-${
+                    showMore === index ? "up" : "down"
+                  } fs-5`}
                   onClick={() => setShowMore(showMore === index ? null : index)}
                 ></i>
               </ExpandCollapseIcon>
@@ -833,7 +848,7 @@ return (
           {showMore === index && (
             <ProposalCardWrapper>
               <ProposalCard>
-                <ProposalContent maxWidth={'350px'}>
+                <ProposalContent maxWidth={"350px"}>
                   <div className="d-flex justify-content-between gap-3">
                     <ProposalHeader>{itemState.title}</ProposalHeader>
                     <Widget
@@ -845,10 +860,12 @@ return (
                   </div>
                   <ProposalInfo>
                     <ProposalInfoItem>
-                      <div >Updated at:</div>
+                      <div>Updated at:</div>
                       <div>
                         {itemState.timestamp
-                          ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                          ? new Date(
+                              itemState.timestamp / 1000000,
+                            ).toLocaleString()
                           : new Date().toLocaleDateString()}
                       </div>
                     </ProposalInfoItem>
@@ -860,13 +877,13 @@ return (
                     </ProposalInfoItem>
                   </ProposalInfo>
                 </ProposalContent>
-                <ProposalContent  maxWidth={'850px'}>
+                <ProposalContent maxWidth={"850px"}>
                   <Tags>
                     {itemState.labels?.map((tag) => (
                       <Tag>#{tag}</Tag>
                     ))}
                   </Tags>
-                  <Description >
+                  <Description>
                     <Widget
                       src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                       props={{ text: itemState.description }}
@@ -887,7 +904,6 @@ return (
           )}
         </DesktopVersion>
       </>
-    }
+    )}
   </>
-
 );

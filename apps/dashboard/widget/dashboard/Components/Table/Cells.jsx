@@ -70,12 +70,12 @@ const formatValue = (value) => {
   return val >= 1000000000
     ? `${parseFloat(val / 1000000000).toFixed(2)}B`
     : val >= 1000000
-      ? `${parseFloat(val / 1000000).toFixed(2)}M`
-      : val >= 1000
-        ? `${parseFloat(val / 1000).toFixed(2)}K`
-        : Number.isInteger(val)
-          ? val
-          : val.toFixed(2);
+    ? `${parseFloat(val / 1000000).toFixed(2)}M`
+    : val >= 1000
+    ? `${parseFloat(val / 1000).toFixed(2)}K`
+    : Number.isInteger(val)
+    ? val
+    : val.toFixed(2);
 };
 
 const { dataSet, daos } = props;

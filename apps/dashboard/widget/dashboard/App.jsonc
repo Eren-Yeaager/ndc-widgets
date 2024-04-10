@@ -3,11 +3,11 @@
     "name": "NDC Dashboard",
     "description": "",
     "image": {
-      "ipfs_cid": "",
+      "ipfs_cid": ""
     },
     "tags": {
       "ndc": "",
-      "daos": "",
-    },
-  },
+      "daos": ""
+    }
+  }
 }

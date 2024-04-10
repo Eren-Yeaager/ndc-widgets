@@ -87,7 +87,7 @@ const ProposalButton = () => (
   <button
     className="btn-primary"
     disabled={form[formEls.post_type].some(
-      (el) => el.required && !formEls[el.name]
+      (el) => el.required && !formEls[el.name],
     )}
     onClick={handleSave}
   >

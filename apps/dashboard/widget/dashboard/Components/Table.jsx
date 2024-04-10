@@ -53,7 +53,7 @@ const [loading, setLoading] = useState(false);
 const [selectedDAOs, setSelectedDAOs] = useState([]);
 const [selectedRetention, setSelectedRetention] = useState(0);
 const [selectedCurrency, setSelectedCurrency] = useState(
-  Object.keys(CURRENCIES)[0]
+  Object.keys(CURRENCIES)[0],
 );
 
 const [filtersIsOpen, setFiltersIsOpen] = useState(FILTER_OPENS);
@@ -128,7 +128,7 @@ const filterDAO = (value) => {
     newSelection = isCurrentSelectionFull ? [] : all;
   } else if (selectedDAOs.includes(value)) {
     newSelection = selectedDAOs.filter(
-      (daoId) => daoId !== value && daoId !== defaultDAOOption
+      (daoId) => daoId !== value && daoId !== defaultDAOOption,
     );
   } else {
     newSelection = [...selectedDAOs, value];

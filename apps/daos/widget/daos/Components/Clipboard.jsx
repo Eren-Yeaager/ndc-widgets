@@ -6,8 +6,8 @@ const CopyButton = styled.div`
   align-items: center;
   gap: 6px;
   border-radius: 4px;
-  border: 1px solid #F0EFE7;
-  background: #FFF;
+  border: 1px solid #f0efe7;
+  background: #fff;
   .copyText {
     font-size: 10px;
   }
@@ -37,13 +37,9 @@ return (
       <span className="copyText">Copy</span>
 
       {state.copied ? (
-        <>
-          {props.copiedLabel ?? props.label}
-        </>
+        <>{props.copiedLabel ?? props.label}</>
       ) : (
-        <>
-          {props.label}
-        </>
+        <>{props.label}</>
       )}
     </CopyButton>
   </OverlayTrigger>

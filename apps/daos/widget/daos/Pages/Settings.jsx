@@ -1,5 +1,5 @@
 let { contractName, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -55,7 +55,7 @@ if (myDAOs.length === 0)
   );
 
 const [selectedDao, setSelectedDao] = useState(
-  props.dao ? myDAOs.find((dao) => dao.handle === props.dao) : myDAOs[0]
+  props.dao ? myDAOs.find((dao) => dao.handle === props.dao) : myDAOs[0],
 );
 
 return (

@@ -145,7 +145,7 @@ const Info = ({ card }) => (
     <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
       <div>
         <h4 className="color-text">{card.title}</h4>
-        <span style={{'word-wrap': 'break-word'}}>
+        <span style={{ "word-wrap": "break-word" }}>
           <Widget
             src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
             props={{

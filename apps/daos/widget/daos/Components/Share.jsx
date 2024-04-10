@@ -3,7 +3,7 @@ const CopyButton = styled.div`
   height: 30px;
   justify-content: center;
   align-items: center;
-  font-size: 20px
+  font-size: 20px;
 `;
 
 return (
@@ -27,16 +27,11 @@ return (
       }}
     >
       <i class="ph ph-share-fat"></i>
-     
 
       {state.copied ? (
-        <>
-          {props.copiedLabel ?? props.label}
-        </>
+        <>{props.copiedLabel ?? props.label}</>
       ) : (
-        <>
-          {props.label}
-        </>
+        <>{props.label}</>
       )}
     </CopyButton>
   </OverlayTrigger>

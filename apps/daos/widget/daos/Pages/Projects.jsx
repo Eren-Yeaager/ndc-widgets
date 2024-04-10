@@ -1,11 +1,10 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 
 content = content.home;
 
-let projects = []
-
+let projects = [];
 
 // NDC
 let projectsDaoId1 = Near.view(contractName, "get_dao_communities", {
@@ -26,10 +25,23 @@ let projectsDaoId3 = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(3),
 });
 
-if (!contractName || !content || !projects || !projectsDaoId1 || !projectsDaoId2 || !projectsDaoId4 || !projectsDaoId3)
+if (
+  !contractName ||
+  !content ||
+  !projects ||
+  !projectsDaoId1 ||
+  !projectsDaoId2 ||
+  !projectsDaoId4 ||
+  !projectsDaoId3
+)
   return <Widget src="flashui.near/widget/Loading" />;
 
-projects = [...projectsDaoId1, ...projectsDaoId2, ...projectsDaoId4, ...projectsDaoId3] 
+projects = [
+  ...projectsDaoId1,
+  ...projectsDaoId2,
+  ...projectsDaoId4,
+  ...projectsDaoId3,
+];
 
 const Wrapper = styled.div`
   width: 80%;
@@ -48,7 +60,7 @@ return (
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title)
+              projects.find((p) => p.title === title),
             ),
           }}
         />
@@ -57,4 +69,4 @@ return (
       <></>
     )}
   </>
-)
+);
