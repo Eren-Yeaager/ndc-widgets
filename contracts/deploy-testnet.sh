@@ -15,7 +15,7 @@
 
 # Add DAO
  near call "$CONTRACT" add_dao '{"body": {"title":"NDC", "handle":"ndc", "description":"Some description...","logo_url":"logo", "banner_url":"banner","dao_type":"NDC"}, "owners":'"$DAO_OWNERS"', "verticals":["Gaming","NFT"], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
- near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+ near call "$CONTRACT" add_dao '{"body": {"title":"Second DAO", "handle":"second-dao", "account_id":"some_account2_id.testnet", "checkin_account_id":"test.dao-check.near", "description":"Some description 2...","logo_url":"logo2", "banner_url":"banner2","dao_type":"DAO"}, "owners":'"$DAO_OWNERS"', "verticals":[], "metrics":[], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 
  near call "$CONTRACT" edit_dao '{"id":1, "body": {"title":"NDC updated", "handle":"ndc", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "verticals":[], "metrics":[], "metadata":{}}' --accountId "$ACCOUNT_ID"
  near call "$CONTRACT" edit_dao_owners '{"id":1, "owners":["'$ACCOUNT_ID'", "new_owner.testnet"]}' --accountId "$ACCOUNT_ID"
@@ -71,6 +71,11 @@
 
  near call "$CONTRACT" user_follow_community '{"id":1}' --accountId "$ACCOUNT_ID"
 
+ near call "$CONTRACT" add_event '{"dao_id":2, "event_input":{"title":"Event title", "description": "Event description", "image_url":"", "event_type":"Online", "start_timestamp":1710000000, "end_timestamp":1720000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+
+ near call "$CONTRACT" edit_event '{"id":1, "event_input":{"title":"Event title upd", "description": "Event description upd", "image_url":"https"//im.com/test.jpg", "event_type":"Online", "start_timestamp":1800000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+
+
 # Check views
  near view "$CONTRACT" get_dao_list ''
  near view "$CONTRACT" get_dao_list '{"dao_type":"DAO"}'
@@ -96,4 +101,7 @@ near view "$CONTRACT" get_community_by_handle '{"handle":"community-handle"}'
 near view "$CONTRACT" get_account_access '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_ID'"}'
 near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
-near view "$CONTRACT" get_community_accounts '{"dao_id":[1,2]}'
+near view "$CONTRACT" get_community_accounts '{"dao_list":[1,2]}'
+
+near view "$CONTRACT" get_all_events '{"page":1, "limit":100}'
+near view "$CONTRACT" get_all_events '{"page":1, "limit":100, "event_status":"Active", "dao_id":1}'

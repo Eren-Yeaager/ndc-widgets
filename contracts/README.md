@@ -59,7 +59,7 @@ CONTRACT=v1.test-dao.near
 
 - Add DAO/NDC (dao_type param)
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
+NEAR_ENV=mainnet near call "$CONTRACT" add_dao '{"body": {"title":"First DAO", "handle":"first-dao", "account_id":"some_account_id.near", "checkin_account_id":"aurora.dao-check.near", "description":"Some description...","logo_url":"logo url", "banner_url":"banner url","dao_type":"DAO"}, "owners":["'$ACCOUNT_ID'"], "verticals":["vertical1","vertical2"], "metrics":["metric-title"], "metadata":{"website":"test website"}}' --accountId "$CONTRACT"
 ```
 dao_type options: NDC, DAO
 
@@ -303,7 +303,7 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-
 - Get DAOs community smart-contracts list (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_id":[2,3,4]}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_list":[2,3,4]}'
 ```
 
 ### Access Control
@@ -340,3 +340,35 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_follow_dao '{"account_id":"'$ACCOUNT_
 NEAR_ENV=mainnet near view "$CONTRACT" get_follow_community '{"account_id":"'$ACCOUNT_ID'"}'
 ```
 
+- Add Event
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" add_event '{"dao_id":1, "event_input":{"title":"Event title", "description": "Event description", "image_url":"Image URL", "event_type":"Online", "start_timestamp":1710000000, "end_timestamp":1720000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+```
+event_type options: Online / Offline
+start_timestamp and end_timestamp are optional
+
+- Edit Event
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" edit_event '{"id":1, "event_input":{"title":"Event title", "description": "Event description", "image_url":"Image URL", "event_type":"Online", "start_timestamp":1800000000}, "hosts":{}, "metadata":{}}' --accountId "$ACCOUNT_ID"
+```
+
+- Change Event Status
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" change_event_status '{"id":1, "status":"Inactive"}' --accountId "$ACCOUNT_ID"
+```
+status options: Active / Inactive
+
+- Get list of Active events for DAO
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_events '{"page":1, "limit":100, "event_status":"Active", "dao_id":1}'
+```
+
+- Get list of all events
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_events '{"page":1, "limit":100}'
+```

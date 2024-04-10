@@ -9,7 +9,7 @@ const Container = styled.div`
 
   .scroll {
     display: flex;
-    animation: scroll 30s linear infinite;
+    animation: scroll 180s linear infinite;
   }
 
   &:hover {
@@ -97,6 +97,14 @@ const colorMap = (status) => {
 const formatDate = (timestamp) =>
   new Date(parseInt(timestamp) / 1000000).toLocaleDateString();
 
+function truncateText(text, maxWords) {
+  const words = text.split(" ");
+  if (words.length > maxWords) {
+    return words.slice(0, maxWords).join(" ") + "...";
+  }
+  return text;
+}
+
 return (
   <Container>
     {[1, 2, 3].map((el) => (
@@ -113,7 +121,9 @@ return (
             <div className="d-flex flex-column gap-1">
               <div className="d-flex gap-2 align-items-center">
                 <Amount>${proposal.requested_amount ?? 0}</Amount>
-                <Label>{dao.title}</Label>
+                <Label title={dao.title.split(" ").length > 4 ? dao.title : ""}>
+                  {truncateText(dao.title, 4)}
+                </Label>
               </div>
               <div className="d-flex gap-2 align-items-center">
                 <small>{formatDate(proposal.timestamp)}</small>

@@ -153,12 +153,47 @@ let proposals = Near.view(contractName, "get_all_posts", {
   limit: 100,
 });
 
-let projects = Near.view(contractName, "get_dao_communities", {
+let projects = [];
+
+// NDC
+let projectsDaoId1 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(1),
+});
+
+let projectsDaoId2 = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(2),
 });
 
-if (!daos || !contractName || !content || !assets || !proposals || !projects)
+// Marketing DAO
+let projectsDaoId4 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(4),
+});
+
+// Gaming DAO
+let projectsDaoId3 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(3),
+});
+
+if (
+  !daos ||
+  !contractName ||
+  !content ||
+  !assets ||
+  !proposals ||
+  !projects ||
+  !projectsDaoId1 ||
+  !projectsDaoId2 ||
+  !projectsDaoId4 ||
+  !projectsDaoId3
+)
   return <Widget src="flashui.near/widget/Loading" />;
+
+projects = [
+  ...projectsDaoId1,
+  ...projectsDaoId2,
+  ...projectsDaoId4,
+  ...projectsDaoId3,
+];
 
 let groupedDaos = daos
   .map((element) => {
@@ -211,7 +246,7 @@ return (
         props={{
           daos,
           totalTreasury: 3893275,
-          deliverTreasury: 272482,
+          deliverTreasury: 362253,
           typeOfProject,
           loading,
           text: content.communityTreasury.metrics,

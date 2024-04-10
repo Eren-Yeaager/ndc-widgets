@@ -42,14 +42,14 @@ const Container = styled.div`
 
   .desktop {
     display: flex;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: none;
     }
   }
 
   .mobile {
     display: none;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: flex;
     }
 
@@ -66,7 +66,7 @@ const Navbar = styled.div`
   align-items: center;
   width: 100%;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1120px) {
     padding: 0 1.5rem;
   }
 
@@ -100,7 +100,7 @@ const LinksContainer = styled.div`
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1120px) {
       display: none;
     }
   }
@@ -115,6 +115,10 @@ const Title = styled.span`
 const MobileNavigation = () => (
   <div className="w-100 pt-4 pb-2 d-flex flex-column justify-content-center align-items-center gap-3">
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>
+      NDC Dashboard
+    </a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     {items.map((i) => (
       <a href={i.href}>{i.name}</a>
@@ -123,8 +127,12 @@ const MobileNavigation = () => (
 );
 
 const Navigation = () => (
-  <div className="d-flex align-items-center gap-4">
+  <div className="d-flex align-items-center gap-5">
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>
+      NDC Dashboard
+    </a>
+    <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <a
       className="btn-primary"

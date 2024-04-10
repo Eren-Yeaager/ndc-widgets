@@ -1,14 +1,50 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 const { id } = props;
+const accountId = context.accountId;
+
+let isFollowed = false
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .image-container {
+    position: relative;
+    display: inline-block; 
+   }
+
+   .overlay-button {
+    position: absolute;
+    top: 85%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+
+    @media screen and (max-width: 786px) {
+      top: 75%; 
+      left: 85%;
+    }
+}
+
+a.btn {
+  border: 2px solid white;
+  background: #151718;
+  box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.25);
+  color: #f0f0f0;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center !important;
+
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
 `;
 
 const Section = styled.div`
@@ -114,7 +150,19 @@ if (!contractName || !content)
 const dao = Near.view(contractName, "get_dao_by_handle", { handle: id });
 const section = content.daos[id].sections;
 
-if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+if (accountId) {
+  const followedDaos = Near.view(contractName, "get_follow_dao", {
+    account_id: accountId,
+  });
+
+
+if (!followedDaos) return <Widget src="flashui.near/widget/Loading" />;
+
+  isFollowed = followedDaos.find((d) => d.handle === dao.handle);
+}
+
+if (!dao ) return <Widget src="flashui.near/widget/Loading" />;
 
 const projects = Near.view(contractName, "get_dao_communities", {
   dao_id: dao.id,
@@ -129,10 +177,45 @@ const ProjectCard = ({ project }) => (
   </ProjectContainer>
 );
 
+const handelOnFollow = () => {
+  if (isFollowed) return;
+  if (dao.checkin_account_id) {
+    const UserFollowDao_Payload = {
+      contractName: contractName,
+      methodName: "user_follow_dao",
+      args: {
+        id: dao.id
+      },
+      deposit: 0
+    };
+
+    const CheckIn_Payload = {
+      contractName: dao.checkin_account_id,
+      methodName: "check_in",
+      args: {},
+      deposit: 0
+    };
+
+
+    Near.call([UserFollowDao_Payload, CheckIn_Payload]).then(() => {
+      console.log('Transactions completed');
+    }).catch(error => {
+      console.error('Error in sending transactions:', error);
+    });
+  } else {
+    Near.call(contractName, 'user_follow_dao', { id: dao.id });
+  }
+};
+
 return (
   <Container>
-    <img className="hero-img" src={dao.banner_url} />
-
+    {accountId ?
+      <div className="image-container">
+        <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
+        <a className="overlay-button btn" style={{cursor: isFollowed ? 'default': 'pointer'}} onClick={handelOnFollow}>{isFollowed ? "Following": "Follow"}</a>
+      </div>
+      : <img className="hero-img" src={dao.banner_url} alt="Banner Image" />
+    }
     <Section className="with-circles">
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Dao.Info`}
@@ -169,14 +252,13 @@ return (
         props={{ section: section, dao }}
       />
     </Section>
-
-    {false && (
-      <Section className="d-flex flex-column gap-5">
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHourse`}
-          props={{ section }}
-        />
-      </Section>
-    )}
+    {dao.metadata.contacts && 
+    <Section className="d-flex flex-column gap-5">
+      <Widget
+        src={`/*__@replace:widgetPath__*/.Components.Dao.OfficeHours`}
+        props={{ dao }}
+      />
+    </Section>
+    }
   </Container>
 );

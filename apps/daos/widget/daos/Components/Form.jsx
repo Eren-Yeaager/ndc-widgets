@@ -102,7 +102,7 @@ const ProposalButton = () => (
         Create
       </>
     )}
-    post
+    {formEls.post_type}
   </button>
 );
 
@@ -128,22 +128,24 @@ return (
       </MobileForm>
     ) : (
       <Form className="d-flex flex-column gap-3">
-        <div
-          onClick={() => {
-            const newFormEl = formEls;
-            newFormEl.post_type =
-              formEls.post_type === "Proposal" ? "Report" : "Proposal";
-            setFormEls(newFormEl);
-          }}
-        >
-          <p className="mb-2">Post type</p>
-          <div className="d-flex gap-3 align-items-center">
-            <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
-            <TypeSection>
-              <h4>{formEls.post_type}</h4>
-            </TypeSection>
+        {!id && (
+          <div
+            onClick={() => {
+              const newFormEl = formEls;
+              newFormEl.post_type =
+                formEls.post_type === "Proposal" ? "Report" : "Proposal";
+              setFormEls(newFormEl);
+            }}
+          >
+            <p className="mb-2">Post type</p>
+            <div className="d-flex gap-3 align-items-center">
+              <Widget src={`/*__@replace:widgetPath__*/.Components.Switch`} />
+              <TypeSection>
+                <h4>{formEls.post_type}</h4>
+              </TypeSection>
+            </div>
           </div>
-        </div>
+        )}
         <div className="form-element">
           <label>Select DAO</label>
           <select

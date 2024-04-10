@@ -31,6 +31,7 @@ const DaoCard = styled.div`
 
   @media screen and (max-width: 786px) {
     width: 100%;
+    height: 450px;
   }
 `;
 
@@ -60,6 +61,12 @@ const DaoLink = styled.a`
     background: transparent;
     border: 1px solid black;
     color: black !important;
+  }
+`;
+
+const ButtonsWrapper = styled.div`
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
   }
 `;
 

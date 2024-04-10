@@ -50,6 +50,7 @@ pub enum VersionedPost {
 pub struct Post {
     pub id: PostId,
     pub author_id: AccountId,
+    pub created_at: Timestamp,
     pub dao_id: DaoId,
     pub likes: HashSet<Like>,
     pub comments: HashSet<CommentId>,
@@ -167,6 +168,7 @@ impl Contract {
         let post = Post {
             id: post_id.clone(),
             author_id: author_id.clone(),
+            created_at: env::block_timestamp(),
             likes: Default::default(),
             comments: Default::default(),
             dao_id,
@@ -365,7 +367,7 @@ impl Contract {
     }
 
     // Change request/report status
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_post_status(&mut self, id: PostId, status: PostStatus) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
@@ -391,7 +393,7 @@ impl Contract {
     }
 
     // Change proposal state
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_proposal_state(&mut self, id: PostId, state: ProposalStates) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
@@ -436,7 +438,7 @@ impl Contract {
     }
 
     // Change is_spam parameter for post
-    // Access Level: DAO owners
+    // Access Level: DAO council
     pub fn change_post_is_spam(&mut self, id: PostId, is_spam: bool) {
         let mut post: Post = self.get_post_by_id(&id).into();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
@@ -674,8 +676,8 @@ mod tests {
         let proposal:Post = contract.get_post_by_id(&post_id).into();
         if let PostBody::Proposal(vp) = &proposal.snapshot.body {
             let VersionedProposal::V1(p) = vp;
-            assert!(Some(p.state.kyc_passed));
-            assert!(Some(p.state.dao_council_approved));
+            assert_eq!(p.state.kyc_passed, Some(true));
+            assert_eq!(p.state.dao_council_approved, Some(true));
         }
     }
 

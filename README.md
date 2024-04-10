@@ -2,7 +2,8 @@
 
 List of sub-projects
 1. MDAO https://near.org/ndcdev.near/widget/MDAO.App
-2. DAOs https://near.org/ndcdev.near/widget/daos.App
+2. Dashboard https://near.org/ndcdev.near/widget/daos.App?page=dashboard
+3. DAOs https://near.org/ndcdev.near/widget/daos.App
 
 ## Setup
 

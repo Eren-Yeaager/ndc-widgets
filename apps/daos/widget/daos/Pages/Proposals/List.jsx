@@ -19,12 +19,18 @@ if (dao_id) {
     page: 0,
     limit: 100,
   });
-} else if (accountId)
+} else if (accountId) {
   items = Near.view(contractName, "get_posts_by_author", {
     author: accountId,
     page: 0,
     limit: 100,
   });
+
+  if (items.length === 0) {
+    items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
+    accountId = null
+  }
+}
 else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;

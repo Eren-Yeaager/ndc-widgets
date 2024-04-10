@@ -1,6 +1,16 @@
 let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { item, index, showMoreDefault, showCommentsDefault, type, preview, isMobile, rowId, id } =
-  props;
+const {
+  item,
+  index,
+  showMoreDefault,
+  showCommentsDefault,
+  type,
+  preview,
+  isMobile,
+  rowId,
+  id,
+  disabeleOpenReportLInk,
+} = props;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -213,10 +223,15 @@ const MobileContainer = styled.div`
   gap: 1rem;
   width: 100%;
   border-radius: 12px;
-  border: 1px solid #E3E3E0;
-  background: #FFF;
+  border: 1px solid #e3e3e0;
+  background: #fff;
   padding: 14px 12px 24px 12px;
-  box-shadow: 0px 97px 27px 0px rgba(0, 0, 0, 0.00), 0px 62px 25px 0px rgba(0, 0, 0, 0.00), 0px 35px 21px 0px rgba(0, 0, 0, 0.02), 0px 16px 16px 0px rgba(0, 0, 0, 0.03), 0px 4px 9px 0px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    0px 97px 27px 0px rgba(0, 0, 0, 0),
+    0px 62px 25px 0px rgba(0, 0, 0, 0),
+    0px 35px 21px 0px rgba(0, 0, 0, 0.02),
+    0px 16px 16px 0px rgba(0, 0, 0, 0.03),
+    0px 4px 9px 0px rgba(0, 0, 0, 0.03);
 
   @media screen and (min-width: 768px) {
     display: none;
@@ -301,8 +316,9 @@ return (
             <a
               className="account-link"
               href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-            >{itemState.author_id}</a>
-
+            >
+              {itemState.author_id}
+            </a>
           </div>
         </ProposalInfoItem>
         <ProposalInfoItem>
@@ -314,7 +330,7 @@ return (
       </ProposalInfo>
       {!id && (
         <div className="d-flex justify-content-between align-items-center gap-3">
-          {itemState.post_type === "Proposal" ?
+          {itemState.post_type === "Proposal" ? (
             <div className="d-flex justify-content-end w-100">
               <a
                 className="btn btn-secondary w-100 text-nowrap"
@@ -324,8 +340,7 @@ return (
                 <i class="ph ph-arrow-square-out fs-6"></i>
               </a>
             </div>
-
-            :
+          ) : (
             <div className="d-flex justify-content-start w-100">
               <a
                 className="btn btn-secondary outlined w-100 text-nowrap"
@@ -334,7 +349,7 @@ return (
                 Report
               </a>
             </div>
-          }
+          )}
         </div>
       )}
     </MobileContainer>
@@ -426,7 +441,7 @@ return (
       {showMore === index && (
         <ProposalCardWarpper>
           <ProposalCard>
-            <ProposalContent style={{ 'max-width': '350px' }}>
+            <ProposalContent style={{ "max-width": "350px" }}>
               <div className="d-flex justify-content-between gap-3">
                 <ProposalHeader>{itemState.title}</ProposalHeader>
                 <Widget
@@ -453,13 +468,13 @@ return (
                 </ProposalInfoItem>
               </ProposalInfo>
             </ProposalContent>
-            <ProposalContent style={{ 'max-width': '850px' }}>
+            <ProposalContent style={{ "max-width": "850px" }}>
               <Tags>
                 {itemState.labels?.map((tag) => (
                   <Tag>#{tag}</Tag>
                 ))}
               </Tags>
-              <Description >
+              <Description>
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
                   props={{ text: itemState.description }}
