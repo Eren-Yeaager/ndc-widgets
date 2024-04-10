@@ -136,7 +136,7 @@ return {
           "Calimero network",
           "Near Kingdoms",
           "TENAMINT",
-          "PotLock",
+          "Potlock",
           "Plato",
           "Rogues",
           "Talentum",
