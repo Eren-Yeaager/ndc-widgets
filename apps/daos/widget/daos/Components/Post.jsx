@@ -16,11 +16,15 @@ if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const [itemState, setItemState] = useState(item);
 const [showMore, setShowMore] = useState(null);
+const [showComments, setShowComments] = useState(showCommentsDefault);
+const accountId = context.accountId;
 
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
 
+
+{/* This is to be used with Table  */ }
 const TableRow = styled.div`
   display: flex;
   border-bottom: ${(props) => (props.showMore ? "0" : "1px solid #e3e3e0")};
@@ -52,6 +56,24 @@ const TableCell = styled.div`
     line-clamp: 1;
     -webkit-box-orient: vertical;
   }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const ProposalCardWrapper = styled.div`
+  display: flex;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e3e3e0;
+  background: #fdfdfd;
+  padding: 18px 22px;
+  margin: 20px;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 const StatusBadge = styled.span`
@@ -124,18 +146,7 @@ const Container = styled.div`
     font-weight: 500;
   }
 `;
-const ProposalCardWrapper = styled.div`
-  display: flex;
-  background: white;
-  border-radius: 14px;
-  border: 1px solid #e3e3e0;
-  background: #fdfdfd;
-  padding: 18px 22px;
-  margin: 20px;
-  align-items: center;
-  flex-direction: column;
-  align-items: flex-end;
-`;
+
 
 const ProposalCard = styled.div`
   width: 100%;
@@ -147,7 +158,8 @@ const ProposalContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 1rem;
+  padding-right: 20px;
+  max-width: ${(props) => props.maxWidth};
 `;
 
 const ProposalHeader = styled.div`
@@ -255,259 +267,627 @@ const DesktopVersion = styled.div`
   }
 `;
 
+
+{/* This is to be used with single report  */ }
+
+const Breadcrumb = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  border-bottom: 1px solid var(--NEAR-Primary-Colors-Off-White-Variation-1, #F0EFE7);
+  padding-bottom: 14px;
+  margin-bottom: 30px;
+
+  .all-link {
+    color: #7E7D7E;
+   }
+`;
+const InfoContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .created {
+    color: #5c656a;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+  }
+`;
+
+const Left = styled.div`
+  width: 60%;
+  .author {
+    margin-left: 10px
+  }
+`;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const DescriptionContainer = styled.div`
+  padding-top: 42px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+`;
+
+const Social = styled.div`
+  width: 100%;
+  padding: 12px;
+  border-top: 1px solid #F0EFE7;
+  display: flex;
+  gap: 20px;
+`;
+
+const Comments = styled.div`
+  width: 100%;
+  border-top: 1px solid #efefef;
+  padding-top: 1rem;
+  @media screen and (max-width: 786px) {
+    overflow: auto;
+  }
+`;
+
+
+const HistoryContainer = styled.div`
+  min-height: 50px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-left: 1px solid #ccc; // Uncomment if border is desired
+`;
+
+const HistoryEntry = styled.div`
+  padding: 10px;
+  background-color: ${(props) => (props.selected ? '#F5F6FE;' : 'white')};
+  border-left: ${(props) => (props.selected ? '2px solid #626AD1' : 'none')};
+  cursor: pointer;
+
+  .text {
+    color: #666;
+  }
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+`;
+
+const ProposalsStateContainer = styled.div`
+  display: flex;
+  gap: 10px; 
+  padding-top: 10px
+`
+
+const [selectedHistoryId, setselectedHistoryId] = useState(null);
+console.log(snapshot)
+
+const changeHistory = (id) => {
+  console.log(id);
+  setselectedHistoryId(id);
+  setItemState((prev) => ({ ...prev, ...snapshot[id] }));
+};
+
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+let snapshot;
+
+if (itemState.id)
+  snapshot = Near.view(contractName, "get_post_history", {
+    id: itemState.id,
+  });
+
+snapshot = snapshot && snapshot.filter((i) => !i.is_spam)
+
+const isLiked = (item) => {
+  return item.likes && item.likes.find((item) => item.author_id === accountId);
+};
+
+const handleLike = () => {
+  if (isLiked(itemState)) return;
+  if (!accountId) return;
+  Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
+    id: itemState.id,
+  });
+};
+
+const handleShowComments = () => {
+  if (!accountId) return;
+  setShowComments(!showComments);
+};
+
+const changeStatus = async (item, status) => {
+  if (!accountId) return;
+  Near.call(contractName, "change_post_status", {
+    id: item.id,
+    status,
+  });
+};
+
+const handleSpam = () => {
+  if (!accountId) return;
+  Near.call(contractName, "change_post_is_spam", {
+    id: itemState.id,
+    is_spam: !itemState.is_spam,
+  });
+};
+
+const statuses = [
+  { key: "InReview", value: "In Review" },
+  { key: "New", value: "New" },
+  { key: "Approved", value: "Approved" },
+  { key: "Rejected", value: "Rejected" },
+  { key: "Closed", value: "Closed" },
+];
+
 return (
   <>
-    <MobileContainer>
-      <div className="d-flex justify-content-between align-items-center">
-        <Container>
+    {/* This is to be used with single report  */}
+    {id ?
+      <>
+        <Breadcrumb>
           <div>
-            <img className="dao-img" src={dao.logo_url} />
+            <a className="all-link" href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
+              All {itemState.post_type === "Proposal" ? "Proposals" : "Reports"}</a> /
+            {itemState.title}
           </div>
-          <div className="d-flex flex-column">
-            <span>{dao.title}</span>
-            <div>
-              <span className="created">Updated at:</span>{" "}
-              <span className="date">
-                {new Date(itemState.timestamp / 1000000).toLocaleDateString()}
-              </span>
-            </div>
-          </div>
-        </Container>
-        <StatusBadge {...statusColors[itemState.status]}>
-          {itemState.status}
-        </StatusBadge>
-      </div>
-      <ProposalHeader>{itemState.title}</ProposalHeader>
-      <div className="d-flex flex-wrap gap-1">
-        <Widget
-          src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-          props={{
-            text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
-          }}
-        />
-        <ProposalsState approve={itemState.state.dao_council_approved}>
-          <span>
-            {itemState.state.kyc_passed ? (
-              <i class="ph-fill fs-6 ph-check-circle"></i>
-            ) : (
-              <i class="ph-fill fs-6 ph-x-circle"></i>
-            )}
-          </span>{" "}
-          DAO Approved
-        </ProposalsState>
-
-        <ProposalsState approve={itemState.state.kyc_passed}>
-          {" "}
-          <span>
-            {itemState.state.kyc_passed ? (
-              <i class="ph-fill fs-6 ph-check-circle"></i>
-            ) : (
-              <i class="ph-fill fs-6 ph-x-circle"></i>
-            )}
-          </span>{" "}
-          KYC Approved
-        </ProposalsState>
-
-        <ProposalsState approve={itemState.state.report_accepted}>
-          {" "}
-          <span>
-            {itemState.state.report_accepted ? (
-              <i class="ph-fill fs-6 ph-check-circle"></i>
-            ) : (
-              <i class="ph-fill fs-6 ph-x-circle"></i>
-            )}
-          </span>{" "}
-          Report Approved
-        </ProposalsState>
-      </div>
-      <ProposalInfo>
-        <ProposalInfoItem>
-          <div style={{ width: "12rem" }}>Created By:</div>
-          <div>
-            <a
-              className="account-link"
-              href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-            >
-              {itemState.author_id}
-            </a>
-          </div>
-        </ProposalInfoItem>
-        <ProposalInfoItem>
-          <div style={{ width: "12rem" }}>Requested amount:</div>
-          <div className="value">${itemState.requested_amount ?? 0}</div>
-        </ProposalInfoItem>
-      </ProposalInfo>
-      {!id && (
-        <div className="d-flex justify-content-between align-items-center gap-3">
-          {itemState.post_type === "Proposal" ? (
-            <div className="d-flex justify-content-end w-100">
-              <a
-                className="btn btn-secondary w-100 text-nowrap"
-                href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
-              >
-                Open Proposal
-                <i class="ph ph-arrow-square-out fs-6"></i>
-              </a>
-            </div>
-          ) : (
-            <div className="d-flex justify-content-start w-100">
-              <a
-                className="btn btn-secondary outlined w-100 text-nowrap"
-                href={`//*__@replace:widgetPath__*/.App?page=report&id=${itemState.id}`}
-              >
-                Report
-              </a>
-            </div>
-          )}
-        </div>
-      )}
-    </MobileContainer>
-    <DesktopVersion>
-      <TableRow key={index} showMore={showMore === index}>
-        <TableCell flex={0.5}>
-          <StatusBadge {...statusColors[itemState.status]}>
-            {itemState.status}
-          </StatusBadge>
-        </TableCell>
-        <TableCell flex={2.5}>
-          <Container>
-            <div>
-              <img className="dao-img" src={dao.logo_url} />
-            </div>
-            <div style={{ display: "flex", "flex-direction": "column" }}>
-              <div className="title">{dao.title}</div>
+        </Breadcrumb>
+        <InfoContainer>
+          <Left>
+            <div className="d-flex justify-content-between">
+              <div className="d-flex">
+                <i class="ph ph-users"></i>
+                <div>
+                  <a 
+                    className="account-link author"
+                    href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
+                  >{itemState.author_id}</a>
+                </div>
+              </div>
               <div>
-                <span className="created">Created at:</span>{" "}
-                <span className="date">
-                  {new Date(itemState.timestamp / 1000000).toDateString()}
-                </span>
+                {dao.owners.includes(accountId) ? (
+                  <div>
+                    <select
+                      className="form-control"
+                      value={itemState.status}
+                      onChange={(status) => changeStatus(item, status.target.value)}
+                    >
+                      {statuses.map(({ key, value }) => (
+                        <option value={key}>{value}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <StatusBadge {...statusColors[itemState.status]}>
+                    {itemState.status}
+                  </StatusBadge>
+                )}
+
               </div>
             </div>
-          </Container>
-        </TableCell>
-        <TableCell>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              fontSize: "13px",
-            }}
-          >
-            <div className="created"> Created by</div>
-            <a
-              className="account-link"
-              href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-            >
-              {itemState.author_id}
-            </a>
-          </div>
-        </TableCell>
-        <TableCell className="d-flex flex-wrap" flex={3}>
-          <ProposalsState approve={itemState.state.dao_council_approved}>
-            <span>
-              {itemState.state.kyc_passed ? (
-                <i class="ph-fill fs-6 ph-check-circle"></i>
-              ) : (
-                <i class="ph-fill fs-6 ph-x-circle"></i>
-              )}
-            </span>{" "}
-            DAO Approved
-          </ProposalsState>
-
-          <ProposalsState approve={itemState.state.kyc_passed}>
-            {" "}
-            <span>
-              {itemState.state.kyc_passed ? (
-                <i class="ph-fill fs-6 ph-check-circle"></i>
-              ) : (
-                <i class="ph-fill fs-6 ph-x-circle"></i>
-              )}
-            </span>{" "}
-            KYC Approved
-          </ProposalsState>
-
-          <ProposalsState approve={itemState.state.report_accepted}>
-            {" "}
-            <span>
-              {itemState.state.report_accepted ? (
-                <i class="ph-fill fs-6 ph-check-circle"></i>
-              ) : (
-                <i class="ph-fill fs-6 ph-x-circle"></i>
-              )}
-            </span>{" "}
-            Report Approved
-          </ProposalsState>
-        </TableCell>
-        <TableCell>
-          <a
-            className="btn btn-secondary outlined"
-            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
-          >
-            Report
-          </a>
-          <ExpandCollapseIcon>
-            <i
-              class={`ph ph-caret-${showMore === index ? "up" : "down"} fs-5`}
-              onClick={() => setShowMore(showMore === index ? null : index)}
-            ></i>
-          </ExpandCollapseIcon>
-        </TableCell>
-      </TableRow>
-      {showMore === index && (
-        <ProposalCardWrapper>
-          <ProposalCard>
-            <ProposalContent style={{ "max-width": "400px" }}>
-              <div className="d-flex justify-content-between gap-3">
-                <ProposalHeader>{itemState.title}</ProposalHeader>
+            <div>
+              <ProposalHeader>{itemState.title}</ProposalHeader>
+              <ProposalsStateContainer>
                 <Widget
                   src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
                   props={{
                     text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
                   }}
                 />
-              </div>
-              <ProposalInfo>
-                <ProposalInfoItem>
-                  <div style={{ width: "12rem" }}>Updated at:</div>
-                  <div className="time">
-                    {itemState.timestamp
-                      ? new Date(itemState.timestamp / 1000000).toLocaleString()
-                      : new Date().toLocaleDateString()}
-                  </div>
-                </ProposalInfoItem>
-                <ProposalInfoItem>
-                  <div style={{ width: "12rem" }}>Requested amount:</div>
-                  <div className="value">
-                    ${itemState.requested_amount ?? 0}
-                  </div>
-                </ProposalInfoItem>
-              </ProposalInfo>
-            </ProposalContent>
-            <ProposalContent>
-              <Tags>
-                {itemState.labels?.map((tag) => (
-                  <Tag>#{tag}</Tag>
-                ))}
-              </Tags>
-              <Description>
-                <Widget
-                  src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                  props={{ text: itemState.description }}
-                />
-              </Description>
-            </ProposalContent>
-          </ProposalCard>
-          <div>
-            <a
-              className="btn btn-secondary"
-              href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+                <ProposalsState approve={itemState.state.dao_council_approved}>
+                  <span>
+                    {itemState.state.kyc_passed ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  DAO Approved
+                </ProposalsState>
+
+                <ProposalsState approve={itemState.state.kyc_passed}>
+                  {" "}
+                  <span>
+                    {itemState.state.kyc_passed ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  KYC Approved
+                </ProposalsState>
+
+                <ProposalsState approve={itemState.state.report_accepted}>
+                  {" "}
+                  <span>
+                    {itemState.state.report_accepted ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  Report Approved
+                </ProposalsState>
+              </ProposalsStateContainer>
+            </div>
+            <ProposalInfo>
+              <ProposalInfoItem>
+                <div >Updated at:</div>
+                <div>
+                  {itemState.timestamp
+                    ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                    : new Date().toLocaleDateString()}
+                </div>
+              </ProposalInfoItem>
+              <ProposalInfoItem>
+                <div>Requested amount:</div>
+                <div>
+                  <b>${itemState.requested_amount ?? 0}</b>
+                </div>
+              </ProposalInfoItem>
+            </ProposalInfo>
+          </Left>
+          <Right>
+
+            <div>
+              <i class="ph ph-clock-counter-clockwise"></i>
+              <span>Version History</span>
+            </div>
+            <div>
+              {snapshot.length > 0 && (
+                <HistoryContainer>
+                  {snapshot.map((history, index) => (
+                    <HistoryEntry
+                      key={history.timestamp}
+                      selected={index === selectedHistoryId}
+                      onClick={() => changeHistory(index)}
+                    >
+                      <>
+                      <div ><span className="text">Updated at:</span>
+                      
+                        {itemState.timestamp
+                          ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                          : new Date().toLocaleDateString()}
+                      </div>
+                      <div>
+                        <span  className="text">by</span> {itemState.author_id}
+                      </div>
+                      </>
+                    </HistoryEntry>
+                  ))}
+                </HistoryContainer>
+              )}
+            </div>
+
+          </Right>
+        </InfoContainer>
+        <DescriptionContainer>
+          <ProposalHeader>
+            Description
+          </ProposalHeader>
+
+          <Tags>
+            {itemState.labels?.map((tag) => (
+              <Tag>#{tag}</Tag>
+            ))}
+          </Tags>
+
+          <Description >
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+              props={{ text: itemState.description }}
+            />
+          </Description>
+          <Social>
+            <div
+              role="button"
+              className="d-flex gap-2 align-items-center"
+              onClick={handleLike}
             >
-              Open Proposal
-              <i class="ph ph-arrow-square-out fs-6"></i>
-            </a>
+
+              <i
+                className={` ph-heart fs-5 ${isLiked(itemState) ? "ph-fill" : "ph"
+                  }`}
+              />
+              <span >{itemState.likes.length}</span>
+            </div>
+
+            <div
+              role="button"
+              className="d-flex gap-2 align-items-center"
+              onClick={handleShowComments}
+            >
+              <i className="ph ph-chat-circle fs-5" />
+              <span >{itemState.comments.length}</span>
+            </div>
+            <div role="button">
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Share"}
+                props={{
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                }}
+              />
+            </div>
+            {dao.owners.includes(accountId) && (
+              <div role="button" className="d-flex gap-2 align-items-center" onClick={handleSpam}>
+                <i
+                  className={`ph ph-flag ${itemState.is_spam ? "red ph-fill" : "ph"
+                    }`}
+                />
+              </div>
+            )}
+          </Social>
+        </DescriptionContainer>
+        {showComments && (
+          <Comments>
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.Comments"
+              props={{
+                postId: item.id,
+                showCreate: true,
+              }}
+            />
+          </Comments>
+        )}
+      </>
+      :
+
+      <>
+        {/* This is to be used with Table  */}
+        <MobileContainer>
+          <div className="d-flex justify-content-between align-items-center">
+            <Container>
+              <div>
+                <img className="dao-img" src={dao.logo_url} />
+              </div>
+              <div className="d-flex flex-column">
+                <span>{dao.title}</span>
+                <div>
+                  <span className="created">Updated at:</span>{" "}
+                  <span className="date">
+                    {new Date(itemState.timestamp / 1000000).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </Container>
+            <StatusBadge {...statusColors[itemState.status]}>
+              {itemState.status}
+            </StatusBadge>
           </div>
-        </ProposalCardWrapper>
-      )}
-    </DesktopVersion>
+          <ProposalHeader>{itemState.title}</ProposalHeader>
+          <div className="d-flex flex-wrap gap-1">
+            <Widget
+              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              props={{
+                text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+              }}
+            />
+            <ProposalsState approve={itemState.state.dao_council_approved}>
+              <span>
+                {itemState.state.kyc_passed ? (
+                  <i class="ph-fill fs-6 ph-check-circle"></i>
+                ) : (
+                  <i class="ph-fill fs-6 ph-x-circle"></i>
+                )}
+              </span>{" "}
+              DAO Approved
+            </ProposalsState>
+
+            <ProposalsState approve={itemState.state.kyc_passed}>
+              {" "}
+              <span>
+                {itemState.state.kyc_passed ? (
+                  <i class="ph-fill fs-6 ph-check-circle"></i>
+                ) : (
+                  <i class="ph-fill fs-6 ph-x-circle"></i>
+                )}
+              </span>{" "}
+              KYC Approved
+            </ProposalsState>
+
+            <ProposalsState approve={itemState.state.report_accepted}>
+              {" "}
+              <span>
+                {itemState.state.report_accepted ? (
+                  <i class="ph-fill fs-6 ph-check-circle"></i>
+                ) : (
+                  <i class="ph-fill fs-6 ph-x-circle"></i>
+                )}
+              </span>{" "}
+              Report Approved
+            </ProposalsState>
+          </div>
+          <ProposalInfo>
+            <ProposalInfoItem>
+              <div>Created By:</div>
+              <div>
+                <a
+                  className="account-link"
+                  href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
+                >{itemState.author_id}</a>
+
+              </div>
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+              <div >Requested amount:</div>
+              <div>
+                <b>${itemState.requested_amount ?? 0}</b>
+              </div>
+            </ProposalInfoItem>
+          </ProposalInfo>
+          {!id && (
+            <div className="d-flex justify-content-between align-items-center gap-3">
+              {itemState.post_type === "Proposal" ?
+                <div className="d-flex justify-content-end w-100">
+                  <a
+                    className="btn btn-secondary w-100 text-nowrap"
+                    href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+                  >
+                    Open Proposal
+                    <i class="ph ph-arrow-square-out fs-6"></i>
+                  </a>
+                </div>
+
+                :
+                <div className="d-flex justify-content-start w-100">
+                  <a
+                    className="btn btn-secondary outlined w-100 text-nowrap"
+                    href={`//*__@replace:widgetPath__*/.App?page=report&id=${itemState.id}`}
+                  >
+                    Report
+                  </a>
+                </div>
+              }
+            </div>
+          )}
+        </MobileContainer>
+        <DesktopVersion>
+          <TableRow key={index}>
+            <TableCell flex={0.5}>
+              <StatusBadge {...statusColors[itemState.status]}>
+                {itemState.status}
+              </StatusBadge>
+            </TableCell>
+            <TableCell flex={2.5}>
+              <Container>
+                <div>
+                  <img className="dao-img" src={dao.logo_url} />
+                </div>
+                <div className="info">
+                  <div className="title">{dao.title}</div>
+                  <div>
+                    <span className="created">Created at:</span>{" "}
+                    <span className="date">
+                      {new Date(itemState.timestamp / 1000000).toDateString()}
+                    </span>
+                  </div>
+                </div>
+              </Container>
+            </TableCell>
+            <TableCell>
+              <div className="info">
+                <div className="created"> Created by</div>
+                <a
+                  className="account-link"
+                  href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
+                >
+                  {itemState.author_id}
+                </a>
+              </div>
+            </TableCell>
+            <TableCell flex={3}>
+              <ProposalsState approve={itemState.state.dao_council_approved}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>{" "}
+                DAO Approved
+              </ProposalsState>
+
+              <ProposalsState approve={itemState.state.kyc_passed}>
+                {" "}
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>{" "}
+                KYC Approved
+              </ProposalsState>
+
+              <ProposalsState approve={itemState.state.report_accepted}>
+                {" "}
+                <span>
+                  {itemState.state.report_accepted ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>{" "}
+                Report Approved
+              </ProposalsState>
+            </TableCell>
+            <TableCell>
+              <a
+                className="btn btn-secondary outlined"
+                href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+              >
+                Report
+              </a>
+              <ExpandCollapseIcon>
+                <i
+                  class={`ph ph-caret-${showMore === index ? "up" : "down"} fs-5`}
+                  onClick={() => setShowMore(showMore === index ? null : index)}
+                ></i>
+              </ExpandCollapseIcon>
+            </TableCell>
+          </TableRow>
+          {showMore === index && (
+            <ProposalCardWrapper>
+              <ProposalCard>
+                <ProposalContent maxWidth={'350px'}>
+                  <div className="d-flex justify-content-between gap-3">
+                    <ProposalHeader>{itemState.title}</ProposalHeader>
+                    <Widget
+                      src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                      props={{
+                        text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                      }}
+                    />
+                  </div>
+                  <ProposalInfo>
+                    <ProposalInfoItem>
+                      <div >Updated at:</div>
+                      <div>
+                        {itemState.timestamp
+                          ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                          : new Date().toLocaleDateString()}
+                      </div>
+                    </ProposalInfoItem>
+                    <ProposalInfoItem>
+                      <div>Requested amount:</div>
+                      <div>
+                        <b>${itemState.requested_amount ?? 0}</b>
+                      </div>
+                    </ProposalInfoItem>
+                  </ProposalInfo>
+                </ProposalContent>
+                <ProposalContent  maxWidth={'850px'}>
+                  <Tags>
+                    {itemState.labels?.map((tag) => (
+                      <Tag>#{tag}</Tag>
+                    ))}
+                  </Tags>
+                  <Description >
+                    <Widget
+                      src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                      props={{ text: itemState.description }}
+                    />
+                  </Description>
+                </ProposalContent>
+              </ProposalCard>
+              <div>
+                <a
+                  className="btn btn-secondary"
+                  href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+                >
+                  Open Proposal
+                  <i class="ph ph-arrow-square-out fs-6"></i>
+                </a>
+              </div>
+            </ProposalCardWrapper>
+          )}
+        </DesktopVersion>
+      </>
+    }
   </>
+
 );
