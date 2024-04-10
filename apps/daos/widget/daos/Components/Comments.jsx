@@ -47,10 +47,16 @@ const handleLike = (id) => {
 
 const handleSpam = (comment) => {
   if (!accountId) return;
-  Near.call(contractName, "change_comment_is_spam", {
-    id: comment.id,
-    is_spam: !comment.snapshot.is_spam,
-  });
+  Near.call(
+    contractName,
+    "change_comment_is_spam",
+    {
+      id: comment.id,
+      is_spam: !comment.snapshot.is_spam,
+    },
+    "200000000000000",
+    10000000000000000000000
+  );
 };
 
 const commentById = (id) => comments.find((c) => c.id === id);
@@ -80,7 +86,7 @@ const CommentsList = ({ comments }) => (
           {comment.child_comments.length > 0 && (
             <CommentsList
               comments={comment.child_comments.map((childId) =>
-                commentById(childId),
+                commentById(childId)
               )}
             />
           )}
