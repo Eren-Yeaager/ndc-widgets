@@ -11,19 +11,30 @@ const Container = styled.div`
   }
 `;
 
-const PeriodSelect = styled.div`
-  width: 150px;
+const SelectContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+
   @media screen and (max-width: 768px) {
-    width: 100%;
+    flex-direction: column;
   }
 `;
 
-const DAOSelect = styled.div`
-  width: 50%;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    min-width: 150px;
-  }
+const Title = styled.div`
+  color: #1b1b18;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
+
+const Filters = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
 
 const ChartContainer = styled.div`
@@ -54,6 +65,7 @@ const dailyTotalUsers = { labels: [], data: [] };
 const [loading, setLoading] = useState(false);
 const [period, setPeriod] = useState(PERIODS[0].name);
 const [selectedDAOs, setSelectedDAOs] = useState([]);
+const [dashboardView, setDashboardView] = useState("Table");
 const [dataState, setDataState] = useState({
   totalTx: 0,
   totalAccounts: 0,
@@ -76,6 +88,7 @@ const get = async (url) => {
   }
 };
 
+if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 const daos = Near.view(contractName, "get_dao_list");
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -142,7 +155,7 @@ const fetchData = () => {
 
 useEffect(() => {
   fetchData();
-}, [selectedDAOs, period]);
+}, [selectedDAOs, daos, period]);
 
 const onSelectChange = (value) => {
   const isDefaultOption = value === defaultDAOOption;
@@ -166,34 +179,15 @@ const onSelectChange = (value) => {
   setSelectedDAOs(updateSelectedDAOs());
 };
 
-const SelectContainer = styled.div`
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 return (
   <Container>
-    <SelectContainer className="d-flex w-100 gap-3 justify-content-between">
-      <DAOSelect>
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Select`}
-          props={{
-            options: daos.map((d) => d.title),
-            defaultValue: defaultDAOOption,
-            multiple: true,
-            values: selectedDAOs,
-            containerClass: "selected-container",
-            onClear: () => setSelectedDAOs([]),
-            onChange: onSelectChange,
-          }}
-        />
-      </DAOSelect>
-      <PeriodSelect>
+    <SelectContainer>
+      <Title>NDC Dashboard</Title>
+      <Filters>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Select`}
           props={{
@@ -204,7 +198,19 @@ return (
             containerClass: "selected-container",
           }}
         />
-      </PeriodSelect>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Switch`}
+          props={{
+            options: [
+              { title: "Charts", icon: "ph ph-chart-bar" },
+              { title: "Table", icon: "ph ph-table" },
+            ],
+            value: dashboardView,
+            onChange: () =>
+              setDashboardView(dashboardView === "Charts" ? "Table" : "Charts"),
+          }}
+        />
+      </Filters>
     </SelectContainer>
     <Widget
       src={`/*__@replace:widgetPath__*/.Components.Aggregators`}
@@ -215,31 +221,34 @@ return (
         loading,
       }}
     />
-    <ChartContainer>
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Chart`}
-        props={{
-          title: "DAILY NUMBER OF TRANSACTIONS",
-          data: dataState.dailyStats,
-          key: "total_transactions",
-          loading,
-        }}
-      />
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Chart`}
-        props={{
-          title: "UNIQUE ACTIVE USERS",
-          data: dataState.dailyStats,
-          key: "unique_wallets",
-          loading,
-        }}
-      />
-    </ChartContainer>
-    <div className="section py-5 flex-column">
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Table`}
-        props={{ daos, API }}
-      />
-    </div>
+    {dashboardView === "Charts" ? (
+      <ChartContainer>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Chart`}
+          props={{
+            title: "DAILY NUMBER OF TRANSACTIONS",
+            data: dataState.dailyStats,
+            key: "total_transactions",
+            loading,
+          }}
+        />
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Chart`}
+          props={{
+            title: "UNIQUE ACTIVE USERS",
+            data: dataState.dailyStats,
+            key: "unique_wallets",
+            loading,
+          }}
+        />
+      </ChartContainer>
+    ) : (
+      <div className="section py-5 flex-column">
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.Table`}
+          props={{ daos, API }}
+        />
+      </div>
+    )}
   </Container>
 );

@@ -12,32 +12,49 @@ const Items = styled.div`
   }
 
   .item {
-    color: #fcf8ff;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 200px;
-    gap: 1rem;
-    border-radius: 30px;
-    background: #1e1d22;
-    box-shadow: 0px 30px 40px 0px rgba(0, 0, 0, 0.3);
-    font-size: 20px;
-    font-weight: 750;
-    text-align: center;
+    border-radius: 14px;
+    border: 1px solid #e3e3e0;
+    background: #fff;
+    padding: 16px 32px;
+    width: 400px;
+    gap: 1.5rem;
+    box-shadow:
+      0px 97px 27px 0px rgba(0, 0, 0, 0),
+      0px 62px 25px 0px rgba(0, 0, 0, 0),
+      0px 35px 21px 0px rgba(0, 0, 0, 0.02),
+      0px 16px 16px 0px rgba(0, 0, 0, 0.03),
+      0px 4px 9px 0px rgba(0, 0, 0, 0.03);
+
+    .title {
+      color: #5c656a;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 18px;
+      width: 120px;
+    }
 
     @media screen and (max-width: 975px) {
       width: 100%;
     }
 
-    .inner {
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      span {
-        font-size: 60px;
-      }
+    .divider {
+      width: 1px;
+      height: 50px;
+      background: #e3e3e0;
+    }
+
+    .value {
+      color: #1b1b18;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      text-align: center;
     }
   }
 `;

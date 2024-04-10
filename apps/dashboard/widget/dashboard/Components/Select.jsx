@@ -6,38 +6,25 @@ const Select = styled.div`
   position: relative;
   width: 100%;
   cursor: pointer;
+  border-radius: 100px;
+  border: 1px solid #e3e3e0;
+  background: var(--NEAR-Primary-Colors-White, #fff);
+  font-size: 14px;
+  font-style: normal;
 
   .selected-container {
-    color: white !important;
     width: 100%;
     border-radius: 10px;
-    background: #a39acd;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 25px;
-
-    &.black {
-      background: #1e1d22;
-    }
-
-    .selected {
-      border: 0;
-      width: 100%;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 24px;
-      text-transform: capitalize;
-      letter-spacing: 0.12px;
-    }
+    padding: 5px 16px;
   }
 
   ul {
     width: 100%;
     max-height: 12rem;
     overflow-y: scroll;
-    font-size: 18px;
     background: #fff;
     color: initial;
     border-radius: 6px;
@@ -64,8 +51,7 @@ const Select = styled.div`
       }
 
       &:hover {
-        color: black;
-        background: rgb(163 155 205 / 20%);
+        background: #f8f8f8;
       }
     }
   }
