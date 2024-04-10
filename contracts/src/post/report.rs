@@ -18,6 +18,7 @@ pub struct Report {
     pub vertical: Option<Vertical>,
 
     // Specific fields
+    pub funding: HashMap<String, String>,
     pub proposal_id: Option<PostId>,
     #[serde(skip_deserializing)]
     pub is_spam: bool,

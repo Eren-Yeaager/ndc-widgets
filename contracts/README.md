@@ -110,7 +110,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"P
 - Add Report
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "funding":{}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Proposal
@@ -122,7 +122,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Prop
 - Edit Report
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{}, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
 ```
 
 - Change post status:
@@ -285,13 +285,13 @@ NEAR_ENV=mainnet near call "$CONTRACT" change_community_status '{"id":1, "status
 - Get list of communities for DAO (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"dao_id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"dao_list":[1,2,3]}'
 ```
 
 - Get community by ID (view)
 
 ```bash
-NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"id":1}'
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_id '{"id":1}'
 ```
 
 - Get community by handle (view)

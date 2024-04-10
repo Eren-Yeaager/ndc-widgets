@@ -74,9 +74,13 @@ impl Contract {
         self.dao.iter().for_each(|(dao_id, _)| {
             self.dao_posts.remove(&dao_id);
             self.dao_communities.remove(&dao_id);
+            self.dao_events.remove(&dao_id);
         });
 
         for i in 1..=self.total_comments {
+            let comment = self.comments.get(&i).unwrap();
+
+            self.comment_authors.remove(&comment.latest_version().author_id.clone());
             self.comments.remove(&i);
         }
 
@@ -84,13 +88,30 @@ impl Contract {
             self.posts.remove(&i);
         }
 
+        for i in 1..=self.total_events {
+            self.events.remove(&i);
+        }
+
         for i in 1..=self.total_communities {
+            let community = self.communities.get(&i).unwrap();
+            self.community_handles.remove(&String::from(community.latest_version().handle.clone()));
             self.communities.remove(&i);
         }
 
         self.dao.clear();
         self.label_to_posts.clear();
         self.vertical_posts.clear();
+
+        self.post_status.remove(&PostStatus::InReview);
+        self.post_status.remove(&PostStatus::New);
+        self.post_status.remove(&PostStatus::Approved);
+        self.post_status.remove(&PostStatus::Rejected);
+        self.post_status.remove(&PostStatus::Executed);
+        self.post_status.remove(&PostStatus::Closed);
+
+        let acc1: AccountId = "test-dao.near".parse().unwrap();
+        self.post_authors.remove(&acc1);
+        self.comment_authors.remove(&acc1);
     }
 
 }
