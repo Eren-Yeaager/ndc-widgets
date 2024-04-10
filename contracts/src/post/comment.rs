@@ -241,11 +241,12 @@ mod tests {
     use crate::{CommentId, Contract, PostId};
     use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
     use crate::post::{Post};
-    use crate::post::comment::{ADD_COMMENT_DEPOSIT, Comment};
+    use crate::post::POST_COMMENT_DEPOSIT;
+    use crate::post::comment::{Comment};
     use crate::post::tests::create_proposal;
 
     pub fn create_comment(contract: &mut Contract, post_id: PostId, reply_id: Option<CommentId>) -> CommentId {
-        setup_contract_with_deposit(ADD_COMMENT_DEPOSIT);
+        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
 
         contract.add_comment(
             post_id,

@@ -664,6 +664,7 @@ mod tests {
                     community_id: None,
                     vertical: None,
                     proposal_id: None,
+                    funding: HashMap::new(),
                     is_spam: false,
                 }
             )

@@ -52,20 +52,20 @@
  near call "$CONTRACT" change_community_status '{"id":1, "status":"Inactive"}' --accountId "$ACCOUNT_ID"
 
 # Edit proposal
- near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
 # Edit report
- near call "$CONTRACT" edit_post '{"id":2, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{"type":"Operational spendings", "description":"Salaries OR tooling buying"}, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" edit_post '{"id":2, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{"type":"Operational spendings", "description":"Salaries OR tooling buying"}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
- near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
- near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
- near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":false, "report_accepted":true}}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":false, "report_accepted":true}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
- near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
- near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
+ near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
  near call "$CONTRACT" user_follow_dao '{"id":1}' --accountId "$ACCOUNT_ID"
 

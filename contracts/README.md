@@ -116,31 +116,31 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"R
 - Edit Proposal
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Proposal title upd", "description":"Proposal description upd", "attachments":[], "labels":["label1"], "metrics":{}, "reports":[], "requested_amount": 2000, "post_type": "Proposal", "proposal_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Edit Report
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{}, "post_type": "Report", "report_version": "V1"}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Change post status:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Change proposal state:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_accepted":true}}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_accepted":true}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Change post spam status:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Like proposals/reports
@@ -216,13 +216,13 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, 
 - Edit comment
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Change comment spam status:
 
 ```bash
-NEAR_ENV=mainnet near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
 - Get all comments for post (view)
