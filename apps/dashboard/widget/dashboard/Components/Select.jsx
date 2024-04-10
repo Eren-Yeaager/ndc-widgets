@@ -8,7 +8,6 @@ const Select = styled.div`
   cursor: pointer;
   border-radius: 100px;
   border: 1px solid #e3e3e0;
-  background: var(--NEAR-Primary-Colors-White, #fff);
   font-size: 14px;
   font-style: normal;
 

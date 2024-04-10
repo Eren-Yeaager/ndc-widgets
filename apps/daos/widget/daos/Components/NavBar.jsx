@@ -114,10 +114,8 @@ const Title = styled.span`
 
 const MobileNavigation = () => (
   <div className="w-100 pt-4 pb-2 d-flex flex-column justify-content-center align-items-center gap-3">
+    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>
-      NDC Dashboard
-    </a>
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     {items.map((i) => (
@@ -128,10 +126,8 @@ const MobileNavigation = () => (
 
 const Navigation = () => (
   <div className="d-flex align-items-center gap-5">
+    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>
-      NDC Dashboard
-    </a>
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
     <a

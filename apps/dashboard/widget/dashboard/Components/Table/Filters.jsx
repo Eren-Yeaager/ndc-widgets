@@ -34,7 +34,7 @@ return (
     <Widget
       src={`/*__@replace:widgetPath__*/.Components.Select`}
       props={{
-        containerClass: "selected-container black",
+        containerClass: "selected-container",
         text,
         options,
         multiple,

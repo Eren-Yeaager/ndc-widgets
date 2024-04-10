@@ -25,6 +25,17 @@ const ScrollableWrapper = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
+const FiltersContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 8px 14px;
+  align-items: flex-start;
+  gap: 72px;
+  align-self: stretch;
+  border-radius: 6px;
+  background: #f8f8f8;
+`;
+
 const { daos, API } = props;
 const Loading = () => <Widget src="flashui.near/widget/Loading" />;
 
@@ -53,7 +64,7 @@ const [loading, setLoading] = useState(false);
 const [selectedDAOs, setSelectedDAOs] = useState([]);
 const [selectedRetention, setSelectedRetention] = useState(0);
 const [selectedCurrency, setSelectedCurrency] = useState(
-  Object.keys(CURRENCIES)[0],
+  Object.keys(CURRENCIES)[0]
 );
 
 const [filtersIsOpen, setFiltersIsOpen] = useState(FILTER_OPENS);
@@ -128,7 +139,7 @@ const filterDAO = (value) => {
     newSelection = isCurrentSelectionFull ? [] : all;
   } else if (selectedDAOs.includes(value)) {
     newSelection = selectedDAOs.filter(
-      (daoId) => daoId !== value && daoId !== defaultDAOOption,
+      (daoId) => daoId !== value && daoId !== defaultDAOOption
     );
   } else {
     newSelection = [...selectedDAOs, value];
@@ -169,7 +180,7 @@ useEffect(() => {
 
 return (
   <ScrollableWrapper>
-    <div className="d-flex gap-2 w-100">
+    <FiltersContainer>
       {FILTERS.map((filter) => (
         <Widget
           key={filter.id}
@@ -177,7 +188,7 @@ return (
           props={{ ...filter }}
         />
       ))}
-    </div>
+    </FiltersContainer>
     {loading ? (
       <Loading />
     ) : (
