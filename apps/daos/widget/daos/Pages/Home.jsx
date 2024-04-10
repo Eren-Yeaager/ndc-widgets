@@ -189,11 +189,20 @@ let projectsDaoId3 = Near.view(contractName, "get_dao_communities", {
   dao_id: parseInt(3),
 });
 
+// Aurora Community DAO
+let projectsDaoId8 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(8),
+});
 
-if (!daos || !contractName || !content || !assets || !proposals || !projects || !projectsDaoId1 || !projectsDaoId2 || !projectsDaoId4 || !projectsDaoId3)
+let projectsDaoId10 = Near.view(contractName, "get_dao_communities", {
+  dao_id: parseInt(10),
+});
+
+
+if (!daos || !contractName || !content || !assets || !proposals || !projects || !projectsDaoId1 || !projectsDaoId2 || !projectsDaoId4 || !projectsDaoId3 || !projectsDaoId8 || !projectsDaoId10)
   return <Widget src="flashui.near/widget/Loading" />;
 
-projects = [...projectsDaoId1, ...projectsDaoId2, ...projectsDaoId4, ...projectsDaoId3]  
+projects = [...projectsDaoId1, ...projectsDaoId2, ...projectsDaoId4, ...projectsDaoId3, ...projectsDaoId8, ...projectsDaoId10]  
 
 let groupedDaos = daos
   .map((element) => {
