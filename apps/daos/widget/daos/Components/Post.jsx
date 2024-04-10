@@ -23,12 +23,11 @@ const dao = Near.view(contractName, "get_dao_by_id", {
 
 const TableRow = styled.div`
   display: flex;
-  &:not(:last-child) {
-    border-bottom: 1px solid #e1e1e1;
-  }
-  :hover {
-    border-bottom: 1px solid #e3e3e0;
+  border-bottom: ${(props) => (props.showMore ? "0" : "1px solid #e3e3e0")};
+
+  &:hover {
     background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow:
       0px 97px 27px 0px rgba(0, 0, 0, 0),
       0px 62px 25px 0px rgba(0, 0, 0, 0),
@@ -42,9 +41,9 @@ const TableCell = styled.div`
   padding: 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  column-gap: 10px;
+  row-gap: 3px;
   flex: ${(props) => props.flex || 1};
-  border-bottom: 1px solid #e1e1e1;
 
   .title {
     overflow: hidden;
@@ -82,18 +81,19 @@ const statusColors = {
 const ProposalsState = styled.div`
   display: flex;
   height: 30px;
+  width: max-content;
   padding: 2px 6px 2px 4px;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-radius: 4px;
   border: 1px solid #e0f2ea;
   background: #fff;
   font-size: 12px;
   font-weight: 600;
-  color: ${(props) => (props.approve ? "#2CE691" : "#FC6F60")};
+  color: #828282;
 
-  i.ph {
-    font-size: 18px;
+  i {
+    color: ${(props) => (props.approve ? "#2CE691" : "#FC6F60")};
   }
 `;
 
@@ -112,7 +112,7 @@ const Container = styled.div`
     height: 32px;
   }
   .created {
-    color: #5c656a;
+    color: #828282;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
@@ -124,12 +124,13 @@ const Container = styled.div`
     font-weight: 500;
   }
 `;
-const ProposalCardWarpper = styled.div`
+const ProposalCardWrapper = styled.div`
   display: flex;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e3e3e0;
+  background: #fdfdfd;
+  padding: 18px 22px;
   margin: 20px;
   align-items: center;
   flex-direction: column;
@@ -137,14 +138,16 @@ const ProposalCardWarpper = styled.div`
 `;
 
 const ProposalCard = styled.div`
+  width: 100%;
   display: flex;
+  gap: 32px;
 `;
 
 const ProposalContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding-right: 20px;
+  gap: 1rem;
 `;
 
 const ProposalHeader = styled.div`
@@ -163,8 +166,27 @@ const ProposalInfoItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e1e1e1;
   padding: 0.75rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  .value {
+    color: var(--NEAR-Primary-Colors-Black-Variation-1, #000);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .time {
+    color: var(--NEAR-Primary-Colors-Black-Variation-1, #000);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 `;
 
 const Description = styled.div`
@@ -204,17 +226,6 @@ const Button = styled.button`
   &:hover {
     background: #0056b3;
   }
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  display: flex;
-  margin: 10px 0;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-  border-bottom: 1px solid
-    var(--NEAR-Primary-Colors-Off-White-Variation-1, #f0efe7);
 `;
 
 const MobileContainer = styled.div`
@@ -323,9 +334,7 @@ return (
         </ProposalInfoItem>
         <ProposalInfoItem>
           <div style={{ width: "12rem" }}>Requested amount:</div>
-          <div style={{ "font-size": "18px" }}>
-            <b>${itemState.requested_amount ?? 0}</b>
-          </div>
+          <div className="value">${itemState.requested_amount ?? 0}</div>
         </ProposalInfoItem>
       </ProposalInfo>
       {!id && (
@@ -354,7 +363,7 @@ return (
       )}
     </MobileContainer>
     <DesktopVersion>
-      <TableRow key={index}>
+      <TableRow key={index} showMore={showMore === index}>
         <TableCell flex={0.5}>
           <StatusBadge {...statusColors[itemState.status]}>
             {itemState.status}
@@ -377,7 +386,13 @@ return (
           </Container>
         </TableCell>
         <TableCell>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              fontSize: "13px",
+            }}
+          >
             <div className="created"> Created by</div>
             <a
               className="account-link"
@@ -387,7 +402,7 @@ return (
             </a>
           </div>
         </TableCell>
-        <TableCell flex={3}>
+        <TableCell className="d-flex flex-wrap" flex={3}>
           <ProposalsState approve={itemState.state.dao_council_approved}>
             <span>
               {itemState.state.kyc_passed ? (
@@ -439,9 +454,9 @@ return (
         </TableCell>
       </TableRow>
       {showMore === index && (
-        <ProposalCardWarpper>
+        <ProposalCardWrapper>
           <ProposalCard>
-            <ProposalContent style={{ "max-width": "350px" }}>
+            <ProposalContent style={{ "max-width": "400px" }}>
               <div className="d-flex justify-content-between gap-3">
                 <ProposalHeader>{itemState.title}</ProposalHeader>
                 <Widget
@@ -454,7 +469,7 @@ return (
               <ProposalInfo>
                 <ProposalInfoItem>
                   <div style={{ width: "12rem" }}>Updated at:</div>
-                  <div>
+                  <div className="time">
                     {itemState.timestamp
                       ? new Date(itemState.timestamp / 1000000).toLocaleString()
                       : new Date().toLocaleDateString()}
@@ -462,13 +477,13 @@ return (
                 </ProposalInfoItem>
                 <ProposalInfoItem>
                   <div style={{ width: "12rem" }}>Requested amount:</div>
-                  <div>
-                    <b>${itemState.requested_amount ?? 0}</b>
+                  <div className="value">
+                    ${itemState.requested_amount ?? 0}
                   </div>
                 </ProposalInfoItem>
               </ProposalInfo>
             </ProposalContent>
-            <ProposalContent style={{ "max-width": "850px" }}>
+            <ProposalContent>
               <Tags>
                 {itemState.labels?.map((tag) => (
                   <Tag>#{tag}</Tag>
@@ -491,7 +506,7 @@ return (
               <i class="ph ph-arrow-square-out fs-6"></i>
             </a>
           </div>
-        </ProposalCardWarpper>
+        </ProposalCardWrapper>
       )}
     </DesktopVersion>
   </>
