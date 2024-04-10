@@ -13,7 +13,7 @@ use crate::post::proposal::{VersionedProposal};
 use crate::post::report::VersionedReport;
 use crate::str_serializers::*;
 
-const ADD_POST_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
+const POST_COMMENT_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
@@ -159,6 +159,8 @@ impl Contract {
     #[payable]
     pub fn add_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
         let dao = self.get_dao_by_id(&dao_id);
+
+        self.validate_attached_deposit();
         self.validate_add_post(&dao_id, &body);
 
         self.total_posts += 1;
@@ -200,13 +202,15 @@ impl Contract {
         post_id
     }
 
+    // validate attached deposit
+    fn validate_attached_deposit(&self) {
+        require!(env::attached_deposit() >= POST_COMMENT_DEPOSIT, "Insufficient deposit attached");
+    }
+
     // Validate post on create
     fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody) {
+
         body.validate();
-
-        // validate attached deposit
-        require!(env::attached_deposit() >= ADD_POST_DEPOSIT, "Insufficient deposit attached");
-
         self.get_dao_by_id(&dao_id);
 
         // Check proposal requested amount
@@ -280,8 +284,11 @@ impl Contract {
 
     // Edit request/report
     // Access Level: Post author
+    #[payable]
     pub fn edit_post(&mut self, id: PostId, body: PostBody) {
         let mut post: Post = self.get_post_by_id(&id).into();
+
+        self.validate_attached_deposit();
         self.validate_edit_post(&post, &body);
 
         // Cleanup and update posts vertical and community
@@ -304,6 +311,7 @@ impl Contract {
     fn validate_edit_post(&self, post: &Post, body: &PostBody) {
         assert_eq!(env::predecessor_account_id(), post.author_id, "Only the author can edit the post");
         assert_eq!(post.snapshot.status, PostStatus::InReview, "Only posts in review can be edited");
+
         body.validate();
 
         if let Some(community_id) = body.get_post_community_id() {
@@ -368,10 +376,13 @@ impl Contract {
 
     // Change request/report status
     // Access Level: DAO council
+    #[payable]
     pub fn change_post_status(&mut self, id: PostId, status: PostStatus) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
+        self.validate_attached_deposit();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
+
         assert_ne!(post.snapshot.status, status, "Post already has this status");
 
         // TODO: Add restrictions & rules for status changes
@@ -394,9 +405,11 @@ impl Contract {
 
     // Change proposal state
     // Access Level: DAO council
+    #[payable]
     pub fn change_proposal_state(&mut self, id: PostId, state: ProposalStates) {
         let mut post: Post = self.get_post_by_id(&id).into();
 
+        self.validate_attached_deposit();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
         require!(post.snapshot.body.get_post_type() == PostType::Proposal, "Only proposals have state");
 
@@ -439,8 +452,11 @@ impl Contract {
 
     // Change is_spam parameter for post
     // Access Level: DAO council
+    #[payable]
     pub fn change_post_is_spam(&mut self, id: PostId, is_spam: bool) {
         let mut post: Post = self.get_post_by_id(&id).into();
+
+        self.validate_attached_deposit();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
 
         post.snapshot_history.push(post.snapshot.clone());
@@ -480,13 +496,13 @@ impl Contract {
 mod tests {
     use std::collections::HashMap;
     use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
-    use crate::post::{ADD_POST_DEPOSIT, Post, PostBody, PostStatus, PostType, VersionedProposal};
+    use crate::post::{POST_COMMENT_DEPOSIT, Post, PostBody, PostStatus, PostType, VersionedProposal};
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
-        setup_contract_with_deposit(ADD_POST_DEPOSIT);
+        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
 
         contract.add_post(
             *dao_id,
@@ -511,7 +527,7 @@ mod tests {
     }
 
     pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>) -> PostId {
-        setup_contract_with_deposit(ADD_POST_DEPOSIT);
+        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
 
         contract.add_post(
             dao_id,
@@ -526,6 +542,7 @@ mod tests {
                         community_id: None,
                         vertical: None,
                         proposal_id,
+                        funding: HashMap::new(),
                         is_spam: false,
                     }
                 )
