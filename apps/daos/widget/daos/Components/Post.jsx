@@ -1,6 +1,13 @@
 let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-const { item, index, showMoreDefault, showCommentsDefault, type, preview, disabeleOpenReportLInk } =
-  props;
+const {
+  item,
+  index,
+  showMoreDefault,
+  showCommentsDefault,
+  type,
+  preview,
+  disabeleOpenReportLInk,
+} = props;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 const [itemState, setItemState] = useState(item);
@@ -169,10 +176,16 @@ const handleLike = () => {
 
 const handleSpam = () => {
   if (!accountId) return;
-  Near.call(contractName, "change_post_is_spam", {
-    id: itemState.id,
-    is_spam: !itemState.is_spam,
-  });
+  Near.call(
+    contractName,
+    "change_post_is_spam",
+    {
+      id: itemState.id,
+      is_spam: !itemState.is_spam,
+    },
+    "200000000000000",
+    10000000000000000000000
+  );
 };
 
 const dao = Near.view(contractName, "get_dao_by_id", {
@@ -184,7 +197,7 @@ let snapshot;
 if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
     id: itemState.id,
-  })
+  });
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -202,10 +215,16 @@ const handleShowComments = () => {
 };
 const changeStatus = async (item, status) => {
   if (!accountId) return;
-  Near.call(contractName, "change_post_status", {
-    id: item.id,
-    status,
-  });
+  Near.call(
+    contractName,
+    "change_post_status",
+    {
+      id: item.id,
+      status,
+    },
+    "200000000000000",
+    10000000000000000000000
+  );
 };
 
 const changeHistory = (e) => {
@@ -282,11 +301,13 @@ const CardItem = ({ item, index }) => (
                 onChange={changeHistory}
                 className="form-control"
               >
-                {snapshot.filter((i) => !i.is_spam).map((history) => (
-                  <option value={history.timestamp}>
-                    {new Date(history.timestamp / 1000000).toLocaleString()}
-                  </option>
-                ))}
+                {snapshot
+                  .filter((i) => !i.is_spam)
+                  .map((history) => (
+                    <option value={history.timestamp}>
+                      {new Date(history.timestamp / 1000000).toLocaleString()}
+                    </option>
+                  ))}
               </select>
             </div>
           )}
@@ -343,8 +364,9 @@ const CardItem = ({ item, index }) => (
         <b>
           See More
           <i
-            className={`bi blue ${showMore === index ? "bi-eye" : "bi-eye-slash"
-              }`}
+            className={`bi blue ${
+              showMore === index ? "bi-eye" : "bi-eye-slash"
+            }`}
           />
         </b>
       </a>
@@ -443,8 +465,9 @@ const CardItem = ({ item, index }) => (
             >
               <span className="blue">{item.likes.length}</span>
               <i
-                className={`bi blue ${isLiked(item) ? "bi-heart-fill" : "bi-heart"
-                  }`}
+                className={`bi blue ${
+                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                }`}
               />
             </div>
 
