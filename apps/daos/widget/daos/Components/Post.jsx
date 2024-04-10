@@ -97,7 +97,7 @@ const statusColors = {
   New: { background: "#8A92F9", color: "white", border: "#8A92F9" },
   Approved: { background: "#2CE691", color: "white", border: "#2CE691" },
   Closed: { background: "#CCC", color: "white", border: "#CCC" },
-  "In Review": { background: "#F6B86A", color: "white", border: "#F6B86A" },
+  InReview: { background: "#F6B86A", color: "white", border: "#F6B86A" },
   Rejected: { background: "#FC6F60", color: "white", border: "#FC6F60" },
 };
 
@@ -202,15 +202,8 @@ const ProposalInfoItem = styled.div`
 `;
 
 const Description = styled.div`
-  color: #333;
-  font-size: 14px;
-  margin-bottom: 10px;
-  line-height: 20px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-  -webkit-box-orient: vertical;
+  display: flex;
+  width: 80%;
 `;
 
 const Tags = styled.div`
@@ -296,12 +289,20 @@ const InfoContainer = styled.div`
     font-style: normal;
     font-weight: 500;
   }
+
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
+  }
 `;
 
 const Left = styled.div`
   width: 60%;
   .author {
     margin-left: 10px;
+  }
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
   }
 `;
 const Right = styled.div`
@@ -340,7 +341,7 @@ const HistoryContainer = styled.div`
   min-height: 50px;
   max-height: 200px;
   overflow-y: auto;
-  border-left: 1px solid #ccc; // Uncomment if border is desired
+  border-left: 1px solid #ccc;
 `;
 
 const HistoryEntry = styled.div`
@@ -362,13 +363,27 @@ const ProposalsStateContainer = styled.div`
   display: flex;
   gap: 10px;
   padding-top: 10px;
+
+  @media screen and (max-width: 786px) {
+    flex-wrap: wrap;
+  }
 `;
 
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 786px) {
+    padding-bottom: 10px;
+  }
+`
+
+const HistoryTitle = styled.div`
+  margin-top: 10px;
+`
+
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
-console.log(snapshot);
 
 const changeHistory = (id) => {
-  console.log(id);
   setselectedHistoryId(id);
   setItemState((prev) => ({ ...prev, ...snapshot[id] }));
 };
@@ -443,7 +458,7 @@ return (
         </Breadcrumb>
         <InfoContainer>
           <Left>
-            <div className="d-flex justify-content-between">
+            <Info>
               <div className="d-flex">
                 <i class="ph ph-users"></i>
                 <div>
@@ -476,7 +491,7 @@ return (
                   </StatusBadge>
                 )}
               </div>
-            </div>
+            </Info>
             <div>
               <ProposalHeader>{itemState.title}</ProposalHeader>
               <ProposalsStateContainer>
@@ -540,10 +555,10 @@ return (
             </ProposalInfo>
           </Left>
           <Right>
-            <div>
+            <HistoryTitle>
               <i class="ph ph-clock-counter-clockwise"></i>
               <span>Version History</span>
-            </div>
+            </HistoryTitle>
             <div>
               {snapshot.length > 0 && (
                 <HistoryContainer>
