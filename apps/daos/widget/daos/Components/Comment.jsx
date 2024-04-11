@@ -112,22 +112,22 @@ return (
               }}
             >
               <i
-                className={`blue ph-heart fs-6 ${
+                className={` ph-heart fs-6 ${
                   isLikedByMe(comment) ? "ph-fill " : "ph"
                 }`}
               />
-              <small className="blue">{comment.likes.length}</small>
+              <small >{comment.likes.length}</small>
             </div>
             <Link
               className="d-flex gap-1 align-items-center"
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
-              <i className={"blue ph ph-chat-circle fs-6"} />
-              <small className="blue">{comment.child_comments.length}</small>
+              <i className={" ph ph-chat-circle fs-6"} />
+              <small >{comment.child_comments.length}</small>
             </Link>
 
             <Widget
-              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              src={"/*__@replace:widgetPath__*/.Components.Share"}
               props={{
                 text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
               }}
