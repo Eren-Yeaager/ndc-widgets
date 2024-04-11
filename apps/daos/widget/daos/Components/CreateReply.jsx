@@ -43,15 +43,13 @@ function composeData() {
       attachments: state.attachments,
     };
 
-  comment
-    ? Near.call(contractName, "edit_comment", params)
-    : Near.call(
-        contractName,
-        "add_comment",
-        params,
-        "200000000000000",
-        10000000000000000000000,
-      );
+  Near.call(
+    contractName,
+    comment ? "edit_comment" : "add_comment",
+    params,
+    "200000000000000",
+    10000000000000000000000
+  );
 }
 
 function onCommit() {

@@ -7,8 +7,6 @@ use crate::{CommentId};
 use crate::post::like::Like;
 use crate::str_serializers::*;
 
-const ADD_COMMENT_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
-
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
@@ -120,8 +118,7 @@ impl Contract {
         let author_id = env::predecessor_account_id();
         let post:Post = self.get_post_by_id(&post_id).into();
 
-        // validate attached deposit
-        assert!(env::attached_deposit() >= ADD_COMMENT_DEPOSIT, "Insufficient deposit attached");
+        self.validate_attached_deposit();
 
         let comment = Comment {
             id: comment_id.clone(),
@@ -183,6 +180,7 @@ impl Contract {
 
     // Edit comment
     // Access Level: Comment author
+    #[payable]
     pub fn edit_comment(
         &mut self,
         comment_id: CommentId,
@@ -191,6 +189,7 @@ impl Contract {
     ) {
         let mut comment:Comment = self.get_comment_by_id(&comment_id).into();
 
+        self.validate_attached_deposit();
         self.validate_comment_author(&comment);
 
         comment.snapshot_history.push(comment.snapshot.clone());
@@ -214,10 +213,12 @@ impl Contract {
 
     // Change is_spam parameter for comment
     // Access Level: DAO council
+    #[payable]
     pub fn change_comment_is_spam(&mut self, id: CommentId, is_spam: bool) {
         let mut comment:Comment = self.get_comment_by_id(&id).into();
         let post:Post = self.get_post_by_id(&comment.post_id).into();
 
+        self.validate_attached_deposit();
         self.validate_dao_ownership(&env::predecessor_account_id(), &post.dao_id);
 
         comment.snapshot_history.push(comment.snapshot.clone());
@@ -240,11 +241,12 @@ mod tests {
     use crate::{CommentId, Contract, PostId};
     use crate::tests::{setup_contract, create_new_dao, setup_contract_with_deposit};
     use crate::post::{Post};
-    use crate::post::comment::{ADD_COMMENT_DEPOSIT, Comment};
+    use crate::post::POST_COMMENT_DEPOSIT;
+    use crate::post::comment::{Comment};
     use crate::post::tests::create_proposal;
 
     pub fn create_comment(contract: &mut Contract, post_id: PostId, reply_id: Option<CommentId>) -> CommentId {
-        setup_contract_with_deposit(ADD_COMMENT_DEPOSIT);
+        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
 
         contract.add_comment(
             post_id,

@@ -375,11 +375,11 @@ const Info = styled.div`
   @media screen and (max-width: 786px) {
     padding-bottom: 10px;
   }
-`
+`;
 
 const HistoryTitle = styled.div`
   margin-top: 10px;
-`
+`;
 
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
 
@@ -426,11 +426,24 @@ const changeStatus = async (item, status) => {
 
 const handleSpam = () => {
   if (!accountId) return;
-  Near.call(contractName, "change_post_is_spam", {
-    id: itemState.id,
-    is_spam: !itemState.is_spam,
-  });
+  Near.call(
+    contractName,
+    "change_post_is_spam",
+    {
+      id: itemState.id,
+      is_spam: !itemState.is_spam,
+    },
+    "200000000000000",
+    10000000000000000000000
+  );
 };
+
+if (itemState.id)
+  snapshot = Near.view(contractName, "get_post_history", {
+    id: itemState.id,
+  });
+
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 const statuses = [
   { key: "InReview", value: "In Review" },
@@ -574,7 +587,7 @@ return (
 
                           {itemState.timestamp
                             ? new Date(
-                                itemState.timestamp / 1000000,
+                                itemState.timestamp / 1000000
                               ).toLocaleString()
                             : new Date().toLocaleDateString()}
                         </div>
@@ -676,7 +689,7 @@ return (
                   <span className="created">Updated at:</span>{" "}
                   <span className="date">
                     {new Date(
-                      itemState.timestamp / 1000000,
+                      itemState.timestamp / 1000000
                     ).toLocaleDateString()}
                   </span>
                 </div>
@@ -879,7 +892,7 @@ return (
                       <div>
                         {itemState.timestamp
                           ? new Date(
-                              itemState.timestamp / 1000000,
+                              itemState.timestamp / 1000000
                             ).toLocaleString()
                           : new Date().toLocaleDateString()}
                       </div>

@@ -255,11 +255,23 @@ impl Contract {
     }
 
     // Communities: Get all communities by DAO
-    pub fn get_dao_communities(&self, dao_id: DaoId) -> Vec<VersionedCommunity> {
-        self.dao_communities.get(&dao_id).unwrap_or_default()
-            .iter()
-            .map(|community_id| self.get_community_by_id(community_id))
-            .collect()
+    pub fn get_dao_communities(&self, dao_list: Option<Vec<DaoId>>) -> Vec<VersionedCommunity> {
+        let list_dao_id = if let Some(id_list) = dao_list {
+            id_list
+        } else {
+            self.dao.keys().collect()
+        };
+
+        list_dao_id.iter().flat_map(|dao_id| {
+            let community_ids = self.dao_communities
+                .get(dao_id)
+                .unwrap_or_default()
+                .clone();
+
+            community_ids.into_iter().map(|community_id| {
+                self.get_community_by_id(&community_id)
+            }).collect::<Vec<_>>()
+        }).collect()
     }
 
     // Communities: Get Community by ID

@@ -38,7 +38,7 @@ pub enum CommunityStatus {
 #[borsh(crate = "near_sdk::borsh")]
 pub struct Community {
     pub id: CommunityId,
-    pub dao_list: Vec<DaoId>,
+    pub dao_id: DaoId,
     pub handle: String,
     pub title: String,
     pub description: String,
@@ -127,7 +127,7 @@ impl Contract {
         let id = self.total_communities;
         let community = Community {
             id: id.clone(),
-            dao_list: vec![dao_id],
+            dao_id,
             handle: community_input.handle.clone(),
             title: community_input.title,
             description: community_input.description,
@@ -218,11 +218,8 @@ impl Contract {
 
     // Validate community edit access
     fn validate_community_edit_access(&self, community: &Community) {
-        let has_edit_permission = community.dao_list.iter().any(|dao_id| {
-            let dao: DAO = self.get_dao_by_id(dao_id).into();
-            dao.owners.contains(&env::predecessor_account_id())
-        });
-        assert!(has_edit_permission, "Must be DAO owner to edit community");
+        let dao: DAO = self.get_dao_by_id(&community.dao_id).into();
+        assert!(dao.owners.contains(&env::predecessor_account_id()), "Must be DAO owner to edit community");
     }
 
     // User follow Community
@@ -273,7 +270,7 @@ mod tests {
 
         assert_eq!(community.handle, "test", "No community handle");
         assert_eq!(community.title, "Test Community", "No community title");
-        assert!(community.dao_list.contains(&dao_id), "Community not added to DAO");
+        assert_eq!(community.dao_id, dao_id, "Community not added to DAO");
         assert!(community.owners.contains(&context.signer_account_id), "Community owner not added");
         assert!(community.verticals.contains(&"gaming".to_string()), "Community vertical not added");
     }
