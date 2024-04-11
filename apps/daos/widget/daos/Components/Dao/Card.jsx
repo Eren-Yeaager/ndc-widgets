@@ -70,6 +70,17 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
+const CardLinks = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-beetwen;
+
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
+
 return (
   <DaoCard>
     <div className="inner d-flex flex-column justify-content-between gap-3 align-items-center">
@@ -82,7 +93,7 @@ return (
         <DaoDesc>{dao.description}</DaoDesc>
       </div>
 
-      <div className="d-flex gap-2 justify-content-between">
+      <CardLinks>
         <a
           href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`}
           className="btn btn-primary d-flex justify-content-center"
@@ -100,7 +111,7 @@ return (
             </div>
           </a>
         )}
-      </div>
+      </CardLinks>
     </div>
   </DaoCard>
 );

@@ -413,7 +413,7 @@ return (
         data={composeData}
         onCancel={onCancel}
         onCommit={onCommit}
-        className="commit-post-button"
+        className="btn-primary"
       >
         Post
       </CommitButton>
