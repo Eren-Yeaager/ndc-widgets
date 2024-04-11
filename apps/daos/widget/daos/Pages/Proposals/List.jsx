@@ -55,6 +55,17 @@ if (dao_id) {
     page: 0,
     limit: 100,
   });
+
+  if (dao.owners.includes(context.accountId)) {
+    const inReviewItems = Near.view(contractName, "get_dao_posts", {
+      dao_id: dao.id,
+      page: 0,
+      limit: 100,
+      status: "InReview",
+    });
+
+    items = [...items, ...inReviewItems];
+  }
 } else if (accountId) {
   items = Near.view(contractName, "get_posts_by_author", {
     author: accountId,
@@ -64,10 +75,10 @@ if (dao_id) {
 
   if (items.length === 0) {
     items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
-    accountId = null
+    accountId = null;
   }
-}
-else items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
+} else
+  items = Near.view(contractName, "get_all_posts", { page: 0, limit: 100 });
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;
 
