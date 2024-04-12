@@ -381,6 +381,10 @@ const HistoryTitle = styled.div`
   margin-top: 10px;
 `;
 
+const ClipboardContainer = styled.div`
+  width: 20%;
+`
+
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
 
 const changeHistory = (id) => {
@@ -700,13 +704,17 @@ return (
             </StatusBadge>
           </div>
           <ProposalHeader>{itemState.title}</ProposalHeader>
-          <div className="d-flex flex-wrap gap-1">
+          <ProposalInfo>
+            <ClipboardContainer>
             <Widget
               src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
               props={{
                 text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
               }}
             />
+            </ClipboardContainer>
+             <ProposalInfoItem>
+            <div>Internal</div>
             <ProposalsState approve={itemState.state.dao_council_approved}>
               <span>
                 {itemState.state.kyc_passed ? (
@@ -714,35 +722,38 @@ return (
                 ) : (
                   <i class="ph-fill fs-6 ph-x-circle"></i>
                 )}
-              </span>{" "}
+              </span>
               DAO Approved
             </ProposalsState>
-
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+            <div>KYC</div>
             <ProposalsState approve={itemState.state.kyc_passed}>
-              {" "}
               <span>
                 {itemState.state.kyc_passed ? (
                   <i class="ph-fill fs-6 ph-check-circle"></i>
                 ) : (
                   <i class="ph-fill fs-6 ph-x-circle"></i>
                 )}
-              </span>{" "}
+              </span>
               KYC Approved
             </ProposalsState>
-
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+            <div>Report</div>
             <ProposalsState approve={itemState.state.report_accepted}>
-              {" "}
               <span>
                 {itemState.state.report_accepted ? (
                   <i class="ph-fill fs-6 ph-check-circle"></i>
                 ) : (
                   <i class="ph-fill fs-6 ph-x-circle"></i>
                 )}
-              </span>{" "}
+              </span>
               Report Approved
             </ProposalsState>
-          </div>
-          <ProposalInfo>
+            </ProposalInfoItem>
+         
+         
             <ProposalInfoItem>
               <div>Created By:</div>
               <div>
@@ -828,31 +839,29 @@ return (
                   ) : (
                     <i class="ph-fill fs-6 ph-x-circle"></i>
                   )}
-                </span>{" "}
+                </span>
                 DAO Approved
               </ProposalsState>
 
               <ProposalsState approve={itemState.state.kyc_passed}>
-                {" "}
                 <span>
                   {itemState.state.kyc_passed ? (
                     <i class="ph-fill fs-6 ph-check-circle"></i>
                   ) : (
                     <i class="ph-fill fs-6 ph-x-circle"></i>
                   )}
-                </span>{" "}
+                </span>
                 KYC Approved
               </ProposalsState>
 
               <ProposalsState approve={itemState.state.report_accepted}>
-                {" "}
                 <span>
                   {itemState.state.report_accepted ? (
                     <i class="ph-fill fs-6 ph-check-circle"></i>
                   ) : (
                     <i class="ph-fill fs-6 ph-x-circle"></i>
                   )}
-                </span>{" "}
+                </span>
                 Report Approved
               </ProposalsState>
             </TableCell>
