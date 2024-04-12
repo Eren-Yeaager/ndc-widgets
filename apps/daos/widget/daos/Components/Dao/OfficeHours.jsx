@@ -115,17 +115,19 @@ return (
             </li>
           ))}
       </ul>
-      <b>Socials</b>:{" "}
-      {daoContent?.tg && (
-        <a href={`https://${daoContent.tg}`}>
-          <i className="ph ph-telegram-logo fs-3" />
-        </a>
-      )}
-      {daoContent?.twitter && (
-        <a href={daoContent.twitter}>
-          <i className="ph ph-twitter-logo fs-3" />
-        </a>
-      )}
+      <div className="d-flex gap-2 align-items-center">
+        <b>Socials</b>:{" "}
+        {daoContent?.tg && (
+          <a href={`https://${daoContent.tg}`}>
+            <i className="ph ph-telegram-logo fs-3" />
+          </a>
+        )}
+        {daoContent?.twitter && (
+          <a href={daoContent.twitter}>
+            <i className="bi bi-twitter-x fs-4" />
+          </a>
+        )}
+      </div>
     </ContentArea>
   </Wrapper>
 );
