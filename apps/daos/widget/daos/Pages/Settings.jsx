@@ -106,8 +106,19 @@ return (
               icon: "ph ph-users",
             },
             {
-              name: "Contacts",
+              name: "Communities",
               value: 3,
+              content: (
+                <Widget
+                  src="/*__@replace:widgetPath__*/.Components.Settings.Communities"
+                  props={{ selectedDao }}
+                />
+              ),
+              icon: "ph ph-users-three",
+            },
+            {
+              name: "Contacts",
+              value: 4,
               content: (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Settings.Contacts"
@@ -118,7 +129,7 @@ return (
             },
             {
               name: "Content",
-              value: 4,
+              value: 5,
               content: (
                 <Widget
                   src="/*__@replace:widgetPath__*/.Components.Settings.Content"

@@ -173,8 +173,21 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
+
+
 if (daos) {
-  daos = daos.map((dao) => {
+  daos = daos.sort((a, b) => {
+    const daoTypeA = a.dao_type.toUpperCase(); 
+    const daoTypeB = b.dao_type.toUpperCase();
+  
+    if (daoTypeA < daoTypeB) {
+      return 1;
+    }
+    if (daoTypeA > daoTypeB) {
+      return -1;
+    }
+    return 0;
+  }).map((dao) => {
     return { name: dao.title, id: dao.id };
   });
 }

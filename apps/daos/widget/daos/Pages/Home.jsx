@@ -180,7 +180,9 @@ proposals = proposals.map((proposal) => {
 });
 
 let types = new Set();
-groupedDaos.forEach((item) => types.add(...Object.keys(item)));
+groupedDaos.forEach((item) => { 
+  Object.keys(item).forEach(i =>  types.add(i))  
+});
 
 const typeOfProject = Array.from(types).map((item) => {
   return {

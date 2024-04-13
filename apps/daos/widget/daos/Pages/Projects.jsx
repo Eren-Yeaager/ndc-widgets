@@ -25,9 +25,7 @@ return (
           src={`/*__@replace:widgetPath__*/.Components.Dao.Communities`}
           props={{
             title: content.featuredProducts.title,
-            projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title)
-            ),
+            projects: projects.filter((p) => p.status === "Active"),
           }}
         />
       </Wrapper>
