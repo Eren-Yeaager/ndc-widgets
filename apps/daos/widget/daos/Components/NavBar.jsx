@@ -114,13 +114,18 @@ const Title = styled.span`
 
 const MobileNavigation = () => (
   <div className="w-100 pt-4 pb-2 d-flex flex-column justify-content-center align-items-center gap-3">
+
     <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    {items.map((i) => (
-      <a href={i.href}>{i.name}</a>
-    ))}
+    {accountId && (
+      <>
+        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
+        {items.map((i) => (
+          <a href={i.href}>{i.name}</a>
+        ))}
+      </>
+    )}
   </div>
 );
 
@@ -129,14 +134,18 @@ const Navigation = () => (
     <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
-    <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
-    <a
-      className="btn-primary"
-      href={`//*__@replace:widgetPath__*/.App?page=create_post`}
-    >
-      <i className="ph ph-plus fs-6" />
-      Create Post
-    </a>
+    {accountId && (
+      <>
+        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
+        <a
+          className="btn-primary"
+          href={`//*__@replace:widgetPath__*/.App?page=create_post`}
+        >
+          <i className="ph ph-plus fs-6" />
+          Create Post
+        </a>
+      </>
+    )}
   </div>
 );
 
@@ -151,11 +160,11 @@ return (
         <Title>NDC</Title>
       </a>
       <div className="d-flex align-items-center">
-        {accountId && (
-          <LinksContainer>
-            <div className="desktop">
-              <Navigation />
 
+        <LinksContainer>
+          <div className="desktop">
+            <Navigation />
+            {accountId && (
               <div className="account">
                 <Widget
                   src="near/widget/DIG.DropdownMenu"
@@ -173,10 +182,13 @@ return (
                   }}
                 />
               </div>
-            </div>
+            )}
+          </div>
 
+         
             <div className="mobile">
               <div className="d-flex gap-3">
+              {accountId && (
                 <a
                   className="btn-primary btn-create-post"
                   href={`//*__@replace:widgetPath__*/.App?page=create_post`}
@@ -184,6 +196,7 @@ return (
                   <i className="ph ph-plus fs-6" />
                   Create Post
                 </a>
+                )}
                 <a href="#">
                   <i
                     className="btn-icon btn-secondary outlined ph ph-list fs-5"
@@ -192,8 +205,8 @@ return (
                 </a>
               </div>
             </div>
-          </LinksContainer>
-        )}
+          
+        </LinksContainer>
       </div>
     </Navbar>
 
