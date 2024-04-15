@@ -151,40 +151,13 @@ const CardContainer = styled.div`
 `;
 
 const [showMore, setShowMore] = useState(showMoreDefault);
-const [showComments, setShowComments] = useState(showCommentsDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 const pageName = type === "Report" ? "reports" : "proposals";
 
-const isLiked = (item) => {
-  return item.likes && item.likes.find((item) => item.author_id === accountId);
-};
-
-const handleLike = () => {
-  if (isLiked(itemState)) return;
-  if (!accountId) return;
-  Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
-    id: itemState.id,
-  });
-};
-
-const handleSpam = () => {
-  if (!accountId) return;
-  Near.call(contractName, "change_post_is_spam", {
-    id: itemState.id,
-    is_spam: !itemState.is_spam,
-  });
-};
 
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
-
-let snapshot;
-
-if (itemState.id)
-  snapshot = Near.view(contractName, "get_post_history", {
-    id: itemState.id,
-  }).filter((i) => !i.is_spam);
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -196,22 +169,7 @@ const statuses = [
   { key: "Closed", value: "Closed" },
 ];
 
-const handleShowComments = () => {
-  if (!accountId) return;
-  setShowComments(!showComments);
-};
-const changeStatus = async (item, status) => {
-  if (!accountId) return;
-  Near.call(contractName, "change_post_status", {
-    id: item.id,
-    status,
-  });
-};
 
-const changeHistory = (e) => {
-  const next = snapshot.find((i) => i.timestamp === e.target.value);
-  setItemState((prev) => ({ ...prev, ...next }));
-};
 
 const colorMap = (status) => {
   switch (status) {
@@ -242,27 +200,6 @@ const CardItem = ({ item, index }) => (
           }}
         />
 
-        {item.status && (
-          <>
-            {dao.owners.includes(accountId) ? (
-              <StatusSelect>
-                <select
-                  className="form-control"
-                  value={item.status}
-                  onChange={(status) => changeStatus(item, status.target.value)}
-                >
-                  {statuses.map(({ key, value }) => (
-                    <option value={key}>{value}</option>
-                  ))}
-                </select>
-              </StatusSelect>
-            ) : (
-              <div className="d-flex gap-3 align-items-center">
-                <Status color={colorMap(item.status)}>{item.status}</Status>
-              </div>
-            )}
-          </>
-        )}
       </div>
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center justify-content-between">
@@ -431,60 +368,6 @@ const CardItem = ({ item, index }) => (
           {item.labels?.map((tag) => (
             <div className="tag"># {tag}</div>
           ))}
-        </div>
-      )}
-
-      {!preview && (
-        <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
-          <div className="actions d-flex gap-5 align-items-center">
-            <div
-              role="button"
-              className="d-flex gap-2 align-items-center"
-              onClick={handleLike}
-            >
-              <i
-                className={`blue ph-heart fs-5 ${
-                  isLiked(item) ? "ph-fill" : "ph"
-                }`}
-              />
-              <span className="blue">{item.likes.length}</span>
-            </div>
-
-            <div
-              role="button"
-              className="d-flex gap-2 align-items-center"
-              onClick={handleShowComments}
-            >
-              <i className="blue ph ph-chat-circle fs-5" />
-              <span className="blue">{item.comments.length}</span>
-            </div>
-
-            <div role="button" className="d-flex gap-2">
-              <Widget
-                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-                props={{
-                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
-                }}
-              />
-            </div>
-
-            {dao.owners.includes(accountId) && (
-              <div role="button" onClick={handleSpam}>
-                <i
-                  className={`fs-5 ph-flag ${
-                    item.is_spam ? "red ph-fill" : "blue ph"
-                  }`}
-                />
-              </div>
-            )}
-          </div>
-
-          <Button
-            href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
-          >
-            {`Open ${item.post_type}`}
-            <i className={"blue ph ph-arrow-square-out fs-5"} />
-          </Button>
         </div>
       )}
 
