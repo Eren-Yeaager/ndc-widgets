@@ -176,7 +176,9 @@ const handleChange = (el, value) => {
 
 
 if (daos) {
-  daos = daos.sort((a, b) => {
+  let daosSorted = daos;
+  if (selectedDaoId === daos[0].id) {
+  daosSorted = daos.sort((a, b) => {
     const daoTypeA = a.dao_type.toUpperCase(); 
     const daoTypeB = b.dao_type.toUpperCase();
   
@@ -187,7 +189,9 @@ if (daos) {
       return -1;
     }
     return 0;
-  }).map((dao) => {
+  })
+}
+  daos = daosSorted.map((dao) => {
     return { name: dao.title, id: dao.id };
   });
 }
