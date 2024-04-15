@@ -165,7 +165,7 @@ if (!followedDaos) return <Widget src="flashui.near/widget/Loading" />;
 if (!dao ) return <Widget src="flashui.near/widget/Loading" />;
 
 const projects = Near.view(contractName, "get_dao_communities", {
-  dao_id: dao.id,
+  dao_list: [dao.id],
 });
 
 const ProjectCard = ({ project }) => (
