@@ -77,6 +77,7 @@
 
 
 # Check views
+ near view "$CONTRACT" get_all_verticals ''
  near view "$CONTRACT" get_dao_list ''
  near view "$CONTRACT" get_dao_list '{"dao_type":"DAO"}'
  near view "$CONTRACT" get_dao_by_id '{"id":1}'

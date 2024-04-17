@@ -29,6 +29,7 @@ impl CommunityInput {
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
 pub enum CommunityStatus {
+    InReview,
     Active,
     Inactive,
 }
@@ -121,30 +122,36 @@ impl Contract {
         community_input.validate();
 
         self.validate_community_uniqueness(&dao_id, &community_input);
-        self.validate_verticals_in_dao(&dao_id, &verticals);
+        if verticals.len() > 0 {
+            self.validate_verticals_exists(&verticals);
+        }
 
-        self.total_communities += 1;
-        let id = self.total_communities;
-        let community = Community {
-            id: id.clone(),
+        self.add_community_internal(
             dao_id,
-            handle: community_input.handle.clone(),
-            title: community_input.title,
-            description: community_input.description,
+            community_input.title,
+            community_input.handle,
+            community_input.description,
+            community_input.logo_url,
+            community_input.banner_url,
+            community_input.accounts,
             verticals,
-            status: CommunityStatus::Active,
-            logo_url: community_input.logo_url,
-            banner_url: community_input.banner_url,
-            accounts: community_input.accounts,
             owners,
-            metadata
-        };
-        self.communities.insert(&id, &community.into());
+            metadata,
+            CommunityStatus::Active
+        )
+    }
 
-        self.add_dao_communities_internal(&dao_id, id.clone());
-        self.add_community_handle_internal(&community_input.handle, &id);
+    pub fn remove_community(&mut self, id: CommunityId) {
+        let community = self.get_community_by_id(&id);
 
-        id
+        let dao_id = community.latest_version().dao_id;
+        self.validate_dao_ownership(&env::predecessor_account_id(), &dao_id);
+
+        let mut dao_communities = self.dao_communities.get(&dao_id).unwrap_or(vec![]);
+        dao_communities.retain(|c| c != &id);
+        self.dao_communities.insert(&dao_id, &dao_communities);
+
+        self.communities.remove(&id);
     }
 
     // Validate uniqueness of community (handle and title)
@@ -159,11 +166,11 @@ impl Contract {
         assert!(!self.community_handles.contains_key(&community_input.handle), "Community handle already exists");
     }
 
-    // Validate verticals in list of DAO verticals
-    fn validate_verticals_in_dao(&self, dao_id: &DaoId, verticals: &Vec<Vertical>) {
-        let dao: DAO = self.get_dao_by_id(dao_id).into();
+    // Validate verticals - if they exist in any DAO
+    pub(crate) fn validate_verticals_exists(&self, verticals: &Vec<Vertical>) {
+        let all_exists = self.get_all_verticals();
         verticals.iter().for_each(|c| {
-            assert!(dao.verticals.contains(c), "Vertical not in DAO verticals list");
+            assert!(all_exists.contains(c), "Vertical not found");
         });
     }
 
@@ -186,6 +193,60 @@ impl Contract {
 
         community.status = status;
         self.communities.insert(&id, &community.into());
+    }
+
+    pub(crate) fn add_community_by_report(&mut self, dao_id: &DaoId, title: String, handle: String) -> u64 {
+        self.add_community_internal(
+            dao_id.clone(),
+            title,
+            handle,
+            String::new(),
+            String::new(),
+            String::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            HashMap::new(),
+            CommunityStatus::InReview
+        )
+    }
+
+    fn add_community_internal(
+        &mut self,
+        dao_id: DaoId,
+        title: String,
+        handle: String,
+        description: String,
+        logo_url: String,
+        banner_url: String,
+        accounts: Vec<AccountId>,
+        verticals: Vec<Vertical>,
+        owners: Vec<AccountId>,
+        metadata: HashMap<String, String>,
+        status: CommunityStatus
+    ) -> u64 {
+        self.total_communities += 1;
+        let id = self.total_communities;
+        let community = Community {
+            id: id.clone(),
+            dao_id,
+            handle: handle.clone(),
+            title,
+            description,
+            verticals,
+            status,
+            logo_url,
+            banner_url,
+            accounts,
+            owners,
+            metadata
+        };
+        self.communities.insert(&id, &community.into());
+
+        self.add_dao_communities_internal(&dao_id, id.clone());
+        self.add_community_handle_internal(&handle, &id);
+
+        id
     }
 
     // Edit DAO community
@@ -310,5 +371,17 @@ mod tests {
 
         let user_follow_list = contract.get_follow_community(context.signer_account_id.clone());
         assert_eq!(user_follow_list.len(), 1);
+    }
+
+    #[test]
+    pub fn test_remove_community() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+        let community_id = add_community(&mut contract, &context, dao_id.clone());
+
+        contract.remove_community(community_id.clone());
+
+        let dao_communities = contract.get_dao_communities(Some(vec![dao_id.clone()]));
+        assert_eq!(dao_communities.len(), 0);
     }
 }

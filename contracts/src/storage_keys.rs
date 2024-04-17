@@ -21,4 +21,6 @@ pub enum StorageKey {
     OwnerAccess,
     Events,
     DaoEvents,
+    ReportFunds,
+    CommunityReportFunds,
 }

@@ -2,6 +2,7 @@ mod like;
 pub(crate) mod proposal;
 mod report;
 pub mod comment;
+pub mod report_funds;
 
 use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
@@ -9,7 +10,8 @@ use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema, require};
 use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
-use crate::post::proposal::{VersionedProposal};
+use crate::post::proposal::VersionedProposal;
+use crate::post::report_funds::{ReportFundCategory, ReportFundsInput};
 use crate::post::report::VersionedReport;
 use crate::str_serializers::*;
 
@@ -157,11 +159,14 @@ impl Contract {
     // Add new DAO request/report
     // Access Level: Public
     #[payable]
-    pub fn add_post(&mut self, dao_id: DaoId, body: PostBody) -> PostId {
+    pub fn add_post(&mut self, dao_id: DaoId, body: PostBody, report_funding: Option<ReportFundsInput>) -> PostId {
         let dao = self.get_dao_by_id(&dao_id);
 
         self.validate_attached_deposit();
-        self.validate_add_post(&dao_id, &body);
+        self.validate_add_post(&dao_id, &body, &report_funding);
+        if let Some(vertical) = body.get_post_vertical() {
+            self.validate_verticals_exists(&vec![vertical]);
+        }
 
         self.total_posts += 1;
         let author_id = env::predecessor_account_id();
@@ -193,6 +198,7 @@ impl Contract {
 
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
+        self.assign_report_funding(&dao_id, &body, report_funding, post_id.clone());
 
         // Notifications
         notify::notify_mention(&body.get_post_title(), &body.get_post_description(), post_id.clone(), None);
@@ -208,17 +214,25 @@ impl Contract {
     }
 
     // Validate post on create
-    fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody) {
-
+    fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody, report_funding: &Option<ReportFundsInput>) {
         body.validate();
         self.get_dao_by_id(&dao_id);
 
         // Check proposal requested amount
         if let PostBody::Proposal(proposal) = body {
-            require!(
-                proposal.latest_version().requested_amount >= 0.0,
-                "Wrong requested amount"
-            );
+            require!(proposal.latest_version().requested_amount >= 0.0, "Wrong requested amount");
+        } else {
+            require!(report_funding.is_some(), "Report funding is required");
+
+            if let Some(funding) = report_funding {
+                if funding.category == ReportFundCategory::ProjectOnboarding && funding.new_community_title.is_some() {
+                    // check if community handle is unique
+                    let handle = &self.generate_handle(funding.new_community_title.clone().unwrap());
+                    self.community_handles.get(handle).expect("Community handle already exists");
+                }
+            }
+
+            report_funding.as_ref().unwrap().validate();
         }
 
         // Check if community is part of the DAO
@@ -226,6 +240,58 @@ impl Contract {
             let dao_communities = self.dao_communities.get(&dao_id).unwrap_or_default();
             assert!(dao_communities.contains(&community_id), "Community not found in DAO");
         }
+    }
+
+    // Assign report funding, create community if needed
+    fn assign_report_funding(&mut self, dao_id: &DaoId, body: &PostBody, report_funding: Option<ReportFundsInput>, report_id: PostId) {
+        if let PostBody::Report(_) = body {
+            let report_funding = report_funding.unwrap();
+
+            let funding = ReportFunds {
+                category: report_funding.category,
+                sub_category: report_funding.sub_category,
+                milestones: report_funding.milestones,
+                ipfs_proofs: report_funding.ipfs_proofs,
+                transactions: report_funding.transactions,
+                participants: report_funding.participants,
+                start_date: report_funding.start_date,
+                end_date: report_funding.end_date,
+            };
+            self.report_funds.insert(&report_id, &funding);
+
+            if report_funding.new_community_title.is_some() || report_funding.community_id.is_some() {
+                let community_id = if report_funding.new_community_title.is_some() {
+                    let title = report_funding.new_community_title.clone().unwrap();
+                    let handle = self.generate_handle(title.clone());
+                    self.add_community_by_report(dao_id, title, handle)
+                } else {
+                    report_funding.community_id.unwrap()
+                };
+
+                // add to community_report_funds
+                let mut community_report_funds = self.community_report_funds.get(&community_id).unwrap_or(vec![]);
+                community_report_funds.push(report_id);
+                self.community_report_funds.insert(&community_id, &community_report_funds);
+            }
+
+        }
+    }
+
+    fn generate_handle(&self, title: String) -> String {
+        let mut handle = String::new();
+        let trimmed_title = title.trim();
+
+        for c in trimmed_title.chars() {
+            if c.is_alphanumeric() || c == '-' {
+                if c == ' ' || c == '_' {
+                    handle.push('-');
+                } else {
+                    handle.push(c.to_lowercase().next().unwrap());
+                }
+            }
+        }
+
+        handle
     }
 
     // Update dao_posts
@@ -500,6 +566,7 @@ mod tests {
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
+    use crate::post::report_funds::{ReportFundCategory, ReportFundsInput, ReportFundSubCategory, ReportMilestones};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
         setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
@@ -522,7 +589,8 @@ mod tests {
                         is_spam: false,
                     }
                 )
-            )
+            ),
+            None
         )
     }
 
@@ -546,7 +614,26 @@ mod tests {
                         is_spam: false,
                     }
                 )
-            )
+            ),
+            Some(ReportFundsInput {
+                category: ReportFundCategory::FundsTransfer,
+                sub_category: Some(ReportFundSubCategory::Development),
+                milestones: vec![
+                    ReportMilestones {
+                        description: "Milestone 1 description".to_string(),
+                        attachments: vec![],
+                        payment: 1000,
+                        complete_pct: 10,
+                    }
+                ],
+                ipfs_proofs: vec![],
+                transactions: vec!["tx_hash".to_string()],
+                participants: vec![],
+                start_date: None,
+                end_date: None,
+                new_community_title: None,
+                community_id: Some(1),
+            })
         )
     }
 

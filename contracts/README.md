@@ -276,6 +276,12 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_community '{"dao_id":1, "community_in
 NEAR_ENV=mainnet near call "$CONTRACT" edit_community '{"id":1, "description":"Some description upd...","logo_url":"logo url upd", "banner_url":"banner url upd","owners":["'$ACCOUNT_ID'"], "accounts":[], "verticals":[], "metadata":{"website":"test website"}}' --accountId "$ACCOUNT_ID"
 ```
 
+- Remove community
+
+```bash
+NEAR_ENV=mainnet near call "$CONTRACT" remove_community '{"id":1}' --accountId "$ACCOUNT_ID"
+```
+
 - Change community status
 
 ```bash
@@ -304,6 +310,12 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_handle '{"handle":"some-
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_community_accounts '{"dao_list":[2,3,4]}'
+```
+
+- Get list of all verticals (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_all_verticals ''
 ```
 
 ### Access Control

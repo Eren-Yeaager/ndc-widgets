@@ -26,6 +26,7 @@ use crate::community::{Community, VersionedCommunity};
 use crate::dao::{DAO, DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
 use crate::post::proposal::ProposalStates;
+use crate::post::report_funds::ReportFunds;
 use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 use strum::IntoEnumIterator;
@@ -59,7 +60,11 @@ pub struct Contract {
     pub comments: LookupMap<CommentId, VersionedComment>,
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
+
     pub events: LookupMap<EventId, Event>,
+
+    pub report_funds: LookupMap<PostId, ReportFunds>,
+    pub community_report_funds: LookupMap<CommunityId, Vec<PostId>>,
 
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
@@ -93,7 +98,11 @@ impl Contract {
             comments: LookupMap::new(StorageKey::Comments),
             communities: LookupMap::new(StorageKey::Communities),
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
+
             events: LookupMap::new(StorageKey::Events),
+
+            report_funds: LookupMap::new(StorageKey::ReportFunds),
+            community_report_funds: LookupMap::new(StorageKey::CommunityReportFunds),
 
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
@@ -123,6 +132,21 @@ impl Contract {
 // Getters - All smart-contract view functions
 #[near_bindgen]
 impl Contract {
+
+    // Get list of verticals for all DAO
+    pub fn get_all_verticals(&self) -> Vec<Vertical> {
+        let mut all_verticals: Vec<Vertical> = Vec::new();
+
+        for (_, dao) in self.dao.iter() {
+            for vertical in dao.latest_version().verticals.iter() {
+                if !all_verticals.contains(vertical) {
+                    all_verticals.push(vertical.clone());
+                }
+            }
+        }
+
+        all_verticals
+    }
 
     // DAO: Get DAO by ID
     pub fn get_dao_by_id(&self, id: &DaoId) -> VersionedDAO {
