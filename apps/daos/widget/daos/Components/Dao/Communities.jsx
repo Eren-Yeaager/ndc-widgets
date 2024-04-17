@@ -52,9 +52,11 @@ return (
   <ProjectsContainer>
     <h3 style={{ marginBottom: "2rem" }}>{title}</h3>
     <div className="d-flex flex-wrap justify-content-center gap-5">
-      {projects.map((project) => (
-        <ProjectCard project={project} />
-      ))}
+      {projects
+        .filter((p) => p.status === "Active")
+        .map((project) => (
+          <ProjectCard project={project} />
+        ))}
     </div>
   </ProjectsContainer>
 );
