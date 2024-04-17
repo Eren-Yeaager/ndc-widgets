@@ -1,4 +1,6 @@
 const { title, projects } = props;
+const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+if (!assets) return <Widget src="flashui.near/widget/Loading" />;
 
 const ProjectsContainer = styled.div`
   width: 100%;
@@ -42,7 +44,7 @@ const ProjectContainer = styled.div`
 const ProjectCard = ({ project }) => (
   <ProjectContainer>
     <div className="wrapper">
-      <img className="image" src={project.logo_url} />
+      <img className="image" src={project.logo_url || assets.project_logo} />
     </div>
     <span className="title">{project.title}</span>
   </ProjectContainer>

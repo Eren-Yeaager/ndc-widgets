@@ -103,6 +103,19 @@ const handleSave = () => {
   });
 };
 
+const handleReset = () => {
+  setHandle("")
+  setTitle("")
+  setDescription("")
+  setLogoUrl("")
+  setBannerUrl("")
+  setAccounts("")
+  setOwners("")
+  setVerticals("")
+  setMetadata({})
+  setEditedProjectId(false)
+}
+
 const handleEdit = () => {
   Near.call(contractName, "edit_community", {
     id: editedProjectId,
@@ -283,6 +296,13 @@ return (
       </div>
     </div>
 
+    <button
+      className="btn btn-primary"
+      disabled={!editedProjectId}
+      onClick={handleReset}
+    >
+      Reset Changes
+    </button>
     <button
       className="btn btn-primary"
       onClick={() => {

@@ -6,6 +6,8 @@ return {
       "https://ipfs.near.social/ipfs/bafkreifchjezqjp5y56bomtmtdzkdg3ulq4az24z3g7oorro3wwy6nxtte",
     logoColor:
       "https://ipfs.near.social/ipfs/bafkreieit24q3nlzzemyjblesy274gtlhjzbhmpfgpwfdfhjgntkhfc4fi",
+    project_logo: 
+        "https://ipfs.near.social/ipfs/bafkreic7jx2am37apinwcc6kj2yi7wcazhlysjitasi6d2jinle5e4egmm",
     home: {
       hero: "https://ipfs.near.social/ipfs/bafkreihp7pgw377kch5eusvxhf3sqa54yf7uthoc5ldepza6gxwcdhekyu",
       puzzle:
