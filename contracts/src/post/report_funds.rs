@@ -103,9 +103,6 @@ impl ReportFundsInput {
                     },
                     ReportFundSubCategory::OperationSalaries => {
                         require!(self.transactions.len() > 0, "No transactions for Operational report");
-                    },
-                    _ => {
-                        require!(false, "Invalid sub category");
                     }
                 }
             }
@@ -121,7 +118,7 @@ impl ReportFundsInput {
         if self.milestones.len() > 0 {
             for milestone in &self.milestones {
                 require!(!milestone.description.is_empty(), "Milestone description cannot be empty");
-                require!(milestone.complete_pct >= 0 && milestone.complete_pct <= 100, "Milestone completion percentage must be between 0 and 100");
+                require!(milestone.complete_pct <= 100, "Milestone completion percentage must be between 0 and 100");
             }
         }
     }

@@ -566,7 +566,7 @@ mod tests {
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
-    use crate::post::report_funds::{ReportFundCategory, ReportFundsInput, ReportFundSubCategory, ReportMilestones};
+    use crate::post::report_funds::{ReportFundCategory, ReportFunds, ReportFundsInput, ReportFundSubCategory, ReportMilestones};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
         setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
@@ -594,8 +594,28 @@ mod tests {
         )
     }
 
-    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>) -> PostId {
+    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>, report_funds: Option<ReportFundsInput>) -> PostId {
         setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
+
+        let report_funds = report_funds.unwrap_or_else(|| ReportFundsInput {
+            category: ReportFundCategory::FundsTransfer,
+            sub_category: Some(ReportFundSubCategory::Development),
+            milestones: vec![
+                ReportMilestones {
+                    description: "Milestone 1 description".to_string(),
+                    attachments: String::new(),
+                    payment: 1000,
+                    complete_pct: 10,
+                }
+            ],
+            ipfs_proofs: vec![],
+            transactions: vec!["tx_hash".to_string()],
+            participants: vec![],
+            start_date: None,
+            end_date: None,
+            new_community_title: None,
+            community_id: Some(1),
+        });
 
         contract.add_post(
             dao_id,
@@ -615,25 +635,7 @@ mod tests {
                     }
                 )
             ),
-            Some(ReportFundsInput {
-                category: ReportFundCategory::FundsTransfer,
-                sub_category: Some(ReportFundSubCategory::Development),
-                milestones: vec![
-                    ReportMilestones {
-                        description: "Milestone 1 description".to_string(),
-                        attachments: vec![],
-                        payment: 1000,
-                        complete_pct: 10,
-                    }
-                ],
-                ipfs_proofs: vec![],
-                transactions: vec!["tx_hash".to_string()],
-                participants: vec![],
-                start_date: None,
-                end_date: None,
-                new_community_title: None,
-                community_id: Some(1),
-            })
+            Some(report_funds)
         )
     }
 
