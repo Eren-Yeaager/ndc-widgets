@@ -1,11 +1,9 @@
-const { value, text, color, loading } = props;
+const { value, text, color } = props;
 
 const Loading = () => <Widget src="flashui.near/widget/Loading" />;
 
 const formatValue = (value) => {
-  const val = value ? parseFloat(value) : null;
-
-  if (!val) return "n/a";
+  const val = parseFloat(value);
 
   return val >= 1000000000
     ? `${parseFloat(val / 1000000000).toFixed(2)}B`
@@ -20,7 +18,7 @@ const formatValue = (value) => {
 
 return (
   <div className="item">
-    <div className="value">{loading ? <Loading /> : formatValue(value)}</div>
+    <div className="value">{value ? formatValue(value) : "n/a"}</div>
     <div className="divider" />
     <div className="title">{text}</div>
   </div>

@@ -11,13 +11,19 @@ const Switch = styled.div`
 const Tab = styled.div`
   display: flex;
   height: 34px;
-  padding: 1px 18px 1px 14px;
+  padding: 1px 16px;
   justify-content: center;
   align-items: center;
   gap: 8px;
   border-radius: 100px;
   background: ${(props) => (props.selected ? "#000" : "#fff")};
   color: ${(props) => (props.selected ? "#fff" : "#000")};
+
+  span {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
 `;
 
 const { options, value, onChange } = props;
@@ -27,7 +33,7 @@ return (
     {options.map((option) => (
       <Tab role="button" selected={option.title === value}>
         {option.icon && <i className={option.icon} />}
-        {option.title}
+        <span>{option.title}</span>
       </Tab>
     ))}
   </Switch>

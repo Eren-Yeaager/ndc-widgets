@@ -16,7 +16,7 @@ const SelectContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 3rem;
+  gap: 1rem;
   width: 100%;
 
   @media screen and (max-width: 768px) {
@@ -63,7 +63,7 @@ const dailyTotal = { labels: [], data: [] };
 const dailyTotalUsers = { labels: [], data: [] };
 
 const [loading, setLoading] = useState(false);
-const [period, setPeriod] = useState(PERIODS[0].name);
+const [period, setPeriod] = useState([new Date(), new Date()]);
 const [selectedDAOs, setSelectedDAOs] = useState([]);
 const [dashboardView, setDashboardView] = useState("Table");
 const [dataState, setDataState] = useState({
@@ -93,14 +93,11 @@ const daos = Near.view(contractName, "get_dao_list");
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
 const formatDate = () => {
-  const diff = PERIODS.find((p) => p.name === period).value;
-  const dateNow = new Date();
-  const prevDate = new Date(new Date().setDate(new Date().getDate() - diff));
-
   const fmt = (date) => date.toLocaleDateString().split("/");
+
   return {
-    startDate: `${fmt(prevDate)[2]}-${fmt(prevDate)[1]}-${fmt(prevDate)[0]}`,
-    endDate: `${fmt(dateNow)[2]}-${fmt(dateNow)[1]}-${fmt(dateNow)[0]}`,
+    startDate: `${fmt(period[0])[2]}-${fmt(period[0])[1]}-${fmt(period[0])[0]}`,
+    endDate: `${fmt(period[1])[2]}-${fmt(period[1])[1]}-${fmt(period[1])[0]}`,
   };
 };
 
@@ -111,6 +108,8 @@ const formatDate = () => {
 const params = `start_date=${formatDate().startDate}&end_date=${
   formatDate().endDate
 }`;
+
+console.log(params);
 
 const API = {
   getTotal: () =>
@@ -169,7 +168,7 @@ const onSelectChange = (value) => {
       return all;
     } else if (selectedDAOs.includes(value)) {
       return selectedDAOs.filter(
-        (dao) => dao !== value && dao !== defaultDAOOption,
+        (dao) => dao !== value && dao !== defaultDAOOption
       );
     } else {
       return [...selectedDAOs, value];
@@ -188,16 +187,15 @@ return (
     <SelectContainer>
       <Title>NDC Dashboard</Title>
       <Filters>
-        <Widget
-          src={`/*__@replace:widgetPath__*/.Components.Select`}
-          props={{
-            options: PERIODS.map((v) => capitalizeFirstLetter(v.name)),
-            isOpen: selectOpen,
-            values: period,
-            onChange: (v) => setPeriod(v.toLowerCase()),
-            containerClass: "selected-container",
-          }}
-        />
+        <div style={{ width: "300px" }} className="positiion-relative">
+          <Widget
+            src={`/*__@replace:widgetPath__*/.Components.DatePicker`}
+            props={{
+              handleChange: ({ startDate, endDate }) =>
+                setPeriod([startDate, endDate]),
+            }}
+          />
+        </div>
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Switch`}
           props={{
@@ -218,7 +216,6 @@ return (
         totalTx: dataState.totalTx,
         totalAccounts: dataState.totalAccounts,
         uniqueAccounts: dataState.uniqueAccounts,
-        loading,
       }}
     />
     {dashboardView === "Charts" ? (
@@ -243,10 +240,10 @@ return (
         />
       </ChartContainer>
     ) : (
-      <div className="section py-5 flex-column">
+      <div className="w-100 section py-5 flex-column">
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Table`}
-          props={{ daos, API }}
+          props={{ daos, API, period }}
         />
       </div>
     )}

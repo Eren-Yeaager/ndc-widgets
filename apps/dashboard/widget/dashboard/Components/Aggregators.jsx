@@ -4,12 +4,7 @@ const Items = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-
-  @media screen and (max-width: 1188px) {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
+  overflow-x: scroll;
 
   .item {
     display: flex;
@@ -59,7 +54,7 @@ const Items = styled.div`
   }
 `;
 
-const { totalTx, totalAccounts, uniqueAccounts, loading } = props;
+const { totalTx, totalAccounts, uniqueAccounts } = props;
 
 const Item = ({ value, text, color }) => {
   return (
@@ -72,21 +67,14 @@ const Item = ({ value, text, color }) => {
 
 return (
   <Items>
-    <Item
-      value={totalTx}
-      loading={loading}
-      text="Total Number of Transactions"
-      color="#A39ACD"
-    />
+    <Item value={totalTx} text="Total Number of Transactions" color="#A39ACD" />
     <Item
       value={totalAccounts}
-      loading={loading}
       text="Total Number of Accounts"
       color="#5398DD"
     />
     <Item
       value={uniqueAccounts}
-      loading={loading}
       text="Today Unique Active Users"
       color="#E89DBB"
     />
