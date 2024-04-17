@@ -226,9 +226,9 @@ impl Contract {
 
             if let Some(funding) = report_funding {
                 if funding.category == ReportFundCategory::ProjectOnboarding && funding.new_community_title.is_some() {
-                    // check if community handle is unique
+                    // check if new community handle is unique
                     let handle = &self.generate_handle(funding.new_community_title.clone().unwrap());
-                    self.community_handles.get(handle).expect("Community handle already exists");
+                    self.community_handles.get(handle).expect("Community already exists");
                 }
             }
 

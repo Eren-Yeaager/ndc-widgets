@@ -23,17 +23,9 @@ pub struct ReportFundsInput {
 #[borsh(crate = "near_sdk::borsh")]
 pub struct ReportMilestones {
     pub description: String,
-    pub attachments: Vec<String>,
+    pub attachments: String,
     pub payment: u32,
     pub complete_pct: u8,
-}
-
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
-#[serde(crate = "near_sdk::serde")]
-#[borsh(crate = "near_sdk::borsh")]
-pub enum OperationOptions {
-    Tooling,
-    Salaries,
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
@@ -50,7 +42,8 @@ pub enum ReportFundCategory {
 pub enum ReportFundSubCategory {
     Development,
     Marketing,
-    Operations(OperationOptions),
+    OperationTooling,
+    OperationSalaries,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
@@ -105,17 +98,14 @@ impl ReportFundsInput {
                         require!(self.start_date.is_some(), "No date for Marketing report");
                         require!(self.transactions.len() > 0, "No transactions for Marketing report");
                     },
-                    ReportFundSubCategory::Operations(operation) => {
-                        require!(
-                            matches!(operation, OperationOptions::Tooling | OperationOptions::Salaries),
-                            "Invalid operation option"
-                        );
-
-                        if let OperationOptions::Tooling = operation {
-                            require!(self.ipfs_proofs.len() > 0, "No IPFS proofs for Operational report");
-                        } else if let OperationOptions::Salaries = operation {
-                            require!(self.transactions.len() > 0, "No transactions for Operational report");
-                        }
+                    ReportFundSubCategory::OperationTooling => {
+                        require!(self.ipfs_proofs.len() > 0, "No IPFS proofs for Operational report");
+                    },
+                    ReportFundSubCategory::OperationSalaries => {
+                        require!(self.transactions.len() > 0, "No transactions for Operational report");
+                    },
+                    _ => {
+                        require!(false, "Invalid sub category");
                     }
                 }
             }
@@ -126,6 +116,13 @@ impl ReportFundsInput {
             );
 
             require!(self.milestones.len() > 0, "No milestones for new Project/dApp onboarding");
+        }
+
+        if self.milestones.len() > 0 {
+            for milestone in &self.milestones {
+                require!(!milestone.description.is_empty(), "Milestone description cannot be empty");
+                require!(milestone.complete_pct >= 0 && milestone.complete_pct <= 100, "Milestone completion percentage must be between 0 and 100");
+            }
         }
     }
 }
