@@ -147,7 +147,7 @@ return (
             </div>
           </Cell>
         </Row>
-      )
+      ),
     )}
   </Container>
 );

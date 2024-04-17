@@ -116,14 +116,14 @@ return (
                   isLikedByMe(comment) ? "ph-fill " : "ph"
                 }`}
               />
-              <small >{comment.likes.length}</small>
+              <small>{comment.likes.length}</small>
             </div>
             <Link
               className="d-flex gap-1 align-items-center"
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
               <i className={" ph ph-chat-circle fs-6"} />
-              <small >{comment.child_comments.length}</small>
+              <small>{comment.child_comments.length}</small>
             </Link>
 
             <Widget

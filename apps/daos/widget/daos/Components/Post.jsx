@@ -176,6 +176,7 @@ const ProposalInfo = styled.div`
 
 const ProposalInfoItem = styled.div`
   display: flex;
+  font-size: 14px;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
@@ -271,7 +272,9 @@ const Breadcrumb = styled.div`
   border-bottom: 1px solid
     var(--NEAR-Primary-Colors-Off-White-Variation-1, #f0efe7);
   padding-bottom: 14px;
+  font-size: 14px;
   margin-bottom: 30px;
+  font-weight: 600;
 
   .all-link {
     color: #7e7d7e;
@@ -297,6 +300,10 @@ const InfoContainer = styled.div`
 
 const Left = styled.div`
   width: 60%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
   .author {
     margin-left: 10px;
   }
@@ -378,12 +385,17 @@ const Info = styled.div`
 `;
 
 const HistoryTitle = styled.div`
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
 `;
 
 const ClipboardContainer = styled.div`
   width: 20%;
-`
+`;
 
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
 
@@ -469,23 +481,21 @@ return (
               href={`//*__@replace:widgetPath__*/.App?page=proposals`}
             >
               All {itemState.post_type === "Proposal" ? "Proposals" : "Reports"}
-            </a>{" "}
-            /{itemState.title}
+            </a>
+            {" / "}
+            {itemState.title}
           </div>
         </Breadcrumb>
         <InfoContainer>
           <Left>
             <Info>
               <div className="d-flex">
-                <i class="ph ph-users"></i>
-                <div>
-                  <a
-                    className="account-link author"
-                    href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
-                  >
-                    {itemState.author_id}
-                  </a>
-                </div>
+                <Widget
+                  src="near/widget/AccountProfile"
+                  props={{
+                    accountId: itemState.author_id,
+                  }}
+                />
               </div>
               <div>
                 {dao.owners.includes(accountId) ? (
@@ -557,7 +567,7 @@ return (
             <ProposalInfo>
               <ProposalInfoItem>
                 <div>Updated at:</div>
-                <div>
+                <div style={{ color: "#000" }}>
                   {itemState.timestamp
                     ? new Date(itemState.timestamp / 1000000).toLocaleString()
                     : new Date().toLocaleDateString()}
@@ -565,15 +575,15 @@ return (
               </ProposalInfoItem>
               <ProposalInfoItem>
                 <div>Requested amount:</div>
-                <div>
-                  <b>${itemState.requested_amount ?? 0}</b>
+                <div style={{ color: "#000" }} className="value">
+                  ${itemState.requested_amount ?? 0}
                 </div>
               </ProposalInfoItem>
             </ProposalInfo>
           </Left>
           <Right>
             <HistoryTitle>
-              <i class="ph ph-clock-counter-clockwise"></i>
+              <i class="ph ph-clock-counter-clockwise fs-5"></i>
               <span>Version History</span>
             </HistoryTitle>
             <div>
@@ -706,54 +716,53 @@ return (
           <ProposalHeader>{itemState.title}</ProposalHeader>
           <ProposalInfo>
             <ClipboardContainer>
-            <Widget
-              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
-              props={{
-                text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
-              }}
-            />
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                props={{
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                }}
+              />
             </ClipboardContainer>
-             <ProposalInfoItem>
-            <div>Internal</div>
-            <ProposalsState approve={itemState.state.dao_council_approved}>
-              <span>
-                {itemState.state.kyc_passed ? (
-                  <i class="ph-fill fs-6 ph-check-circle"></i>
-                ) : (
-                  <i class="ph-fill fs-6 ph-x-circle"></i>
-                )}
-              </span>
-              DAO Approved
-            </ProposalsState>
+            <ProposalInfoItem>
+              <div>Internal</div>
+              <ProposalsState approve={itemState.state.dao_council_approved}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                DAO Approved
+              </ProposalsState>
             </ProposalInfoItem>
             <ProposalInfoItem>
-            <div>KYC</div>
-            <ProposalsState approve={itemState.state.kyc_passed}>
-              <span>
-                {itemState.state.kyc_passed ? (
-                  <i class="ph-fill fs-6 ph-check-circle"></i>
-                ) : (
-                  <i class="ph-fill fs-6 ph-x-circle"></i>
-                )}
-              </span>
-              KYC Approved
-            </ProposalsState>
+              <div>KYC</div>
+              <ProposalsState approve={itemState.state.kyc_passed}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                KYC Approved
+              </ProposalsState>
             </ProposalInfoItem>
             <ProposalInfoItem>
-            <div>Report</div>
-            <ProposalsState approve={itemState.state.report_accepted}>
-              <span>
-                {itemState.state.report_accepted ? (
-                  <i class="ph-fill fs-6 ph-check-circle"></i>
-                ) : (
-                  <i class="ph-fill fs-6 ph-x-circle"></i>
-                )}
-              </span>
-              Report Approved
-            </ProposalsState>
+              <div>Report</div>
+              <ProposalsState approve={itemState.state.report_accepted}>
+                <span>
+                  {itemState.state.report_accepted ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                Report Approved
+              </ProposalsState>
             </ProposalInfoItem>
-         
-         
+
             <ProposalInfoItem>
               <div>Created By:</div>
               <div>

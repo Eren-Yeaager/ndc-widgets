@@ -55,7 +55,7 @@ const handleSpam = (comment) => {
       is_spam: !comment.snapshot.is_spam,
     },
     "200000000000000",
-    10000000000000000000000
+    10000000000000000000000,
   );
 };
 
@@ -86,7 +86,7 @@ const CommentsList = ({ comments }) => (
           {comment.child_comments.length > 0 && (
             <CommentsList
               comments={comment.child_comments.map((childId) =>
-                commentById(childId)
+                commentById(childId),
               )}
             />
           )}

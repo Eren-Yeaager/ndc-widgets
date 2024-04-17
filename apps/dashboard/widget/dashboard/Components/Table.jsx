@@ -84,7 +84,7 @@ const filterDAO = (value) => {
     newSelection = isCurrentSelectionFull ? [] : all;
   } else if (selectedDAOs.includes(value)) {
     newSelection = selectedDAOs.filter(
-      (daoId) => daoId !== value && daoId !== defaultDAOOption
+      (daoId) => daoId !== value && daoId !== defaultDAOOption,
     );
   } else {
     newSelection = [...selectedDAOs, value];
@@ -135,7 +135,7 @@ useEffect(() => {
           [FILTER_IDS.dappsUsed]: 0,
           [FILTER_IDS.acquisitionCost]: 0,
         };
-      })
+      }),
     );
 }, [daos, selectedDAOs, period]);
 

@@ -114,13 +114,14 @@ const Title = styled.span`
 
 const MobileNavigation = () => (
   <div className="w-100 pt-4 pb-2 d-flex flex-column justify-content-center align-items-center gap-3">
-
     <a href={`//*__@replace:widgetPath__*/.App?page=dashboard`}>Dashboard</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=daos`}>DAOs</a>
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     {accountId && (
       <>
-        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
+        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
+          Proposals
+        </a>
         {items.map((i) => (
           <a href={i.href}>{i.name}</a>
         ))}
@@ -136,7 +137,9 @@ const Navigation = () => (
     <a href={`//*__@replace:widgetPath__*/.App?page=projects`}>Projects</a>
     {accountId && (
       <>
-        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>Proposals</a>
+        <a href={`//*__@replace:widgetPath__*/.App?page=proposals`}>
+          Proposals
+        </a>
         <a
           className="btn-primary"
           href={`//*__@replace:widgetPath__*/.App?page=create_post`}
@@ -160,7 +163,6 @@ return (
         <Title>NDC</Title>
       </a>
       <div className="d-flex align-items-center">
-
         <LinksContainer>
           <div className="desktop">
             <Navigation />
@@ -185,9 +187,8 @@ return (
             )}
           </div>
 
-         
-            <div className="mobile">
-              <div className="d-flex gap-3">
+          <div className="mobile">
+            <div className="d-flex gap-3">
               {accountId && (
                 <a
                   className="btn-primary btn-create-post"
@@ -196,16 +197,15 @@ return (
                   <i className="ph ph-plus fs-6" />
                   Create Post
                 </a>
-                )}
-                <a href="#">
-                  <i
-                    className="btn-icon btn-secondary outlined ph ph-list fs-5"
-                    onClick={() => setShowNav(!showNav)}
-                  />
-                </a>
-              </div>
+              )}
+              <a href="#">
+                <i
+                  className="btn-icon btn-secondary outlined ph ph-list fs-5"
+                  onClick={() => setShowNav(!showNav)}
+                />
+              </a>
             </div>
-          
+          </div>
         </LinksContainer>
       </div>
     </Navbar>

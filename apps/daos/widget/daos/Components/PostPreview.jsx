@@ -154,7 +154,6 @@ const [showMore, setShowMore] = useState(showMoreDefault);
 const [copiedShareUrl, setCopiedShareUrl] = useState(false);
 const pageName = type === "Report" ? "reports" : "proposals";
 
-
 const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
@@ -168,8 +167,6 @@ const statuses = [
   { key: "Rejected", value: "Rejected" },
   { key: "Closed", value: "Closed" },
 ];
-
-
 
 const colorMap = (status) => {
   switch (status) {
@@ -199,7 +196,6 @@ const CardItem = ({ item, index }) => (
             tooltip: true,
           }}
         />
-
       </div>
       <div className="d-flex flex-column gap-3">
         <div className="d-flex gap-3 align-items-center justify-content-between">

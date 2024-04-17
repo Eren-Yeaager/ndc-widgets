@@ -168,7 +168,7 @@ const onSelectChange = (value) => {
       return all;
     } else if (selectedDAOs.includes(value)) {
       return selectedDAOs.filter(
-        (dao) => dao !== value && dao !== defaultDAOOption
+        (dao) => dao !== value && dao !== defaultDAOOption,
       );
     } else {
       return [...selectedDAOs, value];

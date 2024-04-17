@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 
 assets = assets.home;
@@ -180,8 +180,8 @@ proposals = proposals.map((proposal) => {
 });
 
 let types = new Set();
-groupedDaos.forEach((item) => { 
-  Object.keys(item).forEach(i =>  types.add(i))  
+groupedDaos.forEach((item) => {
+  Object.keys(item).forEach((i) => types.add(i));
 });
 
 const typeOfProject = Array.from(types).map((item) => {
@@ -261,7 +261,7 @@ return (
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title)
+              projects.find((p) => p.title === title),
             ),
           }}
         />
