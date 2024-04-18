@@ -17,6 +17,7 @@ const DEPOSIT = 10000000000000000000000;
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const [itemState, setItemState] = useState(item);
+const [snapshot, setSnapshot] = useState([]);
 const [showMore, setShowMore] = useState(null);
 const [showComments, setShowComments] = useState(showCommentsDefault);
 const accountId = context.accountId;
@@ -351,17 +352,22 @@ const HistoryContainer = styled.div`
   min-height: 50px;
   max-height: 200px;
   overflow-y: auto;
-  border-left: 1px solid #ccc;
+  border-left: 1px solid #f0efe7;
 `;
 
 const HistoryEntry = styled.div`
-  padding: 10px;
+  padding: 10px 24px;
+  font-size: 14px;
   background-color: ${(props) => (props.selected ? "#F5F6FE;" : "white")};
   border-left: ${(props) => (props.selected ? "2px solid #626AD1" : "none")};
   cursor: pointer;
 
   .text {
     color: #666;
+  }
+
+  .owner {
+    font-size: 12px;
   }
 
   &:hover {
@@ -409,14 +415,19 @@ const changeHistory = (id) => {
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
-let snapshot;
+let snap;
 
 if (itemState.id)
-  snapshot = Near.view(contractName, "get_post_history", {
+  snap = Near.view(contractName, "get_post_history", {
     id: itemState.id,
   });
 
-snapshot = snapshot && snapshot.filter((i) => !i.is_spam);
+useEffect(() => {
+  if (snap)
+    setSnapshot(
+      snap.sort((a, b) => parseInt(b.timestamp) - parseInt(a.timestamp))
+    );
+}, snap);
 
 const isLiked = (item) => {
   return item.likes && item.likes.find((item) => item.author_id === accountId);
@@ -468,11 +479,6 @@ const handleSpam = () => {
     DEPOSIT
   );
 };
-
-if (itemState.id)
-  snapshot = Near.view(contractName, "get_post_history", {
-    id: itemState.id,
-  });
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -638,21 +644,25 @@ return (
                   {snapshot.map((history, index) => (
                     <HistoryEntry
                       key={history.timestamp}
-                      selected={index === selectedHistoryId}
+                      selected={
+                        selectedHistoryId
+                          ? index === selectedHistoryId
+                          : index === 0
+                      }
                       onClick={() => changeHistory(index)}
                     >
                       <>
                         <div>
                           <span className="text">Updated at:</span>
-
-                          {itemState.timestamp
-                            ? new Date(
-                                itemState.timestamp / 1000000
-                              ).toLocaleString()
-                            : new Date().toLocaleDateString()}
+                          <span>
+                            {new Date(
+                              history.timestamp / 1000000
+                            ).toLocaleString()}
+                          </span>
                         </div>
-                        <div>
-                          <span className="text">by</span> {itemState.author_id}
+                        <div className="owner">
+                          <span className="text">by</span>
+                          <span>{itemState.author_id}</span>
                         </div>
                       </>
                     </HistoryEntry>
@@ -665,11 +675,13 @@ return (
         <DescriptionContainer>
           <ProposalHeader>Description</ProposalHeader>
 
-          <Tags>
-            {itemState.labels?.map((tag) => (
-              <Tag>#{tag}</Tag>
-            ))}
-          </Tags>
+          {itemState.labels.length > 0 && (
+            <Tags>
+              {itemState.labels?.map((tag) => (
+                <Tag>#{tag}</Tag>
+              ))}
+            </Tags>
+          )}
 
           <Description>
             <Widget
