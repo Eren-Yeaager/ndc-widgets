@@ -264,10 +264,6 @@ const DesktopVersion = styled.div`
   }
 `;
 
-{
-  /* This is to be used with single report  */
-}
-
 const Breadcrumbs = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -416,25 +412,27 @@ const ClipboardContainer = styled.div`
 
 const [selectedHistoryId, setselectedHistoryId] = useState(null);
 
-const changeHistory = (id) => {
-  setselectedHistoryId(id);
-  setItemState((prev) => ({ ...prev, ...snapshot[id] }));
+const changeHistory = (index) => {
+  setselectedHistoryId(index);
+  setItemState({ ...item, ...snapshot[index] });
 };
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 let snap;
 
-if (itemState.id)
+if (itemState.id) {
   snap = Near.view(contractName, "get_post_history", {
     id: itemState.id,
   });
+}
 
 useEffect(() => {
   if (snap)
-    setSnapshot(
-      snap.sort((a, b) => parseInt(b.timestamp) - parseInt(a.timestamp))
-    );
+    setSnapshot([
+      itemState,
+      ...snap.sort((a, b) => parseInt(b.timestamp) - parseInt(a.timestamp)),
+    ]);
 }, snap);
 
 const isLiked = (item) => {
@@ -670,7 +668,7 @@ return (
                         </div>
                         <div className="owner">
                           <span className="text">by</span>
-                          <span>{itemState.author_id}</span>
+                          <span>{itemState.editor_id}</span>
                         </div>
                       </>
                     </HistoryEntry>
