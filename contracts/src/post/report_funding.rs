@@ -5,33 +5,17 @@ use near_sdk::{require, NearSchema, AccountId};
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
-pub struct ReportFundsInput {
-    pub category: ReportFundCategory,
-    pub sub_category: Option<ReportFundSubCategory>,
-    pub milestones: Vec<ReportMilestones>,
-    pub ipfs_proofs: Vec<String>,
-    pub transactions: Vec<String>,
-    pub participants: Vec<AccountId>,
-    pub start_date: Option<u64>,
-    pub end_date: Option<u64>,
-    pub community_id: Option<u64>,
-    pub new_community_title: Option<String>,
-}
-
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
-#[serde(crate = "near_sdk::serde")]
-#[borsh(crate = "near_sdk::borsh")]
 pub struct ReportMilestones {
+    pub id: u32,
     pub description: String,
-    pub attachments: String,
     pub payment: u32,
-    pub complete_pct: u8,
+    pub progress_pct: u8,
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
-pub enum ReportFundCategory {
+pub enum ReportCategory {
     FundsTransfer,
     ProjectOnboarding,
 }
@@ -39,19 +23,18 @@ pub enum ReportFundCategory {
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
-pub enum ReportFundSubCategory {
+pub enum ReportFundsTransferCategory {
     Development,
     Marketing,
-    OperationTooling,
-    OperationSalaries,
+    Operational,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
-pub struct ReportFunds {
-    pub category: ReportFundCategory,
-    pub sub_category: Option<ReportFundSubCategory>,
+pub struct ReportFunding {
+    pub category: ReportCategory,
+    pub sub_category: Option<ReportFundsTransferCategory>,
     pub milestones: Vec<ReportMilestones>,
     pub ipfs_proofs: Vec<String>,
     pub transactions: Vec<String>,
@@ -72,14 +55,29 @@ pub struct ReportFunds {
 #[serde(crate = "near_sdk::serde")]
 #[serde(tag = "report_version")]
 #[borsh(crate = "near_sdk::borsh")]
-pub enum VersionedReportFunds {
-    V1(ReportFunds),
+pub enum VersionedReportFunding {
+    V1(ReportFunding),
     // V2(ReportFundsV2),
 }
 
-impl ReportFundsInput {
+impl Default for ReportFunding {
+    fn default() -> Self {
+        Self {
+            category: ReportCategory::FundsTransfer,
+            sub_category: Some(ReportFundsTransferCategory::Operational),
+            milestones: vec![],
+            ipfs_proofs: vec![],
+            transactions: vec![],
+            participants: vec![],
+            start_date: None,
+            end_date: None,
+        }
+    }
+}
+
+impl ReportFunding {
     pub fn validate(&self) {
-        if self.category == ReportFundCategory::FundsTransfer {
+        if self.category == ReportCategory::FundsTransfer {
             require!(
                 self.sub_category.is_some(),
                 "Sub category is required for Funds Transfer"
@@ -87,47 +85,39 @@ impl ReportFundsInput {
 
             if let Some(sub_category) = &self.sub_category {
                 match sub_category {
-                    ReportFundSubCategory::Development => {
+                    ReportFundsTransferCategory::Development => {
                         require!(self.transactions.len() > 0, "No transactions for Development report");
                         require!(self.milestones.len() > 0, "No milestones for Development report");
-                        require!(self.community_id.is_some(), "No community selected for Development report");
                     },
-                    ReportFundSubCategory::Marketing => {
-                        require!(self.participants.len() > 0, "No participants for Marketing report");
-                        require!(self.ipfs_proofs.len() > 0, "No IPFS proofs for Marketing report");
+                    ReportFundsTransferCategory::Marketing => {
                         require!(self.start_date.is_some(), "No date for Marketing report");
                         require!(self.transactions.len() > 0, "No transactions for Marketing report");
                     },
-                    ReportFundSubCategory::OperationTooling => {
-                        require!(self.ipfs_proofs.len() > 0, "No IPFS proofs for Operational report");
-                    },
-                    ReportFundSubCategory::OperationSalaries => {
+                    ReportFundsTransferCategory::Operational => {
+
+                        // TODO: add tx type
+
                         require!(self.transactions.len() > 0, "No transactions for Operational report");
-                    }
+                    },
                 }
             }
         } else {
-            require!(
-                self.community_id.is_some() || self.new_community_title.is_some(),
-                "Select Community or add Title to create new community"
-            );
-
             require!(self.milestones.len() > 0, "No milestones for new Project/dApp onboarding");
         }
 
         if self.milestones.len() > 0 {
             for milestone in &self.milestones {
                 require!(!milestone.description.is_empty(), "Milestone description cannot be empty");
-                require!(milestone.complete_pct <= 100, "Milestone completion percentage must be between 0 and 100");
+                require!(milestone.progress_pct <= 100, "Milestone completion percentage must be between 0 and 100");
             }
         }
     }
 }
 
-impl VersionedReportFunds {
-    pub fn latest_version(&self) -> &ReportFunds {
+impl VersionedReportFunding {
+    pub fn latest_version(&self) -> &ReportFunding {
         match self {
-            VersionedReportFunds::V1(report_funds) => report_funds,
+            VersionedReportFunding::V1(report_funding) => report_funding,
             // Handle other versions as needed
         }
     }
@@ -148,10 +138,10 @@ impl VersionedReportFunds {
     // }
 }
 
-impl From<VersionedReportFunds> for ReportFunds {
-    fn from(vi: VersionedReportFunds) -> Self {
+impl From<VersionedReportFunding> for ReportFunding {
+    fn from(vi: VersionedReportFunding) -> Self {
         match vi {
-            VersionedReportFunds::V1(v1) => v1,
+            VersionedReportFunding::V1(v1) => v1,
             // VersionedReportFunds::V1(_) => unimplemented!(),
         }
     }
@@ -166,8 +156,8 @@ impl From<VersionedReportFunds> for ReportFunds {
 //     }
 // }
 
-impl From<ReportFunds> for VersionedReportFunds {
-    fn from(report_funds: ReportFunds) -> Self {
-        VersionedReportFunds::V1(report_funds)
+impl From<ReportFunding> for VersionedReportFunding {
+    fn from(report_funding: ReportFunding) -> Self {
+        VersionedReportFunding::V1(report_funding)
     }
 }
