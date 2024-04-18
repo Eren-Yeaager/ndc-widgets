@@ -134,10 +134,19 @@ const ExpandCollapseIcon = styled.div`
 const Container = styled.div`
   display: flex;
   gap: 10px;
+
   .dao-img {
     width: 32px;
     height: 32px;
+    border-radius: 50%;
   }
+
+  .title {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+  }
+
   .created {
     color: #828282;
     font-size: 12px;
@@ -760,7 +769,7 @@ return (
                 <img className="dao-img" src={dao.logo_url} />
               </div>
               <div className="d-flex flex-column">
-                <span>{dao.title}</span>
+                <span className="title">{dao.title}</span>
                 <div>
                   <span className="created">Updated at:</span>{" "}
                   <span className="date">
