@@ -2,6 +2,8 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
+const GAS = "200000000000000";
+const DEPOSIT = 10000000000000000000000;
 const { postId, commentId, showCreate } = props;
 const accountId = context.accountId;
 
@@ -54,8 +56,8 @@ const handleSpam = (comment) => {
       id: comment.id,
       is_spam: !comment.snapshot.is_spam,
     },
-    "200000000000000",
-    10000000000000000000000,
+    GAS,
+    DEPOSIT
   );
 };
 
@@ -86,7 +88,7 @@ const CommentsList = ({ comments }) => (
           {comment.child_comments.length > 0 && (
             <CommentsList
               comments={comment.child_comments.map((childId) =>
-                commentById(childId),
+                commentById(childId)
               )}
             />
           )}

@@ -26,6 +26,8 @@ useEffect(() => {
 
 const profile = Social.getr(`${accountId}/profile`);
 const autocompleteEnabled = true;
+const GAS = "200000000000000";
+const DEPOSIT = 10000000000000000000000;
 
 function composeData() {
   if (!accountId) return;
@@ -47,8 +49,8 @@ function composeData() {
     contractName,
     comment ? "edit_comment" : "add_comment",
     params,
-    "200000000000000",
-    10000000000000000000000,
+    GAS,
+    DEPOSIT
   );
 }
 

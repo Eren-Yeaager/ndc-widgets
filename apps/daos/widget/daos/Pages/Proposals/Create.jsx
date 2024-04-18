@@ -2,6 +2,8 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
+const GAS = "200000000000000";
+const DEPOSIT = 10000000000000000000000;
 const { dao_id, id } = props;
 const accountId = context.accountId;
 
@@ -233,7 +235,13 @@ const handleSave = () => {
   }
 
   id
-    ? Near.call(contractName, "edit_post", { id: parseInt(id), body })
+    ? Near.call(
+        contractName,
+        "edit_post",
+        { id: parseInt(id), body },
+        GAS,
+        DEPOSIT
+      )
     : Near.call(
         contractName,
         "add_post",
@@ -241,8 +249,8 @@ const handleSave = () => {
           dao_id: parseInt(selectedDaoId),
           body,
         },
-        "200000000000000",
-        10000000000000000000000,
+        GAS,
+        DEPOSIT
       );
 };
 

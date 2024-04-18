@@ -11,6 +11,8 @@ const {
   id,
   disabeleOpenReportLInk,
 } = props;
+const GAS = "200000000000000";
+const DEPOSIT = 10000000000000000000000;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
@@ -423,9 +425,15 @@ const isLiked = (item) => {
 const handleLike = () => {
   if (isLiked(itemState)) return;
   if (!accountId) return;
-  Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
-    id: itemState.id,
-  });
+  Near.call(
+    contractName,
+    isLiked(itemState) ? "post_unlike" : "post_like",
+    {
+      id: itemState.id,
+    },
+    GAS,
+    DEPOSIT
+  );
 };
 
 const handleShowComments = () => {
@@ -435,10 +443,16 @@ const handleShowComments = () => {
 
 const changeStatus = async (item, status) => {
   if (!accountId) return;
-  Near.call(contractName, "change_post_status", {
-    id: item.id,
-    status,
-  });
+  Near.call(
+    contractName,
+    "change_post_status",
+    {
+      id: item.id,
+      status,
+    },
+    GAS,
+    DEPOSIT
+  );
 };
 
 const handleSpam = () => {
@@ -450,8 +464,8 @@ const handleSpam = () => {
       id: itemState.id,
       is_spam: !itemState.is_spam,
     },
-    "200000000000000",
-    10000000000000000000000
+    GAS,
+    DEPOSIT
   );
 };
 
