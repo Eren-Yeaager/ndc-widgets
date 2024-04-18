@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 
 content = content.home;

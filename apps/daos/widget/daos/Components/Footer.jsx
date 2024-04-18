@@ -1,5 +1,5 @@
 let { assets, socials, content } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 
 if (!assets) return <Widget src="flashui.near/widget/Loading" />;
@@ -22,7 +22,7 @@ const Footer = styled.div`
   position; absolute;
   bottom: 0;
   background: #151718;
-  padding: 4rem 0 7rem 0;
+  padding: 3rem 0;
 `;
 
 const Description = styled.p`
@@ -42,7 +42,7 @@ const Socials = () => (
   <div className="d-flex gap-5">
     {Object.entries(socials).map(([name, link]) => (
       <a href={link} target="_blank">
-        <i className={`fs-1 text-white bi bi-${name}`} />
+        <i className={`fs-1 text-white ph ph-${name}`} />
       </a>
     ))}
   </div>

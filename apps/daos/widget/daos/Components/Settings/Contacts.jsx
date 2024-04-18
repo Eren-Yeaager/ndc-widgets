@@ -1,5 +1,5 @@
 let { content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`
+  `/*__@replace:widgetPath__*/.Config`,
 );
 if (!contractName || !content)
   return <Widget src="flashui.near/widget/Loading" />;
@@ -59,7 +59,7 @@ useEffect(() => {
     setDaoContacts(
       selectedDao.metadata.contacts
         ? JSON.parse(selectedDao.metadata.contacts)
-        : {}
+        : {},
     );
   }
 }, [selectedDao]);

@@ -6,23 +6,12 @@ if (!content) return <Widget src="flashui.near/widget/Loading" />;
 const daoContent = JSON.parse(dao.metadata.contacts);
 
 const DaoCard = styled.div`
-  width: 400px;
+  width: 420px;
   height: 400px;
   border-radius: 10px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(322deg, rgb(239, 220, 209) -1.69%, rgb(224, 198, 247) 43.78%, rgb(173, 195, 251) 99.83%);
-  padding: 2px;
-  
-  span {
-    color: #ffffff;
-  }
-
-  a.btn {
-    &:hover {
-      text-decoration: none;
-    }
-  }
+  color: #11181c;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
 
   h4 {
     color: #000
@@ -31,9 +20,7 @@ const DaoCard = styled.div`
 
   .inner {
     height: 100%;
-    padding: 2rem 1rem;
-    background: rgb(249 246 255 / 80%);
-    border-radius: 10px;
+    padding: 2rem;
   }
 
   p {
@@ -77,12 +64,22 @@ const DaoLink = styled.a`
   }
 `;
 
-
 const ButtonsWrapper = styled.div`
- @media screen and (max-width: 786px) {
-  flex-direction: column;
- }
-`; 
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
+  }
+`;
+
+const CardLinks = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-beetwen;
+
+  @media screen and (max-width: 786px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
 
 return (
   <DaoCard>
@@ -96,25 +93,25 @@ return (
         <DaoDesc>{dao.description}</DaoDesc>
       </div>
 
-      <ButtonsWrapper className="d-flex gap-2 justify-content-between">
-        <DaoLink
+      <CardLinks>
+        <a
           href={`//*__@replace:widgetPath__*/.App?page=dao&id=${dao.handle}`}
-          className="btn btn-secondary d-flex justify-content-center"
+          className="btn btn-primary d-flex justify-content-center"
         >
           <div className="d-flex gap-2 justify-content-center w-100">
-            <i class="bi bi-plus-circle"></i>
+            <i class="ph ph-plus fs-5"></i>
             Join DAO
           </div>
-        </DaoLink>
+        </a>
         {daoContent.website && (
-          <DaoLink href={daoContent.website} className="btn secondary">
+          <a href={daoContent.website} className="btn btn-secondary">
             <div className="d-flex gap-2 justify-content-center w-100">
-              <i class="bi bi-box-arrow-up-right"></i>
+              <i class="ph ph-arrow-square-out fs-5"></i>
               Visit Website
             </div>
-          </DaoLink>
+          </a>
         )}
-      </ButtonsWrapper>
+      </CardLinks>
     </div>
   </DaoCard>
 );

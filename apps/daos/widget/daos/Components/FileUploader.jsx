@@ -13,7 +13,7 @@ State.init({
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
 return (
-  <div style={styles ?? { width: "max-content" }}>
+  <div>
     {/* {state.cid && (
       <a href={ipfsUrl(state.cid)} download>
         {state.filename}
@@ -45,9 +45,9 @@ return (
     >
       {children ??
         (state.cid ? (
-          <i className="bi bi-arrow-clockwise" />
+          <i className="ph ph-arrows-clockwise" />
         ) : (
-          <i className="bi bi-image" />
+          <i className="ph ph-image fs-5" />
         ))}
     </Files>
   </div>

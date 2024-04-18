@@ -1,35 +1,48 @@
-const { assets } = VM.require(`/*__@replace:widgetPath__*/.Config`);
-
-if (!assets) return <Widget src="flashui.near/widget/Loading" />;
+const {
+  values,
+  multiple,
+  options,
+  onChange,
+  defaultValue,
+  isOpen,
+  onClear,
+  containerClass,
+  text,
+  isTooltipVisible,
+  hintText,
+  onFilterClick,
+  filterIsOpen,
+  id,
+  noBorder,
+} = props;
 
 const Select = styled.div`
   position: relative;
   width: 100%;
   cursor: pointer;
+  border-radius: 100px;
+  border: ${(props) => (props.noBorder ? "0" : "1px solid #e3e3e0")};
+  font-size: 14px;
+  font-style: normal;
 
   .selected-container {
-    color: white !important;
     width: 100%;
     border-radius: 10px;
-    background: #a39acd;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 25px;
+    padding: 5px 16px;
+  }
 
-    &.black {
-      background: #1e1d22;
-    }
+  .selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
 
-    .selected {
-      border: 0;
-      width: 100%;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 24px;
-      text-transform: capitalize;
-      letter-spacing: 0.12px;
+    i {
+      color: #b0afb1;
     }
   }
 
@@ -37,7 +50,6 @@ const Select = styled.div`
     width: 100%;
     max-height: 12rem;
     overflow-y: scroll;
-    font-size: 18px;
     background: #fff;
     color: initial;
     border-radius: 6px;
@@ -64,8 +76,7 @@ const Select = styled.div`
       }
 
       &:hover {
-        color: black;
-        background: rgb(163 155 205 / 20%);
+        background: #f8f8f8;
       }
     }
   }
@@ -137,23 +148,6 @@ const TooltipText = styled.span`
   }
 `;
 
-const {
-  values,
-  multiple,
-  options,
-  onChange,
-  defaultValue,
-  isOpen,
-  onClear,
-  containerClass,
-  text,
-  isTooltipVisible,
-  hintText,
-  onFilterClick,
-  filterIsOpen,
-  id,
-} = props;
-
 const [open, setOpen] = useState(false);
 const selectOptions = defaultValue ? [defaultValue, ...options] : options;
 const isOpenDropdown = !!filterIsOpen ? filterIsOpen : open;
@@ -177,19 +171,19 @@ const handleOpen = () => {
 };
 
 return (
-  <Select onClick={() => !multiple && handleOpen()}>
+  <Select onClick={() => !multiple && handleOpen()} noBorder={noBorder}>
     <div className={containerClass}>
       <div className="selected" onClick={handleOpen}>
-        {setTitle()}
         {isTooltipVisible && (
           <Widget
             src={`/*__@replace:widgetPath__*/.Components.Tooltip`}
             props={{
               content: hintText,
-              icon: <i className="bi bi-info-circle-fill" />,
+              icon: <i className="ph ph-info fs-5" />,
             }}
           />
         )}
+        {setTitle()}
       </div>
       <div className="d-flex gap-2">
         {multiple && values.length > 0 && (
@@ -200,9 +194,7 @@ return (
         )}
         <i
           onClick={handleOpen}
-          className={`bi bi-chevron-${
-            isOpenDropdown ? "up" : "down"
-          } fs-5 mt-1`}
+          className={`ph ph-caret-${isOpenDropdown ? "up" : "down"} fs-5`}
         />
       </div>
     </div>

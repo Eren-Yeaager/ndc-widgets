@@ -9,84 +9,53 @@ const links = [
     href: `//*__@replace:widgetPath__*/.App?page=reports${
       daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
     }`,
-    icon: <i className="bi bi-clipboard-data-fill fs-5" />,
+    style: "outlined",
+    icon: <i className="ph ph-presentation-chart fs-5" />,
   },
   {
     text: "Proposals",
     href: `//*__@replace:widgetPath__*/.App?page=proposals${
       daoId ? `&dao_id=${daoId}` : accountId ? `&accountId=${accountId}` : ""
     }`,
-    icon: <i className="bi bi-file-earmark-text-fill fs-5" />,
+    style: "invresed",
+    icon: <i className="ph ph-clipboard-text fs-5" />,
   },
-  // {
-  //   text: "Comments",
-  //   href: `//*__@replace:widgetPath__*/.App?page=comments`,
-  //   disabled: true,
-  //   icon: <i className="bi bi-chat-square-text-fill fs-5" />,
-  // },
-  // {
-  //   text: "Favourites",
-  //   href: `//*__@replace:widgetPath__*/.App?page=favourites`,
-  //   disabled: true,
-  //   icon: <i className="bi bi-star-fill fs-5" />,
-  // },
 ];
 
 const Navbar = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 3rem;
   gap: 3rem;
   align-items: center;
-  border-radius: 20px;
-  background: white;
   width: 100%;
-
-  @media screen and (max-width: 1020px) {
-    gap: 0rem;
-    flex-direction: column;
-    padding: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
 `;
 
 const LinksContainer = styled.div`
-  color: #151718;
-  font-size: 18px;
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
 
   a {
-    width: 150px;
-    padding: 2rem 1.5rem;
     text-align: center;
     justify-content: center;
     text-decoration: none;
+  }
 
-    &.active:hover {
-      background: rgba(164, 194, 253, 0.2);
-      font-weight: bold;
-
-      i {
-        color: #a4c2fd;
-      }
-    }
-
-    &.disabled {
-      cursor: not-allowed;
-      color: #ccc;
+  .text {
+    display: flex;
+    @media screen and (max-width: 768px) {
+      display: none;
     }
   }
 `;
 
 return (
   <Navbar>
-    <div className="d-flex gap-3 items-center">{title}</div>
+    <div>{title}</div>
     <LinksContainer>
-      {links.map(({ icon, disabled, text, href }) => (
+      {links.map(({ icon, style, disabled, text, href }) => (
         <a
-          className={`d-flex gap-2 align-items-center ${
+          className={`btn-secondary btn-icon ${style} ${
             disabled ? "disabled" : "active"
           }`}
           href={href}

@@ -1,26 +1,35 @@
+const Row = styled.div`
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  gap: 72px;
+  align-self: stretch;
+  border-bottom: 1px solid #e3e3e0;
+`;
+
 const Cell = styled.div`
-  min-width: 270px;
+  min-width: 200px;
   width: 100%;
-  height: 36px;
-  background: #e8ecf0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1e1d22;
   text-align: center;
-  font-size: 20px;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 350;
-  line-height: 36px;
+  font-weight: 600;
   position: relative;
+  border-radius: 100px;
+  background: #f5f5f5;
+  padding: 5px 0;
 
-  .dao-name {
-    display: block;
-    width: 90%;
-    text-align: center;
+  &.dao-name {
     text-overflow: ellipsis;
     overflow: hidden;
     text-wrap: nowrap;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: flex-start;
+    background: transparent;
   }
 `;
 
@@ -43,17 +52,8 @@ const Colored = styled.div`
   left: 0;
   width: ${(props) => props.width}%;
   background: ${(props) => props.color};
-  animation: slide 1s ease;
-
-  @keyframes slide {
-    from {
-      width: 0%;
-    }
-
-    to {
-      width: "${props.width}%";
-    }
-  }
+  border-radius: ${(props) =>
+    props.width === 100 ? "100px" : "100px 0 0 100px"};
 `;
 
 const getPercentage = (start, end, divider) => {
@@ -70,15 +70,15 @@ const formatValue = (value) => {
   return val >= 1000000000
     ? `${parseFloat(val / 1000000000).toFixed(2)}B`
     : val >= 1000000
-      ? `${parseFloat(val / 1000000).toFixed(2)}M`
-      : val >= 1000
-        ? `${parseFloat(val / 1000).toFixed(2)}K`
-        : Number.isInteger(val)
-          ? val
-          : val.toFixed(2);
+    ? `${parseFloat(val / 1000000).toFixed(2)}M`
+    : val >= 1000
+    ? `${parseFloat(val / 1000).toFixed(2)}K`
+    : Number.isInteger(val)
+    ? val
+    : val.toFixed(2);
 };
 
-const { dataSet, daos } = props;
+const { dataSet } = props;
 
 const TooltipContent = ({ key, value }) => (
   <div className="justify-content-between w-100 d-flex gap-2">
@@ -95,61 +95,59 @@ const DaoName = styled.div`
 
 return (
   <Container>
-    {daos &&
-      daos.map((dao, index) => {
-        const { userRetentions, dappsUsed, acquisitionCost } = dataSet[dao.id];
-
-        return (
-          <div key={index} className="w-100 d-flex align-items-center gap-2">
-            <Cell>
-              <DaoName className="dao-name">{dao.title}</DaoName>
-            </Cell>
-            <Cell>
-              <Colored
-                width={getPercentage(userRetentions, 10, 2)}
-                color={userRetentions >= 1 ? "#68D895" : "#EB9DBB"}
+    {dataSet.map(
+      ({ title, userRetentions, dappsUsed, acquisitionCost }, index) => (
+        <Row key={index}>
+          <Cell className="dao-name">{title}</Cell>
+          <Cell>
+            <Colored
+              width={getPercentage(userRetentions, 10, 2)}
+              color={userRetentions >= 1 ? "#51D38E" : "#FC6F60"}
+            />
+            <div className="position-relative">
+              <Widget
+                src={`/*__@replace:widgetPath__*/.Components.Tooltip`}
+                props={{
+                  content: (
+                    <>
+                      <TooltipContent key="Start" value={userRetentions} />
+                    </>
+                  ),
+                  minWidth: "max-content",
+                  icon: <i>{formatValue(userRetentions)}</i>,
+                }}
               />
-              <div className="position-relative">
-                <Widget
-                  src={`/*__@replace:widgetPath__*/.Components.Tooltip`}
-                  props={{
-                    content: (
-                      <>
-                        <TooltipContent key="Start" value={userRetentions} />
-                      </>
-                    ),
-                    minWidth: "max-content",
-                    icon: <i>{formatValue(userRetentions)}</i>,
-                  }}
-                />
-              </div>
-            </Cell>
-            <Cell>{formatValue(dappsUsed)}</Cell>
-            <Cell>
-              <Colored
-                width={10}
-                color={acquisitionCost < 1 ? "#68D895" : "#EB9DBB"}
+            </div>
+          </Cell>
+          <Cell>
+            <Colored
+              width={getPercentage(dappsUsed, 10, 2)}
+              color={"#51D38E"}
+            />
+            <div className="position-relative">{formatValue(dappsUsed)}</div>
+          </Cell>
+          <Cell>
+            <Colored
+              width={getPercentage(acquisitionCost, 10, 2)}
+              color={acquisitionCost < 1 ? "#51D38E" : "#FC6F60"}
+            />
+            <div className="position-relative">
+              <Widget
+                src={`/*__@replace:widgetPath__*/.Components.Tooltip`}
+                props={{
+                  content: (
+                    <>
+                      <TooltipContent key="Accounts" value={acquisitionCost} />
+                    </>
+                  ),
+                  minWidth: "max-content",
+                  icon: <i>{formatValue(acquisitionCost)}</i>,
+                }}
               />
-              <div className="position-relative">
-                <Widget
-                  src={`/*__@replace:widgetPath__*/.Components.Tooltip`}
-                  props={{
-                    content: (
-                      <>
-                        <TooltipContent
-                          key="Accounts"
-                          value={acquisitionCost}
-                        />
-                      </>
-                    ),
-                    minWidth: "max-content",
-                    icon: <i>{formatValue(acquisitionCost)}</i>,
-                  }}
-                />
-              </div>
-            </Cell>
-          </div>
-        );
-      })}
+            </div>
+          </Cell>
+        </Row>
+      ),
+    )}
   </Container>
 );

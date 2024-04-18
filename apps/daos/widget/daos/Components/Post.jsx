@@ -1,4 +1,4 @@
-let { assets, contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
+let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 const {
   item,
   index,
@@ -6,104 +6,338 @@ const {
   showCommentsDefault,
   type,
   preview,
+  isMobile,
+  rowId,
+  id,
   disabeleOpenReportLInk,
 } = props;
 
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
+
 const [itemState, setItemState] = useState(item);
-const metrics = itemState.metrics ?? itemState;
-assets = assets.home;
+const [showMore, setShowMore] = useState(null);
+const [showComments, setShowComments] = useState(showCommentsDefault);
 const accountId = context.accountId;
 
-const Container = styled.div`
-  width: 100%;
-  height: max-content;
-  padding: 3rem;
+const dao = Near.view(contractName, "get_dao_by_id", {
+  id: parseInt(itemState.dao_id),
+});
 
-  @media screen and (max-width: 786px) {
-    padding: 1rem;
+{
+  /* This is to be used with Table  */
+}
+const TableRow = styled.div`
+  display: flex;
+  border-bottom: ${(props) => (props.showMore ? "0" : "1px solid #e3e3e0")};
+
+  &:hover {
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0px 97px 27px 0px rgba(0, 0, 0, 0),
+      0px 62px 25px 0px rgba(0, 0, 0, 0),
+      0px 35px 21px 0px rgba(0, 0, 0, 0.02),
+      0px 16px 16px 0px rgba(0, 0, 0, 0.03),
+      0px 4px 9px 0px rgba(0, 0, 0, 0.03);
   }
 `;
 
-const Card = styled.div`
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0px 30px 80px 0px rgba(0, 0, 0, 0.1);
-  padding: 2rem 3rem;
+const TableCell = styled.div`
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 3px;
+  flex: ${(props) => props.flex || 1};
 
-  h3 {
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    margin: 10px 0;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  .dao-img {
-    width: 20px;
-    height: 20px;
-  }
-
-  .metric {
-    border-radius: 10px;
-    height: 80px;
-    width: 120px;
-    background: linear-gradient(
-      258deg,
-      rgba(162, 195, 254, 0.5) 0%,
-      rgba(225, 197, 252, 0.5) 28.72%,
-      rgba(241, 220, 210, 0.5) 100%
-    );
-    @media screen and (max-width: 786px) {
-      width: 100%;
-    }
+  .title {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   .info {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+  }
+`;
+
+const ProposalCardWrapper = styled.div`
+  display: flex;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e3e3e0;
+  background: #fdfdfd;
+  padding: 18px 22px;
+  margin: 20px;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const StatusBadge = styled.span`
+  display: flex;
+  width: 86px;
+  height: 30px;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: ${(props) => props.background};
+  color: ${(props) => props.color};
+  border: 1px solid ${(props) => props.border};
+`;
+
+const statusColors = {
+  New: { background: "#8A92F9", color: "white", border: "#8A92F9" },
+  Approved: { background: "#2CE691", color: "white", border: "#2CE691" },
+  Closed: { background: "#CCC", color: "white", border: "#CCC" },
+  InReview: { background: "#F6B86A", color: "white", border: "#F6B86A" },
+  Rejected: { background: "#FC6F60", color: "white", border: "#FC6F60" },
+};
+
+const ProposalsState = styled.div`
+  display: flex;
+  height: 30px;
+  width: max-content;
+  padding: 2px 6px 2px 4px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+  border: 1px solid #e0f2ea;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #828282;
+
+  i {
+    color: ${(props) => (props.approve ? "#2CE691" : "#FC6F60")};
+  }
+`;
+
+const ExpandCollapseIcon = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  cursor: pointer;
+`;
+
+const Container = styled.div`
+  display: flex;
+  gap: 10px;
+  .dao-img {
+    width: 32px;
+    height: 32px;
+  }
+  .created {
+    color: #828282;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
   }
 
-  .actions {
-    @media screen and (max-width: 786px) {
-      width: 100%;
-      justify-content: space-between;
-    }
+  .date {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+  }
+`;
+
+const ProposalCard = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 32px;
+`;
+
+const ProposalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: 20px;
+  max-width: ${(props) => props.maxWidth};
+`;
+
+const ProposalHeader = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const ProposalInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #666;
+`;
+
+const ProposalInfoItem = styled.div`
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #e1e1e1;
   }
 
-  .tag {
-    border-radius: 50px;
-    background: #a4c2fd;
-    width: max-content;
-    padding: 4px 15px;
+  .value {
+    color: var(--NEAR-Primary-Colors-Black-Variation-1, #000);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .time {
+    color: var(--NEAR-Primary-Colors-Black-Variation-1, #000);
     font-size: 14px;
-    text-align: center;
-    color: white;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
+const Description = styled.div`
+  display: flex;
+  width: 80%;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+`;
+
+const Tag = styled.span`
+  background: #e1e1e1;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+`;
+
+const Button = styled.button`
+  background: #007aff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background: #0056b3;
+  }
+`;
+
+const MobileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e3e3e0;
+  background: #fff;
+  padding: 14px 12px 24px 12px;
+  box-shadow:
+    0px 97px 27px 0px rgba(0, 0, 0, 0),
+    0px 62px 25px 0px rgba(0, 0, 0, 0),
+    0px 35px 21px 0px rgba(0, 0, 0, 0.02),
+    0px 16px 16px 0px rgba(0, 0, 0, 0.03),
+    0px 4px 9px 0px rgba(0, 0, 0, 0.03);
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const DesktopVersion = styled.div`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+{
+  /* This is to be used with single report  */
+}
+
+const Breadcrumb = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  border-bottom: 1px solid
+    var(--NEAR-Primary-Colors-Off-White-Variation-1, #f0efe7);
+  padding-bottom: 14px;
+  font-size: 14px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  justify-content: space-between;
+
+  .all-link {
+    color: #7e7d7e;
+  }
+`;
+const InfoContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .created {
+    color: #5c656a;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
   }
 
   @media screen and (max-width: 786px) {
-    padding: 1.5rem;
-  }
-
-  :hover {
-    background: #ffffff;
+    flex-direction: column;
   }
 `;
 
-const Status = styled.div`
-  border-radius: 50px;
-  border: 1px solid ${(props) => props.color};
-  width: max-content;
-  padding: 4px 15px;
-  font-size: 14px;
-  text-align: center;
-  color: ${(props) => props.color};
+const Left = styled.div`
+  width: 60%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  .author {
+    margin-left: 10px;
+  }
+
+  @media screen and (max-width: 786px) {
+    width: 100%;
+  }
+`;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const DescriptionContainer = styled.div`
+  padding-top: 42px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+`;
+
+const Social = styled.div`
+  width: 100%;
+  padding: 12px;
+  border-top: 1px solid #f0efe7;
+  display: flex;
+  gap: 20px;
 `;
 
 const Comments = styled.div`
+  width: 100%;
   border-top: 1px solid #efefef;
   padding-top: 1rem;
   @media screen and (max-width: 786px) {
@@ -111,56 +345,76 @@ const Comments = styled.div`
   }
 `;
 
-const StatusSelect = styled.div`
-  @media screen and (max-width: 786px) {
-    width: 100%;
+const HistoryContainer = styled.div`
+  min-height: 50px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-left: 1px solid #ccc;
+`;
+
+const HistoryEntry = styled.div`
+  padding: 10px;
+  background-color: ${(props) => (props.selected ? "#F5F6FE;" : "white")};
+  border-left: ${(props) => (props.selected ? "2px solid #626AD1" : "none")};
+  cursor: pointer;
+
+  .text {
+    color: #666;
+  }
+
+  &:hover {
+    background-color: #f2f2f2;
   }
 `;
 
-const Button = styled.a`
+const ProposalsStateContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-left: auto;
-  height: 40px;
-  padding: 10px 20px;
-  background: #a4c2fd1a;
-  border-radius: 18px;
-  color: #686467;
-  border: 1px solid #a4c2fd1a;
-
-  &:hover {
-    text-decoration: none;
-    border: 1px solid #a4c2fd;
-  }
+  gap: 10px;
+  padding-top: 10px;
 
   @media screen and (max-width: 786px) {
-    width: 100%;
+    flex-wrap: wrap;
   }
 `;
 
-const CardContainer = styled.div`
-  width: 100%;
-  padding: 3px;
-  margin-bottom: ${(p) => (p.marginBottom ? "30px" : "")};
-
-  &:hover {
-    position: relative;
-    border-radius: 10px;
-    background: linear-gradient(
-      270deg,
-      #efdcd1 -1.69%,
-      #e0c6f7 43.78%,
-      #adc3fb 99.83%
-    );
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 786px) {
+    padding-bottom: 10px;
   }
 `;
 
-const [showMore, setShowMore] = useState(showMoreDefault);
-const [showComments, setShowComments] = useState(showCommentsDefault);
-const [copiedShareUrl, setCopiedShareUrl] = useState(false);
-const pageName = type === "Report" ? "reports" : "proposals";
+const HistoryTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+`;
+
+const ClipboardContainer = styled.div`
+  width: 20%;
+`;
+
+const [selectedHistoryId, setselectedHistoryId] = useState(null);
+
+const changeHistory = (id) => {
+  setselectedHistoryId(id);
+  setItemState((prev) => ({ ...prev, ...snapshot[id] }));
+};
+
+if (!dao) return <Widget src="flashui.near/widget/Loading" />;
+
+let snapshot;
+
+if (itemState.id)
+  snapshot = Near.view(contractName, "get_post_history", {
+    id: itemState.id,
+  });
+
+snapshot = snapshot && snapshot.filter((i) => !i.is_spam);
 
 const isLiked = (item) => {
   return item.likes && item.likes.find((item) => item.author_id === accountId);
@@ -171,6 +425,19 @@ const handleLike = () => {
   if (!accountId) return;
   Near.call(contractName, isLiked(itemState) ? "post_unlike" : "post_like", {
     id: itemState.id,
+  });
+};
+
+const handleShowComments = () => {
+  if (!accountId) return;
+  setShowComments(!showComments);
+};
+
+const changeStatus = async (item, status) => {
+  if (!accountId) return;
+  Near.call(contractName, "change_post_status", {
+    id: item.id,
+    status,
   });
 };
 
@@ -188,12 +455,6 @@ const handleSpam = () => {
   );
 };
 
-const dao = Near.view(contractName, "get_dao_by_id", {
-  id: parseInt(itemState.dao_id),
-});
-
-let snapshot;
-
 if (itemState.id)
   snapshot = Near.view(contractName, "get_post_history", {
     id: itemState.id,
@@ -209,266 +470,191 @@ const statuses = [
   { key: "Closed", value: "Closed" },
 ];
 
-const handleShowComments = () => {
-  if (!accountId) return;
-  setShowComments(!showComments);
-};
-const changeStatus = async (item, status) => {
-  if (!accountId) return;
-  Near.call(
-    contractName,
-    "change_post_status",
-    {
-      id: item.id,
-      status,
-    },
-    "200000000000000",
-    10000000000000000000000
-  );
-};
-
-const changeHistory = (e) => {
-  const next = snapshot.find((i) => i.timestamp === e.target.value);
-  setItemState((prev) => ({ ...prev, ...next }));
-};
-
-const colorMap = (status) => {
-  switch (status) {
-    case "New":
-      return "rgb(146 168 210)";
-    case "Closed":
-      return "rgb(196 196 196)";
-    case "InReview":
-      return "rgb(223 193 73)";
-    case "Approved":
-      return "rgb(99 222 100)";
-    case "Rejected":
-      return "rgb(214 113 113)";
-    default:
-      break;
-  }
-};
-
-const CardItem = ({ item, index }) => (
-  <CardContainer marginBottom={showCommentsDefault}>
-    <Card key={index} className="d-flex flex-column gap-3">
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-        <Widget
-          src="mob.near/widget/Profile"
-          props={{
-            accountId: item.author_id,
-            tooltip: true,
-          }}
-        />
-
-        {item.status && (
-          <>
-            {dao.owners.includes(accountId) ? (
-              <StatusSelect>
-                <select
-                  className="form-control"
-                  value={item.status}
-                  onChange={(status) => changeStatus(item, status.target.value)}
-                >
-                  {statuses.map(({ key, value }) => (
-                    <option value={key}>{value}</option>
-                  ))}
-                </select>
-              </StatusSelect>
-            ) : (
-              <div className="d-flex gap-3 align-items-center">
-                <Status color={colorMap(item.status)}>{item.status}</Status>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <div className="d-flex flex-column gap-3">
-        <div className="d-flex gap-3 align-items-center justify-content-between">
-          <h3>{item.title}</h3>
-          {item.author_id === accountId && item.status === "InReview" && (
+return (
+  <>
+    {/* This is to be used with single report  */}
+    {id ? (
+      <>
+        <Breadcrumb>
+          <div>
             <a
-              href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${item.id}&dao_id=${dao.handle}`}
+              className="all-link"
+              href={`//*__@replace:widgetPath__*/.App?page=proposals`}
             >
-              <i className="bi blue bi-pencil-fill fs-5" />
+              All {itemState.post_type === "Proposal" ? "Proposals" : "Reports"}
             </a>
-          )}
-          {snapshot.length > 1 && showCommentsDefault && (
-            <div className="d-flex flex-column gap-1 align-items-center">
-              <small>History</small>
-              <select
-                value={item.timestamp}
-                onChange={changeHistory}
-                className="form-control"
-              >
-                {snapshot
-                  .filter((i) => !i.is_spam)
-                  .map((history) => (
-                    <option value={history.timestamp}>
-                      {new Date(history.timestamp / 1000000).toLocaleString()}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          )}
-        </div>
+            {" / "}
+            {itemState.title}
+          </div>
+          <div>
+            {itemState.author_id === accountId &&
+              itemState.status === "InReview" && (
+                <a
+                  href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${itemState.id}&dao_id=${dao.handle}`}
+                >
+                  <i className="bi bi-pencil-fill fs-5" />
+                </a>
+              )}
+          </div>
+        </Breadcrumb>
 
-        <div className="d-flex flex-column gap-1">
-          <div className="info">
-            <span style={{ width: "12rem" }}>Updated at:</span>
-            <span>
-              {item.timestamp
-                ? new Date(item.timestamp / 1000000).toLocaleString()
-                : new Date().toLocaleDateString()}
-            </span>
-          </div>
-          <div className="info">
-            <span style={{ width: "12rem" }}>
-              {em.post_type === "Proposal"
-                ? "Requested sponsor:"
-                : "Reported to:"}
-            </span>
-            {dao && (
-              <a
-                href={`https://near.org/ndcdev.near/widget/daos.App?page=proposals&dao_id=${dao.handle}`}
-                className="d-flex align-items-center gap-1"
-              >
-                <img className="dao-img" src={dao.logo_url} />
-                <span>{dao.title}</span>
-              </a>
-            )}
-          </div>
-          {item.post_type === "Proposal" && (
-            <div className="info">
-              <span style={{ width: "12rem" }}>Requested amount:</span>
-              <span>
-                <b>${item.requested_amount ?? 0}</b>
-              </span>
-            </div>
-          )}
-          {item.attachments.length > 0 && (
+        <InfoContainer>
+          <Left>
+            <Info>
+              <div className="d-flex">
+                <Widget
+                  src="near/widget/AccountProfile"
+                  props={{
+                    accountId: itemState.author_id,
+                  }}
+                />
+              </div>
+              <div>
+                {dao.owners.includes(accountId) ? (
+                  <div>
+                    <select
+                      className="form-control"
+                      value={itemState.status}
+                      onChange={(status) =>
+                        changeStatus(item, status.target.value)
+                      }
+                    >
+                      {statuses.map(({ key, value }) => (
+                        <option value={key}>{value}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <StatusBadge {...statusColors[itemState.status]}>
+                    {itemState.status}
+                  </StatusBadge>
+                )}
+              </div>
+            </Info>
             <div>
-              <span style={{ width: "12rem" }}>Attachment:</span>
-              <Widget
-                src={"/*__@replace:widgetPath__*/.Components.Attachment"}
-                props={{ attachments: item.attachments }}
-              />
+              <ProposalHeader>{itemState.title}</ProposalHeader>
+              <ProposalsStateContainer>
+                <Widget
+                  src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                  props={{
+                    text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                  }}
+                />
+                <ProposalsState approve={itemState.state.dao_council_approved}>
+                  <span>
+                    {itemState.state.kyc_passed ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  DAO Approved
+                </ProposalsState>
+
+                <ProposalsState approve={itemState.state.kyc_passed}>
+                  {" "}
+                  <span>
+                    {itemState.state.kyc_passed ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  KYC Approved
+                </ProposalsState>
+
+                <ProposalsState approve={itemState.state.report_accepted}>
+                  {" "}
+                  <span>
+                    {itemState.state.report_accepted ? (
+                      <i class="ph-fill fs-6 ph-check-circle"></i>
+                    ) : (
+                      <i class="ph-fill fs-6 ph-x-circle"></i>
+                    )}
+                  </span>{" "}
+                  Report Approved
+                </ProposalsState>
+              </ProposalsStateContainer>
             </div>
-          )}
-        </div>
-      </div>
-      <a
-        role="button"
-        onClick={() => setShowMore(showMore === index ? null : index)}
-      >
-        <b>
-          See More
-          <i
-            className={`bi blue ${
-              showMore === index ? "bi-eye" : "bi-eye-slash"
-            }`}
-          />
-        </b>
-      </a>
+            <ProposalInfo>
+              <ProposalInfoItem>
+                <div>Updated at:</div>
+                <div style={{ color: "#000" }}>
+                  {itemState.timestamp
+                    ? new Date(itemState.timestamp / 1000000).toLocaleString()
+                    : new Date().toLocaleDateString()}
+                </div>
+              </ProposalInfoItem>
+              <ProposalInfoItem>
+                <div>Requested amount:</div>
+                <div style={{ color: "#000" }} className="value">
+                  ${itemState.requested_amount ?? 0}
+                </div>
+              </ProposalInfoItem>
+            </ProposalInfo>
+          </Left>
+          {snapshot.length > 0 && (
+            <Right>
+              <HistoryTitle>
+                <i class="ph ph-clock-counter-clockwise fs-5"></i>
+                <span>Version History</span>
+              </HistoryTitle>
+              <div>
+                <HistoryContainer>
+                  {snapshot.map((history, index) => (
+                    <HistoryEntry
+                      key={history.timestamp}
+                      selected={index === selectedHistoryId}
+                      onClick={() => changeHistory(index)}
+                    >
+                      <>
+                        <div>
+                          <span className="text">Updated at:</span>
 
-      {showMore === index &&
-        item.description &&
-        item.post_type === "Proposal" && (
-          <Widget
-            src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-            props={{ text: item.description }}
-          />
-        )}
+                          {itemState.timestamp
+                            ? new Date(
+                                itemState.timestamp / 1000000
+                              ).toLocaleString()
+                            : new Date().toLocaleDateString()}
+                        </div>
+                        <div>
+                          <span className="text">by</span> {itemState.author_id}
+                        </div>
+                      </>
+                    </HistoryEntry>
+                  ))}
+                </HistoryContainer>
+              </div>
+            </Right>
+          )}
+        </InfoContainer>
+        <DescriptionContainer>
+          <ProposalHeader>Description</ProposalHeader>
 
-      {showMore === index && item.post_type === "Report" && (
-        <>
-          {metrics["audience"] && (
-            <>
-              <h5>
-                How many people did your project reach during this funding
-                period?
-              </h5>
-              <h3>
-                <b>{metrics["audience"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["growth"] && (
-            <>
-              <h5>
-                How does this month's audience reach compare to previous periods
-                (provide a %)
-              </h5>
-              <h3>
-                <b>{metrics["growth"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["average_engagement_rate"] && (
-            <>
-              <h5>
-                What is the average engagement rate on your project's primary
-                platform (choose one)? Use the formula (Total Likes, Shares &
-                Comments / Total Followers) X 100 = AER %
-              </h5>
-              <h3>
-                <b>{metrics["average_engagement_rate"]}</b>
-              </h3>
-            </>
-          )}
-          {metrics["performance_statement_1"] && (
-            <>
-              <h5>
-                What is the biggest win (most improved part of project) during
-                this funding period vs. the previous one (if applicable)?
-              </h5>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{
-                  text: metrics["performance_statement_1"],
-                }}
-              />
-            </>
-          )}
-          {metrics["performance_statement_2"] && (
-            <>
-              <h5>
-                What is the biggest challenge your project is facing? What did
-                not improve during this funding period?
-              </h5>
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
-                props={{
-                  text: metrics["performance_statement_2"],
-                }}
-              />
-            </>
-          )}
-        </>
-      )}
+          <Tags>
+            {itemState.labels?.map((tag) => (
+              <Tag>#{tag}</Tag>
+            ))}
+          </Tags>
 
-      {item.labels?.length > 0 && (
-        <div className="d-flex flex-wrap gap-2">
-          {item.labels?.map((tag) => (
-            <div className="tag"># {tag}</div>
-          ))}
-        </div>
-      )}
-
-      {!preview && (
-        <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
-          <div className="actions d-flex gap-5 align-items-center">
+          <Description>
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+              props={{ text: itemState.description }}
+            />
+          </Description>
+          <Social>
             <div
               role="button"
               className="d-flex gap-2 align-items-center"
               onClick={handleLike}
             >
-              <span className="blue">{item.likes.length}</span>
               <i
-                className={`bi blue ${
-                  isLiked(item) ? "bi-heart-fill" : "bi-heart"
+                className={` ph-heart fs-5 ${
+                  isLiked(itemState) ? "ph-fill" : "ph"
                 }`}
               />
+              <span>{itemState.likes.length}</span>
             </div>
 
             <div
@@ -476,59 +662,306 @@ const CardItem = ({ item, index }) => (
               className="d-flex gap-2 align-items-center"
               onClick={handleShowComments}
             >
-              <span className="blue">{item.comments.length}</span>
-              <i className="bi blue bi-reply fs-5" />
+              <i className="ph ph-chat-circle fs-5" />
+              <span>{itemState.comments.length}</span>
             </div>
-
-            <div role="button" className="d-flex gap-2">
+            <div role="button">
               <Widget
-                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                src={"/*__@replace:widgetPath__*/.Components.Share"}
                 props={{
-                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${item.id}`,
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
                 }}
               />
             </div>
-
             {dao.owners.includes(accountId) && (
-              <div role="button" onClick={handleSpam}>
+              <div
+                role="button"
+                className="d-flex gap-2 align-items-center"
+                onClick={handleSpam}
+              >
                 <i
-                  className={
-                    item.is_spam ? "bi red bi-flag-fill" : "bi blue bi-flag"
-                  }
+                  className={`ph ph-flag ${
+                    itemState.is_spam ? "red ph-fill" : "ph"
+                  }`}
                 />
               </div>
             )}
+          </Social>
+        </DescriptionContainer>
+        {showComments && (
+          <Comments>
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.Comments"
+              props={{
+                postId: item.id,
+                showCreate: true,
+              }}
+            />
+          </Comments>
+        )}
+      </>
+    ) : (
+      <>
+        {/* This is to be used with Table  */}
+        <MobileContainer>
+          <div className="d-flex justify-content-between align-items-center">
+            <Container>
+              <div>
+                <img className="dao-img" src={dao.logo_url} />
+              </div>
+              <div className="d-flex flex-column">
+                <span>{dao.title}</span>
+                <div>
+                  <span className="created">Updated at:</span>{" "}
+                  <span className="date">
+                    {new Date(
+                      itemState.timestamp / 1000000
+                    ).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </Container>
+            <StatusBadge {...statusColors[itemState.status]}>
+              {itemState.status}
+            </StatusBadge>
           </div>
-          {!disabeleOpenReportLInk && (
-            <Button
-              href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${item.id}`}
-            >
-              {`Open ${item.post_type}`}
-              <i className={"bi blue bi-box-arrow-up-right"} />
-            </Button>
+          <ProposalHeader>{itemState.title}</ProposalHeader>
+          <ProposalInfo>
+            <ClipboardContainer>
+              <Widget
+                src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                props={{
+                  text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                }}
+              />
+            </ClipboardContainer>
+            <ProposalInfoItem>
+              <div>Internal</div>
+              <ProposalsState approve={itemState.state.dao_council_approved}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                DAO Approved
+              </ProposalsState>
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+              <div>KYC</div>
+              <ProposalsState approve={itemState.state.kyc_passed}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                KYC Approved
+              </ProposalsState>
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+              <div>Report</div>
+              <ProposalsState approve={itemState.state.report_accepted}>
+                <span>
+                  {itemState.state.report_accepted ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                Report Approved
+              </ProposalsState>
+            </ProposalInfoItem>
+
+            <ProposalInfoItem>
+              <div>Created By:</div>
+              <div>
+                <a
+                  className="account-link"
+                  href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
+                >
+                  {itemState.author_id}
+                </a>
+              </div>
+            </ProposalInfoItem>
+            <ProposalInfoItem>
+              <div>Requested amount:</div>
+              <div>
+                <b>${itemState.requested_amount ?? 0}</b>
+              </div>
+            </ProposalInfoItem>
+          </ProposalInfo>
+          {!id && (
+            <div className="d-flex justify-content-between align-items-center gap-3">
+              {itemState.post_type === "Proposal" ? (
+                <div className="d-flex justify-content-end w-100">
+                  <a
+                    className="btn btn-secondary w-100 text-nowrap"
+                    href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+                  >
+                    Open Proposal
+                    <i class="ph ph-arrow-square-out fs-6"></i>
+                  </a>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-start w-100">
+                  <a
+                    className="btn btn-secondary outlined w-100 text-nowrap"
+                    href={`//*__@replace:widgetPath__*/.App?page=report&id=${itemState.id}`}
+                  >
+                    Report
+                  </a>
+                </div>
+              )}
+            </div>
           )}
-        </div>
-      )}
+        </MobileContainer>
+        <DesktopVersion>
+          <TableRow key={index}>
+            <TableCell flex={0.5}>
+              <StatusBadge {...statusColors[itemState.status]}>
+                {itemState.status}
+              </StatusBadge>
+            </TableCell>
+            <TableCell flex={2.5}>
+              <Container>
+                <div>
+                  <img className="dao-img" src={dao.logo_url} />
+                </div>
+                <div className="info">
+                  <div className="title">{dao.title}</div>
+                  <div>
+                    <span className="created">Created at:</span>{" "}
+                    <span className="date">
+                      {new Date(itemState.timestamp / 1000000).toDateString()}
+                    </span>
+                  </div>
+                </div>
+              </Container>
+            </TableCell>
+            <TableCell>
+              <div className="info">
+                <div className="created"> Created by</div>
+                <a
+                  className="account-link"
+                  href={`https://near.org/near/widget/ProfilePage?accountId=${itemState.author_id}`}
+                >
+                  {itemState.author_id}
+                </a>
+              </div>
+            </TableCell>
+            <TableCell flex={3}>
+              <ProposalsState approve={itemState.state.dao_council_approved}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                DAO Approved
+              </ProposalsState>
 
-      {showComments && (
-        <Comments>
-          <Widget
-            src="/*__@replace:widgetPath__*/.Components.Comments"
-            props={{
-              postId: item.id,
-              showCreate: true,
-            }}
-          />
-        </Comments>
-      )}
-    </Card>
-  </CardContainer>
-);
+              <ProposalsState approve={itemState.state.kyc_passed}>
+                <span>
+                  {itemState.state.kyc_passed ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                KYC Approved
+              </ProposalsState>
 
-return (
-  <>
-    {(!itemState.is_spam || dao.owners.includes(accountId)) && (
-      <CardItem item={itemState} index={index} />
+              <ProposalsState approve={itemState.state.report_accepted}>
+                <span>
+                  {itemState.state.report_accepted ? (
+                    <i class="ph-fill fs-6 ph-check-circle"></i>
+                  ) : (
+                    <i class="ph-fill fs-6 ph-x-circle"></i>
+                  )}
+                </span>
+                Report Approved
+              </ProposalsState>
+            </TableCell>
+            <TableCell>
+              <a
+                className="btn btn-secondary outlined"
+                href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+              >
+                Report
+              </a>
+              <ExpandCollapseIcon>
+                <i
+                  class={`ph ph-caret-${
+                    showMore === index ? "up" : "down"
+                  } fs-5`}
+                  onClick={() => setShowMore(showMore === index ? null : index)}
+                ></i>
+              </ExpandCollapseIcon>
+            </TableCell>
+          </TableRow>
+          {showMore === index && (
+            <ProposalCardWrapper>
+              <ProposalCard>
+                <ProposalContent maxWidth={"350px"}>
+                  <div className="d-flex justify-content-between gap-3">
+                    <ProposalHeader>{itemState.title}</ProposalHeader>
+                    <Widget
+                      src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+                      props={{
+                        text: `https://near.org/ndcdev.near/widget/daos.App?page=proposal&id=${itemState.id}`,
+                      }}
+                    />
+                  </div>
+                  <ProposalInfo>
+                    <ProposalInfoItem>
+                      <div>Updated at:</div>
+                      <div>
+                        {itemState.timestamp
+                          ? new Date(
+                              itemState.timestamp / 1000000
+                            ).toLocaleString()
+                          : new Date().toLocaleDateString()}
+                      </div>
+                    </ProposalInfoItem>
+                    <ProposalInfoItem>
+                      <div>Requested amount:</div>
+                      <div>
+                        <b>${itemState.requested_amount ?? 0}</b>
+                      </div>
+                    </ProposalInfoItem>
+                  </ProposalInfo>
+                </ProposalContent>
+                <ProposalContent maxWidth={"850px"}>
+                  <Tags>
+                    {itemState.labels?.map((tag) => (
+                      <Tag>#{tag}</Tag>
+                    ))}
+                  </Tags>
+                  <Description>
+                    <Widget
+                      src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
+                      props={{ text: itemState.description }}
+                    />
+                  </Description>
+                </ProposalContent>
+              </ProposalCard>
+              <div>
+                <a
+                  className="btn btn-secondary"
+                  href={`//*__@replace:widgetPath__*/.App?page=proposal&id=${itemState.id}`}
+                >
+                  Open Proposal
+                  <i class="ph ph-arrow-square-out fs-6"></i>
+                </a>
+              </div>
+            </ProposalCardWrapper>
+          )}
+        </DesktopVersion>
+      </>
     )}
   </>
 );

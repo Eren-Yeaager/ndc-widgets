@@ -25,7 +25,6 @@ const formatValue = (value) => {
 const Desc = styled.span`
   color: #fcf8ff;
   text-align: center;
-  font-family: Montserrat;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -35,7 +34,6 @@ const Desc = styled.span`
 const Name = styled.div`
   color: #fcf8ff;
   text-align: center;
-  font-family: Montserrat;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

@@ -48,7 +48,7 @@ function composeData() {
     comment ? "edit_comment" : "add_comment",
     params,
     "200000000000000",
-    10000000000000000000000
+    10000000000000000000000,
   );
 }
 
@@ -211,6 +211,9 @@ const Actions = styled.div`
     font-size: 14px;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition:
       background 200ms,
       opacity 200ms;
@@ -391,9 +394,9 @@ return (
         onClick={handlePreview}
       >
         {state.showPreview ? (
-          <i className="bi bi-pencil" />
+          <i className="fs-5 ph ph-pencil-simple" />
         ) : (
-          <i className="bi bi-eye-fill" />
+          <i className="fs-5 ph ph-eye" />
         )}
       </button>
 
@@ -410,7 +413,7 @@ return (
         data={composeData}
         onCancel={onCancel}
         onCommit={onCommit}
-        className="commit-post-button"
+        className="btn-primary"
       >
         Post
       </CommitButton>
