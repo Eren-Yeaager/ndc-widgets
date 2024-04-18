@@ -2,7 +2,7 @@ mod like;
 pub(crate) mod proposal;
 mod report;
 pub mod comment;
-pub mod report_funds;
+pub mod report_funding;
 
 use std::collections::HashSet;
 use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
@@ -11,8 +11,8 @@ use near_sdk::{AccountId, near_bindgen, Timestamp, NearSchema, require};
 use crate::{Vertical, CommentId, CommunityId, Contract, DaoId, PostId};
 use crate::post::like::Like;
 use crate::post::proposal::VersionedProposal;
-use crate::post::report_funds::{ReportFundCategory, ReportFundsInput};
-use crate::post::report::VersionedReport;
+use crate::post::report_funding::{ReportCategory, ReportFunding, ReportFundsTransferCategory};
+use crate::post::report::{Report, VersionedReport};
 use crate::str_serializers::*;
 
 const POST_COMMENT_DEPOSIT: NearToken = NearToken::from_millinear(10); // 0.01 NEAR
@@ -142,12 +142,12 @@ impl PostBody {
          };
      }
 
-    pub fn validate(&self) {
-        return match self {
-            PostBody::Proposal(proposal) => proposal.validate(),
-            PostBody::Report(report) => report.validate(),
-        };
-    }
+     pub fn validate(&self) {
+         return match self {
+             PostBody::Proposal(proposal) => proposal.validate(),
+             PostBody::Report(report) => report.validate(),
+         };
+     }
 }
 
 use crate::*;
@@ -159,14 +159,30 @@ impl Contract {
     // Add new DAO request/report
     // Access Level: Public
     #[payable]
-    pub fn add_post(&mut self, dao_id: DaoId, body: PostBody, report_funding: Option<ReportFundsInput>) -> PostId {
+    pub fn add_post(&mut self, dao_id: DaoId, body: PostBody, new_community_title: Option<String>) -> PostId {
         let dao = self.get_dao_by_id(&dao_id);
 
         self.validate_attached_deposit();
-        self.validate_add_post(&dao_id, &body, &report_funding);
+        self.validate_add_post(&dao_id, &body, new_community_title.clone());
         if let Some(vertical) = body.get_post_vertical() {
             self.validate_verticals_exists(&vec![vertical]);
         }
+
+        let body = match body {
+            PostBody::Proposal(proposal) => PostBody::Proposal(proposal.latest_version().clone().into()),
+            PostBody::Report(report) => {
+                if let Some(title) = new_community_title {
+                    let handle = self.generate_handle(title.clone());
+                    self.validate_community_uniqueness(&dao_id, &title, &handle);
+
+                    let mut report:Report = report.latest_version().clone().into();
+                    report.community_id = Some(self.add_community_by_report(&dao_id, title, handle));
+                    PostBody::Report(report.into())
+                } else {
+                    PostBody::Report(report.latest_version().clone().into())
+                }
+            },
+        };
 
         self.total_posts += 1;
         let author_id = env::predecessor_account_id();
@@ -198,7 +214,6 @@ impl Contract {
 
         // Reports
         self.assign_report_to_proposal(&body, post_id.clone());
-        self.assign_report_funding(&dao_id, &body, report_funding, post_id.clone());
 
         // Notifications
         notify::notify_mention(&body.get_post_title(), &body.get_post_description(), post_id.clone(), None);
@@ -214,25 +229,35 @@ impl Contract {
     }
 
     // Validate post on create
-    fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody, report_funding: &Option<ReportFundsInput>) {
+    fn validate_add_post(&self, dao_id: &DaoId, body: &PostBody, new_community_title: Option<String>) {
         body.validate();
         self.get_dao_by_id(&dao_id);
 
         // Check proposal requested amount
         if let PostBody::Proposal(proposal) = body {
             require!(proposal.latest_version().requested_amount >= 0.0, "Wrong requested amount");
-        } else {
-            require!(report_funding.is_some(), "Report funding is required");
+        }
 
-            if let Some(funding) = report_funding {
-                if funding.category == ReportFundCategory::ProjectOnboarding && funding.new_community_title.is_some() {
-                    // check if new community handle is unique
-                    let handle = &self.generate_handle(funding.new_community_title.clone().unwrap());
+        // Check report funding by type
+        if let PostBody::Report(report) = body {
+            let report_funding: ReportFunding = report.latest_version().funding.clone().into();
+            report_funding.validate();
+
+            if report_funding.category == ReportCategory::ProjectOnboarding {
+                // check if new community handle is unique
+                if new_community_title.is_some() {
+                    let handle = &self.generate_handle(new_community_title.clone().unwrap());
                     self.community_handles.get(handle).expect("Community already exists");
+                } else if body.get_post_community_id().is_none() {
+                    panic!("Community ID is required for Project Onboarding report");
                 }
             }
 
-            report_funding.as_ref().unwrap().validate();
+            if let Some(ReportFundsTransferCategory::Development) = report_funding.sub_category {
+                if body.get_post_community_id().is_none() {
+                    panic!("Community ID is required for Development report");
+                }
+            }
         }
 
         // Check if community is part of the DAO
@@ -242,42 +267,7 @@ impl Contract {
         }
     }
 
-    // Assign report funding, create community if needed
-    fn assign_report_funding(&mut self, dao_id: &DaoId, body: &PostBody, report_funding: Option<ReportFundsInput>, report_id: PostId) {
-        if let PostBody::Report(_) = body {
-            let report_funding = report_funding.unwrap();
-
-            let funding = ReportFunds {
-                category: report_funding.category,
-                sub_category: report_funding.sub_category,
-                milestones: report_funding.milestones,
-                ipfs_proofs: report_funding.ipfs_proofs,
-                transactions: report_funding.transactions,
-                participants: report_funding.participants,
-                start_date: report_funding.start_date,
-                end_date: report_funding.end_date,
-            };
-            self.report_funds.insert(&report_id, &funding);
-
-            if report_funding.new_community_title.is_some() || report_funding.community_id.is_some() {
-                let community_id = if report_funding.new_community_title.is_some() {
-                    let title = report_funding.new_community_title.clone().unwrap();
-                    let handle = self.generate_handle(title.clone());
-                    self.add_community_by_report(dao_id, title, handle)
-                } else {
-                    report_funding.community_id.unwrap()
-                };
-
-                // add to community_report_funds
-                let mut community_report_funds = self.community_report_funds.get(&community_id).unwrap_or(vec![]);
-                community_report_funds.push(report_id);
-                self.community_report_funds.insert(&community_id, &community_report_funds);
-            }
-
-        }
-    }
-
-    fn generate_handle(&self, title: String) -> String {
+    pub(crate) fn generate_handle(&self, title: String) -> String {
         let mut handle = String::new();
         let trimmed_title = title.trim();
 
@@ -541,7 +531,11 @@ impl Contract {
                     VersionedReport::V1(mut report) => {
                         report.is_spam = is_spam;
                         PostBody::Report(VersionedReport::V1(report))
-                    }
+                    },
+                    VersionedReport::V2(mut report) => {
+                        report.is_spam = is_spam;
+                        PostBody::Report(VersionedReport::V2(report))
+                    },
                 }
             }
         };
@@ -566,7 +560,7 @@ mod tests {
     use crate::post::proposal::{Proposal, ProposalStates};
     use crate::{Contract, DaoId, PostId};
     use crate::post::report::{Report, VersionedReport};
-    use crate::post::report_funds::{ReportFundCategory, ReportFunds, ReportFundsInput, ReportFundSubCategory, ReportMilestones};
+    use crate::post::report_funding::{ReportCategory, ReportFunding, ReportFundsTransferCategory, ReportMilestones};
 
     pub fn create_proposal(dao_id: &DaoId, contract: &mut Contract) -> PostId {
         setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
@@ -594,18 +588,16 @@ mod tests {
         )
     }
 
-    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>, report_funds: Option<ReportFundsInput>) -> PostId {
-        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
-
-        let report_funds = report_funds.unwrap_or_else(|| ReportFundsInput {
-            category: ReportFundCategory::FundsTransfer,
-            sub_category: Some(ReportFundSubCategory::Development),
+    fn get_report_funding() -> ReportFunding {
+        ReportFunding {
+            category: ReportCategory::FundsTransfer,
+            sub_category: Some(ReportFundsTransferCategory::Development),
             milestones: vec![
                 ReportMilestones {
+                    id: 1,
                     description: "Milestone 1 description".to_string(),
-                    attachments: String::new(),
                     payment: 1000,
-                    complete_pct: 10,
+                    progress_pct: 10,
                 }
             ],
             ipfs_proofs: vec![],
@@ -613,14 +605,18 @@ mod tests {
             participants: vec![],
             start_date: None,
             end_date: None,
-            new_community_title: None,
-            community_id: Some(1),
-        });
+        }
+    }
+
+    pub fn create_report(dao_id: DaoId, contract: &mut Contract, proposal_id: Option<PostId>, report_funding: Option<ReportFunding>) -> PostId {
+        setup_contract_with_deposit(POST_COMMENT_DEPOSIT);
+
+        let funding = report_funding.unwrap_or_else(|| get_report_funding());
 
         contract.add_post(
             dao_id,
             PostBody::Report(
-                VersionedReport::V1(
+                VersionedReport::V2(
                     Report {
                         title: "Report title".to_string(),
                         description: "Report description".to_string(),
@@ -630,12 +626,12 @@ mod tests {
                         community_id: None,
                         vertical: None,
                         proposal_id,
-                        funding: HashMap::new(),
+                        funding: funding.into(),
                         is_spam: false,
                     }
                 )
             ),
-            Some(report_funds)
+            Some("New community title".to_string())
         )
     }
 
@@ -713,7 +709,7 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
         let proposal_id = create_proposal(&dao_id, &mut contract);
-        let report_id = create_report(dao_id, &mut contract, Some(proposal_id));
+        let report_id = create_report(dao_id, &mut contract, Some(proposal_id), None);
 
         let post: Post = contract.get_post_by_id(&report_id).into();
         assert_eq!(post.snapshot.status, PostStatus::InReview);
@@ -722,14 +718,15 @@ mod tests {
         assert_eq!(post.snapshot_history.len(), 0);
 
         if let PostBody::Report(vp) = &post.snapshot.body {
-            let VersionedReport::V1(report) = vp;
-            assert_eq!(report.proposal_id, Some(proposal_id));
-            assert_eq!(report.title, "Report title".to_string());
-            assert_eq!(report.description, "Report description".to_string());
-            assert_eq!(report.labels, vec!["label1".to_string()]);
-            assert_eq!(report.metrics, HashMap::new());
-            assert_eq!(report.community_id, None);
-            assert_eq!(report.vertical, None);
+            if let VersionedReport::V2(report) = vp {
+                assert_eq!(report.proposal_id, Some(proposal_id));
+                assert_eq!(report.title, "Report title".to_string());
+                assert_eq!(report.description, "Report description".to_string());
+                assert_eq!(report.labels, vec!["label1".to_string()]);
+                assert_eq!(report.metrics, HashMap::new());
+                assert_eq!(report.community_id, None);
+                assert_eq!(report.vertical, None);
+            }
         }
     }
 
@@ -738,12 +735,12 @@ mod tests {
         let (context, mut contract) = setup_contract();
         let dao_id = create_new_dao(&context, &mut contract);
 
-        let report_id = create_report(dao_id, &mut contract, None);
+        let report_id = create_report(dao_id, &mut contract, None, None);
         let new_title = "New Report title".to_string();
         let new_description = "New Report description".to_string();
 
         contract.edit_post(report_id, PostBody::Report(
-            VersionedReport::V1(
+            VersionedReport::V2(
                 Report {
                     title: new_title.clone(),
                     description: new_description.clone(),
@@ -753,7 +750,7 @@ mod tests {
                     community_id: None,
                     vertical: None,
                     proposal_id: None,
-                    funding: HashMap::new(),
+                    funding: get_report_funding().into(),
                     is_spam: false,
                 }
             )
@@ -809,6 +806,29 @@ mod tests {
             let VersionedProposal::V1(p) = vp;
             assert!(!p.is_spam);
         }
+    }
+
+    #[test]
+    // Funds Transfer > Marketing campaign test
+    fn test_report_funding_marketing() {
+        let (context, mut contract) = setup_contract();
+        let dao_id = create_new_dao(&context, &mut contract);
+
+        let report_funding = ReportFunding {
+            category: ReportCategory::FundsTransfer,
+            sub_category: Some(ReportFundsTransferCategory::Marketing),
+            ipfs_proofs: vec!["ipfs_hash".to_string()],
+            transactions: vec!["tx_hash".to_string()],
+            participants: vec!["bob.near".parse().unwrap()],
+            milestones: vec![],
+            start_date: Some(999999999),
+            end_date: Some(999999999),
+        };
+
+        let post_id = create_report(dao_id, &mut contract, None, Some(report_funding));
+
+        let post: Post = contract.get_post_by_id(&post_id).into();
+        assert_eq!(post.snapshot.body.get_post_type(), PostType::Report);
     }
 
 }

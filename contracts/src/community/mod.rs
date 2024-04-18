@@ -121,7 +121,7 @@ impl Contract {
         self.validate_dao_ownership(&env::predecessor_account_id(), &dao_id);
         community_input.validate();
 
-        self.validate_community_uniqueness(&dao_id, &community_input);
+        self.validate_community_uniqueness(&dao_id, &community_input.title, &community_input.handle);
         if verticals.len() > 0 {
             self.validate_verticals_exists(&verticals);
         }
@@ -155,15 +155,15 @@ impl Contract {
     }
 
     // Validate uniqueness of community (handle and title)
-    fn validate_community_uniqueness(&self, dao_id: &DaoId, community_input: &CommunityInput) {
+    pub(crate) fn validate_community_uniqueness(&self, dao_id: &DaoId, title: &String, handle: &String) {
         let dao_communities = self.dao_communities.get(dao_id).unwrap_or(vec![]);
         dao_communities.iter().for_each(|c| {
             let dao_community: Community = self.get_community_by_id(c).into();
-            assert_ne!(dao_community.title, community_input.title, "Community title already exists");
+            assert_ne!(&dao_community.title, title, "Community title already exists");
         });
 
         // check if handle exists
-        assert!(!self.community_handles.contains_key(&community_input.handle), "Community handle already exists");
+        assert!(!self.community_handles.contains_key(&handle), "Community handle already exists");
     }
 
     // Validate verticals - if they exist in any DAO
@@ -195,7 +195,7 @@ impl Contract {
         self.communities.insert(&id, &community.into());
     }
 
-    pub(crate) fn add_community_by_report(&mut self, dao_id: &DaoId, title: String, handle: String) -> u64 {
+    pub(crate) fn add_community_by_report(&mut self, dao_id: &DaoId, title: String, handle: String) -> CommunityId {
         self.add_community_internal(
             dao_id.clone(),
             title,
@@ -224,7 +224,7 @@ impl Contract {
         owners: Vec<AccountId>,
         metadata: HashMap<String, String>,
         status: CommunityStatus
-    ) -> u64 {
+    ) -> CommunityId {
         self.total_communities += 1;
         let id = self.total_communities;
         let community = Community {

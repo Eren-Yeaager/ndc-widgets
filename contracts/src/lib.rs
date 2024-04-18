@@ -22,11 +22,10 @@ use near_sdk::{near_bindgen, AccountId, PanicOnDefault, env, NearToken};
 use serde_json::{json, Value};
 use crate::access_control::AccessPermissionType;
 use crate::access_control::owners::VersionedAccessMetadata;
-use crate::community::{Community, VersionedCommunity};
+use crate::community::{Community, CommunityStatus, VersionedCommunity};
 use crate::dao::{DAO, DAOType, VersionedDAO};
 use crate::post::comment::{Comment, CommentSnapshot, VersionedComment};
 use crate::post::proposal::ProposalStates;
-use crate::post::report_funds::ReportFunds;
 use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 use strum::IntoEnumIterator;
@@ -63,9 +62,6 @@ pub struct Contract {
 
     pub events: LookupMap<EventId, Event>,
 
-    pub report_funds: LookupMap<PostId, ReportFunds>,
-    pub community_report_funds: LookupMap<CommunityId, Vec<PostId>>,
-
     pub label_to_posts: UnorderedMap<PostLabel, Vec<PostId>>,
     pub vertical_posts: UnorderedMap<Vertical, Vec<PostId>>,
     pub community_posts: LookupMap<CommunityId, Vec<PostId>>,
@@ -100,9 +96,6 @@ impl Contract {
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
 
             events: LookupMap::new(StorageKey::Events),
-
-            report_funds: LookupMap::new(StorageKey::ReportFunds),
-            community_report_funds: LookupMap::new(StorageKey::CommunityReportFunds),
 
             label_to_posts: UnorderedMap::new(StorageKey::LabelToPosts),
             vertical_posts: UnorderedMap::new(StorageKey::VerticalPosts),
@@ -322,7 +315,14 @@ impl Contract {
             let community_ids = self.dao_communities.get(&id).unwrap_or_default();
 
             let accounts: Vec<AccountId> = community_ids.iter()
-                .map(|community_id| self.get_community_by_id(community_id).latest_version().accounts.clone())
+                .map(|community_id| {
+                    let community = self.get_community_by_id(community_id).latest_version();
+                    if community.status == CommunityStatus::Active {
+                        community.accounts.clone()
+                    } else {
+                        vec![]
+                    }
+                })
                 .flatten()
                 .collect();
 
