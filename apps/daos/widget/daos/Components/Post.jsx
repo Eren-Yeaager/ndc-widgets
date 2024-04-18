@@ -297,6 +297,14 @@ const InfoContainer = styled.div`
     font-weight: 500;
   }
 
+  .edit-text {
+    display: flex;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
   @media screen and (max-width: 786px) {
     flex-direction: column;
   }
@@ -545,11 +553,11 @@ return (
                     <>
                       {itemState.status === "InReview" ? (
                         <a
-                          className="btn-primary"
+                          className="btn-primary btn-icon fs-6"
                           href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${itemState.id}&dao_id=${dao.handle}`}
                         >
                           <i className="ph ph-pencil-simple" />
-                          Edit
+                          <span className="edit-text">Edit</span>
                         </a>
                       ) : (
                         <OverlayTrigger
@@ -560,9 +568,9 @@ return (
                             </Tooltip>
                           }
                         >
-                          <div className="btn-secondary outlined">
-                            <i className="ph ph-pencil-simple" />
-                            Edit
+                          <div className="btn-secondary btn-icon outlined">
+                            <i className="ph ph-pencil-simple fs-6" />
+                            <span className="edit-text">Edit</span>
                           </div>
                         </OverlayTrigger>
                       )}

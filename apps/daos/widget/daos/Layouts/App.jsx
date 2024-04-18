@@ -101,7 +101,7 @@ const Theme = styled.div`
 
   .btn-icon {
     @media screen and (max-width: 768px) {
-      padding: 10px;
+      padding: 0px 12px;
     }
   }
 `;
