@@ -275,6 +275,7 @@ const Breadcrumb = styled.div`
   font-size: 14px;
   margin-bottom: 30px;
   font-weight: 600;
+  justify-content: space-between;
 
   .all-link {
     color: #7e7d7e;
@@ -485,7 +486,18 @@ return (
             {" / "}
             {itemState.title}
           </div>
+          <div>
+            {itemState.author_id === accountId &&
+              itemState.status === "InReview" && (
+                <a
+                  href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${itemState.id}&dao_id=${dao.handle}`}
+                >
+                  <i className="bi bi-pencil-fill fs-5" />
+                </a>
+              )}
+          </div>
         </Breadcrumb>
+
         <InfoContainer>
           <Left>
             <Info>
@@ -581,13 +593,13 @@ return (
               </ProposalInfoItem>
             </ProposalInfo>
           </Left>
-          <Right>
-            <HistoryTitle>
-              <i class="ph ph-clock-counter-clockwise fs-5"></i>
-              <span>Version History</span>
-            </HistoryTitle>
-            <div>
-              {snapshot.length > 0 && (
+          {snapshot.length > 0 && (
+            <Right>
+              <HistoryTitle>
+                <i class="ph ph-clock-counter-clockwise fs-5"></i>
+                <span>Version History</span>
+              </HistoryTitle>
+              <div>
                 <HistoryContainer>
                   {snapshot.map((history, index) => (
                     <HistoryEntry
@@ -612,9 +624,9 @@ return (
                     </HistoryEntry>
                   ))}
                 </HistoryContainer>
-              )}
-            </div>
-          </Right>
+              </div>
+            </Right>
+          )}
         </InfoContainer>
         <DescriptionContainer>
           <ProposalHeader>Description</ProposalHeader>
