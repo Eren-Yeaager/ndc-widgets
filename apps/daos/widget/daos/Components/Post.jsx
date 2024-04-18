@@ -17,9 +17,10 @@ const DEPOSIT = 10000000000000000000000;
 if (!item || !contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 const [itemState, setItemState] = useState(item);
-const [snapshot, setSnapshot] = useState([]);
+const [snapshot, setSnapshot] = useState(item);
 const [showMore, setShowMore] = useState(null);
 const [showComments, setShowComments] = useState(showCommentsDefault);
+const [selectedHistoryId, setSelectedHistoryId] = useState(0);
 const accountId = context.accountId;
 
 const dao = Near.view(contractName, "get_dao_by_id", {
@@ -410,29 +411,23 @@ const ClipboardContainer = styled.div`
   width: 20%;
 `;
 
-const [selectedHistoryId, setselectedHistoryId] = useState(null);
-
 const changeHistory = (index) => {
-  setselectedHistoryId(index);
-  setItemState({ ...item, ...snapshot[index] });
+  setSelectedHistoryId(index);
+  setItemState((prev) => ({ ...prev, ...snapshot[index] }));
 };
 
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 let snap;
 
-if (itemState.id) {
+if (itemState.id)
   snap = Near.view(contractName, "get_post_history", {
     id: itemState.id,
   });
-}
 
 useEffect(() => {
   if (snap)
-    setSnapshot([
-      itemState,
-      ...snap.sort((a, b) => parseInt(b.timestamp) - parseInt(a.timestamp)),
-    ]);
+    setSnapshot([item, ...snap.sort((a, b) => b.timestamp - a.timestamp)]);
 }, snap);
 
 const isLiked = (item) => {
@@ -624,11 +619,15 @@ return (
             </div>
             <ProposalInfo>
               <ProposalInfoItem>
+                <div>Created at:</div>
+                <div style={{ color: "#000" }}>
+                  {new Date(itemState.created_at / 1000000).toLocaleString()}
+                </div>
+              </ProposalInfoItem>
+              <ProposalInfoItem>
                 <div>Updated at:</div>
                 <div style={{ color: "#000" }}>
-                  {itemState.timestamp
-                    ? new Date(itemState.timestamp / 1000000).toLocaleString()
-                    : new Date().toLocaleDateString()}
+                  {new Date(itemState.timestamp / 1000000).toLocaleString()}
                 </div>
               </ProposalInfoItem>
               <ProposalInfoItem>
@@ -639,44 +638,43 @@ return (
               </ProposalInfoItem>
             </ProposalInfo>
           </Left>
-          {snapshot.length > 0 && (
-            <Right>
-              <HistoryTitle>
-                <i class="ph ph-clock-counter-clockwise fs-5"></i>
-                <span>Version History</span>
-              </HistoryTitle>
-              <div>
-                <HistoryContainer>
-                  {snapshot.map((history, index) => (
-                    <HistoryEntry
-                      key={history.timestamp}
-                      selected={
-                        selectedHistoryId
-                          ? index === selectedHistoryId
-                          : index === 0
-                      }
-                      onClick={() => changeHistory(index)}
-                    >
-                      <>
-                        <div>
-                          <span className="text">Updated at:</span>
-                          <span>
-                            {new Date(
-                              history.timestamp / 1000000
-                            ).toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="owner">
-                          <span className="text">by</span>
-                          <span>{itemState.editor_id}</span>
-                        </div>
-                      </>
-                    </HistoryEntry>
-                  ))}
-                </HistoryContainer>
-              </div>
-            </Right>
-          )}
+
+          <Right>
+            <HistoryTitle>
+              <i class="ph ph-clock-counter-clockwise fs-5"></i>
+              <span>Version History</span>
+            </HistoryTitle>
+            <div>
+              <HistoryContainer>
+                {snapshot.map((history, index) => (
+                  <HistoryEntry
+                    key={history.timestamp}
+                    selected={index === selectedHistoryId}
+                    onClick={() => changeHistory(index)}
+                  >
+                    <>
+                      <div>
+                        <span className="text">
+                          {snapshot.length - 1 === index
+                            ? "Created at:"
+                            : "Updated at:"}
+                        </span>
+                        <span>
+                          {new Date(
+                            history.timestamp / 1000000
+                          ).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="owner">
+                        <span className="text">by</span>
+                        <span>{history.editor_id}</span>
+                      </div>
+                    </>
+                  </HistoryEntry>
+                ))}
+              </HistoryContainer>
+            </div>
+          </Right>
         </InfoContainer>
         <DescriptionContainer>
           <ProposalHeader>Description</ProposalHeader>
@@ -887,7 +885,7 @@ return (
                   <div>
                     <span className="created">Created at:</span>{" "}
                     <span className="date">
-                      {new Date(itemState.timestamp / 1000000).toDateString()}
+                      {new Date(itemState.created_at / 1000000).toDateString()}
                     </span>
                   </div>
                 </div>

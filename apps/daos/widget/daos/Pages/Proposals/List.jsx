@@ -110,20 +110,30 @@ return (
             <TableHeaderCell flex={3}>Proposals states</TableHeaderCell>
             <TableHeaderCell></TableHeaderCell>
           </TableHeader>
-          {items.map((row, index) => (
-            <Widget
-              src="/*__@replace:widgetPath__*/.Components.Post"
-              props={{ item: row, index, type, rowId: row.id }}
-            />
-          ))}
+          {items
+            .sort((a, b) => b.created_at - a.created_at)
+            .map((row, index) => (
+              <Widget
+                src="/*__@replace:widgetPath__*/.Components.Post"
+                props={{ item: row, index, type, rowId: row.id }}
+              />
+            ))}
         </Table>
         <Mobile>
-          {items.map((row, index) => (
-            <Widget
-              src="/*__@replace:widgetPath__*/.Components.Post"
-              props={{ item: row, index, type, rowId: row.id, isMobile: true }}
-            />
-          ))}
+          {items
+            .sort((a, b) => b.created_at - a.created_at)
+            .map((row, index) => (
+              <Widget
+                src="/*__@replace:widgetPath__*/.Components.Post"
+                props={{
+                  item: row,
+                  index,
+                  type,
+                  rowId: row.id,
+                  isMobile: true,
+                }}
+              />
+            ))}
         </Mobile>
       </>
     )}
