@@ -28,7 +28,7 @@ return (
       <div className="attachments">
         {attachments.map((src) => (
           <a href={src}>
-            <i className="bi bi-paperclip" /> {src}
+            <i className="ph ph-link-simple" /> {src}
           </a>
         ))}
       </div>

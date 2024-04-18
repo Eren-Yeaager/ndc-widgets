@@ -72,7 +72,7 @@ const handleSave = () => {
 };
 
 return (
-  <Form className="d-flex flex-column gap-3">
+  <div className="d-flex flex-column gap-3">
     <div className="form-element">
       <label className="form-label">DAO wallet</label>
       <input
@@ -149,5 +149,5 @@ return (
       <i className="ph ph-pencil-simple fs-5" />
       Save
     </button>
-  </Form>
+  </div>
 );

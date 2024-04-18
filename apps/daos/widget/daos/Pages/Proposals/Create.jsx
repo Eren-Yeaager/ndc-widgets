@@ -2,6 +2,8 @@ let { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
+const GAS = "200000000000000";
+const DEPOSIT = 10000000000000000000000;
 const { dao_id, id } = props;
 const accountId = context.accountId;
 
@@ -173,24 +175,22 @@ const handleChange = (el, value) => {
   setFormEls(newFormEl);
 };
 
-
-
 if (daos) {
   let daosSorted = daos;
   if (selectedDaoId === daos[0].id) {
-  daosSorted = daos.sort((a, b) => {
-    const daoTypeA = a.dao_type.toUpperCase(); 
-    const daoTypeB = b.dao_type.toUpperCase();
-  
-    if (daoTypeA < daoTypeB) {
-      return 1;
-    }
-    if (daoTypeA > daoTypeB) {
-      return -1;
-    }
-    return 0;
-  })
-}
+    daosSorted = daos.sort((a, b) => {
+      const daoTypeA = a.dao_type.toUpperCase();
+      const daoTypeB = b.dao_type.toUpperCase();
+
+      if (daoTypeA < daoTypeB) {
+        return 1;
+      }
+      if (daoTypeA > daoTypeB) {
+        return -1;
+      }
+      return 0;
+    });
+  }
   daos = daosSorted.map((dao) => {
     return { name: dao.title, id: dao.id };
   });
@@ -235,7 +235,13 @@ const handleSave = () => {
   }
 
   id
-    ? Near.call(contractName, "edit_post", { id: parseInt(id), body })
+    ? Near.call(
+        contractName,
+        "edit_post",
+        { id: parseInt(id), body },
+        GAS,
+        DEPOSIT
+      )
     : Near.call(
         contractName,
         "add_post",
@@ -243,8 +249,8 @@ const handleSave = () => {
           dao_id: parseInt(selectedDaoId),
           body,
         },
-        "200000000000000",
-        10000000000000000000000
+        GAS,
+        DEPOSIT
       );
 };
 

@@ -1,16 +1,9 @@
 const CopyButton = styled.div`
   display: flex;
   height: 30px;
-  padding: 6px 14px 6px 12px;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  border-radius: 4px;
-  border: 1px solid #f0efe7;
-  background: #fff;
-  .copyText {
-    font-size: 10px;
-  }
+  font-size: 20px;
 `;
 
 return (
@@ -33,8 +26,7 @@ return (
         });
       }}
     >
-      <i class="ph ph-link"></i>
-      <span className="copyText">Copy</span>
+      <i class="ph ph-share-fat"></i>
 
       {state.copied ? (
         <>{props.copiedLabel ?? props.label}</>

@@ -80,7 +80,7 @@ return (
           <a
             href={`https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}&edit=true`}
           >
-            <i className="bi blue bi-pencil-fill" />
+            <i className="ph blue ph-pencil-simple" />
           </a>
         )}
       </div>
@@ -107,27 +107,27 @@ return (
               role="button"
               className="d-flex gap-1 align-items-center"
               onClick={() => {
-                if(isLikedByMe(comment)) return;
-                handleLike(comment.id)
+                if (isLikedByMe(comment)) return;
+                handleLike(comment.id);
               }}
             >
-              <small className="blue">{comment.likes.length}</small>
               <i
-                className={`bi blue ${
-                  isLikedByMe(comment) ? "bi-heart-fill" : "bi-heart"
+                className={` ph-heart fs-6 ${
+                  isLikedByMe(comment) ? "ph-fill " : "ph"
                 }`}
               />
+              <small>{comment.likes.length}</small>
             </div>
             <Link
               className="d-flex gap-1 align-items-center"
               to={`//*__@replace:widgetPath__*/.App?page=comments&post_id=${postId}&comment_id=${comment.id}`}
             >
-              <small className="blue">{comment.child_comments.length}</small>
-              <i className={"bi blue bi-reply fs-5"} />
+              <i className={" ph ph-chat-circle fs-6"} />
+              <small>{comment.child_comments.length}</small>
             </Link>
 
             <Widget
-              src={"/*__@replace:widgetPath__*/.Components.Clipboard"}
+              src={"/*__@replace:widgetPath__*/.Components.Share"}
               props={{
                 text: `https://near.org/ndcdev.near/widget/daos.App?page=comments&post_id=${postId}&comment_id=${comment.id}`,
               }}
@@ -135,11 +135,9 @@ return (
             {dao.owners.includes(context.accountId) && (
               <div role="button" onClick={() => handleSpam(comment)}>
                 <i
-                  className={
-                    comment.snapshot.is_spam
-                      ? "bi red bi-flag-fill"
-                      : "bi blue bi-flag"
-                  }
+                  className={`ph-flag fs-6 ${
+                    comment.snapshot.is_spam ? "red ph-fill" : "blue ph"
+                  }`}
                 />
               </div>
             )}

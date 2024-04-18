@@ -4,42 +4,6 @@ if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
 
 let { dao_id, type, accountId } = props;
 
-const Container = styled.div`
-  width: 100%;
-  height: max-content;
-  padding: 1rem 0 5rem 0;
-
-  .dao-img {
-    width: 50px;
-    height: 50px;
-  }
-
-  h4 {
-    margin-bottom: 0;
-  }
-
-  @media screen and (max-width: 786px) {
-    padding: 1rem;
-    margin-bottom: 30px;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: left;
-  img {
-    margin-right: 1rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    align-items: center;
-    flex-direction: column;
-    img {
-      margin-bottom: 1rem;
-    }
-  }
-`;
-
 let items = null;
 let dao = null;
 
@@ -82,60 +46,86 @@ if (dao_id) {
 
 if (!items) return <Widget src="flashui.near/widget/Loading" />;
 
-return (
-  <Container>
-    <>
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.TopNavBar`}
-        props={{
-          ...props,
-          daoId: dao ? dao.handle : null,
-          accountId,
-          title: (
-            <div className="d-flex align-items-center gap-3">
-              {dao ? (
-                <img className="dao-img" src={dao.logo_url} />
-              ) : (
-                <i className="bi bi-person-circle fs-3" />
-              )}
-              <h4>
-                <b>
-                  {dao ? dao.title : accountId ? "My" : "All"}
-                  {type}s
-                </b>
-              </h4>
-            </div>
-          ),
-        }}
-      />
-      <div className="mt-4">
-        <a
-          style={{ fontSize: "24px" }}
-          className="btn-primary text-uppercase"
-          href={`//*__@replace:widgetPath__*/.App?page=create_post${
-            dao ? `&dao_id=${dao_id}` : ""
-          }`}
-        >
-          create post
-        </a>
-      </div>
+const Table = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem 0 3rem 0;
 
-      <div className="d-flex flex-column gap-4 mt-4">
-        {items && items.length > 0 ? (
-          items
-            .filter((i) => i.post_type === type)
-            .map((item, index) => (
-              <Widget
-                src="/*__@replace:widgetPath__*/.Components.Post"
-                props={{ item, index, type, id: item.id }}
-              />
-            ))
-        ) : (
-          <div className="w-100 my-5 d-flex justify-content-center align-tems-center">
-            <h1>No active {type}s</h1>
-          </div>
-        )}
+  .created {
+    color: #5c656a;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .account-link {
+    color: #4855fc;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const TableHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #f8f8f8;
+  padding: 10px 16px;
+  jusify-content: flex-start;
+`;
+
+const TableHeaderCell = styled.div`
+  padding: 0 0 0 10px;
+  display: flex;
+  flex: ${(props) => props.flex || 1};
+`;
+
+const Mobile = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+return (
+  <>
+    {items.length === 0 ? (
+      <div className="w-100 my-5 d-flex justify-content-center align-tems-center">
+        <h1>No active Reports</h1>
       </div>
-    </>
-  </Container>
+    ) : (
+      <>
+        <Table>
+          <TableHeader>
+            <TableHeaderCell flex={0.7}>Status</TableHeaderCell>
+            <TableHeaderCell flex={2.3}>DAO</TableHeaderCell>
+            <TableHeaderCell> Modified </TableHeaderCell>
+            <TableHeaderCell flex={3}>Proposals states</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
+          </TableHeader>
+          {items.map((row, index) => (
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.Post"
+              props={{ item: row, index, type, rowId: row.id }}
+            />
+          ))}
+        </Table>
+        <Mobile>
+          {items.map((row, index) => (
+            <Widget
+              src="/*__@replace:widgetPath__*/.Components.Post"
+              props={{ item: row, index, type, rowId: row.id, isMobile: true }}
+            />
+          ))}
+        </Mobile>
+      </>
+    )}
+  </>
 );

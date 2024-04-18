@@ -4,7 +4,6 @@ const GridContainer = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-bottom: 5rem;
-  height: 100%;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr); // 1 columns
@@ -107,7 +106,7 @@ const CardBlock = ({ height, id }) => (
             <ListItem key={link}>
               <ItemText>{link.title}</ItemText>
               <Arrow>
-                <i className="bi bi-chevron-right" />
+                <i className="ph ph-chevron-right" />
               </Arrow>
             </ListItem>
           </Link>

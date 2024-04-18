@@ -145,7 +145,7 @@ const Info = ({ card }) => (
     <div className="inner d-flex flex-column justify-content-between p-4 align-items-left">
       <div>
         <h4 className="color-text">{card.title}</h4>
-        <span style={{'word-wrap': 'break-word'}}>
+        <span style={{ "word-wrap": "break-word" }}>
           <Widget
             src="/*__@replace:widgetPath__*/.Components.MarkdownViewer"
             props={{
@@ -191,7 +191,7 @@ return (
           href={`//*__@replace:widgetPath__*/.App?page=create_post&dao_id=${dao.handle}`}
         >
           Submit Proposal
-          <i className="bi bi-chevron-right" />
+          <i className="ph ph-caret-right fs-6" />
         </a>
         <a
           className="post-btn"
