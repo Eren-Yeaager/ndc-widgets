@@ -267,7 +267,7 @@ const DesktopVersion = styled.div`
   /* This is to be used with single report  */
 }
 
-const Breadcrumb = styled.div`
+const Breadcrumbs = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -489,7 +489,7 @@ return (
     {/* This is to be used with single report  */}
     {id ? (
       <>
-        <Breadcrumb>
+        <Breadcrumbs>
           <div>
             <a
               className="all-link"
@@ -500,17 +500,7 @@ return (
             {" / "}
             {itemState.title}
           </div>
-          <div>
-            {itemState.author_id === accountId &&
-              itemState.status === "InReview" && (
-                <a
-                  href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${itemState.id}&dao_id=${dao.handle}`}
-                >
-                  <i className="bi bi-pencil-fill fs-5" />
-                </a>
-              )}
-          </div>
-        </Breadcrumb>
+        </Breadcrumbs>
 
         <InfoContainer>
           <Left>
@@ -523,7 +513,7 @@ return (
                   }}
                 />
               </div>
-              <div>
+              <div className="d-flex align-items-center gap-2">
                 {dao.owners.includes(accountId) ? (
                   <div>
                     <select
@@ -543,6 +533,36 @@ return (
                     {itemState.status}
                   </StatusBadge>
                 )}
+
+                <div>
+                  {itemState.author_id === accountId && (
+                    <>
+                      {itemState.status === "InReview" ? (
+                        <a
+                          className="btn-primary"
+                          href={`https://near.org/ndcdev.near/widget/daos.App?page=edit_post&id=${itemState.id}&dao_id=${dao.handle}`}
+                        >
+                          <i className="ph ph-pencil-simple" />
+                          Edit
+                        </a>
+                      ) : (
+                        <OverlayTrigger
+                          placement="auto"
+                          overlay={
+                            <Tooltip>
+                              Only "In Review" proposal can be edited
+                            </Tooltip>
+                          }
+                        >
+                          <div className="btn-secondary outlined">
+                            <i className="ph ph-pencil-simple" />
+                            Edit
+                          </div>
+                        </OverlayTrigger>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             </Info>
             <div>
