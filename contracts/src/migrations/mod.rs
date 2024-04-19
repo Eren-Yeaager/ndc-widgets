@@ -51,10 +51,10 @@ impl Contract {
         near_sdk::log!("Migrating from version: {:?}", current_version);
 
         match current_version {
-            // StateVersion::V1 => {
-                // Contract::unsafe_test_migration_v2();
-                // state_version_write(&StateVersion::V2);
-            // }
+            StateVersion::V1 => {
+                Contract::unsafe_migration_v2();
+                state_version_write(&StateVersion::V2);
+            }
             _ => {
                 return Contract::migration_done();
             }

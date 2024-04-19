@@ -21,4 +21,5 @@ pub enum StorageKey {
     OwnerAccess,
     Events,
     DaoEvents,
+    CommunityMilestones,
 }
