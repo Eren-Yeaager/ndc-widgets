@@ -33,6 +33,7 @@ const Title = styled.div`
 `;
 
 const Filters = styled.div`
+  width: 100%;
   display: flex;
   gap: 1rem;
 `;
@@ -53,23 +54,25 @@ const ChartContainer = styled.div`
 
 const { contractName } = VM.require(`/*__@replace:widgetPath__*/.Config`);
 
-const PERIODS = [
-  { name: "daily", value: 1 },
-  { name: "weekly", value: 7 },
-  { name: "monthly", value: 30 },
-];
 const defaultDAOOption = "All DAOs";
 const dailyTotal = { labels: [], data: [] };
 const dailyTotalUsers = { labels: [], data: [] };
+const today = new Date();
 
 const [loading, setLoading] = useState(false);
-const [period, setPeriod] = useState([new Date(), new Date()]);
+const [period, setPeriod] = useState([
+  today,
+  new Date(today.setMonth(today.getMonth() - 1)),
+]);
+const [dateRange, setDateRange] = useState("");
 const [selectedDAOs, setSelectedDAOs] = useState([]);
 const [dashboardView, setDashboardView] = useState("Table");
 const [dataState, setDataState] = useState({
   totalTx: 0,
   totalAccounts: 0,
   uniqueAccounts: 0,
+  totalBalance: 0,
+  distributed: 0,
   dailyStats: [],
 });
 
@@ -89,41 +92,39 @@ const get = async (url) => {
 };
 
 if (!contractName) return <Widget src="flashui.near/widget/Loading" />;
+
 const daos = Near.view(contractName, "get_dao_list");
 if (!daos) return <Widget src="flashui.near/widget/Loading" />;
 
 const formatDate = () => {
   const fmt = (date) => date.toLocaleDateString().split("/");
+  const startDate = `${fmt(period[0])[2]}-${fmt(period[0])[1]}-${
+    fmt(period[0])[0]
+  }`;
+  const endDate = `${fmt(period[1])[2]}-${fmt(period[1])[1]}-${
+    fmt(period[1])[0]
+  }`;
 
-  return {
-    startDate: `${fmt(period[0])[2]}-${fmt(period[0])[1]}-${fmt(period[0])[0]}`,
-    endDate: `${fmt(period[1])[2]}-${fmt(period[1])[1]}-${fmt(period[1])[0]}`,
-  };
+  setDateRange(`start_date=${startDate}&end_date=${endDate}`);
 };
-
-// /api/total - General Stats
-// /api/user-retention - User Retention
-// /api/dapps-used - Dapps Used
-// /api/social-engagement - Social Engagement
-const params = `start_date=${formatDate().startDate}&end_date=${
-  formatDate().endDate
-}`;
-
-console.log(params);
 
 const API = {
   getTotal: () =>
-    get(`api/total?${params}&&dao_list=[${daos.map((d) => d.id)}]`),
+    get(`api/total?${dateRange}&&dao_list=[${daos.map((d) => d.id)}]`),
   getDailyStats: () =>
-    get(`api/daily-stats?${params}&&dao_list=[${daos.map((d) => d.id)}]`),
+    get(`api/daily-stats?${dateRange}&&dao_list=[${daos.map((d) => d.id)}]`),
   userRetentions: (daos) =>
-    get(`api/user-retention?${params}&dao_list=[${daos.map((d) => d.id)}]`),
+    get(`api/user-retention?${dateRange}&dao_list=[${daos.map((d) => d.id)}]`),
   dappsUsed: (daos) =>
-    get(`api/dapps-used?${params}&dao_list=[${daos.map((d) => d.id)}]`),
+    get(`api/dapps-used?${dateRange}&dao_list=[${daos.map((d) => d.id)}]`),
   acquisitionCost: (daos) =>
-    get(`api/acquisition-cost?${params}&dao_list=[${daos.map((d) => d.id)}]`),
+    get(
+      `api/acquisition-cost?${dateRange}&dao_list=[${daos.map((d) => d.id)}]`
+    ),
   socialEngagement: (daos) =>
-    get(`api/social-engagement?${params}&dao_list=[${daos.map((d) => d.id)}]`),
+    get(
+      `api/social-engagement?${dateRange}&dao_list=[${daos.map((d) => d.id)}]`
+    ),
 };
 
 const fetchData = () => {
@@ -137,6 +138,8 @@ const fetchData = () => {
     newState.totalTx = data.transactions;
     newState.totalAccounts = data.accounts;
     newState.uniqueAccounts = data.active_users;
+    newState.totalBalance = data.totalBalance;
+    newState.distributed = data.distributed;
     setDataState(newState);
     setLoading(false);
   });
@@ -153,8 +156,12 @@ const fetchData = () => {
 };
 
 useEffect(() => {
-  fetchData();
-}, [selectedDAOs, daos, period]);
+  formatDate();
+}, [period]);
+
+useEffect(() => {
+  if (dateRange) fetchData();
+}, [selectedDAOs, daos, dateRange]);
 
 const onSelectChange = (value) => {
   const isDefaultOption = value === defaultDAOOption;
@@ -168,7 +175,7 @@ const onSelectChange = (value) => {
       return all;
     } else if (selectedDAOs.includes(value)) {
       return selectedDAOs.filter(
-        (dao) => dao !== value && dao !== defaultDAOOption,
+        (dao) => dao !== value && dao !== defaultDAOOption
       );
     } else {
       return [...selectedDAOs, value];
@@ -187,15 +194,15 @@ return (
     <SelectContainer>
       <Title>NDC Dashboard</Title>
       <Filters>
-        <div style={{ width: "300px" }} className="positiion-relative">
-          <Widget
-            src={`/*__@replace:widgetPath__*/.Components.DatePicker`}
-            props={{
-              handleChange: ({ startDate, endDate }) =>
-                setPeriod([startDate, endDate]),
-            }}
-          />
-        </div>
+        <Widget
+          src={`/*__@replace:widgetPath__*/.Components.DatePicker`}
+          props={{
+            period,
+            handleChange: ({ startDate, endDate }) =>
+              setPeriod([startDate, endDate]),
+          }}
+        />
+
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Switch`}
           props={{
@@ -216,6 +223,8 @@ return (
         totalTx: dataState.totalTx,
         totalAccounts: dataState.totalAccounts,
         uniqueAccounts: dataState.uniqueAccounts,
+        totalBalance: dataState.totalBalance,
+        totalDistributed: dataState.distributed,
       }}
     />
     {dashboardView === "Charts" ? (
@@ -240,7 +249,7 @@ return (
         />
       </ChartContainer>
     ) : (
-      <div className="w-100 section py-5 flex-column">
+      <div className="w-100 flex-column">
         <Widget
           src={`/*__@replace:widgetPath__*/.Components.Table`}
           props={{ daos, API, period }}
