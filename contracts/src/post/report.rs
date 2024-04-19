@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use near_sdk::{require, NearSchema};
 use super::{PostId};
 use crate::{Vertical, CommunityId, MetricLabel, PostLabel};
-use crate::post::report_funding::{ReportFunding, VersionedReportFunding};
+use crate::post::report_funding::ReportFunding;
 
 // TODO: Remove V0
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
@@ -39,7 +39,7 @@ pub struct Report {
     pub vertical: Option<Vertical>,
 
     // Specific fields
-    pub funding: VersionedReportFunding,
+    pub funding: ReportFunding,
     pub proposal_id: Option<PostId>,
     #[serde(skip_deserializing)]
     pub is_spam: bool,

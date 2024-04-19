@@ -5,7 +5,7 @@ use near_sdk::{require, NearSchema, AccountId};
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, NearSchema)]
 #[serde(crate = "near_sdk::serde")]
 #[borsh(crate = "near_sdk::borsh")]
-pub struct ReportMilestones {
+pub struct ReportMilestone {
     pub id: u32,
     pub description: String,
     pub payment: u32,
@@ -35,7 +35,7 @@ pub enum ReportFundsTransferCategory {
 pub struct ReportFunding {
     pub category: ReportCategory,
     pub sub_category: Option<ReportFundsTransferCategory>,
-    pub milestones: Vec<ReportMilestones>,
+    pub milestones: Vec<ReportMilestone>,
     pub ipfs_proofs: Vec<String>,
     pub transactions: Vec<String>,
     pub participants: Vec<AccountId>,
@@ -50,15 +50,6 @@ pub struct ReportFunding {
 //     pub title: String,
 //     pub description: String,
 // }
-
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
-#[serde(crate = "near_sdk::serde")]
-#[serde(tag = "report_version")]
-#[borsh(crate = "near_sdk::borsh")]
-pub enum VersionedReportFunding {
-    V1(ReportFunding),
-    // V2(ReportFundsV2),
-}
 
 impl Default for ReportFunding {
     fn default() -> Self {
@@ -111,53 +102,5 @@ impl ReportFunding {
                 require!(milestone.progress_pct <= 100, "Milestone completion percentage must be between 0 and 100");
             }
         }
-    }
-}
-
-impl VersionedReportFunding {
-    pub fn latest_version(&self) -> &ReportFunding {
-        match self {
-            VersionedReportFunding::V1(report_funding) => report_funding,
-            // Handle other versions as needed
-        }
-    }
-
-    // pub fn validate(&self) {
-    //     return match self {
-    //         VersionedReportFunds::V1(report) => {
-    //             require!(
-    //                 matches!(report.title.chars().count(), 5..=500),
-    //                 "Report title must contain 5 to 500 characters"
-    //             );
-    //             require!(
-    //                  !report.description.is_empty(),
-    //                 "No description provided for report"
-    //             );
-    //         },
-    //     };
-    // }
-}
-
-impl From<VersionedReportFunding> for ReportFunding {
-    fn from(vi: VersionedReportFunding) -> Self {
-        match vi {
-            VersionedReportFunding::V1(v1) => v1,
-            // VersionedReportFunds::V1(_) => unimplemented!(),
-        }
-    }
-}
-
-// impl From<VersionedReportFunds> for ReportV2 {
-//     fn from(vi: VersionedReportFunds) -> Self {
-//         match vi {
-//             VersionedReportFunds::V1(v2) => v2,
-//             _ => unimplemented!(),
-//         }
-//     }
-// }
-
-impl From<ReportFunding> for VersionedReportFunding {
-    fn from(report_funding: ReportFunding) -> Self {
-        VersionedReportFunding::V1(report_funding)
     }
 }

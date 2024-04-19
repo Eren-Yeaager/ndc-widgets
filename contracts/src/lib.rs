@@ -30,6 +30,7 @@ use crate::social_db::social_db_contract;
 use crate::user::{FollowType};
 use strum::IntoEnumIterator;
 use crate::event::{Event, EventStatus};
+use crate::post::report_funding::ReportMilestone;
 
 type DaoId = u64;
 type PostId = u64;
@@ -59,6 +60,7 @@ pub struct Contract {
     pub comments: LookupMap<CommentId, VersionedComment>,
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
+    pub community_milestones: LookupMap<CommunityId, Vec<ReportMilestone>>,
 
     pub events: LookupMap<EventId, Event>,
 
@@ -77,7 +79,7 @@ pub struct Contract {
 impl Contract {
     #[init]
     pub fn new() -> Self {
-        migrations::state_version_write(&migrations::StateVersion::V1);
+        migrations::state_version_write(&migrations::StateVersion::V2);
 
         let contract = Self {
             total_posts: 0,
@@ -94,6 +96,7 @@ impl Contract {
             comments: LookupMap::new(StorageKey::Comments),
             communities: LookupMap::new(StorageKey::Communities),
             community_handles: LookupMap::new(StorageKey::CommunityHandles),
+            community_milestones: LookupMap::new(StorageKey::CommunityMilestones),
 
             events: LookupMap::new(StorageKey::Events),
 
@@ -342,6 +345,11 @@ impl Contract {
     // Communities: Get follow list for user
     pub fn get_follow_id_list(&self, follow_type: FollowType, account_id: AccountId) -> Vec<u64> {
         self.user_follow.get(&(follow_type, account_id)).unwrap_or_default()
+    }
+
+    // Communities: Get all milestones for a community
+    pub fn get_community_milestones(&self, community_id: CommunityId) -> Vec<ReportMilestone> {
+        self.community_milestones.get(&community_id).unwrap_or_default()
     }
 
     // Access-control: Get the access rules list for a specific account
