@@ -60,7 +60,7 @@ pub struct Contract {
     pub comments: LookupMap<CommentId, VersionedComment>,
     pub communities: LookupMap<CommunityId, VersionedCommunity>,
     pub community_handles: LookupMap<String, CommunityId>,
-    pub community_milestones: LookupMap<CommunityId, Vec<ReportMilestone>>,
+    pub community_milestones: LookupMap<(DaoId, CommunityId), Vec<ReportMilestone>>,
 
     pub events: LookupMap<EventId, Event>,
 
@@ -348,8 +348,8 @@ impl Contract {
     }
 
     // Communities: Get all milestones for a community
-    pub fn get_community_milestones(&self, community_id: CommunityId) -> Vec<ReportMilestone> {
-        self.community_milestones.get(&community_id).unwrap_or_default()
+    pub fn get_community_milestones(&self, dao_id: DaoId, community_id: CommunityId) -> Vec<ReportMilestone> {
+        self.community_milestones.get(&(dao_id, community_id)).unwrap_or_default()
     }
 
     // Access-control: Get the access rules list for a specific account

@@ -204,7 +204,7 @@ impl Contract {
         self.add_community_posts_internal(&body, post_id);
 
         // Report specific actions
-        self.handle_reports_related_tasks(&body, post_id);
+        self.handle_reports_related_tasks(&dao_id, &body, post_id);
 
         // Notifications
         notify::notify_mention(&body.get_post_title(), &body.get_post_description(), post_id.clone(), None);
@@ -227,15 +227,15 @@ impl Contract {
         }
     }
 
-    fn handle_reports_related_tasks(&mut self, body: &PostBody, post_id: PostId) {
+    fn handle_reports_related_tasks(&mut self, dao_id: &DaoId, body: &PostBody, post_id: PostId) {
         if let PostBody::Report(report) = &body {
             self.assign_report_to_proposal(report.into(), post_id);
 
             let report: Report = report.latest_version();
             if report.funding.milestones.len() > 0 {
                 match report.funding.category {
-                    ReportCategory::ProjectOnboarding => self.assign_community_milestones(&report),
-                    _ => self.edit_community_milestones(&report),
+                    ReportCategory::ProjectOnboarding => self.assign_community_milestones(dao_id.clone(), &report),
+                    _ => self.edit_community_milestones_progress(dao_id.clone(), &report),
                 }
             }
         }
@@ -293,24 +293,27 @@ impl Contract {
     }
 
     // Assign community milestones
-    fn assign_community_milestones(&mut self, report: &Report) {
+    fn assign_community_milestones(&mut self, dao_id: DaoId, report: &Report) {
         let community_id = report.community_id.unwrap();
-        self.community_milestones.insert(&community_id, &report.clone().funding.milestones);
+        let milestones = report.clone().funding.milestones;
+
+        self.community_milestones.insert(&(dao_id, community_id), &milestones);
     }
 
     // Edit community milestones
-    fn edit_community_milestones(&mut self, report: &Report) {
+    fn edit_community_milestones_progress(&mut self, dao_id: DaoId, report: &Report) {
         let community_id = report.community_id.unwrap();
         let milestones_update = report.clone().funding.milestones;
+        let milestones_key = (dao_id, community_id);
 
-        let mut milestones = self.community_milestones.get(&community_id).unwrap_or(vec![]);
+        let mut milestones = self.community_milestones.get(&milestones_key).unwrap_or(vec![]);
         for milestone in &milestones_update {
             let index = milestones.iter().position(|x| x.id == milestone.id);
             if let Some(index) = index {
-                milestones[index] = milestone.clone();
+                milestones[index].progress_pct = milestone.progress_pct;
             }
         }
-        self.community_milestones.insert(&community_id, &milestones);
+        self.community_milestones.insert(&milestones_key, &milestones);
     }
 
     // Generate community handle
@@ -362,13 +365,14 @@ impl Contract {
     }
 
     fn assign_report_to_proposal(&mut self, report: &VersionedReport, post_id: PostId) {
-        let proposal_id = report.clone().latest_version().proposal_id;
-        if let Some(proposal_id) = proposal_id {
+        if let Some(proposal_id) = report.clone().latest_version().proposal_id {
             let mut proposal_post: Post = self.get_post_by_id(&proposal_id).into();
 
             if let PostBody::Proposal(proposal) = &mut proposal_post.snapshot.body {
-                proposal.latest_version_mut().reports.push(post_id);
-                self.posts.insert(&proposal_id, &proposal_post.into());
+                if !proposal.latest_version().clone().reports.contains(&post_id) {
+                    proposal.latest_version_mut().reports.push(post_id);
+                    self.posts.insert(&proposal_id, &proposal_post.into());
+                }
             }
         }
     }
@@ -381,7 +385,6 @@ impl Contract {
             self.community_posts.insert(&community_id, &community_posts);
         }
     }
-
 
     // Edit request/report
     // Access Level: Post author
@@ -405,7 +408,10 @@ impl Contract {
         };
         self.posts.insert(&post.id, &post.clone().into());
 
-        near_sdk::log!("POST EDITED: {}", post.id);
+        // Report specific actions
+        self.handle_reports_related_tasks(&post.dao_id, &body, post.id);
+
+        near_sdk::log!("POST EDITED: {}", id);
     }
 
     // Validate post on edit

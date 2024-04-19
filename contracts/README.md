@@ -111,26 +111,22 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"P
 
 ```bash
 # Funds Transfer > Development funding
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title ", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"Development", "transactions":["tx_hash"], "milestones":[{"description":"Some Text", "payment":1000, "progress_pct":0}], "community_id":1}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title ", "description":"Report description", "attachments":[], "labels":[], "metrics":{}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"Development", "transactions":["tx_hash"], "milestones":[{"id":1, "description":"Some Text", "payment":1000, "progress_pct":0}]}, "community_id":1, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
 # Funds Transfer > Marketing campaign (end_date is optional)
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"Marketing", "transactions":["tx_hash"], "participants":["account1.near"], "ipfs_proofs":["ipfs_url"], "start_date":1713360000, "end_date":"1713399999"}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"Marketing", "transactions":["tx_hash"], "participants":["account1.near"], "ipfs_proofs":["ipfs_url"], "start_date":1713360000, "end_date":"1713399999"}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
-# Operational Spending > Tooling
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"OperationTooling", "ipfs_proofs":["ipfs_url"]}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+# Operational Spending > Operational (Tooling/Salaries)
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"Operational", "ipfs_proofs":["ipfs_url"]}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
-# Operational Spending > Salaries
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"FundsTransfer", "sub_category":"OperationSalaries", "transactions":["tx_hash"]}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+# New project/dApp > Existing project
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{}, "proposal_id":1, "report_funding":{"category":"ProjectOnboarding", "milestones":[{"id":1, "description":"Some Text", "payment":1000, "progress_pct":0}]}, "community_id":1, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 
-# New project/dApp > existing project
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"ProjectOnboarding", "community_id":1, "milestones":[{"description":"Some Text", "payment":1000, "progress_pct":0}]}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
-
-# New project/dApp > new project
-NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{"metric-title":"metric-value"}, "proposal_id":1, "report_funding":{"category":"ProjectOnboarding", "new_community_title":"Some new project", "milestones":[{"description":"Some Text", "payment":1000, "progress_pct":0}]}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
+# New project/dApp > New project
+NEAR_ENV=mainnet near call "$CONTRACT" add_post '{"dao_id":1, "body":{"title":"Report title", "description":"Report description", "attachments":[], "labels":[], "metrics":{}, "proposal_id":1, "report_funding":{"category":"ProjectOnboarding", "milestones":[{"id":1, "description":"Some Text", "payment":1000, "progress_pct":0}]}, "post_type": "Report", "report_version": "V1"}, "new_community_title":"Some new project"}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
-NOTES:
 report_funding > category options: FundsTransfer, ProjectOnboarding
-report_funding > sub_category options: Development, Marketing, OperationTooling, OperationSalaries
+report_funding > sub_category options: Development, Marketing, Operational
 progress_pct is % of milestone completion, 0-100
 
 - Edit Proposal
@@ -145,19 +141,19 @@ NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Prop
 NEAR_ENV=mainnet near call "$CONTRACT" edit_post '{"id":1, "body":{"title":"Report title upd", "description":"Report description upd", "attachments":["some_url"], "labels":["label2"], "metrics":{}, "proposal_id":1, "funding":{}, "post_type": "Report", "report_version": "V1"}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
-- Change post status:
+- Change post status
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" change_post_status '{"id":1, "status":"New"}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
-- Change proposal state:
+- Change proposal state
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" change_proposal_state '{"id":1, "state":{"dao_council_approved":true, "hom_approved":true, "coa_approved":true, "kyc_passed":true, "payment_executed":true, "report_accepted":true}}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
-- Change post spam status:
+- Change post spam status
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" change_post_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
@@ -239,7 +235,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" add_comment '{"reply_to":1, "post_id":1, 
 NEAR_ENV=mainnet near call "$CONTRACT" edit_comment '{"comment_id":1, "description":"Some text upd", "attachments":[]}' --deposit 0.01 --accountId "$ACCOUNT_ID"
 ```
 
-- Change comment spam status:
+- Change comment spam status
 
 ```bash
 NEAR_ENV=mainnet near call "$CONTRACT" change_comment_is_spam '{"id":1, "is_spam":true}' --deposit 0.01 --accountId "$ACCOUNT_ID"
@@ -282,7 +278,7 @@ NEAR_ENV=mainnet near call "$CONTRACT" comment_unlike '{"id":1}' --accountId "$A
 ```
 
 
-### Communities
+### Communities (projects)
 
 - Add community
 
@@ -318,6 +314,12 @@ NEAR_ENV=mainnet near view "$CONTRACT" get_dao_communities '{"dao_list":[1,2,3]}
 
 ```bash
 NEAR_ENV=mainnet near view "$CONTRACT" get_community_by_id '{"id":1}'
+```
+
+- Get community milestones for DAO (view)
+
+```bash
+NEAR_ENV=mainnet near view "$CONTRACT" get_community_milestones '{"dao_id":1, "community_id":1}'
 ```
 
 - Get community by handle (view)
