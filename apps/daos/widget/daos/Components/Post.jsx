@@ -27,9 +27,6 @@ const dao = Near.view(contractName, "get_dao_by_id", {
   id: parseInt(itemState.dao_id),
 });
 
-{
-  /* This is to be used with Table  */
-}
 const TableRow = styled.div`
   display: flex;
   border-bottom: ${(props) => (props.showMore ? "0" : "1px solid #e3e3e0")};
@@ -425,6 +422,8 @@ const changeHistory = (index) => {
   setItemState((prev) => ({ ...prev, ...snapshot[index] }));
 };
 
+const formatDate = (date) => new Date(date / 1000000).toLocaleString();
+
 if (!dao) return <Widget src="flashui.near/widget/Loading" />;
 
 let snap;
@@ -630,13 +629,13 @@ return (
               <ProposalInfoItem>
                 <div>Created at:</div>
                 <div style={{ color: "#000" }}>
-                  {new Date(itemState.created_at / 1000000).toLocaleString()}
+                  {formatDate(itemState.created_at)}
                 </div>
               </ProposalInfoItem>
               <ProposalInfoItem>
                 <div>Updated at:</div>
                 <div style={{ color: "#000" }}>
-                  {new Date(itemState.timestamp / 1000000).toLocaleString()}
+                  {formatDate(itemState.timestamp)}
                 </div>
               </ProposalInfoItem>
               <ProposalInfoItem>
@@ -894,7 +893,7 @@ return (
                   <div>
                     <span className="created">Created at:</span>{" "}
                     <span className="date">
-                      {new Date(itemState.created_at / 1000000).toDateString()}
+                      {formatDate(itemState.created_at)}
                     </span>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 const Items = styled.div`
   display: flex;
   width: 100%;
+  height: 220px;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -8,14 +9,15 @@ const Items = styled.div`
 
   .item {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 1reml
     justify-content: center;
     align-items: center;
     border-radius: 14px;
     border: 1px solid #e3e3e0;
     background: #fff;
     padding: 16px 32px;
-    width: 400px;
+    width: 240px;
     gap: 1.5rem;
     box-shadow:
       0px 97px 27px 0px rgba(0, 0, 0, 0),
@@ -30,17 +32,12 @@ const Items = styled.div`
       font-style: normal;
       font-weight: 600;
       line-height: 18px;
-      width: 120px;
+      text-align: center;
+      width: 115px;
     }
 
     @media screen and (max-width: 975px) {
       width: 100%;
-    }
-
-    .divider {
-      width: 1px;
-      height: 50px;
-      background: #e3e3e0;
     }
 
     .value {
@@ -54,29 +51,42 @@ const Items = styled.div`
   }
 `;
 
-const { totalTx, totalAccounts, uniqueAccounts } = props;
+const {
+  totalTx,
+  totalAccounts,
+  uniqueAccounts,
+  totalBalance,
+  totalDistributed,
+} = props;
 
-const Item = ({ value, text, color }) => {
+const Item = ({ value, text }) => {
+  const formatValue = (value) => {
+    const val = parseFloat(value);
+
+    return val >= 1000000000
+      ? `${parseFloat(val / 1000000000).toFixed(2)}B`
+      : val >= 1000000
+      ? `${parseFloat(val / 1000000).toFixed(2)}M`
+      : val >= 1000
+      ? `${parseFloat(val / 1000).toFixed(2)}K`
+      : Number.isInteger(val)
+      ? val
+      : val.toFixed(2);
+  };
   return (
-    <Widget
-      src={`/*__@replace:widgetPath__*/.Components.Aggregators.Item`}
-      props={{ value, text, color }}
-    />
+    <div className="item">
+      <div className="value">{value ? formatValue(value) : "n/a"}</div>
+      <div className="title">{text}</div>
+    </div>
   );
 };
 
 return (
   <Items>
-    <Item value={totalTx} text="Total Number of Transactions" color="#A39ACD" />
-    <Item
-      value={totalAccounts}
-      text="Total Number of Accounts"
-      color="#5398DD"
-    />
-    <Item
-      value={uniqueAccounts}
-      text="Today Unique Active Users"
-      color="#E89DBB"
-    />
+    <Item value={totalBalance} text="Total amount of NEAR" />
+    <Item value={totalDistributed} text="Total distributed amount of NEAR" />
+    <Item value={totalTx} text="Number of Transactions" />
+    <Item value={totalAccounts} text="Number of Accounts" />
+    <Item value={uniqueAccounts} text="Unique Active Users" />
   </Items>
 );

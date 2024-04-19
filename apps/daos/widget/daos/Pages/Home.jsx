@@ -1,5 +1,5 @@
 let { assets, content, contractName } = VM.require(
-  `/*__@replace:widgetPath__*/.Config`,
+  `/*__@replace:widgetPath__*/.Config`
 );
 
 assets = assets.home;
@@ -201,27 +201,6 @@ return (
       <Widget
         src={`/*__@replace:widgetPath__*/.Components.Title`}
         props={{
-          imgUrl: content.communityTreasury.image,
-          title: content.communityTreasury.title,
-        }}
-      />
-
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Metrics.index`}
-        props={{
-          daos,
-          totalTreasury: 3893275,
-          deliverTreasury: 362253,
-          typeOfProject,
-          loading,
-          text: content.communityTreasury.metrics,
-        }}
-      />
-    </Wrapper>
-    <Wrapper>
-      <Widget
-        src={`/*__@replace:widgetPath__*/.Components.Title`}
-        props={{
           imgUrl: content.whatIsNDC.image,
           title: content.whatIsNDC.title,
         }}
@@ -261,7 +240,7 @@ return (
           props={{
             title: content.featuredProducts.title,
             projects: content.featuredProducts.projects.map((title) =>
-              projects.find((p) => p.title === title),
+              projects.find((p) => p.title === title)
             ),
           }}
         />
